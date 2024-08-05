@@ -1,0 +1,101 @@
+TableStyle.css
+
+.datatable-responsive-demo .MuiTable-root {
+    border: none;
+}
+
+.MuiTable-root {
+    border-collapse: separate !important;
+    border-spacing: 0px 15px !important; /* Adjust the spacing as needed */
+    border: none !important;
+   
+
+}
+
+.MuiTableContainer-root {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: white;
+    
+}
+
+.MuiTableHead-root {
+    color: #ffffff;
+    font-weight: 500 !important;
+    text-align: center;
+    /* padding: 10px;    */
+    font-size: 21px !important;
+    background-image: linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important;
+    border: none !important;
+    
+}
+
+.MuiTableCell-root {
+    color: #FDFDFD;
+    text-align: start;
+    font-weight: 600;
+    /* padding: 14px !important; */
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 21px;
+    /* yha per head mai farqpara */
+    /* border: 2px solid red !important; */
+
+}
+
+.MuiTableCell-root-head {
+    color: #FDFDFD;
+    text-align: start;
+    font-weight: 600;
+    /* padding: 0px !important; */
+    background-color: transparent !important;
+    /* border: none !important; */
+    /* border: 2px solid red !important; */
+    font-size: 21px;
+}
+
+.MuiTableBody-root {
+    background-color: transparent !important;
+    /* border: 2px solid red !important; */
+}
+
+.MuiTableBody-root .MuiTableCell-root {
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-weight: 500;
+    border: none !important;
+    font-size: 21px;
+    background-color: transparent !important;
+}
+
+.MuiTableRow-root {
+    background: #2E210A;
+    border-radius: 12px !important;
+    border: 2px solid #FFA100 !important; /* Adjust the border color as needed */
+    margin-bottom: 10px !important; /* Space between rows */
+    color: white !important;
+    font-size: 21px;
+}
+
+/* row data hover */
+
+.MuiTableRow-root:hover {
+    background: #5A3D0A;
+}
+
+.search-input {
+color: #A0A4A9;
+    font-size: 18px;
+    padding: 9px 47px 9px 27px;
+    border-radius: 12px;
+    border: 1px solid #FFA100;
+    outline: none;
+    width: 100%;
+    background-color: transparent;
+    position: relative;
+}
+
+.search-input::placeholder {
+    color: white;
+}
