@@ -7,6 +7,7 @@ const DashboardLayout = React.lazy(() => import('./Layout/DashboardLayout'));
 const UserManagement = React.lazy(() => import('./Pages/UserManagement/UserManagement'));
 const SauceManagement = React.lazy(() => import('./Pages/SauceManagement/SauceManagement'));
 const AddSauce = React.lazy(() => import('./Pages/AddSauce/AddSauce'));
+const BrandManagement = React.lazy(() => import('./Pages/BrandManagement/BrandManagement'));
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="user-management" element={<UserManagement />} />
             <Route path="sauce-management" element={<SauceManagement />} />
             <Route path="add-sauce" element={<AddSauce />}/>
+            <Route path="brand-management" element={<BrandManagement />}/>
           </Route>
           <Route path="*" element={<>Page Not Found</>} />
         </Routes>
