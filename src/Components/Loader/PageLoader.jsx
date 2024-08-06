@@ -53,12 +53,13 @@ const PageLoader = () => {
   return (
     <div
     style={{
-        width:"100vh",
+        width:"100%",
+        // border:"2px solid red",
         height:"100vh",
         display:"flex",
-        // justifyContent:"center",
-        alignItems:"center",
-        border:"2px solid red"
+        justifyContent:"center",
+        alignItems:"center"
+
         
     }}
     >
