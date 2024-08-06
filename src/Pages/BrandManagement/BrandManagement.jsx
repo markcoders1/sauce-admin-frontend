@@ -133,16 +133,19 @@ const SauceManagement = () => {
                             <TableRow
                                 sx={{
                                     backgroundColor: "transparent",
-                                    padding: "0px"
+                                    padding: "0px",
+                                    border:"none"
                                 }}
                             >
-                                <TableCell className="MuiTableCell-root-head" sx={{
+                                <TableCell className="MuiTableCell-root-head " sx={{
                                     fontWeight: "500",
                                     padding: "0px 0px",
                                     fontSize: "21px",
                                     textAlign: "center",
                                     borderRadius: "8px 0px 0px 8px",
-                                    color: "white"
+                                    color: "white",
+                                        
+                                   
                                 }}>Image</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
