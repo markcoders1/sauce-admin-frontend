@@ -16,6 +16,10 @@ const CustomInputShadow = forwardRef(({
   height = "70px", // Set default height here
   color = "white",
   disabled = false,
+  width = "100%",
+  textAlign = "",
+  inputStyle = {}
+
 }, ref) => {
   return (
     <Box sx={{ mb: mb }}>
@@ -31,7 +35,7 @@ const CustomInputShadow = forwardRef(({
           justifyContent: "space-between",
           borderRadius: "10px",
           mb: 2,
-          width: '100%',
+          width: width,
           position: "relative",
           background: "#2e210a",
           color: "white",
@@ -70,6 +74,7 @@ const CustomInputShadow = forwardRef(({
             fontSize: "22px",
             fontWeight: "600",
             color: "white",
+            ...inputStyle
           }}
           onKeyDown={handleKeyDown}
           name={name}

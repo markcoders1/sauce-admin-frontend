@@ -8,6 +8,13 @@ const UserManagement = React.lazy(() => import('./Pages/UserManagement/UserManag
 const SauceManagement = React.lazy(() => import('./Pages/SauceManagement/SauceManagement'));
 const AddSauce = React.lazy(() => import('./Pages/AddSauce/AddSauce'));
 const BrandManagement = React.lazy(() => import('./Pages/BrandManagement/BrandManagement'));
+const TabooManagement = React.lazy(() => import('./Pages/TabooManagement/TabooManagement'));
+const AddBrandSauce = React.lazy(() => import('./Pages/AddBrandSauce/AddBrandSauce'));
+const EventsManagement = React.lazy(() => import('./Pages/EventsManagement/EventsManagement'))
+const AddEvent = React.lazy(() => import('./Pages/AddEvent/AddEvent'))
+
+
+
 
 function App() {
   return (
@@ -20,6 +27,13 @@ function App() {
             <Route path="sauce-management" element={<SauceManagement />} />
             <Route path="add-sauce" element={<AddSauce />}/>
             <Route path="brand-management" element={<BrandManagement />}/>
+            <Route path="taboo-management" element={<TabooManagement />}/>
+            <Route path="add-brand-sauce" element={<AddBrandSauce />}/>
+            <Route path="events-management" element={<EventsManagement />}/>
+            <Route path="add-event" element={<AddEvent />}/>
+
+
+
           </Route>
           <Route path="*" element={<>Page Not Found</>} />
         </Routes>

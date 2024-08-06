@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 
 const AddSauce = () => {
   const [formData, setFormData] = useState({
@@ -44,18 +45,38 @@ const AddSauce = () => {
         gap: "1.5rem",
       }}
     >
+        <Box
+        sx={{
+            display:"flex",
+            justifyContent:"space-between"
+        }}
+        >
+
       <Typography sx={{
-        color: "white",
-        fontWeight: "600",
-        fontSize: {
-          sm: "45px",
-          xs: "26px"
-        },
-        fontFamily: "Fira Sans !important",
-      }}>
-        Add Sauce
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+              sm: "45px",
+              xs: "26px"
+            },
+            fontFamily: "Fira Sans !important",
+        }}>
+        Add ---- Brand Sauce
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height:{md:"100%", xs:"370px"} }}>
+
+      <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+              sm: "45px",
+              xs: "26px"
+            },
+            fontFamily: "Fira Sans !important",
+        }}>
+      <img src={BrandImg} alt="Sauce" style={{ width: '112px', height: '62px', borderRadius: '8px', }} />
+      </Typography>
+          </Box>
+      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem" , height:{md:"100%", xs:"350px"}}}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Sauce Image</Typography>

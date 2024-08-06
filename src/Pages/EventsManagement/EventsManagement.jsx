@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
-import "./BrandManagement.css"; // Import the CSS file for custom styles
+import "./EventsManagement.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
-import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
+import EventsImg from '../../assets/EventsImg.png'; // Adjust path as needed
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -29,21 +29,21 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
-const SauceManagement = () => {
+const EventsManagement = () => {
     const navigate = useNavigate();
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
+    const staticEvents = [
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
+        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
     ];
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -60,9 +60,9 @@ const SauceManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.sauceName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredEvents = staticEvents.filter(event =>
+        event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        event.organizedBy.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -85,7 +85,7 @@ const SauceManagement = () => {
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
-                    Brand Management
+                    Events Management
                 </Typography>
 
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
@@ -95,7 +95,7 @@ const SauceManagement = () => {
                             name="search"
                             id="search"
                             className="search-input"
-                            placeholder="Search Sauce..."
+                            placeholder="Search Event..."
                             value={searchTerm}
                             onChange={handleSearchChange}
                         />
@@ -112,7 +112,7 @@ const SauceManagement = () => {
                     <Box>
                         <CustomButton
                             border='1px solid #FFA100'
-                            ButtonText='Add Sauce+'
+                            ButtonText='Add Event+'
                             color='white'
                             width={"178px"}
                             borderRadius='8px'
@@ -120,7 +120,7 @@ const SauceManagement = () => {
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
-                            onClick={() => navigate("/add-sauce")}
+                            onClick={() => navigate("/add-event")}
                         />
                     </Box>
                 </Box>
@@ -150,15 +150,28 @@ const SauceManagement = () => {
                                     fontSize: "21px",
                                     textAlign: "center",
                                     color: "white"
-                                }} className="MuiTableCell-root-head">Brand Name</TableCell>
-                             
+                                }} className="MuiTableCell-root-head">Events Name</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "21px",
                                     textAlign: "center",
                                     color: "white"
-                                }} className="MuiTableCell-root-head">Upload Date</TableCell>
+                                }} className="MuiTableCell-root-head">Organized By</TableCell>
+                                <TableCell sx={{
+                                    fontWeight: "500",
+                                    padding: "12px 0px",
+                                    fontSize: "21px",
+                                    textAlign: "center",
+                                    color: "white"
+                                }} className="MuiTableCell-root-head">Destination</TableCell>
+                                <TableCell sx={{
+                                    fontWeight: "500",
+                                    padding: "12px 0px",
+                                    fontSize: "21px",
+                                    textAlign: "center",
+                                    color: "white"
+                                }} className="MuiTableCell-root-head">Start Date</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
@@ -170,15 +183,17 @@ const SauceManagement = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody className="MuiTableBody-root">
-                            {filteredEmployees.map((employee, index) => (
+                            {filteredEvents.map((event, index) => (
                                 <TableRow key={index} sx={{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={BrandImg} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={EventsImg} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.organizedBy}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.destination}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(event.startDate)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
@@ -194,4 +209,4 @@ const SauceManagement = () => {
     );
 }
 
-export default SauceManagement;
+export default EventsManagement;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
-import "./BrandManagement.css"; // Import the CSS file for custom styles
+import "./TabooManagement.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
@@ -85,7 +85,7 @@ const SauceManagement = () => {
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
-                    Brand Management
+                    Taboo Brand Management
                 </Typography>
 
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
