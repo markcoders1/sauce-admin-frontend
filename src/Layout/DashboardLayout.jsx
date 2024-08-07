@@ -1,14 +1,21 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 // import SnackAlert from '../Components/SnackAlert/SnackAlert';
 // import { useSelector } from 'react-redux';
 import backgroundImg1 from '../assets/backgroundImg1.png';
+import AppSidebar from '../Pages/AppSidebar/AppSidebar';
 
 const DashboardLayout = () => {
   const location = useLocation();
   // const snackAlert = useSelector(state => state.snackAlert);
+
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(prevState => !prevState);
+  };
 
   const getHeaderTitle = (pathname) => {
     switch (pathname) {
@@ -34,18 +41,18 @@ const DashboardLayout = () => {
         justifyContent: 'center',
         alignItems: 'flex-start',
         backgroundImage: `url(${backgroundImg1})`,
-        backgroundColor:"black",
+        backgroundColor: "black",
         minHeight: '100vh',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundAttachment: "fixed",
         padding: {
-          sm: "20px 30px",
+          sm: "0px 30px",
           xs: "10px 10px"
         },
         boxSizing: 'border-box',
-        m:"0px"
+        m: "0px"
       }}
     >
       <Box
@@ -59,20 +66,22 @@ const DashboardLayout = () => {
       >
         <Box
           sx={{
-            width: {
-              lg: '120px',
-              xs: '0px', // Hidden on smaller screens
-            },
+            mt: "35px",
+            width: isSidebarOpen ? '300px' : '80px', // Adjust width based on sidebar state
             position: 'fixed', // Fixed position
-            height: '100%',
+            maxHeight: "1000px",
+            minHeight: "1000px",
             zIndex: 1,
             display: {
               xs: 'none',
               lg: 'block',
             },
+            borderRadius: "15px",
+            background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
+            transition: 'width 0.3s ease-in-out' // Smooth transition for width change
           }}
         >
-          {/* <AppSidebar /> */}
+          <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         </Box>
         <Box>
           {/* <MobileSidebar /> */}
@@ -80,7 +89,7 @@ const DashboardLayout = () => {
         <Box
           sx={{
             marginLeft: {
-              lg: '120px', // Adjust to match fixed sidebar width
+              lg: isSidebarOpen ? '270px' : '50px', // Adjust margin based on sidebar state
               xs: '0px',
             },
             width: '100%',
@@ -89,11 +98,10 @@ const DashboardLayout = () => {
               sm: '20px',
               xs: '30px 12px',
             },
-            
             borderRadius: '30px',
             boxSizing: 'border-box',
             overflowY: 'auto', // Enable scrolling for the main content
-            // border: "2px solid red",
+            transition: 'margin-left 0.3s ease-in-out', // Smooth transition for margin change
           }}
         >
           {/* <Header title={headerTitle} /> */}

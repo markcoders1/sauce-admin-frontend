@@ -42,6 +42,7 @@ const AddSauce = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
+        padding:"0px 21px"
       }}
     >
       <Typography sx={{
