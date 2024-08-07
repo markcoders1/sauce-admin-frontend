@@ -66,11 +66,11 @@ const DashboardLayout = () => {
       >
         <Box
           sx={{
-            mt: "35px",
+            mt: "15px",
             width: isSidebarOpen ? '300px' : '80px', // Adjust width based on sidebar state
             position: 'fixed', // Fixed position
-            maxHeight: "1000px",
-            minHeight: "1000px",
+            maxHeight: "900px",
+            minHeight: "900px",
             zIndex: 1,
             display: {
               xs: 'none',

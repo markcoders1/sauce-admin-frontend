@@ -112,7 +112,7 @@ const SauceManagement = () => {
                     <Box>
                         <CustomButton
                             border='1px solid #FFA100'
-                            ButtonText='Add Sauce+'
+                            ButtonText='Add Brand+'
                             color='white'
                             width={"178px"}
                             borderRadius='8px'
@@ -120,7 +120,7 @@ const SauceManagement = () => {
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
-                            onClick={() => navigate("/add-sauce")}
+                            onClick={() => navigate("/add-brand-sauce")}
                         />
                     </Box>
                 </Box>
