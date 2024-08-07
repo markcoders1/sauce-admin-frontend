@@ -6,7 +6,7 @@ import hambergImg from '../../assets/hamberger.png';
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
 const handleNavigate=()=>{
-
+  
 }
     
   return (
@@ -74,22 +74,7 @@ const handleNavigate=()=>{
           >
             <img src={hambergImg} alt="" />
           </Box>
-          <Box
-            sx={{
-              borderRadius: '12px',
-              backgroundColor: 'white',
-              width: '50px',
-              height: '50px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
-            }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
-          >
-            <img src={hambergImg} alt="" />
-          </Box>
-
+      
           <Box
             sx={{
               borderRadius: '12px',
@@ -161,11 +146,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */} U
           </Box>
           <Box
             sx={{
@@ -176,11 +163,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
             }}
             onClick={() => handleNavigate("/vendor-invoices")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */} B
           </Box>
 
           <Box
@@ -192,11 +181,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
             }}
             onClick={() => handleNavigate("/customer-payments")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */} S
           </Box>
           <Box
             sx={{
@@ -207,11 +198,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
             }}
             onClick={() => handleNavigate("/project-updates")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */} E
           </Box>
         </> : null}
       </Box>
