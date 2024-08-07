@@ -136,6 +136,7 @@ const SauceManagement = () => {
                                     padding: "0px",
                                     border:"none"
                                 }}
+                                  className="header-row"
                             >
                                 <TableCell className="MuiTableCell-root-head " sx={{
                                     fontWeight: "500",

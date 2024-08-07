@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import axiosInstance from '../../Hooks/AuthHook/AuthHook';
+import axios from 'axios';
+import EditSauceModal from '../../Components/EditSauceModal/EditSauceModal';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -26,6 +34,11 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 }));
 
 const UserManagement = () => {
+
+    sessionStorage.setItem("accessToken", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU")
+
+    console.log(appUrl)
+
     const staticEmployees = [
         { fullName: "John Doe", email: "john.doe@example.com", createdAt: "2023-07-22" , check :  "30"},
         { fullName: "Jane Smith", email: "jane.smith@example.com", createdAt: "2023-07-22" ,check :  "43"},
@@ -60,6 +73,42 @@ const UserManagement = () => {
         employee.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+
+    // const fetchUsers = async (data) => {
+    //     try {
+    //       const response = await axiosInstance({
+    //         url: `${appUrl}/admin/get-all-reviews`,
+    //         method: "get",
+
+    //       });
+    
+    //       console.log(response);
+         
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    //   };
+
+
+    const fetchUsers = async () => {
+        try {
+          const response = await axios({
+            url: "https://sauced-backend.vercel.app/admin/get-all-events",
+            method: "get",
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+            }
+          });
+          console.log(response.data); // Handle the response data as needed
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      };
+      
+      useEffect(() => {
+        // fetchUsers();
+      }, []);
+
     return (
         <Box>
             <Box sx={{
@@ -80,7 +129,7 @@ const UserManagement = () => {
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
-                    User Management
+                    Users Management
                 </Typography>
 
                 <Box sx={{ position: "relative", width: "300px" }}>
@@ -114,6 +163,7 @@ const UserManagement = () => {
                                     backgroundColor: "transparent",
                                     padding: "0px"
                                 }}
+                                  className="header-row"
                             >
                                 <TableCell className="MuiTableCell-root-head" sx={{
                                     fontWeight: "500",
@@ -183,6 +233,20 @@ const UserManagement = () => {
                     </Table>
                 </TableContainer>
             </Box>
+            {/* <EditSauceModal
+            open={open}
+            handleClose={() => {
+              setOpen(false);
+            }}
+          /> */}
+          {/* <SnackAlert
+            message={snackAlertData.message}
+            severity={snackAlertData.severity}
+            open={snackAlertData.open}
+            handleClose={() => {
+              setSnackAlertData((prev) => ({ ...prev, open: false }));
+            }}
+          /> */}
         </Box>
     );
 }
