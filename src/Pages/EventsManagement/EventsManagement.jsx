@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -7,6 +7,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import EventsImg from '../../assets/EventsImg.png'; // Adjust path as needed
+import axios from 'axios';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -31,22 +32,30 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const EventsManagement = () => {
     const navigate = useNavigate();
-    const staticEvents = [
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-    ];
 
-    const [searchTerm, setSearchTerm] = useState('');
+        const [allEvents, setAllEvents] = useState([]);
+        const [searchTerm, setSearchTerm] = useState('');
+    
+        const fetchEvents = async () => {
+            try {
+                const response = await axios({
+                    url: "https://sauced-backend.vercel.app/api/admin/get-all-events",
+                    method: "get",
+                    headers: {
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    }
+                });
+                console.log(response.data.events);
+                setAllEvents(response.data.events);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        useEffect(()=>{
+            fetchEvents()
+        },[])
+    
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -60,9 +69,9 @@ const EventsManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEvents = staticEvents.filter(event =>
+    const filteredEvents = allEvents.filter(event =>
         event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.organizedBy.toLowerCase().includes(searchTerm.toLowerCase())
+        event.owner.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -192,9 +201,9 @@ const EventsManagement = () => {
                                         <img src={EventsImg} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{event.organizedBy}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{event.destination}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(event.startDate)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.owner.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.venueName}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />

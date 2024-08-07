@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -7,6 +7,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import SauceIcon from '../../assets/sauceImg.png'; // Adjust path as needed
+import axios from 'axios';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -45,6 +46,32 @@ const SauceManagement = () => {
         { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
         { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
     ];
+
+    const [allSauce, setAllSauce] = useState([]);
+
+    const fetchSauce = async () => {
+        try {
+            const response = await axios({
+                url: "https://sauced-backend.vercel.app/api/get-sauces?type=all",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                },
+                // params: {
+                //     type : "all"
+                // }
+            });
+            console.log(response);
+            // setAllSauce(response.data.events);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
+    useEffect(()=>{
+        fetchSauce()
+    },[])
+
 
     const [searchTerm, setSearchTerm] = useState('');
 

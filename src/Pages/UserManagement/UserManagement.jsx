@@ -47,19 +47,24 @@ const UserManagement = () => {
         }
     };
 
-    const toggleBlock = async () => {
+    const toggleBlock = async (userId) => {
         try {
             const response = await axios({
-                url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
-                method: "get",
+                url: "https://sauced-backend.vercel.app/api/admin/block-unblock-user",
+                method: "post",
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
-                }
+                },
+                params: { userId }
             });
             console.log(response);
-            setAllUsers(response.data.users);
+            setAllUsers(prevUsers =>
+                prevUsers.map(user =>
+                    user._id === userId ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' } : user
+                )
+            );
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error toggling block status:', error);
         }
     };
 
@@ -192,11 +197,12 @@ const UserManagement = () => {
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <CustomButton
                                                 border='1px solid #FFA100'
-                                                ButtonText='Block'
+                                                ButtonText={user.status === 'active' ? 'Block' : 'Unblock'}
                                                 color='white'
                                                 width={"98px"}
                                                 borderRadius='6px'
                                                 buttonStyle={{ height: "39px" }}
+                                                onClick={() => toggleBlock(user._id)}
                                             />
                                         </Box>
                                     </TableCell>
