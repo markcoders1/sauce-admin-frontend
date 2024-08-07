@@ -62,7 +62,7 @@ const SauceManagement = () => {
                 // }
             });
             console.log(response);
-            // setAllSauce(response.data.events);
+            setAllSauce(response?.data?.sauces);
         } catch (error) {
             console.error('Error fetching events:', error);
         }
@@ -87,9 +87,9 @@ const SauceManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.sauceName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredEmployees = allSauce.filter(employee =>
+        employee.owner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -211,9 +211,9 @@ const SauceManagement = () => {
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
                                         <img src={SauceIcon} alt="Sauce" style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.sauceName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{employee.owner.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{employee.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(employee.owner.date)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import axios from 'axios';
 
 const AddSauce = () => {
   const [formData, setFormData] = useState({
@@ -12,28 +13,66 @@ const AddSauce = () => {
     chiliPapers: '',
     ingredients: ''
   });
+  const [sauceImage, setSauceImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = () => {
+  const handleImageChange = (e) => {
+    if (e.target.id === "uploadSauceImage") {
+      setSauceImage(e.target.files[0]);
+    } else if (e.target.id === "uploadBannerImage") {
+      setBannerImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async () => {
     let validationErrors = {};
     Object.keys(formData).forEach(field => {
       if (!formData[field]) {
         validationErrors[field] = `${field} is required`;
       }
     });
+    if (!sauceImage) validationErrors.sauceImage = 'Sauce image is required';
+    if (!bannerImage) validationErrors.bannerImage = 'Banner image is required';
+    
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    console.log('Form data submitted:', formData);
-    // Handle form submission here
+
+    const data = new FormData();
+    data.append('image', sauceImage);
+    data.append('bannerImage', bannerImage);
+    data.append('name', formData.sauceName);
+    data.append('description', formData.details);
+    data.append('ingredients', formData.ingredients);
+    data.append('chiliPapers', formData.chiliPapers);
+    data.append('productLink', formData.productLink);
+    data.append('websiteLink', formData.websiteLink);
+
+    console.log(data)
+    try {
+      const response = await axios({
+        url: "https://sauced-backend.vercel.app/api/admin/add-sauce",
+        method: "post",
+        headers: {
+          Authorization: `Bearer YOUR_ACCESS_TOKEN`,
+          'Content-Type': 'multipart/form-data'
+        },
+        data: data
+      });
+      console.log(response);
+      // handle successful response
+    } catch (error) {
+      console.error('Error submitting sauce:', error);
+    }
   };
 
   return (
@@ -42,7 +81,7 @@ const AddSauce = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding:"0px 21px"
+        padding: "0px 21px"
       }}
     >
       <Typography sx={{
@@ -56,13 +95,13 @@ const AddSauce = () => {
       }}>
         Add Sauce
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height:{md:"100%", xs:"370px"} }}>
+      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} />
+          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Sauce Image</Typography>
         </label>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} />
+          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
         </label>
       </Box>
@@ -155,7 +194,7 @@ const AddSauce = () => {
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
         />
       </Box>
     </Box>
