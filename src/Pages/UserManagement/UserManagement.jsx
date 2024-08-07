@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
-import axiosInstance from '../../Hooks/AuthHook/AuthHook';
 import axios from 'axios';
-import EditSauceModal from '../../Components/EditSauceModal/EditSauceModal';
-import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-
-
-const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -34,27 +28,44 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 }));
 
 const UserManagement = () => {
-
-    sessionStorage.setItem("accessToken", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU")
-
-    console.log(appUrl)
-
-    const staticEmployees = [
-        { fullName: "John Doe", email: "john.doe@example.com", createdAt: "2023-07-22" , check :  "30"},
-        { fullName: "Jane Smith", email: "jane.smith@example.com", createdAt: "2023-07-22" ,check :  "43"},
-        { fullName: "Alice Johnson", email: "alice.johnson@example.com", createdAt: "2023-07-22",check :  "43" },
-        { fullName: "Bob Brown", email: "bob.brown@example.com", createdAt: "2023-07-22",check :  "42" },
-        { fullName: "John Doe", email: "john.doe@example.com", createdAt: "2023-07-22" , check :  "30"},
-        { fullName: "Jane Smith", email: "jane.smith@example.com", createdAt: "2023-07-22" ,check :  "43"},
-        { fullName: "Alice Johnson", email: "alice.johnson@example.com", createdAt: "2023-07-22",check :  "43" },
-        { fullName: "Bob Brown", email: "bob.brown@example.com", createdAt: "2023-07-22",check :  "42" },
-        { fullName: "John Doe", email: "john.doe@example.com", createdAt: "2023-07-22" , check :  "30"},
-        { fullName: "Jane Smith", email: "jane.smith@example.com", createdAt: "2023-07-22" ,check :  "43"},
-        { fullName: "Alice Johnson", email: "alice.johnson@example.com", createdAt: "2023-07-22",check :  "43" },
-        { fullName: "Bob Brown", email: "bob.brown@example.com", createdAt: "2023-07-22",check :  "42" },
-    ];
-
+    const [allUsers, setAllUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios({
+                url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                }
+            });
+            console.log(response);
+            setAllUsers(response.data.users);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const toggleBlock = async () => {
+        try {
+            const response = await axios({
+                url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                }
+            });
+            console.log(response);
+            setAllUsers(response.data.users);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -68,46 +79,10 @@ const UserManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.email.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredUsers = allUsers.filter(user =>
+        (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-
-
-    // const fetchUsers = async (data) => {
-    //     try {
-    //       const response = await axiosInstance({
-    //         url: `${appUrl}/admin/get-all-reviews`,
-    //         method: "get",
-
-    //       });
-    
-    //       console.log(response);
-         
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   };
-
-
-    const fetchUsers = async () => {
-        try {
-          const response = await axios({
-            url: "https://sauced-backend.vercel.app/admin/get-all-events",
-            method: "get",
-            headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
-            }
-          });
-          console.log(response.data); // Handle the response data as needed
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      };
-      
-      useEffect(() => {
-        // fetchUsers();
-      }, []);
 
     return (
         <Box>
@@ -163,7 +138,7 @@ const UserManagement = () => {
                                     backgroundColor: "transparent",
                                     padding: "0px"
                                 }}
-                                  className="header-row"
+                                className="header-row"
                             >
                                 <TableCell className="MuiTableCell-root-head" sx={{
                                     fontWeight: "500",
@@ -178,21 +153,21 @@ const UserManagement = () => {
                                     padding: "12px 0px",
                                     fontSize: "18px",
                                     textAlign: "center",
-                                     color: "white"
+                                    color: "white"
                                 }} className="MuiTableCell-root-head">Email</TableCell>
-                                 <TableCell sx={{
+                                <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "18px",
                                     textAlign: "center",
-                                     color: "white"
+                                    color: "white"
                                 }} className="MuiTableCell-root-head">Check-Ins</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "18px",
                                     textAlign: "center",
-                                     color: "white"
+                                    color: "white"
                                 }} className="MuiTableCell-root-head">Joining Date</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
@@ -200,31 +175,29 @@ const UserManagement = () => {
                                     fontSize: "18px",
                                     textAlign: "center",
                                     borderRadius: "0px 8px 8px 0px",
-                                     color: "white"
+                                    color: "white"
                                 }} className="MuiTableCell-root-head">Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody className="MuiTableBody-root">
-                            {filteredEmployees.map((employee, index) => (
+                            {filteredUsers.map((user, index) => (
                                 <TableRow key={index} sx={{
-                                    border:"2px solid red"
+                                    border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
-                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.email}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.check}</TableCell>
-
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">{user.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{user.email}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{user.checkins}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(user.date)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                           <CustomButton 
-                                           border='1px solid #FFA100'
-                                          ButtonText='Block'
-                                          color='white'
-                                          width={"98px"}
-                                          borderRadius='6px'
-                                          buttonStyle={{height : "39px"}}
-                                          
-                                          />
+                                            <CustomButton
+                                                border='1px solid #FFA100'
+                                                ButtonText='Block'
+                                                color='white'
+                                                width={"98px"}
+                                                borderRadius='6px'
+                                                buttonStyle={{ height: "39px" }}
+                                            />
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -233,20 +206,6 @@ const UserManagement = () => {
                     </Table>
                 </TableContainer>
             </Box>
-            {/* <EditSauceModal
-            open={open}
-            handleClose={() => {
-              setOpen(false);
-            }}
-          /> */}
-          {/* <SnackAlert
-            message={snackAlertData.message}
-            severity={snackAlertData.severity}
-            open={snackAlertData.open}
-            handleClose={() => {
-              setSnackAlertData((prev) => ({ ...prev, open: false }));
-            }}
-          /> */}
         </Box>
     );
 }
