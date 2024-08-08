@@ -6,6 +6,7 @@ import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 
+
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -48,6 +49,7 @@ const UserManagement = () => {
     };
 
     const toggleBlock = async (userId) => {
+        console.log(userId)
         try {
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/block-unblock-user",
@@ -55,7 +57,9 @@ const UserManagement = () => {
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                 },
-                params: { userId }
+                data: { 
+                    userId : userId
+                }
             });
             console.log(response);
             setAllUsers(prevUsers =>
