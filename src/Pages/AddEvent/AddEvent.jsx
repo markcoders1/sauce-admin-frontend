@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import axios from 'axios';
 
 const AddSEvent = () => {
   const [formData, setFormData] = useState({
@@ -12,30 +13,89 @@ const AddSEvent = () => {
     time: '',
     details: '',
     destination: '',
+    bannerImage: null,
 
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData({
+        ...formData,
+        [name]: files[0] // Save the file
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     let validationErrors = {};
     Object.keys(formData).forEach(field => {
       if (!formData[field]) {
         validationErrors[field] = `${field} is required`;
       }
     });
-    if (Object.keys(validationErrors).length > 0) {
+    if (Object.keys(validationErrors).length > 4) {
       setErrors(validationErrors);
       return;
     }
     console.log('Form data submitted:', formData);
     // Handle form submission here
+
+   // Create FormData instance
+   const data = new FormData();
+   data.append('eventName', formData.eventName);
+  //  data.append('organizedBy', formData.organizedBy);
+   data.append('date', formData.date);
+  //  data.append('time', formData.time);
+   data.append('details', formData.details);
+   data.append('destination', formData.destination);
+   if (formData.bannerImage) {
+     data.append('bannerImage', formData.bannerImage); // Append the file
+   }
+
+ 
+    try {
+      const response = await axios({
+        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
+        method: "post",
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          'Content-Type': 'multipart/form-data' // Set the content type to multipart/form-data
+        },
+        data: data
+      });
+      console.log(response);
+    } catch (error) {
+      console.error('Error submitting events:', error);
+    }
+
+    //  try {
+    //   const response = await axios({
+    //     url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
+    //     method: "post",
+    //     headers: {
+    //         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+    //     },
+    //     data : {
+    //       eventName : formData.eventName,
+    //       // owner: formData.organizedBy,
+    //       eventDate : formData.date,
+    //       venueName : formData.destination,
+    //       // eventDetails : formData.details,
+    //       bannerImage : formData.bannerImage
+
+    //     }
+    // });
+    // console.log(response);
+    //  } catch (error) {
+    //   console.error('Error submitting events:', error);
+    //  }
   };
 
   return (
@@ -60,10 +120,11 @@ const AddSEvent = () => {
       </Typography>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height:{lg:"100%", xs:"370px"} }}>
         
-        <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
-        </label>
+      <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
+  <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'flex' }} onChange={handleChange} />
+  <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
+</label>
+
         <Box sx={{display:"flex",gap:"1rem",alignItems:"start", justifyContent:"center", flexWrap:{sm:"nowrap", xs:"wrap"} }} >
        <Box>
 

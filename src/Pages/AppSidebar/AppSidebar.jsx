@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './AppSidebar.css'; // Add styles for active and default states
 import hambergImg from '../../assets/hamberger.png';
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
-const handleNavigate=()=>{
-  
+  const navigate = useNavigate()
+const handleNavigate=(nav)=>{
+  navigate(nav)
 }
     
   return (
@@ -68,11 +69,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */}U
           </Box>
       
           <Box
@@ -84,11 +87,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */}B
           </Box>
           <Box
             sx={{
@@ -99,11 +104,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */}S
           </Box>
           <Box
             sx={{
@@ -114,11 +121,13 @@ const handleNavigate=()=>{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              cursor: 'pointer' // Add pointer cursor
+              cursor: 'pointer' ,// Add pointer cursor
+              color:"black",
+              fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/dashboard")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
           >
-            <img src={hambergImg} alt="" />
+            {/* <img src={hambergImg} alt="" /> */}E
           </Box>
           
         </> : null}
@@ -167,7 +176,7 @@ const handleNavigate=()=>{
                color:"black",
               fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/vendor-invoices")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
           >
             {/* <img src={hambergImg} alt="" /> */} B
           </Box>
@@ -185,7 +194,7 @@ const handleNavigate=()=>{
                color:"black",
               fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/customer-payments")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
           >
             {/* <img src={hambergImg} alt="" /> */} S
           </Box>
@@ -202,7 +211,7 @@ const handleNavigate=()=>{
               color:"black",
               fontWeight:"600"
             }}
-            onClick={() => handleNavigate("/project-updates")} // Toggle sidebar on click
+            onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
           >
             {/* <img src={hambergImg} alt="" /> */} E
           </Box>

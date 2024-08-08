@@ -38,8 +38,9 @@ const EventsManagement = () => {
     
         const fetchEvents = async () => {
             try {
+                console.log("https://aws.markcoders.com/sauced-backend/api/admin/get-all-events")
                 const response = await axios({
-                    url: "https://sauced-backend.vercel.app/api/admin/get-all-events",
+                    url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-events",
                     method: "get",
                     headers: {
                         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
@@ -198,7 +199,7 @@ const EventsManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={EventsImg} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
                                     <TableCell className="MuiTableCell-root">{event.owner.name}</TableCell>
