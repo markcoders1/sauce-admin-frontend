@@ -146,11 +146,8 @@ useEffect(()=>{
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
-<<<<<<< HEAD
-                            onClick={() => navigate("/add-brand-sauce")}
-=======
                             onClick={() => navigate("/add-brand")}
->>>>>>> staging
+
                         />
                     </Box>
                 </Box>

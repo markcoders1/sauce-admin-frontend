@@ -3,6 +3,11 @@ import { Box, Typography } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './AppSidebar.css'; // Add styles for active and default states
 import hambergImg from '../../assets/hamberger.png';
+import icon1 from '../../assets/sauce icons-01.png'
+import icon2 from '../../assets/sauce icons-02.png'
+import icon3 from '../../assets/sauce icons-03.png'
+import icon4 from '../../assets/sauce icons-04.png'
+
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate()
@@ -62,7 +67,7 @@ const handleNavigate=(nav)=>{
 
           <Box
             sx={{
-              borderRadius: '12px',
+           borderRadius:"12px",
               backgroundColor: 'white',
               width: '50px',
               height: '50px',
@@ -71,11 +76,14 @@ const handleNavigate=(nav)=>{
               alignItems: 'center',
               cursor: 'pointer', // Add pointer cursor
               color:"black",
-              fontWeight:"600"
+              fontWeight:"600",
+             position:"relative",
+
             }}
             onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */}U
+          
+            <img src={icon1} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
       
           <Box
@@ -89,11 +97,13 @@ const handleNavigate=(nav)=>{
               alignItems: 'center',
               cursor: 'pointer', // Add pointer cursor
               color:"black",
-              fontWeight:"600"
+              fontWeight:"600",
+              position:"relative",
             }}
             onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */}B
+          
+            <img src={icon2} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
           <Box
             sx={{
@@ -110,7 +120,7 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */}S
+            <img src={icon4} style={{width:"100%"}} alt="" />
           </Box>
           <Box
             sx={{
@@ -127,7 +137,7 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */}E
+           <img src={icon3} style={{width:"100%"}} alt="" />
           </Box>
           
         </> : null}
@@ -161,7 +171,8 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */} U
+            
+            <img src={icon1} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
           <Box
             sx={{
@@ -178,7 +189,8 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */} B
+           
+           <img src={icon2} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
 
           <Box
@@ -196,7 +208,8 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */} S
+            
+            <img src={icon4} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
           <Box
             sx={{
@@ -213,7 +226,8 @@ const handleNavigate=(nav)=>{
             }}
             onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
           >
-            {/* <img src={hambergImg} alt="" /> */} E
+           
+           <img src={icon3} style={{width:"100%", zIndex:"100"}} alt="" />
           </Box>
         </> : null}
       </Box>
