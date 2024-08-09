@@ -43,11 +43,7 @@ const AddSauce = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-<<<<<<< HEAD
-         padding:"0px 21px"
-=======
          padding: "0px 21px"
->>>>>>> staging
       }}
     >
         <Box
