@@ -101,7 +101,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           }}
         >
           {data.map((item, index) => (
-            <MenuItem key={index} value={item._id}>{item.name}</MenuItem>
+            <MenuItem key={index} value={item._id}>{item.email}</MenuItem>
           ))}
         </Select>
       </FormControl>
