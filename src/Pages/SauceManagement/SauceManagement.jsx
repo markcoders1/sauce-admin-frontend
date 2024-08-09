@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -7,7 +7,9 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import SauceIcon from '../../assets/sauceImg.png'; // Adjust path as needed
-
+import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -30,21 +32,42 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 }));
 
 const SauceManagement = () => {
+    const [snackAlertData, setSnackAlertData] = useState({
+        open: false,
+        message: "",
+        severity: "success"
+      });
     const navigate = useNavigate();
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-    ];
+    const [loading  ,setLoading] = useState(false)
+
+
+    const [allSauce, setAllSauce] = useState([]);
+
+    const fetchSauce = async () => {
+        setLoading(true)
+        try {
+            const response = await axios({
+                url: "https://sauced-backend.vercel.app/api/get-sauces?type=all",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                },
+                // params: {
+                //     type : "all"
+                // }
+            });
+            console.log(response);
+            setAllSauce(response?.data?.sauces);
+            setLoading(false)
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
+    useEffect(()=>{
+        fetchSauce()
+    },[])
+
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -60,12 +83,18 @@ const SauceManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.sauceName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredEmployees = allSauce.filter(employee =>
+        employee.owner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
+
+        <>
+        {
+            loading ? (
+                <PageLoader/>
+            ) : (
         <Box>
             <Box sx={{
                 display: "flex",
@@ -74,14 +103,23 @@ const SauceManagement = () => {
                     sm: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                position:"relative",
+                gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "40px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
@@ -126,7 +164,7 @@ const SauceManagement = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"700px" }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">
@@ -182,11 +220,11 @@ const SauceManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={SauceIcon} alt="Sauce" style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={employee.bannerImage} alt="Sauce" style={{ width: '50px', height: '100%', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.sauceName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{employee.owner.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{employee.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(employee.owner.date)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
@@ -199,6 +237,11 @@ const SauceManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+
     );
 }
 

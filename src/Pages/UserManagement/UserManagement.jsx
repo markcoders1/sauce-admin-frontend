@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
-
+import PageLoader from '../../Components/Loader/PageLoader'
+import { useDispatch } from 'react-redux';
+import { handleSnackAlert } from '../../Redux/Slice/SnackAlertSlice/SnackAlertSlice';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -27,39 +30,65 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
+
 const UserManagement = () => {
+    const dispatch = useDispatch()
+    const [snackAlertData, setSnackAlertData] = useState({
+        open: false,
+        message: "",
+        severity: "success"
+      });
     const [allUsers, setAllUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const fetchUsers = async () => {
         try {
+            setLoading(true)
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
                 method: "get",
+                params : {
+                    type : "user"
+                },
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                 }
             });
             console.log(response);
             setAllUsers(response.data.users);
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching users:', error);
         }
     };
 
-    const toggleBlock = async () => {
+    const toggleBlock = async (userId) => {
+        console.log(userId)
         try {
             const response = await axios({
-                url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
-                method: "get",
+                url: "https://sauced-backend.vercel.app/api/admin/block-unblock-user",
+                method: "post",
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                },
+                data: { 
+                    userId : userId
                 }
             });
             console.log(response);
-            setAllUsers(response.data.users);
+            setSnackAlertData({
+                open: true,
+                message: response.data.message,
+                severity: "success",
+              })
+            setAllUsers(prevUsers =>
+                prevUsers.map(user =>
+                    user._id === userId ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' } : user
+                )
+            );
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error toggling block status:', error);
         }
     };
 
@@ -85,29 +114,43 @@ const UserManagement = () => {
     );
 
     return (
-        <Box>
+        <>
+        {
+            loading ? (
+                <PageLoader />
+            ) : (
+                   <Box>
             <Box sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 p: {
-                    sm: "0px 20px 0px 20px",
+                    md: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                position:"relative",
+                gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "40px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
                     Users Management
                 </Typography>
 
-                <Box sx={{ position: "relative", width: "300px" }}>
+                <Box sx={{ position: "relative", width: "300px", }}>
                     <input
                         type="search"
                         name="search"
@@ -192,11 +235,12 @@ const UserManagement = () => {
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <CustomButton
                                                 border='1px solid #FFA100'
-                                                ButtonText='Block'
+                                                ButtonText={user.status === 'active' ? 'Block' : 'Unblock'}
                                                 color='white'
                                                 width={"98px"}
                                                 borderRadius='6px'
                                                 buttonStyle={{ height: "39px" }}
+                                                onClick={() => toggleBlock(user._id)}
                                             />
                                         </Box>
                                     </TableCell>
@@ -206,7 +250,19 @@ const UserManagement = () => {
                     </Table>
                 </TableContainer>
             </Box>
+            <SnackAlert
+        severity={snackAlertData.severity}
+        message={snackAlertData.message}
+        open={snackAlertData.open}
+        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+      />
         </Box>
+        
+            )
+        }
+        
+     
+        </>
     );
 }
 

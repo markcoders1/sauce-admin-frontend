@@ -11,6 +11,8 @@ import TabooManagement from './Pages/TabooManagement/TabooManagement';
 import AddBrandSauce from './Pages/AddBrandSauce/AddBrandSauce';
 import EventsManagement from './Pages/EventsManagement/EventsManagement';
 import AddEvent from './Pages/AddEvent/AddEvent';
+import AddBrand from "./Pages/AddBrand/AddBrand";
+// import HasnainBhaiTable from "./Pages/HasnainBhaiTable/HasnainBhaiTable";
 
 function App() {
   return (
@@ -26,6 +28,10 @@ function App() {
           <Route path="add-brand-sauce" element={<AddBrandSauce />} />
           <Route path="events-management" element={<EventsManagement />} />
           <Route path="add-event" element={<AddEvent />} />
+          <Route path="add-brand" element={<AddBrand />} />
+          {/* <Route path="hasnain-bhai" element={<HasnainBhaiTable />} /> */}
+
+
         </Route>
         <Route path="*" element={<>Page Not Found</>} />
       </Routes>

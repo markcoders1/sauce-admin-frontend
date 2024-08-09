@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -7,6 +7,8 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import EventsImg from '../../assets/EventsImg.png'; // Adjust path as needed
+import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -31,22 +33,34 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const EventsManagement = () => {
     const navigate = useNavigate();
-    const staticEvents = [
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-        { eventName: "Lorem Event", organizedBy: "Emma Williams", destination: "Lorem Hall", startDate: "2023-07-22" },
-    ];
+    const [loading, setLoading] = useState(false)
 
-    const [searchTerm, setSearchTerm] = useState('');
+        const [allEvents, setAllEvents] = useState([]);
+        const [searchTerm, setSearchTerm] = useState('');
+    
+        const fetchEvents = async () => {
+            setLoading(true)
+            try {
+                console.log("https://aws.markcoders.com/sauced-backend/api/admin/get-all-events")
+                const response = await axios({
+                    url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-events",
+                    method: "get",
+                    headers: {
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    }
+                });
+                console.log(response.data.events);
+                setAllEvents(response.data.events);
+                setLoading(false)
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        useEffect(()=>{
+            fetchEvents()
+        },[])
+    
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -60,12 +74,18 @@ const EventsManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEvents = staticEvents.filter(event =>
+    const filteredEvents = allEvents.filter(event =>
         event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.organizedBy.toLowerCase().includes(searchTerm.toLowerCase())
+        event.owner.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
+
+        <>
+        {
+            loading ? (
+                <PageLoader /> 
+            ) : (
         <Box>
             <Box sx={{
                 display: "flex",
@@ -74,14 +94,23 @@ const EventsManagement = () => {
                     sm: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                position:"relative",
+                gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "46px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
@@ -126,7 +155,7 @@ const EventsManagement = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"700px" }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">
@@ -189,12 +218,12 @@ const EventsManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={EventsImg} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit:"contain" }} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{event.organizedBy}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{event.destination}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(event.startDate)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.owner.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{event.venueName}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
@@ -207,6 +236,11 @@ const EventsManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+
     );
 }
 

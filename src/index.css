@@ -16,16 +16,16 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background: #2e210a; /* Color of the scrollbar track */
+  background: #2e210a; 
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #A52A2A; /* Brown color for the scrollbar */
+  background: #A52A2A; 
   border-radius: 10px;
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background: #8B4513; /* Darker brown when hovered */
+  background: #8B4513; 
 }
 
 /* For Firefox */

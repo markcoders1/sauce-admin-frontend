@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -7,6 +7,8 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
+import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -31,22 +33,33 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const SauceManagement = () => {
     const navigate = useNavigate();
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-    ];
+    const [loading, setLoading] = useState(false)
+  
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [allBrands, setAllBrands] = useState([])
+
+
+    const fetchBrands = async () => {
+        try {
+            setLoading(true)
+            const response = await axios({
+                url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                }
+            });
+            console.log(response);
+            setAllBrands(response.data.users);
+            setLoading(false)
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+useEffect(()=>{
+  fetchBrands()
+},[])
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -60,13 +73,17 @@ const SauceManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.sauceName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredEmployees = allBrands.filter(brand =>
+        brand.name.toLowerCase().includes(searchTerm.toLowerCase()) 
     );
 
     return (
-        <Box>
+        <>
+        {
+            loading ? (
+                <PageLoader /> 
+            ) : (
+            <Box>
             <Box sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -74,16 +91,25 @@ const SauceManagement = () => {
                     sm: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                    gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "40px"
                     },
                     fontFamily: "Fira Sans !important",
+                 
                 }}>
                     Brand Management
                 </Typography>
@@ -120,13 +146,17 @@ const SauceManagement = () => {
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
+<<<<<<< HEAD
                             onClick={() => navigate("/add-brand-sauce")}
+=======
+                            onClick={() => navigate("/add-brand")}
+>>>>>>> staging
                         />
                     </Box>
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px" , minWidth:"700px"}}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">
@@ -174,15 +204,15 @@ const SauceManagement = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody className="MuiTableBody-root">
-                            {filteredEmployees.map((employee, index) => (
+                            {filteredEmployees.map((brand, index) => (
                                 <TableRow key={index} sx={{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={BrandImg} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{brand.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
@@ -195,6 +225,11 @@ const SauceManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+    
     );
 }
 

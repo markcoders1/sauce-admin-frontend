@@ -1,10 +1,15 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './AppSidebar.css'; // Add styles for active and default states
 import hambergImg from '../../assets/hamberger.png';
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
+  const navigate = useNavigate()
+const handleNavigate=(nav)=>{
+  navigate(nav)
+}
+    
   return (
     <Box
       sx={{
@@ -43,90 +48,177 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         >
           <img src={hambergImg} alt="" />
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.4rem',
-            alignItems: isOpen ? 'flex-start' : 'center' // Align items based on isOpen
-          }}
-        >
-          <Typography>
-            <NavLink
-              to="/user-management"
-              className={({ isActive }) =>
-                isActive ? 'anchortag anchorActive' : 'anchortag'
-              }
-            >
-              U
-            </NavLink>
-          </Typography>
-          <Typography>
-            <NavLink
-              to="/brand-management"
-              className={({ isActive }) =>
-                isActive ? 'anchortag anchorActive' : 'anchortag'
-              }
-            >
-              B
-            </NavLink>
-          </Typography>
-          <Typography>
-            <NavLink
-              to="/events-management"
-              className={({ isActive }) =>
-                isActive ? 'anchortag anchorActive' : 'anchortag'
-              }
-            >
-              E
-            </NavLink>
-          </Typography>
-          <Typography>
-            <NavLink
-              to="/sauce-management"
-              className={({ isActive }) =>
-                isActive ? 'anchortag anchorActive' : 'anchortag'
-              }
-            >
-              S
-            </NavLink>
-          </Typography>
-        </Box>
+        <Box sx={{
+        opacity: isOpen ? 1 : 0,
+        visibility: isOpen ? 'visible' : 'hidden',
+        transform: isOpen ? "translateX(0)" : "translateX(-50%)",
+        transition: "opacity .5s ease, transform .8s ease, visibility 1s ease",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        overflow: "hidden", // Ensures content is not visible or interactable when sidebar is closed
+      }}>
+        {isOpen ? <>
+
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */}U
+          </Box>
+      
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */}B
+          </Box>
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */}S
+          </Box>
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer' ,// Add pointer cursor
+              color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */}E
+          </Box>
+          
+        </> : null}
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '5px',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          sx={{
-            fontWeight: '600',
-            fontSize: '1.9rem',
-            color: '#ffff',
-          }}
-        >
-          {/* {username} */}
-        </Typography>
-        <Typography
-          sx={{
-            fontWeight: '400',
-            fontSize: '1.1rem',
-            color: '#a49ab7',
-          }}
-        >
-          {/* {email} */}
-        </Typography>
-        <Typography
-          sx={{
-            marginTop: '10px',
-          }}
-        >
-          {/* <Logout /> */}
-        </Typography>
+
+
+      <Box sx={{
+        opacity: !isOpen ? 1 : 0,
+        visibility: !isOpen ? 'visible' : 'hidden',
+        transform: !isOpen ? "translateX(0)" : "translateX(-10%)",
+        transition: "opacity .5s ease, transform .8s ease, visibility 1s ease",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        overflow: "hidden", // Ensures content is not visible or interactable when sidebar is closed
+      }}>
+        {!isOpen ? <>
+
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */} U
+          </Box>
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/brand-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */} B
+          </Box>
+
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer' ,// Add pointer cursor
+               color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/sauce-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */} S
+          </Box>
+          <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer', // Add pointer cursor
+              color:"black",
+              fontWeight:"600"
+            }}
+            onClick={() => handleNavigate("/events-management")} // Toggle sidebar on click
+          >
+            {/* <img src={hambergImg} alt="" /> */} E
+          </Box>
+        </> : null}
       </Box>
+      </Box>
+    
     </Box>
   );
 };
