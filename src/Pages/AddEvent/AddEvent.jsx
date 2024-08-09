@@ -4,6 +4,7 @@ import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import CustomSelect from '../../Components/CustomSelect/CustomSelect';
+import Heading from '../../Components/Heading/Heading';
 
 const AddSEvent = () => {
   const [formData, setFormData] = useState({
@@ -45,22 +46,6 @@ const AddSEvent = () => {
     });
   };
 
-  const addBullet = () => {
-    setFormData({
-      ...formData,
-      details: [...formData.details, '']
-    });
-  };
-
-  const removeBullet = (index) => {
-    if (formData.details.length > 2) {
-      const updatedDetails = formData.details.filter((_, i) => i !== index);
-      setFormData({
-        ...formData,
-        details: updatedDetails
-      });
-    }
-  };
 
   const handleSubmit = async () => {
     let validationErrors = {};
@@ -125,6 +110,9 @@ const AddSEvent = () => {
   const handleBrandChange = (ownerId) => {
     setFormData(prev => ({ ...prev, ownerId }));
   };
+
+
+
 
   return (
     <Box
@@ -221,10 +209,15 @@ const AddSEvent = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ flexBasis: "33%" }}>
-        <Typography>Details</Typography>
+      <Box>
+        <CustomSelect data={allBrands} handleChange={handleBrandChange} />
+      </Box>
+      <Box sx={{ flexBasis: "100%" ,  display:"flex", flexDirection:"column", gap:"8px"}}>
+      <Heading Heading='Details' />
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Box sx={{width:"100%"}} >
+
             <CustomInputShadow
               name={`details-${index}`}
               multiline={true}
@@ -232,10 +225,21 @@ const AddSEvent = () => {
               onChange={(e) => handleDetailChange(index, e.target.value)}
               error={errors.details}
             />
+            </Box>
             {formData.details.length > 2 && (
-              <Button variant="contained" color="error" onClick={() => removeBullet(index)}>
-                Remove
-              </Button>
+              // <Button variant="contained" color="error" onClick={() => removeBullet(index)}>
+              //   Remove
+              // </Button>
+                <CustomButton
+                border='1px solid #FFA100'
+                ButtonText={"Remove"}
+                color='white'
+                height = "100px"
+                width={"98px"}
+                borderRadius='6px'
+                buttonStyle={{ height: "39px" }}
+                onClick={() => removeBullet('ingredients', index)}
+            />
             )}
           </Box>
         ))}
@@ -244,9 +248,7 @@ const AddSEvent = () => {
         </Button>
       </Box>
 
-      <Box>
-        <CustomSelect data={allBrands} handleChange={handleBrandChange} />
-      </Box>
+     
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'

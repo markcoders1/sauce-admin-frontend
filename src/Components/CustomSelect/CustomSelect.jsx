@@ -27,7 +27,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
             fontSize: "22px",
             lineHeight: "30px",
             fontWeight: "500",
-            color: "black",
+            color: "white",
           },
           position: "relative",
           background: "#2e210a",
@@ -45,7 +45,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
             fontSize: "22px",
             lineHeight: "30px",
             fontWeight: "500",
-            color: "black",
+            color: "grey",
             display: selectedCategory ? 'none' : 'flex',
           }}
           id="demo-simple-select-label"

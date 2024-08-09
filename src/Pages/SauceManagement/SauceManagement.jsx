@@ -9,6 +9,7 @@ import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import SauceIcon from '../../assets/sauceImg.png'; // Adjust path as needed
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -31,6 +32,11 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 }));
 
 const SauceManagement = () => {
+    const [snackAlertData, setSnackAlertData] = useState({
+        open: false,
+        message: "",
+        severity: "success"
+      });
     const navigate = useNavigate();
     const [loading  ,setLoading] = useState(false)
 

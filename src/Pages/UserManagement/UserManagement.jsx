@@ -6,8 +6,9 @@ import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader'
-
-
+import { useDispatch } from 'react-redux';
+import { handleSnackAlert } from '../../Redux/Slice/SnackAlertSlice/SnackAlertSlice';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -29,7 +30,14 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
+
 const UserManagement = () => {
+    const dispatch = useDispatch()
+    const [snackAlertData, setSnackAlertData] = useState({
+        open: false,
+        message: "",
+        severity: "success"
+      });
     const [allUsers, setAllUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
@@ -69,6 +77,11 @@ const UserManagement = () => {
                 }
             });
             console.log(response);
+            setSnackAlertData({
+                open: true,
+                message: response.data.message,
+                severity: "success",
+              })
             setAllUsers(prevUsers =>
                 prevUsers.map(user =>
                     user._id === userId ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' } : user
@@ -228,7 +241,14 @@ const UserManagement = () => {
                     </Table>
                 </TableContainer>
             </Box>
+            <SnackAlert
+        severity={snackAlertData.severity}
+        message={snackAlertData.message}
+        open={snackAlertData.open}
+        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+      />
         </Box>
+        
             )
         }
         

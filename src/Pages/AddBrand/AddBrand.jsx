@@ -3,8 +3,14 @@ import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 
 const AddBrand = () => {
+  const [snackAlertData, setSnackAlertData] = useState({
+    open: false,
+    message: "",
+    severity: "success"
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -59,9 +65,20 @@ const AddBrand = () => {
         bannerImage: null,
       });
 
+      setSnackAlertData({
+        open: true,
+        message: response.data.message,
+        severity: "success",
+      })
+
       console.log(response);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
+      setSnackAlertData({
+        open: true,
+        message: error.response.data.message,
+        severity: "error",
+      })
     }
   };
 
@@ -142,6 +159,12 @@ const AddBrand = () => {
           onClick={() => handleSubmit()}
         />
       </Box>
+      <SnackAlert
+        severity={snackAlertData.severity}
+        message={snackAlertData.message}
+        open={snackAlertData.open}
+        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+      />
     </Box>
   );
 };
