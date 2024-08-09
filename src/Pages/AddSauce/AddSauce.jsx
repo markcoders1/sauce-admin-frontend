@@ -9,8 +9,8 @@ const AddSauce = () => {
     sauceName: '',
     websiteLink: '',
     productLink: '',
-    details: ['', ''], // Initialize with two bullet points
-    ingredients: ['', ''], // Initialize with two bullet points
+    details: '', 
+    ingredients: ['', ''], 
     email: '',
     type: '',
     title : ""
@@ -36,23 +36,6 @@ const AddSauce = () => {
     });
   };
 
-  const addBullet = (field) => {
-    setFormData({
-      ...formData,
-      [field]: [...formData[field], '']
-    });
-  };
-
-  const removeBullet = (field, index) => {
-    if (formData[field].length > 2) {
-      const updatedField = formData[field].filter((_, i) => i !== index);
-      setFormData({
-        ...formData,
-        [field]: updatedField
-      });
-    }
-  };
-
   const handleImageChange = (e) => {
     if (e.target.id === "uploadSauceImage") {
       setSauceImage(e.target.files[0]);
@@ -64,7 +47,7 @@ const AddSauce = () => {
   const handleSubmit = async () => {
     // let validationErrors = {};
     // Object.keys(formData).forEach(field => {
-    //   if (!formData[field] || formData[field].some(item => item === '')) {
+    //   if (!formData[field] || (Array.isArray(formData[field]) && formData[field].some(item => item === ''))) {
     //     validationErrors[field] = `${field} is required`;
     //   }
     // });
@@ -76,35 +59,28 @@ const AddSauce = () => {
     //   return;
     // }
 
-    // const data = new FormData();
-    // data.append('image', sauceImage);
-    // data.append('bannerImage', bannerImage);
-    // data.append('name', formData.sauceName);
-    // data.append('description', JSON.stringify(formData.details)); // Convert array to JSON string
-    // data.append('ingredients', JSON.stringify([...formData.chiliPapers, ...formData.ingredients])); // Combine and convert array to JSON string
-    // data.append('productLink', formData.productLink);
-    // data.append('websiteLink', formData.websiteLink);
+    const data = new FormData();
+    data.append('image', sauceImage);
+    data.append('bannerImage', bannerImage);
+    data.append('name', formData.sauceName);
+    data.append('description', formData.details); 
+    data.append('ingredients', formData.ingredients); // Convert array to JSON string
+    data.append('productLink', formData.productLink);
+    data.append('websiteLink', formData.websiteLink);
+    data.append('email', formData.email);
+    data.append('type', formData.type);
+    data.append('title', formData.title);
 
     try {
       console.log(formData)
       const response = await axios({
-        url: "=https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
+        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
         method: "post",
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
           'Content-Type': 'multipart/form-data'
         },
-        data : {
-          image : sauceImage,
-          bannerImage : bannerImage,
-          name : formData.sauceName,
-          title : formData.title,
-          type : formData.type,
-          description : formData.details,
-          ingredients : formData.ingredients,
-          email : formData.email,
-          title : formData.title
-        }
+        data: data
       });
       console.log(response);
       // handle successful response
@@ -181,27 +157,14 @@ const AddSauce = () => {
       </Box>
       <Box sx={{ flexBasis: "33%" }}>
         <Typography>Details</Typography>
-        {formData.details.map((detail, index) => (
-          <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <CustomInputShadow
-              name={`details-${index}`}
-              multiline={true}
-              value={detail}
-              onChange={(e) => handleDetailChange('details', index, e.target.value)}
-              error={errors.details}
-            />
-            {formData.details.length > 2 && (
-              <Button variant="contained" color="error" onClick={() => removeBullet('details', index)}>
-                Remove
-              </Button>
-            )}
-          </Box>
-        ))}
-        <Button variant="contained" color="primary" onClick={() => addBullet('details')}>
-          Add Bullet
-        </Button>
+        <CustomInputShadow
+          name="details"
+          multiline={true}
+          value={formData.details}
+          onChange={handleChange}
+          error={errors.details}
+        />
       </Box>
-     
       <Box sx={{ flexBasis: "33%" }}>
         <Typography>Ingredients</Typography>
         {formData.ingredients.map((ingredient, index) => (
@@ -245,7 +208,7 @@ const AddSauce = () => {
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="title"
+            placeholder="Title"
             name="title"
             value={formData.title}
             onChange={handleChange}

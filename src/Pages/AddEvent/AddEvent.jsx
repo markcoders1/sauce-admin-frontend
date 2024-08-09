@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
+import CustomSelect from '../../Components/CustomSelect/CustomSelect';
 
 const AddSEvent = () => {
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
-    day: '',
+    ownerId: "",
     date: '',
-    time: '',
+    description: '',
     details: ['', ''], // Initialize with two bullet points
     destination: '',
     bannerImage: null,
   });
 
   const [errors, setErrors] = useState({});
+  const [allBrands, setAllBrands] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -63,17 +65,28 @@ const AddSEvent = () => {
   const handleSubmit = async () => {
     let validationErrors = {};
     Object.keys(formData).forEach(field => {
-      if (!formData[field]) {
+      if (!formData[field] && formData[field] !== '') {
         validationErrors[field] = `${field} is required`;
       }
     });
-    if (Object.keys(validationErrors).length > 4) {
+    if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
     console.log('Form data submitted:', formData);
 
     try {
+      const data = new FormData();
+      data.append('eventName', formData.eventName);
+      data.append('organizedBy', formData.organizedBy);
+      data.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
+      data.append('venueDescription', formData.description);
+      data.append('venueName', formData.destination);
+      data.append('owner', formData.ownerId);
+
+      data.append('bannerImage', formData.bannerImage);
+      data.append('eventDetails', formData.details);
+
       const response = await axios({
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
         method: "post",
@@ -81,19 +94,36 @@ const AddSEvent = () => {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
           'Content-Type': 'multipart/form-data'
         },
-        data: {
-          eventName: formData.eventName,
-          owner: formData.organizedBy,
-          eventDate: new Date(formData.date).getTime(),
-          venueName: formData.destination,
-          eventDetails: formData.details,
-          bannerImage: formData.bannerImage
-        }
+        data: data
       });
       console.log(response);
     } catch (error) {
       console.error('Error submitting event:', error);
     }
+  };
+
+  const fetchBrands = async () => {
+    try {
+      const response = await axios({
+        url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
+        method: "get",
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+        }
+      });
+      console.log(response);
+      setAllBrands(response.data.users);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, []);
+
+  const handleBrandChange = (ownerId) => {
+    setFormData(prev => ({ ...prev, ownerId }));
   };
 
   return (
@@ -116,85 +146,11 @@ const AddSEvent = () => {
       }}>
         Add Event
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height:{lg:"100%", xs:"370px"} }}>
-        
-        <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
+      <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
+        <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
         </label>
-
-        <Box sx={{ display: "flex", gap: "1rem", alignItems: "start", justifyContent: "center", flexWrap: { sm: "nowrap", xs: "wrap" } }} >
-          <Box>
-            <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  multiline={true}
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  multiline={true}
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-            </Box>
-            <Typography sx={{ fontSize: "22px", textAlign: "center", fontWeight: "600" }}>Hour</Typography>
-          </Box>
-          <Typography sx={{ mt: "20px", fontSize: "40px", fontWeight: "600" }}>:</Typography>
-          <Box>
-            <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  multiline={true}
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-            </Box>
-            <Typography sx={{ fontSize: "22px", textAlign: "center", fontWeight: "600" }}>Minutes</Typography>
-          </Box>
-          <Typography sx={{ mt: { md: "20px", xs: "14px" }, fontSize: "40px", fontWeight: "600" }}>:</Typography>
-          <Box>
-            <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  multiline={true}
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-              <Box >
-                <CustomInputShadow
-                  inputStyle={{ width: { md: "49px", xs: "30px" }, height: { md: "93px", xs: "50px" } }}
-                  name="hours"
-                  multiline={true}
-                  value={formData.chiliPapers}
-                  onChange={handleChange}
-                />
-              </Box>
-            </Box>
-            <Typography sx={{ fontSize: "22px", textAlign: "center", fontWeight: "600" }}>Seconds</Typography>
-          </Box>
-        </Box>
       </Box>
       <Box sx={{
         display: "flex",
@@ -204,7 +160,7 @@ const AddSEvent = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <CustomInputShadow
             placeholder="Event Name"
             name="eventName"
@@ -213,22 +169,13 @@ const AddSEvent = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <CustomInputShadow
             placeholder="Organized By"
             name="organizedBy"
             value={formData.organizedBy}
             onChange={handleChange}
             error={errors.organizedBy}
-          />
-        </Box>
-        <Box sx={{ flexBasis: "33%" }}>
-          <CustomInputShadow
-            placeholder="Day"
-            name="day"
-            value={formData.day}
-            onChange={handleChange}
-            error={errors.day}
           />
         </Box>
       </Box>
@@ -254,12 +201,12 @@ const AddSEvent = () => {
             </Box>
             <Box flexBasis={"50%"}>
               <CustomInputShadow
-                placeholder="Time"
-                name="time"
-                value={formData.time}
+                placeholder="Description"
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
-                error={errors.time}
-                type={"number"}
+                error={errors.description}
+                type={"text"}
               />
             </Box>
           </Box>
@@ -295,6 +242,10 @@ const AddSEvent = () => {
         <Button variant="contained" color="primary" onClick={addBullet}>
           Add Bullet
         </Button>
+      </Box>
+
+      <Box>
+        <CustomSelect data={allBrands} handleChange={handleBrandChange} />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
