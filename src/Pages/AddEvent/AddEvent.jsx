@@ -84,7 +84,7 @@ const AddSEvent = () => {
         data: {
           eventName: formData.eventName,
           owner: formData.organizedBy,
-          eventDate: formData.date,
+          eventDate: new Date(formData.date).getTime(),
           venueName: formData.destination,
           eventDetails: formData.details,
           bannerImage: formData.bannerImage

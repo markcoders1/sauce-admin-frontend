@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import EventsImg from '../../assets/EventsImg.png'; // Adjust path as needed
 import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -32,11 +33,13 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const EventsManagement = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
 
         const [allEvents, setAllEvents] = useState([]);
         const [searchTerm, setSearchTerm] = useState('');
     
         const fetchEvents = async () => {
+            setLoading(true)
             try {
                 console.log("https://aws.markcoders.com/sauced-backend/api/admin/get-all-events")
                 const response = await axios({
@@ -48,6 +51,7 @@ const EventsManagement = () => {
                 });
                 console.log(response.data.events);
                 setAllEvents(response.data.events);
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -76,6 +80,12 @@ const EventsManagement = () => {
     );
 
     return (
+
+        <>
+        {
+            loading ? (
+                <PageLoader /> 
+            ) : (
         <Box>
             <Box sx={{
                 display: "flex",
@@ -217,6 +227,11 @@ const EventsManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+
     );
 }
 

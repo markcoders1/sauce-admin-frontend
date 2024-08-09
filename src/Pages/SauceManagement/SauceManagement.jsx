@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import SauceIcon from '../../assets/sauceImg.png'; // Adjust path as needed
 import axios from 'axios';
-
+import PageLoader from '../../Components/Loader/PageLoader';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -32,24 +32,13 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const SauceManagement = () => {
     const navigate = useNavigate();
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-    ];
+    const [loading  ,setLoading] = useState(false)
+
 
     const [allSauce, setAllSauce] = useState([]);
 
     const fetchSauce = async () => {
+        setLoading(true)
         try {
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/get-sauces?type=all",
@@ -63,6 +52,7 @@ const SauceManagement = () => {
             });
             console.log(response);
             setAllSauce(response?.data?.sauces);
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching events:', error);
         }
@@ -93,6 +83,12 @@ const SauceManagement = () => {
     );
 
     return (
+
+        <>
+        {
+            loading ? (
+                <PageLoader/>
+            ) : (
         <Box>
             <Box sx={{
                 display: "flex",
@@ -209,7 +205,7 @@ const SauceManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={SauceIcon} alt="Sauce" style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={employee.bannerImage} alt="Sauce" style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{employee.owner.name}</TableCell>
                                     <TableCell className="MuiTableCell-root">{employee.name}</TableCell>
@@ -226,6 +222,11 @@ const SauceManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+
     );
 }
 

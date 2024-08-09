@@ -5,6 +5,7 @@ import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader'
 
 
 const StyledTabs = styled(Tabs)({
@@ -31,9 +32,11 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 const UserManagement = () => {
     const [allUsers, setAllUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const fetchUsers = async () => {
         try {
+            setLoading(true)
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
                 method: "get",
@@ -43,6 +46,7 @@ const UserManagement = () => {
             });
             console.log(response);
             setAllUsers(response.data.users);
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -94,7 +98,12 @@ const UserManagement = () => {
     );
 
     return (
-        <Box>
+        <>
+        {
+            loading ? (
+                <PageLoader />
+            ) : (
+                   <Box>
             <Box sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -217,6 +226,11 @@ const UserManagement = () => {
                 </TableContainer>
             </Box>
         </Box>
+            )
+        }
+        
+     
+        </>
     );
 }
 

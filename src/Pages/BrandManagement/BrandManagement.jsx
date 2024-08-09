@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 import axios from 'axios';
+import PageLoader from '../../Components/Loader/PageLoader';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -32,6 +33,7 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const SauceManagement = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     const staticEmployees = [
         { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
         { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
@@ -53,6 +55,7 @@ const SauceManagement = () => {
 
     const fetchBrands = async () => {
         try {
+            setLoading(true)
             const response = await axios({
                 url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
                 method: "get",
@@ -62,6 +65,7 @@ const SauceManagement = () => {
             });
             console.log(response);
             setAllBrands(response.data.users);
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -87,7 +91,12 @@ useEffect(()=>{
     );
 
     return (
-        <Box>
+        <>
+        {
+            loading ? (
+                <PageLoader /> 
+            ) : (
+            <Box>
             <Box sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -216,6 +225,11 @@ useEffect(()=>{
                 </TableContainer>
             </Box>
         </Box>
+
+            )
+        }
+        </>
+    
     );
 }
 
