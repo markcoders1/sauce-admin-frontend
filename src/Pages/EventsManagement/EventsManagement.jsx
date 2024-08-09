@@ -94,14 +94,23 @@ const EventsManagement = () => {
                     sm: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                position:"relative",
+                gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "46px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
@@ -146,7 +155,7 @@ const EventsManagement = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"700px" }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">

@@ -124,24 +124,33 @@ const UserManagement = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 p: {
-                    sm: "0px 20px 0px 20px",
+                    md: "0px 20px 0px 20px",
                     xs: "0px 0px 0px 0px"
                 },
-                alignItems: "center",
+                alignItems: {
+                    md:"center",
+                    xs:"start"
+                },
+                flexDirection:{
+                    md:"row",
+                    xs:"column"
+                },
+                position:"relative",
+                gap:"20px"
             }}>
                 <Typography sx={{
                     color: "white",
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "40px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
                     Users Management
                 </Typography>
 
-                <Box sx={{ position: "relative", width: "300px" }}>
+                <Box sx={{ position: "relative", width: "300px", }}>
                     <input
                         type="search"
                         name="search"

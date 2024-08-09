@@ -48,7 +48,7 @@ const DashboardLayout = () => {
         backgroundPosition: 'center',
         backgroundAttachment: "fixed",
         padding: {
-          sm: "0px 30px",
+          sm: "0px 0px",
           xs: "10px 10px"
         },
         boxSizing: 'border-box',
@@ -96,7 +96,7 @@ const DashboardLayout = () => {
             maxWidth: '1340px',
             padding: {
               sm: '20px',
-              xs: '30px 12px',
+              xs: '0px 0px',
             },
             borderRadius: '30px',
             boxSizing: 'border-box',
