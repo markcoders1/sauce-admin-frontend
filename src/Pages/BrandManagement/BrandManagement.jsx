@@ -34,20 +34,7 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 const SauceManagement = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-    ];
+  
 
     const [searchTerm, setSearchTerm] = useState('');
     const [allBrands, setAllBrands] = useState([])
@@ -209,7 +196,7 @@ useEffect(()=>{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{brand.name}</TableCell>
                                     <TableCell className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>

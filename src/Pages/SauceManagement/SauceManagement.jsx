@@ -211,7 +211,7 @@ const SauceManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={employee.bannerImage} alt="Sauce" style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={employee.bannerImage} alt="Sauce" style={{ width: '50px', height: '100%', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{employee.owner.name}</TableCell>
                                     <TableCell className="MuiTableCell-root">{employee.name}</TableCell>

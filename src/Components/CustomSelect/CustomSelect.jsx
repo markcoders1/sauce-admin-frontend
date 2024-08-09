@@ -80,18 +80,19 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           MenuProps={{
             PaperProps: {
               sx: {
-                bgcolor: "white",
+                bgcolor: "#2e210a",
                 "& .MuiMenuItem-root": {
                   fontSize: "22px",
                   lineHeight: "30px",
                   fontWeight: "500",
-                  color: "#2e210a",
+                  color: "white",
+                  backgroundColor:"#2e210a",
                   "&.Mui-selected": {
-                    backgroundColor: "#FFA100",
+                    backgroundColor: "#2e210a",
                     color: "white",
                   },
                   "&:hover": {
-                    backgroundColor: "#FF7B00",
+                    backgroundColor: "#402605",
                     color: "white",
                   },
                 },

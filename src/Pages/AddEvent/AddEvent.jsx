@@ -5,15 +5,21 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import CustomSelect from '../../Components/CustomSelect/CustomSelect';
 import Heading from '../../Components/Heading/Heading';
-
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const AddSEvent = () => {
+
+  const [snackAlertData, setSnackAlertData] = useState({
+    open: false,
+    message: "",
+    severity: "success"
+  });
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
     ownerId: "",
     date: '',
     description: '',
-    details: ['', ''], // Initialize with two bullet points
+    details: ['',], // Initialize with two bullet points
     destination: '',
     bannerImage: null,
   });
@@ -46,18 +52,34 @@ const AddSEvent = () => {
     });
   };
 
+  const addBullet = (field) => {
+    setFormData({
+      ...formData,
+      [field]: [...formData[field], '']
+    });
+  };
+
+  const removeBullet = (field, index) => {
+    if (formData[field].length > 1) {
+      const updatedField = formData[field].filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        [field]: updatedField
+      });
+    }
+  };
 
   const handleSubmit = async () => {
-    let validationErrors = {};
-    Object.keys(formData).forEach(field => {
-      if (!formData[field] && formData[field] !== '') {
-        validationErrors[field] = `${field} is required`;
-      }
-    });
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    // let validationErrors = {};
+    // Object.keys(formData).forEach(field => {
+    //   if (!formData[field] && formData[field] !== '') {
+    //     validationErrors[field] = `${field} is required`;
+    //   }
+    // });
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   return;
+    // }
     console.log('Form data submitted:', formData);
 
     try {
@@ -68,7 +90,6 @@ const AddSEvent = () => {
       data.append('venueDescription', formData.description);
       data.append('venueName', formData.destination);
       data.append('owner', formData.ownerId);
-
       data.append('bannerImage', formData.bannerImage);
       data.append('eventDetails', formData.details);
 
@@ -82,8 +103,18 @@ const AddSEvent = () => {
         data: data
       });
       console.log(response);
+      setSnackAlertData({
+        open: true,
+        message: response.data.message,
+        severity: "success",
+      })
     } catch (error) {
       console.error('Error submitting event:', error);
+      setSnackAlertData({
+        open: true,
+        message: error.response.data.message,
+        severity: "error",
+      })
     }
   };
 
@@ -110,9 +141,6 @@ const AddSEvent = () => {
   const handleBrandChange = (ownerId) => {
     setFormData(prev => ({ ...prev, ownerId }));
   };
-
-
-
 
   return (
     <Box
@@ -212,43 +240,49 @@ const AddSEvent = () => {
       <Box>
         <CustomSelect data={allBrands} handleChange={handleBrandChange} />
       </Box>
-      <Box sx={{ flexBasis: "100%" ,  display:"flex", flexDirection:"column", gap:"8px"}}>
-      <Heading Heading='Details' />
+      <Box sx={{ flexBasis: "100%", display:"flex", flexDirection:"column", gap:"8px" }}>
+        <Heading Heading='Details' />
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Box sx={{width:"100%"}} >
-
-            <CustomInputShadow
-              name={`details-${index}`}
-              multiline={true}
-              value={detail}
-              onChange={(e) => handleDetailChange(index, e.target.value)}
-              error={errors.details}
-            />
+            <Box sx={{ width: "100%" }}>
+              <CustomInputShadow
+                name={`details-${index}`}
+                multiline={true}
+                value={detail}
+                onChange={(e) => handleDetailChange(index, e.target.value)}
+                error={errors.details}
+              />
             </Box>
-            {formData.details.length > 2 && (
-              // <Button variant="contained" color="error" onClick={() => removeBullet(index)}>
-              //   Remove
-              // </Button>
-                <CustomButton
+            {formData.details.length > 1 && (
+              <CustomButton
                 border='1px solid #FFA100'
                 ButtonText={"Remove"}
                 color='white'
-                height = "100px"
+                height="100px"
                 width={"98px"}
                 borderRadius='6px'
                 buttonStyle={{ height: "39px" }}
-                onClick={() => removeBullet('ingredients', index)}
-            />
+                onClick={() => removeBullet('details', index)}
+              />
             )}
           </Box>
         ))}
-        <Button variant="contained" color="primary" onClick={addBullet}>
+        {/* <Button variant="contained" color="primary" onClick={() => addBullet('details')}>
           Add Bullet
-        </Button>
+        </Button> */}
+       
+       <CustomButton
+               border='1px solid #FFA100'
+               ButtonText={"Add Bullet"}
+               color='white'
+               height = "100px"
+               width={"100%"}
+               borderRadius='6px'
+               buttonStyle={{ height: "75px" }}
+               onClick={() => addBullet('details')}
+               
+           />
       </Box>
-
-     
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
@@ -260,9 +294,15 @@ const AddSEvent = () => {
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
         />
       </Box>
+      <SnackAlert
+        severity={snackAlertData.severity}
+        message={snackAlertData.message}
+        open={snackAlertData.open}
+        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+      />
     </Box>
   );
 };

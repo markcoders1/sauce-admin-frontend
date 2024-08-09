@@ -209,7 +209,7 @@ const EventsManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit:"contain" }} />
                                     </TableCell>
                                     <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
                                     <TableCell className="MuiTableCell-root">{event.owner.name}</TableCell>
