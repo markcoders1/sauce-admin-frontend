@@ -43,7 +43,11 @@ const AddSauce = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
+<<<<<<< Updated upstream
          padding: "0px 21px"
+=======
+         padding:"0px 21px"
+>>>>>>> Stashed changes
       }}
     >
         <Box
