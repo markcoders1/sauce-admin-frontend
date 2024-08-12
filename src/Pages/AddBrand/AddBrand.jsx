@@ -76,7 +76,7 @@ const AddBrand = () => {
       console.error('Error submitting brand induction:', error);
       setSnackAlertData({
         open: true,
-        message: error?.response?.data?.error?.message,
+        message: error?.response?.data?.error?.message || error?.response?.data?.message,
         severity: "error",
       })
     }
