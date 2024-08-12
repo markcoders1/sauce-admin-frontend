@@ -13,12 +13,23 @@ import EventsManagement from './Pages/EventsManagement/EventsManagement';
 import AddEvent from './Pages/AddEvent/AddEvent';
 import AddBrand from "./Pages/AddBrand/AddBrand";
 import AddSpecificSauce from "./Pages/AddSpecificSauce/AddSpecificSauce";
+import LayoutSinglePage from "./Layout/LayoutAuth";
+import SignIn from "./PagesAuth/Login/Login";
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+      <Route path='/auth' element={<LayoutSinglePage />}>
+              <Route path='' element={<SignIn />} />
+              {/* <Route path='signup' element={<Signup />} />
+              <Route path='otp' element={<OTP />} />
+              <Route path='setpassword' element={<SetPassword />} />
+              <Route path='submit-email-for-otp' element={<EmailFieldForgot />} /> */}
+            </Route>
+
         <Route path='/' element={<DashboardLayout />}>
           <Route index element={<UserManagement />} />
           <Route path="user-management" element={<UserManagement />} />

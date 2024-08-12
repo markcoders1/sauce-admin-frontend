@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 // import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
 import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
+import axiosInstance from '../../Hooks/AuthHook/AuthHook';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -32,6 +33,8 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
+const appUrl= import.meta.env.VITE_REACT_APP_API_URL
+
 const UserManagement = () => {
     const dispatch = useDispatch();
     const [snackAlertData, setSnackAlertData] = useState({
@@ -46,6 +49,28 @@ const UserManagement = () => {
     const [action, setAction] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
 
+    const accessToken = localStorage.getItem("accessToken")
+    console.log(accessToken)
+
+   const fetchHello = async () => {
+    try {
+        // setLoading(true);
+        const response = await axiosInstance({
+          url: `${appUrl}/admin/get-all-users`,
+          method: "get",
+          params : {
+            type : "user",
+          }
+        });
+        // setLoading(false);
+       console.log(response)
+     
+      } catch (error) {
+        console.error(error);
+
+      }
+   } 
+
     const fetchUsers = async () => {
         try {
             setLoading(true);
@@ -59,7 +84,7 @@ const UserManagement = () => {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                 }
             });
-            console.log(response);
+            // console.log(response);
             setAllUsers(response?.data?.users || []);
             setLoading(false);
         } catch (error) {
@@ -89,6 +114,7 @@ const UserManagement = () => {
 
     useEffect(() => {
         fetchUsers();
+        fetchHello()
     }, []);
 
     const handleSearchChange = (event) => {
