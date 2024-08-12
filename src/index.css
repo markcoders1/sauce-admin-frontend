@@ -1,3 +1,4 @@
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,33 +7,50 @@
   color: white;
 }
 
-* {
-  font-family: "Poppins", sans-serif !important;
-}
-
-body::-webkit-scrollbar {
-  width: 0;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just in case */
-}
-
-/* For Firefox */
-body {
-  scrollbar-width: none;  /* Remove scrollbar space */
-  -ms-overflow-style: none;  /* IE 10+ */
-}
-
 body {
   background-image: url('./assets/backgroundImg1.png');
   background-color: black;
 }
 
-
-/* Hide scrollbars but keep scrolling enabled */
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 3px;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, and Opera */
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* Optional for the track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffa100; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Roundness of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff7b00; /* Color of the scrollbar thumb when hovered */
+}
+
+/* Hide scrollbar when not in use */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ffa100 rgba(255, 255, 255, 0.1); /* Firefox */
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+body {
+  overflow-y: scroll; /* Always show vertical scrollbar */
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: block;
+  background: transparent; /* Making scrollbar transparent when not hovered */
+}
+
+body::-webkit-scrollbar-thumb {
+  display: block;
 }
