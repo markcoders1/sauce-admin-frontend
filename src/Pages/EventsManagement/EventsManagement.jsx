@@ -49,8 +49,8 @@ const EventsManagement = () => {
                         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                     }
                 });
-                console.log(response.data.events);
-                setAllEvents(response.data.events);
+                console.log(response?.data?.events);
+                setAllEvents(response?.data?.events || []);
                 setLoading(false)
             } catch (error) {
                 console.error('Error fetching events:', error);

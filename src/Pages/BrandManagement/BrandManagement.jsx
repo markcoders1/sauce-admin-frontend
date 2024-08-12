@@ -51,9 +51,9 @@ const SauceManagement = () => {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                 }
             });
-            setAllBrands(response.data.users);
+            setAllBrands(response?.data?.users || []);
             setLoading(false)
-            console.log(response.data.users)
+            console.log(response?.data?.users)
         } catch (error) {
             console.error('Error fetching users:', error);
             setLoading(false)

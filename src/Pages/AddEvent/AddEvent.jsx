@@ -19,7 +19,7 @@ const AddSEvent = () => {
     ownerId: "",
     date: '',
     description: '',
-    details: ['',], // Initialize with two bullet points
+    details: ['',], 
     destination: '',
     bannerImage: null,
   });
@@ -93,17 +93,27 @@ const AddSEvent = () => {
         },
         data: data
       });
+      setFormData({
+        eventName: '',
+        organizedBy: '',
+        ownerId: "",
+        date: '',
+        description: '',
+        details: ['',], // Initialize with two bullet points
+        destination: '',
+        bannerImage: null,
+      })
       console.log(response);
       setSnackAlertData({
         open: true,
-        message: response.data.message,
+        message: response?.data?.message,
         severity: "success",
       })
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({
         open: true,
-        message: error.response.data.message,
+        message: error?.response?.data?.message,
         severity: "error",
       })
     }
@@ -119,7 +129,7 @@ const AddSEvent = () => {
         }
       });
       console.log(response);
-      setAllBrands(response.data.users);
+      setAllBrands(response?.data?.users);
     } catch (error) {
       console.error('Error fetching users:', error);
     }

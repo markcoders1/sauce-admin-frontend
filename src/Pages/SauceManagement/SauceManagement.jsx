@@ -57,7 +57,7 @@ const SauceManagement = () => {
                 // }
             });
             console.log(response);
-            setAllSauce(response?.data?.sauces);
+            setAllSauce(response?.data?.sauces || []);
             setLoading(false)
         } catch (error) {
             console.error('Error fetching events:', error);

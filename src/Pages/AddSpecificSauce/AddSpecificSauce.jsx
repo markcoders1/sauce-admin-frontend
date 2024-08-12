@@ -106,14 +106,14 @@ const  AddSpecificSauce= () => {
       console.log(response);
       setSnackAlertData({
         open: true,
-        message: response.data.message,
+        message: response?.data?.message,
         severity: "success",
       })
     } catch (error) {
       console.error('Error submitting sauce:', error);
       setSnackAlertData({
         open: true,
-        message: error.response.data.message,
+        message: error?.response?.data?.message,
         severity: "error",
       })
     }
