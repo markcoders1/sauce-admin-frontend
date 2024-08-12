@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TabooManagement.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+// import { setBrandInfo, clearBrandInfo } from '../../store/brandSlice';
+import { setBrandInfo , clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -29,24 +33,45 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
-const SauceManagement = () => {
+const TabooManagement = () => {
     const navigate = useNavigate();
-    const staticEmployees = [
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-        { fullName: "Lorem Brand", sauceName: "Lorem Sauce", createdAt: "2023-07-22" },
-    ];
+    const { id } = useParams();
+    const [loading, setLoading] = useState(false);
+    const [brands, setBrands] = useState([]);
+    const [brandName, setBrandName] = useState([]);
+    const [brandEmail, setBrandEmail] = useState([]);
+    const dispatch = useDispatch();
+
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    const fetchBrands = async (id) => {
+        try {
+            setLoading(true);
+            const response = await axios({
+                url: `https://aws.markcoders.com/sauced-backend/api/admin/brand-sauces/${id}`,
+                method: "get",
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                }
+            });
+            setBrands(response?.data?.sauces || []); // Make sure to use the correct field and default to an empty array
+            const firstBrand = response?.data?.sauces[0]?.owner;
+            dispatch(setBrandInfo({ email: firstBrand?.email, name: firstBrand?.name }));
+            
+            console.log(response);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching brands:', error);  
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (id) {
+            fetchBrands(id);
+        }
+    }, [id]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -60,10 +85,13 @@ const SauceManagement = () => {
         return `${day} ${month} ${year}`;
     };
 
-    const filteredEmployees = staticEmployees.filter(employee =>
-        employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.sauceName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredBrands = brands.filter(brand =>
+        brand.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleNavigate = () => {
+        navigate("/add-specific-sauce")
+    }
 
     return (
         <Box>
@@ -85,7 +113,7 @@ const SauceManagement = () => {
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
-                    Taboo Brand Management
+                    {brandName} Brand Management
                 </Typography>
 
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
@@ -120,7 +148,7 @@ const SauceManagement = () => {
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
-                            onClick={() => navigate("/add-sauce")}
+                            onClick={handleNavigate}
                         />
                     </Box>
                 </Box>
@@ -171,15 +199,15 @@ const SauceManagement = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody className="MuiTableBody-root">
-                            {filteredEmployees.map((employee, index) => (
+                            {filteredBrands.map((brand, index) => (
                                 <TableRow key={index} sx={{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={BrandImg} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
+                                        <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.fullName}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.createdAt)}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{brand.name}</TableCell>
+                                    <TableCell className="MuiTableCell-root">{formatDate(brand.createdAt)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                             <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
@@ -195,4 +223,4 @@ const SauceManagement = () => {
     );
 }
 
-export default SauceManagement;
+export default TabooManagement;

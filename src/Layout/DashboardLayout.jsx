@@ -48,7 +48,7 @@ const DashboardLayout = () => {
         backgroundPosition: 'center',
         backgroundAttachment: "fixed",
         padding: {
-          sm: "0px 0px",
+          sm: "0px 10px",
           xs: "10px 10px"
         },
         boxSizing: 'border-box',
@@ -59,7 +59,7 @@ const DashboardLayout = () => {
         sx={{
           display: 'flex',
           width: '100%',
-          maxWidth: '1440px',
+          maxWidth: '100%',
           boxSizing: 'border-box',
           gap: "1rem"
         }}
@@ -69,8 +69,8 @@ const DashboardLayout = () => {
             mt: "15px",
             width: isSidebarOpen ? '300px' : '80px', // Adjust width based on sidebar state
             position: 'fixed', // Fixed position
-            maxHeight: "900px",
-            minHeight: "900px",
+            maxHeight: "100%",
+            minHeight: "96%",
             zIndex: 1,
             display: {
               xs: 'none',
@@ -93,7 +93,7 @@ const DashboardLayout = () => {
               xs: '0px',
             },
             width: '100%',
-            maxWidth: '1340px',
+            maxWidth: '100%',
             padding: {
               sm: '20px',
               xs: '0px 0px',
