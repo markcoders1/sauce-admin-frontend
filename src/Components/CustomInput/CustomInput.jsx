@@ -70,7 +70,9 @@ const CustomInputShadow = forwardRef(({
             '& .MuiOutlinedInput-root': {
               borderRadius: "12px",
               border: "1px solid rgba(102, 102, 102, 0)",
-            },
+              
+            }, 
+            backgroundColor:"",
             fontSize: "22px",
             fontWeight: "600",
             color: "white",

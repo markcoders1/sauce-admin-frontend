@@ -241,7 +241,7 @@ const AddSEvent = () => {
             <Box sx={{ width: "100%" }}>
               <CustomInputShadow
                 name={`details-${index}`}
-                multiline={true}
+                
                 value={detail}
                 onChange={(e) => handleDetailChange(index, e.target.value)}
                 error={errors.details}
