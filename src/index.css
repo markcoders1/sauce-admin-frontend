@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -6,34 +6,33 @@
   color: white;
 }
 
-*{
+* {
   font-family: "Poppins", sans-serif !important;
 }
 
-
 body::-webkit-scrollbar {
-  width: 5px;
-}
-
-body::-webkit-scrollbar-track {
-  background: #2e210a; 
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #A52A2A; 
-  border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-  background: #8B4513; 
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just in case */
 }
 
 /* For Firefox */
 body {
-  scrollbar-width: thin;
-  scrollbar-color: #A52A2A #2e210a;
+  scrollbar-width: none;  /* Remove scrollbar space */
+  -ms-overflow-style: none;  /* IE 10+ */
 }
+
 body {
-  background-image: url(./assets/backgroundImg1.png);
+  background-image: url('./assets/backgroundImg1.png');
   background-color: black;
+}
+
+
+/* Hide scrollbars but keep scrolling enabled */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, and Opera */
 }

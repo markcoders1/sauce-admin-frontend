@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import Heading from '../../Components/Heading/Heading';
@@ -16,8 +16,8 @@ const AddSauce = () => {
     sauceName: '',
     websiteLink: '',
     productLink: '',
-    details: '', 
-    ingredients: ['',], 
+    details: '',
+    ingredients: [''],
     email: '',
     type: '',
     title: ""
@@ -25,6 +25,8 @@ const AddSauce = () => {
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
+  const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -46,8 +48,10 @@ const AddSauce = () => {
   const handleImageChange = (e) => {
     if (e.target.id === "uploadSauceImage") {
       setSauceImage(e.target.files[0]);
+      setSelectedSauceFileName(e.target.files[0]?.name || ""); // Update selected file name
     } else if (e.target.id === "uploadBannerImage") {
       setBannerImage(e.target.files[0]);
+      setSelectedBannerFileName(e.target.files[0]?.name || ""); // Update selected file name
     }
   };
 
@@ -73,8 +77,8 @@ const AddSauce = () => {
     data.append('image', sauceImage);
     data.append('bannerImage', bannerImage);
     data.append('name', formData.sauceName);
-    data.append('description', formData.details); 
-    data.append('ingredients', formData.ingredients); 
+    data.append('description', formData.details);
+    data.append('ingredients', formData.ingredients);
     data.append('productLink', formData.productLink);
     data.append('websiteLink', formData.websiteLink);
     data.append('email', formData.email);
@@ -131,11 +135,15 @@ const AddSauce = () => {
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Sauce Image</Typography>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
+            {selectedSauceFileName ? `Selected File: ${selectedSauceFileName}` : "Upload Sauce Image"}
+          </Typography>
         </label>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
+            {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
+          </Typography>
         </label>
       </Box>
       <Box sx={{
@@ -219,44 +227,38 @@ const AddSauce = () => {
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{width:"100%"}} >
-
-            <CustomInputShadow
-              name={`ingredients-${index}`}
-              multiline={true}
-              value={ingredient}
-              onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
-              error={errors.ingredients}
-            />
+              <CustomInputShadow
+                name={`ingredients-${index}`}
+                multiline={true}
+                value={ingredient}
+                onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
+                error={errors.ingredients}
+              />
             </Box>
             {formData.ingredients.length > 1 && (
-              // <Button variant="contained" color="error" onClick={() => removeBullet('ingredients', index)}>
-              //   Remove
-              // </Button>
-               <CustomButton
-               border='1px solid #FFA100'
-               ButtonText={"Remove"}
-               color='white'
-               height = "100px"
-               width={"98px"}
-               borderRadius='6px'
-               buttonStyle={{ height: "39px" }}
-               onClick={() => removeBullet('ingredients', index)}
-           />
+              <CustomButton
+                border='1px solid #FFA100'
+                ButtonText={"Remove"}
+                color='white'
+                height="100px"
+                width={"98px"}
+                borderRadius='6px'
+                buttonStyle={{ height: "39px" }}
+                onClick={() => removeBullet('ingredients', index)}
+              />
             )}
           </Box>
         ))}
-      
         <CustomButton
-               border='1px solid #FFA100'
-               ButtonText={"Add Bullet"}
-               color='white'
-               height = "100px"
-               width={"100%"}
-               borderRadius='6px'
-               buttonStyle={{ height: "75px" }}
-               onClick={() => addBullet('ingredients')}
-               
-           />
+          border='1px solid #FFA100'
+          ButtonText={"Add Bullet"}
+          color='white'
+          height="100px"
+          width={"100%"}
+          borderRadius='6px'
+          buttonStyle={{ height: "75px" }}
+          onClick={() => addBullet('ingredients')}
+        />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
@@ -271,7 +273,6 @@ const AddSauce = () => {
           fontWeight='600'
           onClick={handleSubmit}
         />
-
       </Box>
       <SnackAlert
         severity={snackAlertData.severity}

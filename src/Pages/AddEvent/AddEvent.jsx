@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import CustomSelect from '../../Components/CustomSelect/CustomSelect';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-const AddSEvent = () => {
 
+const AddSEvent = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -23,9 +23,9 @@ const AddSEvent = () => {
     destination: '',
     bannerImage: null,
   });
-
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
+  const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -34,6 +34,7 @@ const AddSEvent = () => {
         ...formData,
         [name]: files[0] // Save the file
       });
+      setSelectedBannerFileName(files[0]?.name || ""); // Update selected file name
     } else {
       setFormData({
         ...formData,
@@ -70,16 +71,6 @@ const AddSEvent = () => {
   };
 
   const handleSubmit = async () => {
-    // let validationErrors = {};
-    // Object.keys(formData).forEach(field => {
-    //   if (!formData[field] && formData[field] !== '') {
-    //     validationErrors[field] = `${field} is required`;
-    //   }
-    // });
-    // if (Object.keys(validationErrors).length > 0) {
-    //   setErrors(validationErrors);
-    //   return;
-    // }
     console.log('Form data submitted:', formData);
 
     try {
@@ -143,7 +134,8 @@ const AddSEvent = () => {
   };
 
   return (
-    <Box
+    <Box 
+      className="hide-scrollbar"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -165,7 +157,9 @@ const AddSEvent = () => {
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
+            {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
+          </Typography>
         </label>
       </Box>
       <Box sx={{
@@ -240,7 +234,7 @@ const AddSEvent = () => {
       <Box>
         <CustomSelect data={allBrands} handleChange={handleBrandChange} />
       </Box>
-      <Box sx={{ flexBasis: "100%", display:"flex", flexDirection:"column", gap:"8px" }}>
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Details' />
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -267,21 +261,16 @@ const AddSEvent = () => {
             )}
           </Box>
         ))}
-        {/* <Button variant="contained" color="primary" onClick={() => addBullet('details')}>
-          Add Bullet
-        </Button> */}
-       
-       <CustomButton
-               border='1px solid #FFA100'
-               ButtonText={"Add Bullet"}
-               color='white'
-               height = "100px"
-               width={"100%"}
-               borderRadius='6px'
-               buttonStyle={{ height: "75px" }}
-               onClick={() => addBullet('details')}
-               
-           />
+        <CustomButton
+          border='1px solid #FFA100'
+          ButtonText={"Add Bullet"}
+          color='white'
+          height="100px"
+          width={"100%"}
+          borderRadius='6px'
+          buttonStyle={{ height: "75px" }}
+          onClick={() => addBullet('details')}
+        />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton

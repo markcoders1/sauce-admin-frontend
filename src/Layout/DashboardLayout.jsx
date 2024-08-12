@@ -100,7 +100,7 @@ const DashboardLayout = () => {
             },
             borderRadius: '30px',
             boxSizing: 'border-box',
-            overflowY: 'auto', // Enable scrolling for the main content
+            overflowY: 'hidden', // Enable scrolling for the main content
             transition: 'margin-left 0.3s ease-in-out', // Smooth transition for margin change
           }}
         >

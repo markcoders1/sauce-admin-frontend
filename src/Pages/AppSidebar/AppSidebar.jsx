@@ -35,7 +35,8 @@ const handleNavigate=(nav)=>{
           flexDirection: 'column',
           gap: '50px',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+      
         }}
       >
         <Box
@@ -61,6 +62,7 @@ const handleNavigate=(nav)=>{
         display: "flex",
         flexDirection: "column",
         gap: "20px",
+      
         overflow: "hidden", // Ensures content is not visible or interactable when sidebar is closed
       }}>
         {isOpen ? <>
@@ -78,6 +80,8 @@ const handleNavigate=(nav)=>{
               color:"black",
               fontWeight:"600",
              position:"relative",
+             mt:"40px"
+                 
 
             }}
             onClick={() => handleNavigate("/user-management")} // Toggle sidebar on click

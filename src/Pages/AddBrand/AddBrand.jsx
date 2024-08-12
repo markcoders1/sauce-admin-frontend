@@ -18,6 +18,7 @@ const AddBrand = () => {
     bannerImage: null,
   });
   const [errors, setErrors] = useState({});
+  const [selectedFileName, setSelectedFileName] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -26,6 +27,7 @@ const AddBrand = () => {
         ...formData,
         [name]: files[0] 
       });
+      setSelectedFileName(files[0]?.name || ""); // Update selected file name
     } else {
       setFormData({
         ...formData,
@@ -37,14 +39,11 @@ const AddBrand = () => {
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
-    
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
     data.append('password', formData.password);
-   
-      data.append('image', formData.bannerImage); // Append the file
- 
+    data.append('image', formData.bannerImage); // Append the file
 
     try {
       const response = await axios({
@@ -57,13 +56,14 @@ const AddBrand = () => {
         data: data
       });
 
-      
       setFormData({
         name: '',
         email: '',
         password: '',
         bannerImage: null,
       });
+
+      setSelectedFileName(""); // Reset file name
 
       setSnackAlertData({
         open: true,
@@ -105,9 +105,10 @@ const AddBrand = () => {
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>Upload Banner Image</Typography>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>{selectedFileName ? `Selected File  ${selectedFileName}` : ("Upload Banner Image")}</Typography>
         </label>
       </Box>
+
       <Box sx={{
         display: "flex",
         flexDirection: {
