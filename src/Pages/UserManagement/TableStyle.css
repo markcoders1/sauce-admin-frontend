@@ -84,8 +84,8 @@ TableStyle.css
     background: #5A3D0A;
 }
 
-.search-input {
-color: #A0A4A9;
+.search-input1 {
+color: #ffffff;
     font-size: 18px;
     padding: 9px 47px 9px 27px;
     border-radius: 12px;
@@ -96,8 +96,8 @@ color: #A0A4A9;
     position: relative;
 }
 
-.search-input::placeholder {
-    color: white;
+.search-input1::placeholder {
+    color: rgb(155, 135, 135);
 }
 
 .MuiTableCell-root:nth-child(1){

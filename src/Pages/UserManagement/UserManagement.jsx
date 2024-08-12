@@ -5,10 +5,12 @@ import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
-import PageLoader from '../../Components/Loader/PageLoader'
+import PageLoader from '../../Components/Loader/PageLoader';
 import { useDispatch } from 'react-redux';
-import { handleSnackAlert } from '../../Redux/Slice/SnackAlertSlice/SnackAlertSlice';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+// import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
+import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
+
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -30,26 +32,28 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
-
 const UserManagement = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
         message: "",
         severity: "success"
-      });
+    });
     const [allUsers, setAllUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [action, setAction] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
 
     const fetchUsers = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
                 method: "get",
-                params : {
-                    type : "user"
+                params: {
+                    type: "user"
                 },
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
@@ -57,39 +61,30 @@ const UserManagement = () => {
             });
             console.log(response);
             setAllUsers(response.data.users);
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
     };
 
     const toggleBlock = async (userId) => {
-        console.log(userId)
-        try {
-            const response = await axios({
-                url: "https://sauced-backend.vercel.app/api/admin/block-unblock-user",
-                method: "post",
-                headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
-                },
-                data: { 
-                    userId : userId
-                }
-            });
-            console.log(response);
-            setSnackAlertData({
-                open: true,
-                message: response.data.message,
-                severity: "success",
-              })
-            setAllUsers(prevUsers =>
-                prevUsers.map(user =>
-                    user._id === userId ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' } : user
-                )
-            );
-        } catch (error) {
-            console.error('Error toggling block status:', error);
-        }
+        console.log(userId);
+        setSelectedUser(userId);
+        setAction(action === 'active' ? 'block' : 'unblock');
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
+    const handleModalSuccess = () => {
+        setAllUsers(prevUsers =>
+            prevUsers.map(user =>
+                user._id === selectedUser ? { ...user, status: user.status === 'active' ? 'blocked' : 'active' } : user
+            )
+        );
+        setSelectedUser(null);
     };
 
     useEffect(() => {
@@ -115,153 +110,156 @@ const UserManagement = () => {
 
     return (
         <>
-        {
-            loading ? (
+            {loading ? (
                 <PageLoader />
             ) : (
-                   <Box>
-            <Box sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                p: {
-                    md: "0px 20px 0px 20px",
-                    xs: "0px 0px 0px 0px"
-                },
-                alignItems: {
-                    md:"center",
-                    xs:"start"
-                },
-                flexDirection:{
-                    md:"row",
-                    xs:"column"
-                },
-                position:"relative",
-                gap:"20px"
-            }}>
-                <Typography sx={{
-                    color: "white",
-                    fontWeight: "600",
-                    fontSize: {
-                        sm: "45px",
-                        xs: "40px"
-                    },
-                    fontFamily: "Fira Sans !important",
-                }}>
-                    Users Management
-                </Typography>
+                <Box>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        p: {
+                            md: "0px 20px 0px 20px",
+                            xs: "0px 0px 0px 0px"
+                        },
+                        alignItems: {
+                            md: "center",
+                            xs: "start"
+                        },
+                        flexDirection: {
+                            md: "row",
+                            xs: "column"
+                        },
+                        position: "relative",
+                        gap: "20px"
+                    }}>
+                        <Typography sx={{
+                            color: "white",
+                            fontWeight: "600",
+                            fontSize: {
+                                sm: "45px",
+                                xs: "40px"
+                            },
+                            fontFamily: "Fira Sans !important",
+                        }}>
+                            Users Management
+                        </Typography>
 
-                <Box sx={{ position: "relative", width: "300px", }}>
-                    <input
-                        type="search"
-                        name="search"
-                        id="search"
-                        className="search-input"
-                        placeholder="Search User..."
-                        value={searchTerm}
-                        onChange={handleSearchChange}
+                        <Box sx={{ position: "relative", width: "300px", }}>
+                            <input
+                                type="search"
+                                name="search"
+                                id="search"
+                                className="search-input1"
+                                placeholder="Search User..."
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                style={{ color: "white" }}
+                            />
+                            <img
+                                src={SearchIcon}
+                                alt=""
+                                style={{
+                                    position: "absolute",
+                                    top: "14px",
+                                    right: "20px",
+                                }}
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+                        <TableContainer component={Paper} className="MuiTableContainer-root">
+                            <Table className="data-table">
+                                <TableHead className="MuiTableHead-root">
+                                    <TableRow
+                                        sx={{
+                                            backgroundColor: "transparent",
+                                            padding: "0px"
+                                        }}
+                                        className="header-row"
+                                    >
+                                        <TableCell className="MuiTableCell-root-head" sx={{
+                                            fontWeight: "500",
+                                            padding: "0px 0px",
+                                            fontSize: "18px",
+                                            textAlign: "center",
+                                            borderRadius: "8px 0px 0px 8px",
+                                            color: "white"
+                                        }}>Full Name</TableCell>
+                                        <TableCell sx={{
+                                            fontWeight: "500",
+                                            padding: "12px 0px",
+                                            fontSize: "18px",
+                                            textAlign: "center",
+                                            color: "white"
+                                        }} className="MuiTableCell-root-head">Email</TableCell>
+                                        <TableCell sx={{
+                                            fontWeight: "500",
+                                            padding: "12px 0px",
+                                            fontSize: "18px",
+                                            textAlign: "center",
+                                            color: "white"
+                                        }} className="MuiTableCell-root-head">Check-Ins</TableCell>
+                                        <TableCell sx={{
+                                            fontWeight: "500",
+                                            padding: "12px 0px",
+                                            fontSize: "18px",
+                                            textAlign: "center",
+                                            color: "white"
+                                        }} className="MuiTableCell-root-head">Joining Date</TableCell>
+                                        <TableCell sx={{
+                                            fontWeight: "500",
+                                            padding: "12px 0px",
+                                            fontSize: "18px",
+                                            textAlign: "center",
+                                            borderRadius: "0px 8px 8px 0px",
+                                            color: "white"
+                                        }} className="MuiTableCell-root-head">Action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody className="MuiTableBody-root">
+                                    {filteredUsers.map((user, index) => (
+                                        <TableRow key={index} sx={{
+                                            border: "2px solid #FFA100"
+                                        }} className="MuiTableRow-root">
+                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">{user.name}</TableCell>
+                                            <TableCell className="MuiTableCell-root">{user.email}</TableCell>
+                                            <TableCell className="MuiTableCell-root">{user.checkins}</TableCell>
+                                            <TableCell className="MuiTableCell-root">{formatDate(user.date)}</TableCell>
+                                            <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
+                                                <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                                                    <CustomButton
+                                                        border='1px solid #FFA100'
+                                                        ButtonText={user.status === 'active' ? 'Block' : 'Unblock'}
+                                                        color='white'
+                                                        width={"98px"}
+                                                        borderRadius='6px'
+                                                        buttonStyle={{ height: "39px" }}
+                                                        onClick={() => toggleBlock(user._id)}
+                                                    />
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                    <SnackAlert
+                        severity={snackAlertData.severity}
+                        message={snackAlertData.message}
+                        open={snackAlertData.open}
+                        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
                     />
-                    <img
-                        src={SearchIcon}
-                        alt=""
-                        style={{
-                            position: "absolute",
-                            top: "14px",
-                            right: "20px",
-                        }}
+                    <ConfirmActionModal
+                        open={modalOpen}
+                        handleClose={handleModalClose}
+                        userId={selectedUser}
+                        action={action}
+                        onSuccess={handleModalSuccess}
                     />
                 </Box>
-            </Box>
-
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
-                <TableContainer component={Paper} className="MuiTableContainer-root">
-                    <Table className="data-table">
-                        <TableHead className="MuiTableHead-root">
-                            <TableRow
-                                sx={{
-                                    backgroundColor: "transparent",
-                                    padding: "0px"
-                                }}
-                                className="header-row"
-                            >
-                                <TableCell className="MuiTableCell-root-head" sx={{
-                                    fontWeight: "500",
-                                    padding: "0px 0px",
-                                    fontSize: "18px",
-                                    textAlign: "center",
-                                    borderRadius: "8px 0px 0px 8px",
-                                    color: "white"
-                                }}>Full Name</TableCell>
-                                <TableCell sx={{
-                                    fontWeight: "500",
-                                    padding: "12px 0px",
-                                    fontSize: "18px",
-                                    textAlign: "center",
-                                    color: "white"
-                                }} className="MuiTableCell-root-head">Email</TableCell>
-                                <TableCell sx={{
-                                    fontWeight: "500",
-                                    padding: "12px 0px",
-                                    fontSize: "18px",
-                                    textAlign: "center",
-                                    color: "white"
-                                }} className="MuiTableCell-root-head">Check-Ins</TableCell>
-                                <TableCell sx={{
-                                    fontWeight: "500",
-                                    padding: "12px 0px",
-                                    fontSize: "18px",
-                                    textAlign: "center",
-                                    color: "white"
-                                }} className="MuiTableCell-root-head">Joining Date</TableCell>
-                                <TableCell sx={{
-                                    fontWeight: "500",
-                                    padding: "12px 0px",
-                                    fontSize: "18px",
-                                    textAlign: "center",
-                                    borderRadius: "0px 8px 8px 0px",
-                                    color: "white"
-                                }} className="MuiTableCell-root-head">Action</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody className="MuiTableBody-root">
-                            {filteredUsers.map((user, index) => (
-                                <TableRow key={index} sx={{
-                                    border: "2px solid #FFA100"
-                                }} className="MuiTableRow-root">
-                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">{user.name}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{user.email}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{user.checkins}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(user.date)}</TableCell>
-                                    <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
-                                        <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                            <CustomButton
-                                                border='1px solid #FFA100'
-                                                ButtonText={user.status === 'active' ? 'Block' : 'Unblock'}
-                                                color='white'
-                                                width={"98px"}
-                                                borderRadius='6px'
-                                                buttonStyle={{ height: "39px" }}
-                                                onClick={() => toggleBlock(user._id)}
-                                            />
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
-            <SnackAlert
-        severity={snackAlertData.severity}
-        message={snackAlertData.message}
-        open={snackAlertData.open}
-        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
-      />
-        </Box>
-        
-            )
-        }
-        
-     
+            )}
         </>
     );
 }
