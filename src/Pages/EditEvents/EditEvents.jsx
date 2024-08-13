@@ -3,15 +3,14 @@ import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
-import CustomSelect from '../../Components/CustomSelect/CustomSelect';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const EditEvents = () => {
-    const auth = useSelector((state) => state.auth)
-    const {id} = useParams()
+  const auth = useSelector((state) => state.auth);
+  const { id } = useParams();
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -23,22 +22,22 @@ const EditEvents = () => {
     ownerId: "",
     date: '',
     description: '',
-    details: ['',], 
+    details: ['',],
     destination: '',
     bannerImage: null,
   });
   const [errors, setErrors] = useState({});
-  const [allBrands, setAllBrands] = useState([]);
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
+      const file = files[0];
       setFormData({
         ...formData,
-        [name]: files[0] // Save the file
+        [name]: file // Save the file
       });
-      setSelectedBannerFileName(files[0]?.name || ""); // Update selected file name
+      setSelectedBannerFileName(file?.name || ""); // Update selected file name
     } else {
       setFormData({
         ...formData,
@@ -77,23 +76,39 @@ const EditEvents = () => {
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
-    try {
-      const data = new FormData();
-      data.append('eventName', formData.eventName);
-      data.append('organizedBy', formData.organizedBy);
-      data.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
-      data.append('venueDescription', formData.description);
-      data.append('venueName', formData.destination);
-      data.append('owner', formData.ownerId);
-      data.append('bannerImage', formData.bannerImage);
-      data.append('eventDetails', formData.details);
+    const convertToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    };
 
+    let imageBase64 = null;
+    if (formData.bannerImage) {
+      imageBase64 = await convertToBase64(formData.bannerImage);
+    }
+
+    const data = {
+      eventName: formData.eventName,
+      organizedBy: formData.organizedBy,
+      eventDate: Math.floor(new Date(formData.date).getTime() / 1000),
+      venueDescription: formData.description,
+      venueName: formData.destination,
+      owner: formData.ownerId,
+      bannerImage: imageBase64,
+      eventDetails: formData.details,
+      eventId: id,
+    };
+
+    try {
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-event`,
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
-          'Content-Type': 'multipart/form-data'
+          Authorization: `Bearer ${auth.accessToken}`,
+          'Content-Type': 'application/json'
         },
         data: data
       });
@@ -103,47 +118,56 @@ const EditEvents = () => {
         ownerId: "",
         date: '',
         description: '',
-        details: ['',], // Initialize with two bullet points
+        details: ['',],
         destination: '',
         bannerImage: null,
-      })
-      console.log(response);
+      });
+      setSelectedBannerFileName(""); // Reset file name
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
-      })
+      });
+      console.log(response);
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.message,
         severity: "error",
-      })
+      });
     }
   };
 
-  const fetchEvents = async () => {
+  const fetchEvent = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-event`,
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-event/${id}`,
         method: "get",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+          Authorization: `Bearer ${auth.accessToken}`
         },
-       params : {
-        eventId : "66b63c8d4c6971510e11ae6b"
-       }
       });
       console.log(response);
-   
+      const eventData = response?.data?.event;
+      setFormData({
+        eventName: eventData.eventName,
+        organizedBy: eventData.organizedBy,
+        ownerId: eventData.owner?._id,
+        date: new Date(eventData.date).toISOString().split('T')[0],
+        description: eventData.venueDescription,
+        details: eventData.eventDetails,
+        destination: eventData.venueName,
+        bannerImage: null,
+      });
+      setSelectedBannerFileName(eventData.bannerImage);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching event:', error);
     }
   };
 
   useEffect(() => {
-    fetchEvents();
+    fetchEvent();
   }, []);
 
   const handleBrandChange = (ownerId) => {
@@ -151,7 +175,7 @@ const EditEvents = () => {
   };
 
   return (
-    <Box 
+    <Box
       className="hide-scrollbar"
       sx={{
         display: "flex",
@@ -248,9 +272,6 @@ const EditEvents = () => {
           </Box>
         </Box>
       </Box>
-      <Box>
-        <CustomSelect data={allBrands} handleChange={handleBrandChange} />
-      </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Details' />
         {formData.details.map((detail, index) => (
@@ -258,7 +279,6 @@ const EditEvents = () => {
             <Box sx={{ width: "100%" }}>
               <CustomInputShadow
                 name={`details-${index}`}
-                
                 value={detail}
                 onChange={(e) => handleDetailChange(index, e.target.value)}
                 error={errors.details}
