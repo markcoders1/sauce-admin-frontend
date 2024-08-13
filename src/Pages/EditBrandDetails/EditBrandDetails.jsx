@@ -25,6 +25,8 @@ const EditBrandDetails = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
 
+  const [getUser,setGetUser] = useState([])
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
@@ -51,6 +53,7 @@ const EditBrandDetails = () => {
       
       });
       console.log(response);
+      setGetUser(response.data.user);
    
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -86,12 +89,10 @@ const EditBrandDetails = () => {
         },
 
         data: {
-          email : formData.email,
+          email : getUser.email,
           name : formData.name
         }
       });
-      console.log(formData.email)
-
       setFormData({
         name: '',
         email: '',
@@ -100,19 +101,17 @@ const EditBrandDetails = () => {
         status: '',
         points: ''
       });
-
       setSelectedFileName(""); // Reset file name
-
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
       });
-
       console.log(response);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
-      console.log(formData.email)
+      console.log(getUser.email)
+      console.log(formData.name)
 
       setSnackAlertData({
         open: true,
@@ -159,7 +158,7 @@ const EditBrandDetails = () => {
       }}>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Enter Name"
+            placeholder={getUser.name}
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -170,9 +169,10 @@ const EditBrandDetails = () => {
           <CustomInputShadow
           placeholder="Email"
           name="email"
-          value={formData.email}
+          value={getUser.email}
           onChange={handleChange}
           error={errors.email}
+          disabled
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
