@@ -1,5 +1,7 @@
-import { Box, FormControl, TextField, Typography } from "@mui/material";
-import React, { forwardRef } from "react";
+import { Box, FormControl, TextField, Typography, IconButton } from "@mui/material";
+import React, { forwardRef, useState } from "react";
+import eyeopen from '../../assets/eyeopen.png';
+import eyeclose from '../../assets/eyeclose.png';
 
 const CustomInputShadow = forwardRef(({
   type = "text",
@@ -18,9 +20,14 @@ const CustomInputShadow = forwardRef(({
   disabled = false,
   width = "100%",
   textAlign = "",
-  inputStyle = {}
-
+  inputStyle = {},
 }, ref) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Box sx={{ mb: mb }}>
       <FormControl variant="standard" fullWidth
@@ -43,7 +50,7 @@ const CustomInputShadow = forwardRef(({
       >
         <TextField
           placeholder={placeholder}
-          type={type}
+          type={showPassword ? "text" : type}
           ref={ref}
           disabled={disabled}
           sx={{
@@ -56,7 +63,6 @@ const CustomInputShadow = forwardRef(({
             '& input': {
               color: "white",
               fontSize: "22px",
-            
             },
             '& .MuiInputBase-input': {
               color: "white",
@@ -70,9 +76,8 @@ const CustomInputShadow = forwardRef(({
             '& .MuiOutlinedInput-root': {
               borderRadius: "12px",
               border: "1px solid rgba(102, 102, 102, 0)",
-              
-            }, 
-            backgroundColor:"",
+            },
+            backgroundColor: "",
             fontSize: "22px",
             fontWeight: "600",
             color: "white",
@@ -88,6 +93,19 @@ const CustomInputShadow = forwardRef(({
           multiline={multiline}
           rows={rows}
         />
+        {type === "password" && (
+          <IconButton
+            onClick={handleTogglePasswordVisibility}
+            sx={{
+              position: 'absolute',
+              right: 25,
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >
+            <img src={showPassword ? eyeclose : eyeopen} alt="toggle visibility" />
+          </IconButton>
+        )}
       </FormControl>
       {error && (
         <Typography sx={{
@@ -96,8 +114,7 @@ const CustomInputShadow = forwardRef(({
           color: "red",
           mt: "8px",
           wordBreak: "break-word",
-          borderRadius:"5px"
-          
+          borderRadius: "5px"
         }}>
           {error}
         </Typography>

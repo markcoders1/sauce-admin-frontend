@@ -6,7 +6,7 @@ import "./TableStyle.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 // import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
 import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
@@ -37,6 +37,8 @@ const appUrl= import.meta.env.VITE_REACT_APP_API_URL
 
 const UserManagement = () => {
     const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+  
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
         message: "",
@@ -50,12 +52,13 @@ const UserManagement = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const accessToken = localStorage.getItem("accessToken")
-    console.log(accessToken)
+    // console.log(accessToken)
 
    const fetchHello = async () => {
     try {
+     
         // setLoading(true);
-        const response = await axiosInstance({
+        const response = await axios({
           url: `${appUrl}/admin/get-all-users`,
           method: "get",
           params : {
@@ -73,6 +76,7 @@ const UserManagement = () => {
 
     const fetchUsers = async () => {
         try {
+            // console.log(auth)
             setLoading(true);
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
@@ -84,7 +88,7 @@ const UserManagement = () => {
                     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
                 }
             });
-            // console.log(response);
+            console.log(response);
             setAllUsers(response?.data?.users || []);
             setLoading(false);
         } catch (error) {
@@ -114,7 +118,7 @@ const UserManagement = () => {
 
     useEffect(() => {
         fetchUsers();
-        fetchHello()
+        // fetchHello()
     }, []);
 
     const handleSearchChange = (event) => {
@@ -176,7 +180,7 @@ const UserManagement = () => {
                                 name="search"
                                 id="search"
                                 className="search-input1"
-                                placeholder="Search User..."
+                                placeholder="Search"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                                 style={{ color: "white" }}
@@ -208,16 +212,19 @@ const UserManagement = () => {
                                             fontWeight: "500",
                                             padding: "0px 0px",
                                             fontSize: "18px",
-                                            textAlign: "center",
+                                            textAlign: "start",
                                             borderRadius: "8px 0px 0px 8px",
-                                            color: "white"
+                                            color: "white",
+                                            paddingLeft:"40px"
+                                            
                                         }}>Full Name</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
                                             fontSize: "18px",
-                                            textAlign: "center",
-                                            color: "white"
+                                            textAlign: "start",
+                                            color: "white",
+                                             paddingLeft:"0px"
                                         }} className="MuiTableCell-root-head">Email</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
@@ -248,8 +255,9 @@ const UserManagement = () => {
                                         <TableRow key={index} sx={{
                                             border: "2px solid #FFA100"
                                         }} className="MuiTableRow-root">
-                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">{user.name}</TableCell>
-                                            <TableCell className="MuiTableCell-root">{user.email}</TableCell>
+                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign:"start !important", paddingLeft:"40px !important"
+                                            }} className="MuiTableCell-root">{user.name}</TableCell>
+                                            <TableCell sx={{textAlign:"start !important", paddingLeft:"0px !important"}} className="MuiTableCell-root">{user.email}</TableCell>
                                             <TableCell className="MuiTableCell-root">{user.checkins}</TableCell>
                                             <TableCell className="MuiTableCell-root">{formatDate(user.date)}</TableCell>
                                             <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">

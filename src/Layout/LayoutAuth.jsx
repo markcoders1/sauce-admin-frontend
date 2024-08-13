@@ -1,14 +1,16 @@
 import { Box } from "@mui/material";
 import {Outlet } from "react-router-dom";
 import React from 'react'
-// import background1 from "../../assets/images/LoginImg.png";
-// import background2 from "../../assets/images/SignupBackground.png";
+
+import backgroundImg1 from '../assets/backgroundImg1.png';
+import authBg from '../assets/authBg.png'
+
 
 
 
 import { useLocation } from "react-router-dom";
 
-const LayoutSinglePage = () => {
+const LayoutAuth = () => {
 
     const location = useLocation();
 
@@ -28,12 +30,7 @@ const LayoutSinglePage = () => {
               height: "100vh",
             },
     
-            p: {
-              md: "20px 20px",
-            },
-            // maxWidth: "1440px",
-            margin: "0 auto",
-            
+           
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -43,7 +40,18 @@ const LayoutSinglePage = () => {
             minWidth: {
               md: "400px"
             },
-          
+            backgroundImage: `url(${backgroundImg1})`,
+            backgroundColor: "black",
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundAttachment: "fixed",
+
+            // border:"2px solid red",
+            p:{
+              sm:"20px",
+              xs:"0px"
+            }
           }}
         >
             <Box
@@ -57,24 +65,36 @@ const LayoutSinglePage = () => {
                     md:"1"
                 },
                 p: {
-                  md: "23px 30px",
+                  md: "100px 120px",
                   xs: "60px 20px",
       
                 },
-                mt:"50px",
-
-
-
-                
-                // bgcolor:"red"
-                ml:{
-                  sm:"70px",
-                  xs:"0px"
-
-                }
+                // backgroundColor:"red"
               }}
             >
             <Outlet/>
+            </Box>
+            <Box
+             sx={{
+                flexBasis: {
+                  xs: "34 %",
+                },
+                
+                // flexShrink: "1",
+                flexGrow: {
+                    lg:"0",
+                    md:"1"
+                },
+               
+               
+              }}
+            >
+           <img src={authBg} alt="" 
+           style={{
+            width:"100%",
+            height:"100%",
+           }}
+           />
             </Box>
          
         </Box>
@@ -82,4 +102,4 @@ const LayoutSinglePage = () => {
   )
 }
 
-export default LayoutSinglePage
+export default LayoutAuth

@@ -1,10 +1,8 @@
-// Redux/Slice/UserSlice/UserSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
   name: 'auth',
-  initialState :{
-  
+  initialState: {
     accessToken: null,
     refreshToken: null,
     _id: null,
@@ -13,6 +11,7 @@ const userSlice = createSlice({
     createdAt: null,
     updatedAt: null,
     authenticated: false,
+    type:null
   },
   reducers: {
     handleAuth: (state, action) => {

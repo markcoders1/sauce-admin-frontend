@@ -133,7 +133,7 @@ const SauceManagement = () => {
                             name="search"
                             id="search"
                             className="search-input"
-                            placeholder="Search Sauce..."
+                            placeholder="Search"
                             value={searchTerm}
                             onChange={handleSearchChange}
                         />

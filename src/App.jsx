@@ -13,21 +13,21 @@ import EventsManagement from './Pages/EventsManagement/EventsManagement';
 import AddEvent from './Pages/AddEvent/AddEvent';
 import AddBrand from "./Pages/AddBrand/AddBrand";
 import AddSpecificSauce from "./Pages/AddSpecificSauce/AddSpecificSauce";
-import LayoutSinglePage from "./Layout/LayoutAuth";
+import LayoutAuth from "./Layout/LayoutAuth";
 import SignIn from "./PagesAuth/Login/Login";
-
+import ForgetPassword from "./PagesAuth/ForgetPassword/ForgetPassword";
+import EditBrandDetails from "./Pages/EditBrandDetails/EditBrandDetails";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-      <Route path='/auth' element={<LayoutSinglePage />}>
+      <Route path='/auth' element={<LayoutAuth />}>
               <Route path='' element={<SignIn />} />
-              {/* <Route path='signup' element={<Signup />} />
-              <Route path='otp' element={<OTP />} />
-              <Route path='setpassword' element={<SetPassword />} />
-              <Route path='submit-email-for-otp' element={<EmailFieldForgot />} /> */}
+              <Route path='forget-password' element={<ForgetPassword />} />
+
+              
             </Route>
 
         <Route path='/' element={<DashboardLayout />}>
@@ -42,6 +42,8 @@ function App() {
           <Route path="add-event" element={<AddEvent />} />
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="add-specific-sauce" element={<AddSpecificSauce />} />
+          <Route path="edit-brand-details/:id" element={<EditBrandDetails />} />
+
 
         </Route>
         <Route path="*" element={<>Page Not Found</>} />

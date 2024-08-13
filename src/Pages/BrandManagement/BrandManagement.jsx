@@ -84,6 +84,9 @@ const SauceManagement = () => {
         navigate(`/taboo-management/${id}`);
     }
 
+    const navigateToEdit = (id) => {
+        navigate(`/edit-brand-details/${id}`)
+    }
     return (
         <>
             {loading ? (
@@ -114,7 +117,7 @@ const SauceManagement = () => {
                                     name="search"
                                     id="search"
                                     className="search-input"
-                                    placeholder="Search Sauce..."
+                                    placeholder="Search"
                                     value={searchTerm}
                                     onChange={handleSearchChange}
                                 />
@@ -161,31 +164,36 @@ const SauceManagement = () => {
                                             fontWeight: "500",
                                             padding: "0px 0px",
                                             fontSize: "21px",
-                                            textAlign: "center",
+                                            textAlign: "start",
                                             borderRadius: "8px 0px 0px 8px",
                                             color: "white",
+                                            paddingLeft:"50px"
+
                                         }}>Image</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
                                             fontSize: "21px",
-                                            textAlign: "center",
-                                            color: "white"
+                                            textAlign: "start",
+                                            color: "white",
+                                            paddingLeft:"10px"
                                         }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
                                             fontSize: "21px",
-                                            textAlign: "center",
-                                            color: "white"
+                                            textAlign: "start",
+                                            color: "white",
+                                              paddingLeft:"10px"
                                         }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
                                             fontSize: "21px",
-                                            textAlign: "center",
+                                            textAlign: "start",
                                             borderRadius: "0px 8px 8px 0px",
-                                            color: "white"
+                                            color: "white",
+                                              paddingLeft:"10px"
                                         }} className="MuiTableCell-root-head">Action</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -193,15 +201,24 @@ const SauceManagement = () => {
                                     {filteredEmployees.map((brand, index) => (
                                         <TableRow key={index} sx={{
                                             border: "2px solid #FFA100"
-                                        }} className="MuiTableRow-root" onClick={() => handleNavigate(brand._id)}>
-                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
+                                        }} className="MuiTableRow-root" >
+                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"40px !important", textAlign:"start !important"}} className="MuiTableCell-root">
                                                 <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
                                             </TableCell>
-                                            <TableCell className="MuiTableCell-root">{brand.name}</TableCell>
-                                            <TableCell className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>
-                                            <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
-                                                <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                    <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                            <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{brand.name}</TableCell>
+                                            <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>
+                                            <TableCell sx={{ borderRadius: "0px 8px 8px 0px",textAlign:"start !important" }} className="MuiTableCell-root">
+                                                <Box sx={{ display: "flex", gap: "30px",   justifyContent: "start", alignItems:"center" }}>
+                                                    <CustomButton
+                                                    border='1px solid #FFA100'
+                                                    ButtonText={"View Sauces"}
+                                                    color='white'
+                                                    width={"128px"}
+                                                    borderRadius='6px'
+                                                    buttonStyle={{ height: "45px" }}
+                                                    onClick={() => handleNavigate(brand._id)}
+                                                    />
+                                                    <img  className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border:"0  px solid red", borderRadius:"10px",padding:"8px" }} onClick={() => navigateToEdit(brand._id)} />
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
