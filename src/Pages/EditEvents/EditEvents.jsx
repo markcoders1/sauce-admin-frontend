@@ -123,7 +123,7 @@ const EditEvents = () => {
     }
   };
 
-  const fetchBrands = async () => {
+  const fetchEvents = async () => {
     try {
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/get-event`,
@@ -131,17 +131,19 @@ const EditEvents = () => {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
         },
-       
+       params : {
+        eventId : "66b63c8d4c6971510e11ae6b"
+       }
       });
       console.log(response);
-      setAllBrands(response?.data?.users);
+   
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error fetching events:', error);
     }
   };
 
   useEffect(() => {
-    fetchBrands();
+    fetchEvents();
   }, []);
 
   const handleBrandChange = (ownerId) => {
@@ -167,7 +169,7 @@ const EditEvents = () => {
         },
         fontFamily: "Fira Sans !important",
       }}>
-        Add Event
+        Edit Event
       </Typography>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>

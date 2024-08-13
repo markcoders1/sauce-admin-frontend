@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
@@ -40,7 +40,26 @@ const EditBrandDetails = () => {
       }));
     }
   };
+  const fetchUser = async () => {
+    try {
+      const response = await axios({
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-user/${id}`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+        },
+      
+      });
+      console.log(response);
+   
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
   const handleTypeChange = (selectedType) => {
     setFormData((prevFormData) => ({ ...prevFormData, type: selectedType }));
   };
