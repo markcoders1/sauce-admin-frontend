@@ -54,7 +54,7 @@ const Login = () => {
                 sessionStorage.setItem("accessToken", userData.token);
                 localStorage.setItem("accessToken", userData.token);
 
-                if (userData.type === "user") {
+                if (userData.type === "admin") {
                     navigate("/user-management");
                 }
 

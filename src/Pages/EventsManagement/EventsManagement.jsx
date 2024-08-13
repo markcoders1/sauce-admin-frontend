@@ -79,6 +79,10 @@ const EventsManagement = () => {
         event.owner.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleNavigateToEdit = (id) => {
+        navigate(`/edit-event-details/${id}`)
+    }
+
     return (
 
         <>
@@ -226,7 +230,7 @@ const EventsManagement = () => {
                                     <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                            <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                            <img onClick={()=>handleNavigateToEdit(event._id)} src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
                                         </Box>
                                     </TableCell>
                                 </TableRow>

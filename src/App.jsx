@@ -17,6 +17,7 @@ import LayoutAuth from "./Layout/LayoutAuth";
 import SignIn from "./PagesAuth/Login/Login";
 import ForgetPassword from "./PagesAuth/ForgetPassword/ForgetPassword";
 import EditBrandDetails from "./Pages/EditBrandDetails/EditBrandDetails";
+import EditEvents from "./Pages/EditEvents/EditEvents";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="add-specific-sauce" element={<AddSpecificSauce />} />
           <Route path="edit-brand-details/:id" element={<EditBrandDetails />} />
+          <Route path="edit-event-details/:id" element={<EditEvents />} />
+
 
 
         </Route>

@@ -17,7 +17,6 @@ const EditBrandDetails = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-  
     bannerImage: null,
     type: '', // select field
     status: '', // radio input
@@ -29,51 +28,54 @@ const EditBrandDetails = () => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setFormData({
-        ...formData,
+      setFormData((prevFormData) => ({
+        ...prevFormData,
         [name]: files[0]
-      });
+      }));
       setSelectedFileName(files[0]?.name || ""); // Update selected file name
     } else {
-      setFormData({
-        ...formData,
+      setFormData((prevFormData) => ({
+        ...prevFormData,
         [name]: value
-      });
+      }));
     }
   };
 
   const handleTypeChange = (selectedType) => {
-    setFormData({ ...formData, type: selectedType });
+    setFormData((prevFormData) => ({ ...prevFormData, type: selectedType }));
   };
 
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
-    const data = new FormData();
-    data.append('name', formData.name);
-    data.append('email', formData.email);
-
-    data.append('bannerImage', formData.bannerImage); // Append the file
-    data.append('type', formData.type);
-    data.append('status', formData.status);
-    data.append('points', formData.points);
+    // const data = new FormData();
+    // data.append('name', formData.name);
+    // data.append('email', formData.email);
+    // data.append('bannerImage', formData.bannerImage); // Append the file
+    // data.append('type', formData.type);
+    // data.append('status', formData.status);
+    // data.append('points', formData.points);
 
     try {
-        console.log("data going",data)
+      // console.log("data going", data);
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/edit-user",
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-user`,
         method: "post",
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
           'Content-Type': 'multipart/form-data'
         },
-        data: data
+
+        data: {
+          email : formData.email,
+          name : formData.name
+        }
       });
+      console.log(formData.email)
 
       setFormData({
         name: '',
         email: '',
-
         bannerImage: null,
         type: '',
         status: '',
@@ -86,16 +88,18 @@ const EditBrandDetails = () => {
         open: true,
         message: response?.data?.message,
         severity: "success",
-      })
+      });
 
       console.log(response);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
+      console.log(formData.email)
+
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.error?.message || error?.response?.data?.message,
         severity: "error",
-      })
+      });
     }
   };
 
@@ -117,7 +121,7 @@ const EditBrandDetails = () => {
         },
         fontFamily: "Fira Sans !important",
       }}>
-        Edit Brand 
+        Edit Brand
       </Typography>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
@@ -145,14 +149,13 @@ const EditBrandDetails = () => {
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
+          placeholder="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          error={errors.email}
           />
         </Box>
-      
         <Box sx={{ flexBasis: "33%" }}>
           <CustomSelectForType
             handleChange={handleTypeChange}
@@ -192,14 +195,14 @@ const EditBrandDetails = () => {
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
         />
       </Box>
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}
         open={snackAlertData.open}
-        handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+        handleClose={() => { setSnackAlertData((prev) => ({ ...prev, open: false })) }}
       />
     </Box>
   );
