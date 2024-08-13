@@ -1,8 +1,7 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
-import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useParams } from 'react-router-dom';
@@ -16,25 +15,25 @@ const EditBrandDetails = () => {
   });
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    bannerImage: null,
-    type: '', // select field
-    status: '', // radio input
+    image: null,
+    type: '', // input field
+    status: '', // input field
     points: '' // number input
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
-
-  const [getUser,setGetUser] = useState([])
+  const [currentImage, setCurrentImage] = useState("");
+  const [getUser, setGetUser] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
+      const file = files[0];
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: files[0]
+        [name]: file
       }));
-      setSelectedFileName(files[0]?.name || ""); // Update selected file name
+      setSelectedFileName(file?.name || ""); // Update selected file name
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -42,6 +41,7 @@ const EditBrandDetails = () => {
       }));
     }
   };
+
   const fetchUser = async () => {
     try {
       const response = await axios({
@@ -50,69 +50,82 @@ const EditBrandDetails = () => {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
         },
-      
       });
       console.log(response);
-      setGetUser(response.data.user);
-   
+      const userData = response?.data?.user;
+      setGetUser(userData);
+      setFormData({
+        name: userData?.name,
+        image: null,
+        type: userData?.type,
+        status: userData?.status,
+        points: userData?.points
+      });
+      setCurrentImage(userData.image); // Assuming the API returns the image URL
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching user data:', error);
     }
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
-  const handleTypeChange = (selectedType) => {
-    setFormData((prevFormData) => ({ ...prevFormData, type: selectedType }));
-  };
 
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
-    // const data = new FormData();
-    // data.append('name', formData.name);
-    // data.append('email', formData.email);
-    // data.append('bannerImage', formData.bannerImage); // Append the file
-    // data.append('type', formData.type);
-    // data.append('status', formData.status);
-    // data.append('points', formData.points);
+    const convertToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    };
+
+    let imageBase64 = null;
+    if (formData.image) {
+      imageBase64 = await convertToBase64(formData.image);
+    }
+
+    const data = {
+      name: formData.name,
+      image: imageBase64,
+      type: formData.type,
+      status: formData.status,
+      points: formData.points,
+      userId: id
+    };
 
     try {
-      // console.log("data going", data);
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-user`,
         method: "post",
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
         },
-
-        data: {
-          email : getUser.email,
-          name : formData.name
-        }
+        data: data
       });
+
       setFormData({
         name: '',
-        email: '',
-        bannerImage: null,
+        image: null,
         type: '',
         status: '',
         points: ''
       });
       setSelectedFileName(""); // Reset file name
+      setCurrentImage(''); // Reset current image
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
       });
       console.log(response);
+      setGetUser(response.data.user)
     } catch (error) {
       console.error('Error submitting brand induction:', error);
-      console.log(getUser.email)
-      console.log(formData.name)
-
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.error?.message || error?.response?.data?.message,
@@ -142,9 +155,9 @@ const EditBrandDetails = () => {
         Edit Brand
       </Typography>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
-        <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>{selectedFileName ? `Selected File  ${selectedFileName}` : ("Upload Banner Image")}</Typography>
+        <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
+        <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>{selectedFileName ? `Selected File: ${selectedFileName}` : "Upload Banner Image"}</Typography>
         </label>
       </Box>
 
@@ -158,31 +171,31 @@ const EditBrandDetails = () => {
       }}>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder={getUser.name}
+            placeholder={getUser.name || 'Enter Name'}
             name="name"
             value={formData.name}
             onChange={handleChange}
             error={errors.name}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
-          <CustomInputShadow
-          placeholder="Email"
-          name="email"
-          value={getUser.email}
-          onChange={handleChange}
-          error={errors.email}
-          disabled
-          />
-        </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        {/* <Box sx={{ flexBasis: "33%" }}>
           <CustomSelectForType
             handleChange={handleTypeChange}
             typeError={errors.type}
+            value={formData.type}
+          />
+        </Box> */}
+        <Box sx={{ flexBasis: "33%" }}>
+          <CustomInputShadow
+            placeholder={getUser.type || 'Enter Type'}
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            error={errors.type}
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
-          <RadioGroup
+          {/* <RadioGroup
             row
             name="status"
             value={formData.status}
@@ -190,11 +203,18 @@ const EditBrandDetails = () => {
           >
             <FormControlLabel value="active" control={<Radio />} label="Active" />
             <FormControlLabel value="inactive" control={<Radio />} label="Inactive" />
-          </RadioGroup>
+          </RadioGroup> */}
+          <CustomInputShadow
+            placeholder={getUser.status || 'Enter Status'}
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            error={errors.status}
+          />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Points"
+            placeholder={getUser.points}
             name="points"
             type="number"
             value={formData.points}
