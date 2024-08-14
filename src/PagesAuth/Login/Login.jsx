@@ -152,17 +152,20 @@ const Login = () => {
                     }}>
                         Forgot Password
                     </Typography>
+                    <br />
                     <CustomButton
                         border='1px solid #FFA100'
                         ButtonText='Sign in'
                         color='white'
-                        width={"178px"}
+                        width={"100%"}
                         borderRadius='8px'
                         background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
                         padding='10px 0px'
                         fontSize='18px'
                         fontWeight='600'
                         type="submit"
+                        fullWidth={true}
+                        
                     />
                 </form>
             </Box>
