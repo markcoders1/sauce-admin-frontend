@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { setBrandInfo, clearBrandInfo } from '../../store/brandSlice';
 import { setBrandInfo , clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 
@@ -41,6 +41,7 @@ const TabooManagement = () => {
     const [brandName, setBrandName] = useState([]);
     const [brandEmail, setBrandEmail] = useState([]);
     const dispatch = useDispatch();
+    const auth = useSelector(state=> state.auth)
 
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -52,12 +53,15 @@ const TabooManagement = () => {
                 url: `https://aws.markcoders.com/sauced-backend/api/admin/brand-sauces/${id}`,
                 method: "get",
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 }
             });
             setBrands(response?.data?.sauces || []); // Make sure to use the correct field and default to an empty array
-            const firstBrand = response?.data?.sauces[0]?.owner;
-            dispatch(setBrandInfo({ email: firstBrand?.email, name: firstBrand?.name }));
+            const firstBrand = response?.data?.sauces[0]?.owner.name;
+            setBrandName(firstBrand)
+            console.log(response?.data?.sauces[0]?.owner.name)
+
+            // dispatch(setBrandInfo({ email: firstBrand?.email, name: firstBrand?.name }));
             
             console.log(response);
             setLoading(false);
@@ -90,7 +94,7 @@ const TabooManagement = () => {
     );
 
     const handleNavigate = () => {
-        navigate("/add-specific-sauce")
+        navigate(`/admin/add-specific-sauce/${id}`)
     }
 
     return (

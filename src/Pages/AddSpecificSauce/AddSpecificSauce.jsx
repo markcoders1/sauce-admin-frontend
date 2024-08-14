@@ -7,7 +7,7 @@ import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const  AddSpecificSauce= () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -16,7 +16,9 @@ const  AddSpecificSauce= () => {
     severity: "success"
   });
   const brandInfo = useSelector(state => state.brand);
-  console.log(brandInfo)
+const auth = useSelector(state => state.auth)
+const {id} = useParams();
+  // console.log(brandInfo)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -25,7 +27,7 @@ const  AddSpecificSauce= () => {
     productLink: '',
     details: '',
     ingredients: [''],
-    email: brandInfo.email,
+ 
     type: '',
     title: ""
   });
@@ -88,7 +90,7 @@ const  AddSpecificSauce= () => {
     data.append('ingredients', formData.ingredients);
     data.append('productLink', formData.productLink);
     data.append('websiteLink', formData.websiteLink);
-    data.append('email', formData.email);
+    data.append('userId',id);
     data.append('type', formData.type);
     data.append('title', formData.title);
 
@@ -98,7 +100,7 @@ const  AddSpecificSauce= () => {
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'multipart/form-data'
         },
         data: data
@@ -108,6 +110,17 @@ const  AddSpecificSauce= () => {
         open: true,
         message: response?.data?.message,
         severity: "success",
+      })
+
+      setFormData({
+        sauceName: '',
+    websiteLink: '',
+    productLink: '',
+    details: '',
+    ingredients: [''],
+ 
+    type: '',
+    title: ""
       })
     } catch (error) {
       console.error('Error submitting sauce:', error);

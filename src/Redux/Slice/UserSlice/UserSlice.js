@@ -11,14 +11,18 @@ const userSlice = createSlice({
     createdAt: null,
     updatedAt: null,
     authenticated: false,
-    type:null
+    type: null
   },
   reducers: {
     handleAuth: (state, action) => {
       return { ...state, ...action.payload };
     },
+    logout:  (state, action) => {
+      return { ...state, ...action.payload };
+    
   },
+}
 });
 
-export const { handleAuth } = userSlice.actions;
+export const { handleAuth, logout } = userSlice.actions;
 export default userSlice.reducer;

@@ -100,13 +100,14 @@ const EditSauce = () => {
       websiteLink: formData.websiteLink,
       email: formData.email,
       type: formData.type,
-      title: formData.title
+      title: formData.title,
+      sauceId: id
     };
 
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce/${id}`,
-        method: "put",
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`,
+        method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'application/json'
@@ -313,7 +314,7 @@ const EditSauce = () => {
         </Box>
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        <Heading Heading='Details' />
+      
         <Typography sx={{
           color: "#FFA100",
           fontWeight: "500",
@@ -336,7 +337,7 @@ const EditSauce = () => {
         />
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        <Heading Heading='Ingredients' />
+       
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>

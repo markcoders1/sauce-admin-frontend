@@ -8,6 +8,9 @@ import icon2 from '../../assets/icons-02.png';
 import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
 import logoAdmin from '../../assets/logoAdmin.png';
+import { RxCross2 } from "react-icons/rx";
+import LogoutButton from '../../Components/Logout/Logout';
+
 
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
@@ -50,13 +53,13 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            overflow: 'hidden',
+            // overflow: 'hidden',
           }}
         >
           {isOpen && (
             <>
-  <Typography>
-
+  <Typography sx={{color:"red !important"}} >
+  <RxCross2 style={{color:"red", position:"absolute", top:"-20px", right:"10px", fontSize:"1.3rem", cursor:"pointer"}} onClick={toggleSidebar} />
   </Typography>
             <Box
             sx={{
@@ -280,6 +283,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               </Box>
             </>
           )}
+        <LogoutButton/>
         </Box>
       </Box>
     </Box>

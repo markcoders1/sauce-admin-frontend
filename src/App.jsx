@@ -19,6 +19,8 @@ import EditBrandDetails from "./Pages/EditBrandDetails/EditBrandDetails";
 import EditEvents from "./Pages/EditEvents/EditEvents";
 import EditSauce from "./Pages/EditSauce/EditSauce";
 
+import ProtectedRoute from './Protected/Protected';
+
 function App() {
   return (
     <BrowserRouter>
@@ -27,22 +29,31 @@ function App() {
           <Route index element={<SignIn />} />
           <Route path="forget-password" element={<ForgetPassword />} />
         </Route>
-        <Route path="admin" element={<DashboardLayout />}>
+
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<UserManagement />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="sauce-management" element={<SauceManagement />} />
           <Route path="add-sauce" element={<AddSauce />} />
           <Route path="brand-management" element={<BrandManagement />} />
-          <Route path="taboo-management/:id" element={<TabooManagement />} />
+          <Route path="specific-management/:id" element={<TabooManagement />} />
           <Route path="add-brand-sauce" element={<AddBrandSauce />} />
           <Route path="events-management" element={<EventsManagement />} />
           <Route path="add-event" element={<AddEvent />} />
           <Route path="add-brand" element={<AddBrand />} />
-          <Route path="add-specific-sauce" element={<AddSpecificSauce />} />
+          <Route path="add-specific-sauce/:id" element={<AddSpecificSauce />} />
           <Route path="edit-brand-details/:id" element={<EditBrandDetails />} />
           <Route path="edit-event-details/:id" element={<EditEvents />} />
           <Route path="edit-sauce-details/:id" element={<EditSauce />} />
         </Route>
+
         <Route path="*" element={<>Page Not Found</>} />
       </Routes>
     </BrowserRouter>

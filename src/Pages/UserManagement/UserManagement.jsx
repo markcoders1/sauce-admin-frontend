@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
-import "./TableStyle.css"; // Import the CSS file for custom styles
+import "./TableStyle.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-// import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
 import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
-import axiosInstance from '../../Hooks/AuthHook/AuthHook';
+import EditIcon from '../../assets/EditIcon.png'; 
+import { useNavigate } from 'react-router-dom';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -33,12 +33,10 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
-const appUrl= import.meta.env.VITE_REACT_APP_API_URL
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const UserManagement = () => {
-    const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
-  
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
         message: "",
@@ -50,33 +48,10 @@ const UserManagement = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [action, setAction] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-
-    const accessToken = localStorage.getItem("accessToken")
-    // console.log(accessToken)
-
-   const fetchHello = async () => {
-    try {
-     
-        // setLoading(true);
-        const response = await axios({
-          url: `${appUrl}/admin/get-all-users`,
-          method: "get",
-          params : {
-            type : "user",
-          }
-        });
-        // setLoading(false);
-       console.log(response)
-     
-      } catch (error) {
-        console.error(error);
-
-      }
-   } 
+    const navigate = useNavigate();
 
     const fetchUsers = async () => {
         try {
-            // console.log(auth)
             setLoading(true);
             const response = await axios({
                 url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
@@ -85,10 +60,9 @@ const UserManagement = () => {
                     type: "user"
                 },
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            console.log(response);
             setAllUsers(response?.data?.users);
             setLoading(false);
         } catch (error) {
@@ -97,10 +71,9 @@ const UserManagement = () => {
         }
     };
 
-    const toggleBlock = async (userId) => {
-        console.log(userId);
+    const toggleBlock = (userId, currentStatus) => {
         setSelectedUser(userId);
-        setAction(action === 'active' ? 'block' : 'unblock');
+        setAction(currentStatus === 'active' ? 'block' : 'unblock');
         setModalOpen(true);
     };
 
@@ -119,7 +92,6 @@ const UserManagement = () => {
 
     useEffect(() => {
         fetchUsers();
-        // fetchHello()
     }, []);
 
     const handleSearchChange = (event) => {
@@ -138,6 +110,10 @@ const UserManagement = () => {
         (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+
+    const navigateToEdit = (id) => {
+        navigate(`/admin/edit-brand-details/${id}`);
+    };
 
     return (
         <>
@@ -216,8 +192,7 @@ const UserManagement = () => {
                                             textAlign: "start",
                                             borderRadius: "8px 0px 0px 8px",
                                             color: "white",
-                                            paddingLeft:"40px"
-                                            
+                                            paddingLeft: "40px"
                                         }}>Full Name</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
@@ -225,7 +200,7 @@ const UserManagement = () => {
                                             fontSize: "18px",
                                             textAlign: "start",
                                             color: "white",
-                                             paddingLeft:"0px"
+                                            paddingLeft: "0px"
                                         }} className="MuiTableCell-root-head">Email</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
@@ -256,13 +231,13 @@ const UserManagement = () => {
                                         <TableRow key={index} sx={{
                                             border: "2px solid #FFA100"
                                         }} className="MuiTableRow-root">
-                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign:"start !important", paddingLeft:"40px !important"
+                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign: "start !important", paddingLeft: "40px !important"
                                             }} className="MuiTableCell-root">{user.name}</TableCell>
-                                            <TableCell sx={{textAlign:"start !important", paddingLeft:"0px !important"}} className="MuiTableCell-root">{user.email}</TableCell>
+                                            <TableCell sx={{ textAlign: "start !important", paddingLeft: "0px !important" }} className="MuiTableCell-root">{user.email}</TableCell>
                                             <TableCell className="MuiTableCell-root">{user.checkins}</TableCell>
                                             <TableCell className="MuiTableCell-root">{formatDate(user.date)}</TableCell>
                                             <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
-                                                <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                                                <Box sx={{ display: "flex", gap: "30px", justifyContent: "center" }}>
                                                     <CustomButton
                                                         border='1px solid #FFA100'
                                                         ButtonText={user.status === 'active' ? 'Block' : 'Unblock'}
@@ -270,8 +245,9 @@ const UserManagement = () => {
                                                         width={"98px"}
                                                         borderRadius='6px'
                                                         buttonStyle={{ height: "39px" }}
-                                                        onClick={() => toggleBlock(user._id)}
+                                                        onClick={() => toggleBlock(user._id, user.status)}
                                                     />
+                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => navigateToEdit(user._id)} />
                                                 </Box>
                                             </TableCell>
                                         </TableRow>

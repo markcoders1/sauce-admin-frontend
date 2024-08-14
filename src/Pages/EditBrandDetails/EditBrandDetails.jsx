@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
-import { Box, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const EditBrandDetails = () => {
   const { id } = useParams();
@@ -24,6 +25,7 @@ const EditBrandDetails = () => {
   const [selectedFileName, setSelectedFileName] = useState("");
   const [currentImage, setCurrentImage] = useState("");
   const [getUser, setGetUser] = useState({});
+  const auth = useSelector(state => state.auth)
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -48,7 +50,7 @@ const EditBrandDetails = () => {
         url: `https://aws.markcoders.com/sauced-backend/api/admin/get-user/${id}`,
         method: "get",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+          Authorization: `Bearer ${auth.accessToken}`
         },
       });
       console.log(response);
@@ -102,7 +104,7 @@ const EditBrandDetails = () => {
         url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-user`,
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'application/json'
         },
         data: data
@@ -152,7 +154,7 @@ const EditBrandDetails = () => {
         },
         fontFamily: "Fira Sans !important",
       }}>
-        Edit Brand
+        Edit Brand / User
       </Typography>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
@@ -170,6 +172,17 @@ const EditBrandDetails = () => {
         gap: "1.5rem",
       }}>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+          }}>
+            Name
+          </Typography>
           <CustomInputShadow
             placeholder={getUser.name || 'Enter Name'}
             name="name"
@@ -178,14 +191,18 @@ const EditBrandDetails = () => {
             error={errors.name}
           />
         </Box>
-        {/* <Box sx={{ flexBasis: "33%" }}>
-          <CustomSelectForType
-            handleChange={handleTypeChange}
-            typeError={errors.type}
-            value={formData.type}
-          />
-        </Box> */}
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+          }}>
+            Type
+          </Typography>
           <CustomInputShadow
             placeholder={getUser.type || 'Enter Type'}
             name="type"
@@ -195,15 +212,17 @@ const EditBrandDetails = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
-          {/* <RadioGroup
-            row
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="active" control={<Radio />} label="Active" />
-            <FormControlLabel value="inactive" control={<Radio />} label="Inactive" />
-          </RadioGroup> */}
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+          }}>
+            Status
+          </Typography>
           <CustomInputShadow
             placeholder={getUser.status || 'Enter Status'}
             name="status"
@@ -213,6 +232,17 @@ const EditBrandDetails = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+          }}>
+            Points
+          </Typography>
           <CustomInputShadow
             placeholder={getUser.points}
             name="points"

@@ -38,7 +38,8 @@ const SauceManagement = () => {
     const [loading, setLoading] = useState(false)
     const [searchTerm, setSearchTerm] = useState('');
     const [allBrands, setAllBrands] = useState([])
-    const brandInfo = useSelector(state => state.brand)
+    const brandInfo = useSelector(state => state.brand);
+    const auth = useSelector(state => state.auth)
     console.log(brandInfo)
 
     const fetchBrands = async () => {
@@ -48,7 +49,7 @@ const SauceManagement = () => {
                 url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
                 method: "get",
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 }
             });
             setAllBrands(response?.data?.users || []);
@@ -81,11 +82,11 @@ const SauceManagement = () => {
     );
 
     const handleNavigate = (id) => {
-        navigate(`/taboo-management/${id}`);
+        navigate(`/admin/specific-management/${id}`);
     }
 
     const navigateToEdit = (id) => {
-        navigate(`/edit-brand-details/${id}`)
+        navigate(`/admin/edit-brand-details/${id}`)
     }
     return (
         <>

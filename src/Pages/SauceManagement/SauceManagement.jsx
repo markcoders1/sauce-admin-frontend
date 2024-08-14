@@ -10,6 +10,7 @@ import SauceIcon from '../../assets/sauceImg.png'; // Adjust path as needed
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import { useSelector } from 'react-redux';
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -42,6 +43,7 @@ const SauceManagement = () => {
 
 
     const [allSauce, setAllSauce] = useState([]);
+    const auth = useSelector(state => state.auth)
 
     const fetchSauce = async () => {
         setLoading(true)
@@ -50,7 +52,7 @@ const SauceManagement = () => {
                 url: "https://sauced-backend.vercel.app/api/get-sauces?type=all",
                 method: "get",
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 },
                 // params: {
                 //     type : "all"
@@ -90,7 +92,7 @@ const SauceManagement = () => {
     );
 
     const handleNavigateToEdit = (id) => {
-        navigate(`/edit-sauce-details/${id}`);
+        navigate(`/admin/edit-sauce-details/${id}`);
     };
 
 
@@ -232,7 +234,7 @@ const SauceManagement = () => {
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
                                     <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign:"start !important", paddingLeft:"40px !important" }} className="MuiTableCell-root">
-                                        <img src={sauce.bannerImage} alt="Sauce" style={{ width: '90px', height: '100%', borderRadius: '8px' , objectFit:"contain"}} />
+                                        <img src={sauce.bannerImage} alt="Sauce" style={{ width: '90px', height: '60px', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
                                     <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} className="MuiTableCell-root">{sauce.owner.name}</TableCell>
                                     <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} className="MuiTableCell-root">{sauce.name}</TableCell>

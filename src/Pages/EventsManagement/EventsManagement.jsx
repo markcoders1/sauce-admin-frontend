@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
 import PageLoader from '../../Components/Loader/PageLoader';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -35,6 +36,7 @@ const EventsManagement = () => {
     const [loading, setLoading] = useState(false)
     const [allEvents, setAllEvents] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const auth = useSelector(state => state.auth)
     
     const fetchEvents = async () => {
         setLoading(true)
@@ -44,7 +46,7 @@ const EventsManagement = () => {
                 url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-events",
                 method: "get",
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 }
             });
             console.log(response?.data?.events);
@@ -79,7 +81,7 @@ const EventsManagement = () => {
     );
 
     const handleNavigateToEdit = (id) => {
-        navigate(`/edit-event-details/${id}`);
+        navigate(`/admin/edit-event-details/${id}`);
     };
 
     return (

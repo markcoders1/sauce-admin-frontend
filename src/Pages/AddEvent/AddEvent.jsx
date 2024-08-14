@@ -6,6 +6,7 @@ import axios from 'axios';
 import CustomSelect from '../../Components/CustomSelect/CustomSelect';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import { useSelector } from 'react-redux';
 
 const AddSEvent = () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -13,6 +14,7 @@ const AddSEvent = () => {
     message: "",
     severity: "success"
   });
+  const auth = useSelector(state => state.auth)
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
@@ -88,7 +90,7 @@ const AddSEvent = () => {
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'multipart/form-data'
         },
         data: data
@@ -125,7 +127,7 @@ const AddSEvent = () => {
         url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
         method: "get",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+          Authorization: `Bearer ${auth.accessToken}`
         }
       });
       console.log(response);

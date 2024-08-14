@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import CustomButton from '../CustomButton/CustomButton';
 import SnackAlert from '../SnackAlert/SnackAlert';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -17,6 +18,7 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
         severity: "success",
         open: false,
     });
+    const auth = useSelector(state => state.auth);
 
     const handleConfirm = async () => {
         setSnackAlertData({
@@ -31,10 +33,10 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
                 url: `https://sauced-backend.vercel.app/api/admin/block-unblock-user`,
                 method: "post",
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`
+                    Authorization: `Bearer ${auth.accessToken}`
                 },
                 data: { 
-                    userId: userId
+                    userId: userId,
                 }
             });
 
@@ -97,20 +99,31 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
                             {action === 'block' ? 'Block User' : 'Unblock User'}
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
-                            Are you sure you want to {action} this user?
+                            Are you sure you want to {action === 'unblock' ? 'unblock' : 'block'} this user?
                         </Typography>
-                        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+                        <Box sx={{ display: "flex", justifyContent: "center", mt: 4, gap: "1rem" }}>
                             <CustomButton
                                 loading={loading}
                                 border="1px solid #FFA100"
                                 borderRadius="10px"
-                                background="#2e210a"
+                                background={loading ? "#8B4513" : "#2e210a"}  // Light brown color when loading
                                 hoverBg="#FFA100"
                                 hovercolor="#1A0049"
                                 buttonStyle={{ padding: "10px 20px" }}
                                 ButtonText="Confirm"
                                 color={"white"}
                                 onClick={handleConfirm}
+                            />
+                            <CustomButton
+                                border="1px solid #FFA100"
+                                borderRadius="10px"
+                                background="#2e210a"
+                                hoverBg="#FFA100"
+                                hovercolor="#1A0049"
+                                buttonStyle={{ padding: "10px 20px" }}
+                                ButtonText="Cancel"
+                                color={"white"}
+                                onClick={handleClose}
                             />
                         </Box>
                     </Box>

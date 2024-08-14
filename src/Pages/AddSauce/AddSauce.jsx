@@ -5,6 +5,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import { useSelector } from 'react-redux';
 
 const AddSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -27,6 +28,7 @@ const AddSauce = () => {
   const [errors, setErrors] = useState({});
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const auth = useSelector(state => state.auth)
 
   const handleChange = (e) => {
     setFormData({
@@ -91,7 +93,7 @@ const AddSauce = () => {
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'multipart/form-data'
         },
         data: data
