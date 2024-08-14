@@ -18,7 +18,7 @@ const LayoutAuth = () => {
     <div>
         <Box
         sx={{
-            backgroundColor:"brown",
+         
             boxSizing: "border-box",
             fontFamily: "Poppins",
             width: {
@@ -47,7 +47,7 @@ const LayoutAuth = () => {
             backgroundPosition: 'center',
             backgroundAttachment: "fixed",
 
-            // border:"2px solid red",
+         
             p:{
               sm:"20px",
               xs:"0px"

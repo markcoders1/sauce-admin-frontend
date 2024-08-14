@@ -72,7 +72,7 @@ const SauceManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event?.target?.value);
     };
 
     const formatDate = (dateString) => {
@@ -84,9 +84,14 @@ const SauceManagement = () => {
     };
 
     const filteredEmployees = allSauce.filter(employee =>
-        employee.owner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+        employee?.owner?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleNavigateToEdit = (id) => {
+        navigate(`/edit-sauce-details/${id}`);
+    };
+
 
     return (
 
@@ -179,55 +184,61 @@ const SauceManagement = () => {
                                     fontWeight: "500",
                                     padding: "0px 0px",
                                     fontSize: "21px",
-                                    textAlign: "center",
+                                    textAlign: "start",
                                     borderRadius: "8px 0px 0px 8px",
-                                    color: "white"
+                                    color: "white",
+                                    paddingLeft:"40px"
                                 }}>Image</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "21px",
-                                    textAlign: "center",
-                                    color: "white"
+                                    textAlign: "start",
+                                    color: "white",
+                                       paddingLeft:"40px"
                                 }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "21px",
-                                    textAlign: "center",
-                                    color: "white"
+                                    textAlign: "start",
+                                    color: "white",
+                                     paddingLeft:"40px"
+                                    
                                 }} className="MuiTableCell-root-head">Sauce Name</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "21px",
-                                    textAlign: "center",
-                                    color: "white"
+                                    textAlign: "start",
+                                    color: "white",
+                                     paddingLeft:"40px"
                                 }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
                                     fontSize: "21px",
-                                    textAlign: "center",
+                                    textAlign: "start",
                                     borderRadius: "0px 8px 8px 0px",
-                                    color: "white"
+                                    color: "white",
+                                     paddingLeft:"40px"
                                 }} className="MuiTableCell-root-head">Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody className="MuiTableBody-root">
-                            {filteredEmployees.map((employee, index) => (
+                            {filteredEmployees.map((sauce, index) => (
                                 <TableRow key={index} sx={{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
-                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
-                                        <img src={employee.bannerImage} alt="Sauce" style={{ width: '50px', height: '100%', borderRadius: '8px' , objectFit:"contain"}} />
+                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign:"start !important", paddingLeft:"40px !important" }} className="MuiTableCell-root">
+                                        <img src={sauce.bannerImage} alt="Sauce" style={{ width: '90px', height: '100%', borderRadius: '8px' , objectFit:"contain"}} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.owner.name}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{employee.name}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(employee.owner.date)}</TableCell>
-                                    <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
+                                    <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} className="MuiTableCell-root">{sauce.owner.name}</TableCell>
+                                    <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} className="MuiTableCell-root">{sauce.name}</TableCell>
+                                    <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} className="MuiTableCell-root">{formatDate(sauce.owner.date)}</TableCell>
+                                    <TableCell sx={{textAlign:"start !important", paddingLeft:"40px !important"}} sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                            <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                            <img onClick={() => handleNavigateToEdit(sauce._id)} src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
                                         </Box>
                                     </TableCell>
                                 </TableRow>

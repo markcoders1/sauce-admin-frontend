@@ -1,14 +1,37 @@
-.anchortag{
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+  
+  .active-nav-link {
+    text-decoration: none;
+    color: red;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 12px;
+    padding: 5px 5px;
+    transition: .3s ease-in all;
+  }
+  
+  .active-nav-link .MuiTypography-root {
+    color: red !important;
+  }
+  
+  .anchortag {
     font-weight: 600;
     font-size: 1.2rem;
     color: #6985bd;
     transition: .3s ease-in all;
-
-}
-.anchorActive{
+  }
+  
+  .anchorActive {
     font-weight: 600;
-    font-size: 1.25rem;
-    color:  rgb(119, 119, 119);
+    font-size: 1.2rem;
+    color: rgb(119, 119, 119);
     transition: .3s ease-in all;
-
-}
+  }
+  

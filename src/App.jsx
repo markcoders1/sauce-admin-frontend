@@ -18,6 +18,7 @@ import SignIn from "./PagesAuth/Login/Login";
 import ForgetPassword from "./PagesAuth/ForgetPassword/ForgetPassword";
 import EditBrandDetails from "./Pages/EditBrandDetails/EditBrandDetails";
 import EditEvents from "./Pages/EditEvents/EditEvents";
+import EditSauce from "./Pages/EditSauce/EditSauce";
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
           <Route path="add-specific-sauce" element={<AddSpecificSauce />} />
           <Route path="edit-brand-details/:id" element={<EditBrandDetails />} />
           <Route path="edit-event-details/:id" element={<EditEvents />} />
+          <Route path="edit-sauce-details/:id" element={<EditSauce />} />
+
 
 
 
