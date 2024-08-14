@@ -61,6 +61,7 @@ const SauceManagement = () => {
             setLoading(false)
         } catch (error) {
             console.error('Error fetching events:', error);
+            setLoading(false);
         }
     };
 
@@ -163,7 +164,7 @@ const SauceManagement = () => {
                             padding='10px 0px'
                             fontSize='18px'
                             fontWeight='600'
-                            onClick={() => navigate("/add-sauce")}
+                            onClick={() => navigate("/admin/add-sauce")}
                         />
                     </Box>
                 </Box>

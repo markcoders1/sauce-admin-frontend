@@ -10,6 +10,8 @@
 body {
   background-image: url('./assets/backgroundImg1.png');
   background-color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /* Custom Scrollbar Styles */

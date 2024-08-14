@@ -89,10 +89,11 @@ const UserManagement = () => {
                 }
             });
             console.log(response);
-            setAllUsers(response?.data?.users || []);
+            setAllUsers(response?.data?.users);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching users:', error);
+            setLoading(false);
         }
     };
 

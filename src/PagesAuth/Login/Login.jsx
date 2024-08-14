@@ -55,7 +55,7 @@ const Login = () => {
                 localStorage.setItem("accessToken", userData.token);
 
                 if (userData.type === "admin") {
-                    navigate("/user-management");
+                    navigate("/admin");
                 }
 
             } catch (error) {

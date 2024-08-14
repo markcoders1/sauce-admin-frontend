@@ -142,7 +142,7 @@ const SauceManagement = () => {
                                     padding='10px 0px'
                                     fontSize='18px'
                                     fontWeight='600'
-                                    onClick={() => navigate("/add-brand")}
+                                    onClick={() => navigate("/admin/add-brand")}
                                 />
                             </Box>
                         </Box>

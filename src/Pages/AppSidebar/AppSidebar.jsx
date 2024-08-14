@@ -7,6 +7,8 @@ import icon1 from '../../assets/icons-01.png';
 import icon2 from '../../assets/icons-02.png';
 import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
+import logoAdmin from '../../assets/logoAdmin.png';
+
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -25,33 +27,19 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         mt: '40px',
         p: '1px 7px',
         transition: 'width 0.3s ease-in-out',
+        position:"relative"
       }}
     >
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '50px',
+   
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            borderRadius: '12px',
-            backgroundColor: 'white',
-            width: '50px',
-            height: '50px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={toggleSidebar}
-        >
-          <img src={hambergImg} alt="Toggle Sidebar" />
-        </Box>
-        
+     
         {/* Sidebar Content when Open */}
         <Box
           sx={{
@@ -67,11 +55,34 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         >
           {isOpen && (
             <>
+  <Typography>
+
+  </Typography>
+            <Box
+            sx={{
+              display:"flex",
+              justifyContent:"center",
+              alignItems:"center",
+              mt:"0px"
+            }}
+            >
+              <img src={logoAdmin} alt="" 
+              style={{
+               width:"150px"
+              }}
+              />
+            </Box>
+
+    
+
               <NavLink
-                to="/user-management"
+                to="/admin/user-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
                 }
+                style={{
+                  marginTop:"40px"
+                }}
               >
                 <Box
                   sx={{
@@ -80,19 +91,20 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     gap: '10px',
                     p: '5px 5px',
                     borderRadius: '12px',
+                    
                   }}
                 >
                   <Typography sx={{    borderRadius: '50%',
                   backgroundColor: 'white',
                   width: '50px',
                   height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon1} style={{ width: '19px' }} alt="User Management" />
+                  <img src={icon1} style={{ width: '27px' }} alt="User Management" />
                   </Typography>
                   <Typography>User Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
-                to="/sauce-management"
+                to="/admin/sauce-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
                 }
@@ -116,7 +128,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 </Box>
               </NavLink>
               <NavLink
-                to="/brand-management"
+                to="/admin/brand-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
                 }
@@ -134,13 +146,13 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   backgroundColor: 'white',
                   width: '50px',
                   height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon2} style={{ width: '19px' }} alt="Brand Management" />
+                  <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
                   </Typography>
                   <Typography>Brand Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
-                to="/events-management"
+                to="/admin/events-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
                 }
@@ -158,7 +170,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   backgroundColor: 'white',
                   width: '50px',
                   height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon4} style={{ width: '19px' }} alt="Events Management" />
+                  <img src={icon4} style={{ width: '23px' }} alt="Events Management" />
                   </Typography>
                   <Typography>Events Management</Typography>
                 </Box>
@@ -180,6 +192,21 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             overflow: 'hidden',
           }}
         >
+             <Box
+          sx={{
+            borderRadius: '12px',
+            backgroundColor: 'white',
+            width: '50px',
+            height: '50px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+          onClick={toggleSidebar}
+        >
+          <img src={hambergImg} alt="Toggle Sidebar" />
+        </Box>
           {!isOpen && (
             <>
               <Box
@@ -194,8 +221,9 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   cursor: 'pointer',
                   color: 'black',
                   fontWeight: '600',
+                  mt:"40px"
                 }}
-                onClick={() => handleNavigate('/user-management')}
+                onClick={() => handleNavigate('/admin/user-management')}
               >
                 <img src={icon1} style={{ width: '55%', zIndex: '100' }} alt="User Management" />
               </Box>
@@ -212,7 +240,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   color: 'black',
                   fontWeight: '600',
                 }}
-                onClick={() => handleNavigate('/sauce-management')}
+                onClick={() => handleNavigate('/admin/sauce-management')}
               >
                 <img src={icon3} style={{ width: '45%', zIndex: '100' }} alt="Sauce Management" />
               </Box>
@@ -229,7 +257,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   color: 'black',
                   fontWeight: '600',
                 }}
-                onClick={() => handleNavigate('/brand-management')}
+                onClick={() => handleNavigate('/admin/brand-management')}
               >
                 <img src={icon2} style={{ width: '55%', zIndex: '100' }} alt="Brand Management" />
               </Box>
@@ -246,7 +274,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   color: 'black',
                   fontWeight: '600',
                 }}
-                onClick={() => handleNavigate('/events-management')}
+                onClick={() => handleNavigate('/admin/events-management')}
               >
                 <img src={icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
               </Box>
