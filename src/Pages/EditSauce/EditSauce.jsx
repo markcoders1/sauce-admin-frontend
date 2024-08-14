@@ -92,22 +92,21 @@ const EditSauce = () => {
   const handleSubmit = async () => {
     const data = {
       image: sauceImage,
-    //   bannerImage: bannerImage
-    //   name: formData.sauceName,
-    //   description: formData.details,
-    //   ingredients: formData.ingredients,
-    //   productLink: formData.productLink,
-    //   websiteLink: formData.websiteLink,
-     
+      bannerImage: bannerImage,
+      name: formData.sauceName,
+      description: formData.details,
+      ingredients: formData.ingredients,
+      productLink: formData.productLink,
+      websiteLink: formData.websiteLink,
+      email: formData.email,
       type: formData.type,
-    //   title: formData.title,
-      sauceId : id
+      title: formData.title
     };
 
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`,
-        method: "post",
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce/${id}`,
+        method: "put",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'application/json'
@@ -129,6 +128,38 @@ const EditSauce = () => {
       });
     }
   };
+
+  const fetchSauce = async () => {
+    try {
+      const response = await axios({
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-sauce/${id}`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`
+        }
+      });
+      console.log(response)
+      const sauceData = response?.data?.sauce;
+      setFormData({
+        sauceName: sauceData.name,
+        websiteLink: sauceData.websiteLink,
+        productLink: sauceData.productLink,
+        details: sauceData.description,
+        ingredients: sauceData.ingredients,
+        email: sauceData.email,
+        type: sauceData.type,
+        title: sauceData.title
+      });
+      setSauceImage(sauceData.image);
+      setBannerImage(sauceData.bannerImage);
+    } catch (error) {
+      console.error('Error fetching sauce data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSauce();
+  }, [id]);
 
   return (
     <Box
@@ -173,6 +204,18 @@ const EditSauce = () => {
         gap: "1.5rem",
       }}>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Sauce Name
+          </Typography>
           <CustomInputShadow
             placeholder="Sauce Name"
             name="sauceName"
@@ -182,6 +225,18 @@ const EditSauce = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Website Link
+          </Typography>
           <CustomInputShadow
             placeholder="Website Link"
             name="websiteLink"
@@ -191,6 +246,18 @@ const EditSauce = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Product Link
+          </Typography>
           <CustomInputShadow
             placeholder="Product Link"
             name="productLink"
@@ -201,16 +268,20 @@ const EditSauce = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}>
+       
         <Box sx={{ flexBasis: "33%" }}>
-          <CustomInputShadow
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-          />
-        </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Type
+          </Typography>
           <CustomInputShadow
             placeholder="Type"
             name="type"
@@ -220,6 +291,18 @@ const EditSauce = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Title
+          </Typography>
           <CustomInputShadow
             placeholder="Title"
             name="title"
@@ -231,6 +314,18 @@ const EditSauce = () => {
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Details' />
+        <Typography sx={{
+          color: "#FFA100",
+          fontWeight: "500",
+          fontSize: {
+              sm: "16px",
+              xs: "16px"
+          },
+          fontFamily: "Montserrat !important",
+          marginBottom: "0.4rem"
+        }}>
+          Details
+        </Typography>
         <CustomInputShadow
           name="details"
           multiline={true}
@@ -245,6 +340,18 @@ const EditSauce = () => {
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>
+              <Typography sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                    sm: "16px",
+                    xs: "16px"
+                },
+                fontFamily: "Montserrat !important",
+                marginBottom: "0.4rem"
+              }}>
+                Ingredient {index + 1}
+              </Typography>
               <CustomInputShadow
                 name={`ingredients-${index}`}
                 multiline={true}
