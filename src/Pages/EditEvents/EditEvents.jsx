@@ -22,7 +22,7 @@ const EditEvents = () => {
     ownerId: "",
     date: '',
     description: '',
-    details: ['',],
+    details: [''],
     destination: '',
     bannerImage: null,
   });
@@ -91,37 +91,37 @@ const EditEvents = () => {
     }
 
     const data = {
-      eventName: formData.eventName,
-      organizedBy: formData.organizedBy,
+      eventName: formData?.eventName,
+      organizedBy: formData?.organizedBy,
       eventDate: Math.floor(new Date(formData.date).getTime() / 1000),
-      venueDescription: formData.description,
-      venueName: formData.destination,
-      owner: formData.ownerId,
+      venueDescription: formData?.description,
+      venueName: formData?.destination,
+    
       bannerImage: imageBase64,
-      eventDetails: formData.details,
+      eventDetails: formData?.details,
       eventId: id,
     };
 
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-event`,
-        method: "post",
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/update-event`,
+        method: "put",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'application/json'
         },
         data: data
       });
-      setFormData({
-        eventName: '',
-        organizedBy: '',
-        ownerId: "",
-        date: '',
-        description: '',
-        details: ['',],
-        destination: '',
-        bannerImage: null,
-      });
+      // setFormData({
+      //   eventName: '',
+      //   organizedBy: '',
+      //   // ownerId: "",
+      //   date: '',
+      //   description: '',
+      //   details: [''],
+      //   destination: '',
+      //   bannerImage: null,
+      // });
       setSelectedBannerFileName(""); // Reset file name
       setSnackAlertData({
         open: true,
@@ -151,13 +151,13 @@ const EditEvents = () => {
       console.log(response);
       const eventData = response?.data?.event;
       setFormData({
-        eventName: eventData.eventName,
-        organizedBy: eventData.organizedBy,
-        ownerId: eventData.owner?._id,
-        date: new Date(eventData.date).toISOString().split('T')[0],
-        description: eventData.venueDescription,
-        details: eventData.eventDetails,
-        destination: eventData.venueName,
+        eventName: eventData?.eventName,
+        organizedBy: eventData?.owner.name,
+        // ownerId: eventData?.owner?._id,
+        date: new Date(eventData?.eventDate * 1000).toISOString().split('T')[0], // Convert Unix timestamp to 'YYYY-MM-DD' format
+        description: eventData?.venueDescription,
+        details: eventData?.eventDetails || [''], // Ensure details is an array
+        destination: eventData?.venueName,
         bannerImage: null,
       });
       setSelectedBannerFileName(eventData.bannerImage);

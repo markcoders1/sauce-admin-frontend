@@ -24,7 +24,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-      <Route path='/auth' element={<LayoutAuth />}>
+      <Route path='/' element={<LayoutAuth />}>
               <Route path='' element={<SignIn />} />
               <Route path='forget-password' element={<ForgetPassword />} />
 
