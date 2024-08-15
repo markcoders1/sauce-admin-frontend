@@ -32,7 +32,7 @@ const auth = useSelector(state => state.auth);
         outline:"none",
         backgroundColor:"transparent"
     }}
-    onClick={handleLogout}><CgLogOff style={{color:"red", fontSize:"35px"}} /></button>
+    onClick={handleLogout}><CgLogOff style={{color:"red", fontSize:"35px",cursor:"pointer"}} /></button>
   );
 };
 

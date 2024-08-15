@@ -95,7 +95,7 @@ const DashboardLayout = () => {
             width: '100%',
             maxWidth: '100%',
             padding: {
-              sm: '20px',
+              md: '20px',
               xs: '0px 0px',
             },
             borderRadius: '30px',

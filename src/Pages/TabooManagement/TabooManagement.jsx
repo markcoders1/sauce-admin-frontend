@@ -2,14 +2,12 @@ import React, { useState , useEffect} from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
-import "./TabooManagement.css"; // Import the CSS file for custom styles
+import "./TabooManagement.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate, useParams } from 'react-router-dom';
-import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
-import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
+import EditIcon from '../../assets/EditIcon.png';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-// import { setBrandInfo, clearBrandInfo } from '../../store/brandSlice';
 import { setBrandInfo , clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 
 const StyledTabs = styled(Tabs)({
@@ -39,10 +37,8 @@ const TabooManagement = () => {
     const [loading, setLoading] = useState(false);
     const [brands, setBrands] = useState([]);
     const [brandName, setBrandName] = useState([]);
-    const [brandEmail, setBrandEmail] = useState([]);
     const dispatch = useDispatch();
     const auth = useSelector(state=> state.auth)
-
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -56,14 +52,9 @@ const TabooManagement = () => {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            setBrands(response?.data?.sauces || []); // Make sure to use the correct field and default to an empty array
+            setBrands(response?.data?.sauces || []);
             const firstBrand = response?.data?.sauces[0]?.owner.name;
-            setBrandName(firstBrand)
-            console.log(response?.data?.sauces[0]?.owner.name)
-
-            // dispatch(setBrandInfo({ email: firstBrand?.email, name: firstBrand?.name }));
-            
-            console.log(response);
+            setBrandName(firstBrand);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching brands:', error);  
@@ -84,9 +75,9 @@ const TabooManagement = () => {
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, "0");
-        const month = date.toLocaleString('default', { month: 'long' });
+        const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
-        return `${day} ${month} ${year}`;
+        return `${month}/${day}/${year}`;
     };
 
     const filteredBrands = brands.filter(brand =>
@@ -107,6 +98,11 @@ const TabooManagement = () => {
                     xs: "0px 0px 0px 0px"
                 },
                 alignItems: "center",
+                flexDirection: {
+                    md: "row",
+                    xs: "column"
+                },
+                gap: "20px"
             }}>
                 <Typography sx={{
                     color: "white",
@@ -117,11 +113,11 @@ const TabooManagement = () => {
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
-                    {brandName} Brand Management
+                    {brandName}
                 </Typography>
 
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-                    <Box sx={{ position: "relative", width: "300px" }}>
+                    <Box sx={{ position: "relative", width: "100%", maxWidth: "300px" }}>
                         <input
                             type="search"
                             name="search"
@@ -158,7 +154,7 @@ const TabooManagement = () => {
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"600px" }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">
@@ -167,12 +163,15 @@ const TabooManagement = () => {
                                     backgroundColor: "transparent",
                                     padding: "0px"
                                 }}
-                                     className="header-row"
+                                className="header-row"
                             >
                                 <TableCell className="MuiTableCell-root-head" sx={{
                                     fontWeight: "500",
                                     padding: "0px 0px",
-                                    fontSize: "21px",
+                                    fontSize: {
+                                        sm: "21px",
+                                        xs: "16px"
+                                    },
                                     textAlign: "center",
                                     borderRadius: "8px 0px 0px 8px",
                                     color: "white"
@@ -180,22 +179,30 @@ const TabooManagement = () => {
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
-                                    fontSize: "21px",
+                                    fontSize: {
+                                        sm: "21px",
+                                        xs: "16px"
+                                    },
                                     textAlign: "center",
                                     color: "white"
                                 }} className="MuiTableCell-root-head">Brand Name</TableCell>
-                             
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
-                                    fontSize: "21px",
+                                    fontSize: {
+                                        sm: "21px",
+                                        xs: "16px"
+                                    },
                                     textAlign: "center",
                                     color: "white"
                                 }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                 <TableCell sx={{
                                     fontWeight: "500",
                                     padding: "12px 0px",
-                                    fontSize: "21px",
+                                    fontSize: {
+                                        sm: "21px",
+                                        xs: "16px"
+                                    },
                                     textAlign: "center",
                                     borderRadius: "0px 8px 8px 0px",
                                     color: "white"

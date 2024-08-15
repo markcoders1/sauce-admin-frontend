@@ -33,15 +33,14 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const EventsManagement = () => {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [allEvents, setAllEvents] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const auth = useSelector(state => state.auth)
+    const auth = useSelector(state => state.auth);
     
     const fetchEvents = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
-            console.log("https://aws.markcoders.com/sauced-backend/api/admin/get-all-events")
             const response = await axios({
                 url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-events",
                 method: "get",
@@ -49,12 +48,11 @@ const EventsManagement = () => {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            console.log(response?.data?.events);
             setAllEvents(response?.data?.events || []);
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching events:', error);
-            setLoading(false)
+            setLoading(false);
         }
     };
 
@@ -66,13 +64,12 @@ const EventsManagement = () => {
         setSearchTerm(event.target.value);
     };
 
-    const formatDate = (dateInput) => {
-        // Convert to date if it's a Unix timestamp
-        const date = typeof dateInput === 'number' ? new Date(dateInput * 1000) : new Date(dateInput);
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, "0");
-        const month = date.toLocaleString('default', { month: 'long' });
+        const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
-        return `${day} ${month} ${year}`;
+        return `${month}/${day}/${year}`;
     };
 
     const filteredEvents = allEvents.filter(event =>
@@ -114,7 +111,7 @@ const EventsManagement = () => {
                                 fontWeight: "600",
                                 fontSize: {
                                     sm: "45px",
-                                    xs: "46px"
+                                    xs: "30px"
                                 },
                                 fontFamily: "Fira Sans !important",
                             }}>
@@ -122,7 +119,7 @@ const EventsManagement = () => {
                             </Typography>
 
                             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-                                <Box sx={{ position: "relative", width: "300px" }}>
+                                <Box sx={{ position: "relative", width: "100%", maxWidth: "300px" }}>
                                     <input
                                         type="search"
                                         name="search"
@@ -159,7 +156,7 @@ const EventsManagement = () => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ mt: "30px", padding: "0px 20px", minWidth: "700px" }}>
+                        <Box sx={{ mt: "30px", padding: "0px 20px" }}>
                             <TableContainer component={Paper} className="MuiTableContainer-root">
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
@@ -173,7 +170,10 @@ const EventsManagement = () => {
                                             <TableCell className="MuiTableCell-root-head" sx={{
                                                 fontWeight: "500",
                                                 padding: "0px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 borderRadius: "8px 0px 0px 8px",
                                                 color: "white"
@@ -181,35 +181,50 @@ const EventsManagement = () => {
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Events Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Organized By</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Destination</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Start Date</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
-                                                fontSize: "21px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
                                                 textAlign: "center",
                                                 borderRadius: "0px 8px 8px 0px",
                                                 color: "white"

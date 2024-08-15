@@ -12,8 +12,6 @@ import { RxCross2 } from "react-icons/rx";
 import LogoutButton from '../../Components/Logout/Logout';
 import crossIcon from '../../assets/crossIcon.png'
 
-
-
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   
@@ -39,13 +37,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-   
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-     
-        {/* Sidebar Content when Open */}
         <Box
           sx={{
             opacity: isOpen ? 1 : 0,
@@ -55,32 +50,25 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            // overflow: 'hidden',
           }}
         >
           {isOpen && (
             <>
-  <Typography sx={{color:"red !important", position:"absolute", top:"-20px", right:"10px", width:"30px", height:"30px", backgroundColor:"white", display:"flex", justifyContent:"center", alignItems:"center" ,borderRadius:"5px"}} >
-    <img src={crossIcon} alt="" style={{color:"white", width:"20px" , cursor:"pointer"}} onClick={toggleSidebar} />
-  {/* <RxCross2  /> */}
-  </Typography>
-            <Box
-            sx={{
-              display:"flex",
-              justifyContent:"center",
-              alignItems:"center",
-              mt:"0px"
-            }}
-            >
-              <img src={logoAdmin} alt="" 
-              style={{
-               width:"150px"
-              }}
-              />
-            </Box>
-
-    
-
+              <Typography    className={isOpen ? 'logo-admin' : ''} sx={{color:"red !important", position:"absolute", top:"-20px", right:"-5px", width:"30px", height:"30px", backgroundColor:"white", display:"flex", justifyContent:"center", alignItems:"center" ,borderRadius:"5px"}} >
+                <img src={crossIcon} alt="" style={{color:"white", width:"20px" , cursor:"pointer"}} onClick={toggleSidebar} />
+              </Typography>
+              <Box
+                sx={{
+                  display:"flex",
+                  justifyContent:"center",
+                  alignItems:"center",
+                  mt:"0px"
+                }}
+              >
+                <img src={logoAdmin} alt="" 
+                  className={isOpen ? 'logo-admin' : ''}
+                />
+              </Box>
               <NavLink
                 to="/admin/user-management"
                 className={({ isActive }) =>
@@ -97,14 +85,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     gap: '10px',
                     p: '5px 5px',
                     borderRadius: '12px',
-                    
                   }}
                 >
-                  <Typography sx={{    borderRadius: '50%',
-                  backgroundColor: 'white',
-                  width: '50px',
-                  height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon1} style={{ width: '27px' }} alt="User Management" />
+                  <Typography sx={{borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display:"flex", justifyContent:"center", alignItems:"center"}} >
+                    <img src={icon1} style={{ width: '27px' }} alt="User Management" />
                   </Typography>
                   <Typography>User Management</Typography>
                 </Box>
@@ -124,11 +108,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{    borderRadius: '50%',
-                  backgroundColor: 'white',
-                  width: '50px',
-                  height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon3} style={{ width: '19px' }} alt="Sauce Management" />
+                  <Typography sx={{borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display:"flex", justifyContent:"center", alignItems:"center"}} >
+                    <img src={icon3} style={{ width: '19px' }} alt="Sauce Management" />
                   </Typography>
                   <Typography>Sauce Management</Typography>
                 </Box>
@@ -148,11 +129,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{    borderRadius: '50%',
-                  backgroundColor: 'white',
-                  width: '50px',
-                  height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
+                  <Typography sx={{borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display:"flex", justifyContent:"center", alignItems:"center"}} >
+                    <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
                   </Typography>
                   <Typography>Brand Management</Typography>
                 </Box>
@@ -172,11 +150,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{    borderRadius: '50%',
-                  backgroundColor: 'white',
-                  width: '50px',
-                  height: '50px',display:"flex", justifyContent:"center", alignItems:"center"}} >
-                  <img src={icon4} style={{ width: '23px' }} alt="Events Management" />
+                  <Typography sx={{borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display:"flex", justifyContent:"center", alignItems:"center"}} >
+                    <img src={icon4} style={{ width: '23px' }} alt="Events Management" />
                   </Typography>
                   <Typography>Events Management</Typography>
                 </Box>
@@ -185,7 +160,6 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
           )}
         </Box>
 
-        {/* Sidebar Content when Closed */}
         <Box
           sx={{
             opacity: !isOpen ? 1 : 0,
@@ -195,26 +169,28 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            
           }}
         >
-             <Box
-          sx={{
-            borderRadius: '12px',
-            backgroundColor: 'white',
-            width: '50px',
-            height: '50px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={toggleSidebar}
-        >
-          <img src={hambergImg} alt="Toggle Sidebar" />
-        </Box>
+        
           {!isOpen && (
             <>
+           <Box
+            sx={{
+              borderRadius: '12px',
+              backgroundColor: 'white',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+            onClick={toggleSidebar}
+          >
+            <img src={hambergImg} alt="Toggle Sidebar" />
+          </Box>
+
+
               <Box
                 sx={{
                   borderRadius: '50%',
@@ -284,12 +260,9 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
               </Box>
-              
               <LogoutButton/>
-
             </>
           )}
-          
         </Box>
       </Box>
     </Box>

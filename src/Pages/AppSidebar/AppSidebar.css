@@ -35,3 +35,15 @@
     transition: .3s ease-in all;
   }
   
+
+  .logo-admin {
+    animation: fadeIn 1s ease-in-out 1s forwards;
+    opacity: 0; /* Ensure the initial state is hidden */
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  

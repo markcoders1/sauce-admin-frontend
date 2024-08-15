@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs,Tab } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css";
@@ -54,7 +54,7 @@ const UserManagement = () => {
         try {
             setLoading(true);
             const response = await axios({
-                url: "https://sauced-backend.vercel.app/api/admin/get-all-users",
+                url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users",
                 method: "get",
                 params: {
                     type: "user"
@@ -101,9 +101,9 @@ const UserManagement = () => {
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, "0");
-        const month = date.toLocaleString('default', { month: 'long' });
+        const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
-        return `${day} ${month} ${year}`;
+        return `${month}/${day}/${year}`;
     };
 
     const filteredUsers = allUsers.filter(user =>
@@ -144,19 +144,19 @@ const UserManagement = () => {
                             fontWeight: "600",
                             fontSize: {
                                 sm: "45px",
-                                xs: "40px"
+                                xs: "30px"
                             },
                             fontFamily: "Fira Sans !important",
                         }}>
                             Users Management
                         </Typography>
 
-                        <Box sx={{ position: "relative", width: "300px", }}>
+                        <Box sx={{ position: "relative", width: "100%", maxWidth: "300px" }}>
                             <input
                                 type="search"
                                 name="search"
                                 id="search"
-                                className="search-input1"
+                                className="search-input"
                                 placeholder="Search"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
@@ -188,7 +188,10 @@ const UserManagement = () => {
                                         <TableCell className="MuiTableCell-root-head" sx={{
                                             fontWeight: "500",
                                             padding: "0px 0px",
-                                            fontSize: "18px",
+                                            fontSize: {
+                                                sm: "21px",
+                                                xs: "16px"
+                                            },
                                             textAlign: "start",
                                             borderRadius: "8px 0px 0px 8px",
                                             color: "white",
@@ -197,7 +200,10 @@ const UserManagement = () => {
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
-                                            fontSize: "18px",
+                                            fontSize: {
+                                                sm: "21px",
+                                                xs: "16px"
+                                            },
                                             textAlign: "start",
                                             color: "white",
                                             paddingLeft: "0px"
@@ -205,21 +211,30 @@ const UserManagement = () => {
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
-                                            fontSize: "18px",
+                                            fontSize: {
+                                                sm: "21px",
+                                                xs: "16px"
+                                            },
                                             textAlign: "center",
                                             color: "white"
                                         }} className="MuiTableCell-root-head">Check-Ins</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
-                                            fontSize: "18px",
+                                            fontSize: {
+                                                sm: "21px",
+                                                xs: "16px"
+                                            },
                                             textAlign: "center",
                                             color: "white"
                                         }} className="MuiTableCell-root-head">Joining Date</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
                                             padding: "12px 0px",
-                                            fontSize: "18px",
+                                            fontSize: {
+                                                sm: "21px",
+                                                xs: "16px"
+                                            },
                                             textAlign: "center",
                                             borderRadius: "0px 8px 8px 0px",
                                             color: "white"

@@ -1,4 +1,4 @@
-
+/* SauceManagement.css */
 
 .datatable-responsive-demo .MuiTable-root {
     border: none;
@@ -6,86 +6,50 @@
 
 .MuiTable-root {
     border-collapse: separate !important;
-    border-spacing: 0px 15px !important; /* Adjust the spacing as needed */
+    border-spacing: 0px 15px !important;
     border: none !important;
-    /* border: 2px solid red !important; */
-   
-
 }
 
 .MuiTableContainer-root {
     background-color: transparent !important;
-    /* box-shadow: none !important; */
     color: white;
-   
-    
 }
-
-
 
 .MuiTableCell-root {
     color: #FDFDFD;
     text-align: start;
     font-weight: 600;
-    /* padding: 14px !important; */
     background-color: transparent !important;
-    /* border: none !important; */
     font-size: 21px;
-    /* yha per head mai farqpara */
-    /* border: 2px solid red !important;    */
-
-}
-.MuiTableCell-root {
-    /* background-color: yellow !important; */
-    border: none !;
-}
-
-.MuiTableCell-root-  {
-    color: #FDFDFD;
-    text-align: start;
-    font-weight: 600;
-    /* padding: 0px !important; */
-    background-color: transparent !important;
-    /* border: none !important; */
-    /* border: 2px solid red !important; */
-    font-size: 21px;
-        /* border: 2px solid red !important; */
 }
 
 .MuiTableBody-root {
     background-color: transparent !important;
-    border: 2px solid red !important;
 }
 
 .MuiTableBody-root .MuiTableCell-root {
     text-align: start;
- 
     color: white;
     font-weight: 500;
-    /* border: none !important; */
     font-size: 21px;
     background-color: transparent !important;
-    
 }
 
 .MuiTableRow-root {
     background: #2E210A;
     border-radius: 12px !important;
-    border: 2px solid #FFA100 !important; /* Adjust the border color as needed */
-    margin-bottom: 10px !important; /* Space between rows */
+    border: 2px solid #FFA100 !important;
+    margin-bottom: 10px !important;
     color: white !important;
     font-size: 21px;
-   
 }
-
-/* row data hover */
 
 .MuiTableRow-root:hover {
     background: #5A3D0A;
 }
 
 .search-input {
-color: #ffffff;
+    color: #ffffff;
     font-size: 18px;
     padding: 9px 47px 9px 27px;
     border-radius: 12px;
@@ -100,38 +64,116 @@ color: #ffffff;
     color: rgb(155, 135, 135);
 }
 
-.MuiTableCell-root:nth-child(1){
-    /* border-bottom: none !important;   */
-    /* border-bottom: 2px solid red !important; */
-    /* border-top: 2px solid red !important; */
-
-  }
-
-
-.body-row{
-
-
+.MuiTableHead-root {
+    color: #ffffff;
+    font-weight: 500 !important;
+    text-align: start;
+    font-size: 21px !important;
+    background-image: linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important;
+    border-bottom: none !important;
 }
-table tr td {border-top: 1px solid #FFA100;border-bottom: 1px solid #FFA100 !important;}
 
-table tr td:first-child {border-left: 1px solid #FFA100;}
+.header-row .MuiTableCell-root-head {
+    border-bottom: none !important;
+}
 
-table tr td:last-child {border-right: 1px solid #FFA100;}
+table tr td {
+    border-top: 1px solid #FFA100;
+    border-bottom: 1px solid #FFA100 !important;
+}
+
+table tr td:first-child {
+    border-left: 1px solid #FFA100;
+}
+
+table tr td:last-child {
+    border-right: 1px solid #FFA100;
+}
 
 table > tbody > tr {
     height: 75px;
 }
 
-.MuiTableHead-root {
-    color: #ffffff;
-    font-weight: 500 !important;
-    text-align: start;
-    /* padding: 10px;    */
-    font-size: 21px !important;
-    background-image: linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important;
-    border-bottom: none !important;
-    
+/* Media Queries for Responsiveness */
+
+@media (max-width: 1200px) {
+    .MuiTableCell-root {
+        font-size: 18px;
+    }
+
+    .MuiTableBody-root .MuiTableCell-root {
+        font-size: 18px;
+    }
+
+    .search-input {
+        font-size: 16px;
+        padding: 8px 40px 8px 20px;
+    }
 }
-.header-row .MuiTableCell-root-head {
-    border-bottom: none !important;
+
+@media (max-width: 992px) {
+    .MuiTableCell-root {
+        font-size: 16px;
+        padding-left: 20px !important;
+    }
+
+    .MuiTableBody-root .MuiTableCell-root {
+        font-size: 16px;
+        padding-left: 20px !important;
+    }
+
+    .search-input {
+        font-size: 14px;
+        padding: 7px 35px 7px 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .MuiTableCell-root {
+        font-size: 14px;
+        padding-left: 15px !important;
+    }
+
+    .MuiTableBody-root .MuiTableCell-root {
+        font-size: 14px;
+        padding-left: 15px !important;
+    }
+
+    .search-input {
+        font-size: 12px;
+        padding: 6px 30px 6px 16px;
+    }
+
+    .MuiTableHead-root {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 776px) {
+    .MuiTableCell-root {
+        font-size: 12px !important;
+        padding-left: 10px !important;
+    }
+
+    .MuiTableBody-root .MuiTableCell-root {
+        font-size: 12px !important;
+        padding-left: 10px !important;
+    }
+
+    .search-input {
+        font-size: 10px;
+        padding: 5px 25px 5px 14px;
+    }
+
+    .MuiTableHead-root {
+        font-size: 12px !important;
+    }
+
+    .MuiTableRow-root {
+        font-size: 12px !important;
+    }
+
+    .MuiTableRow-root:hover {
+        background: #5A3D0A;
+    }
 }

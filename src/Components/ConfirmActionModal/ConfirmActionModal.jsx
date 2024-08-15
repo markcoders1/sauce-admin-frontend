@@ -30,7 +30,7 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
         try {
             setLoading(true);
             const response = await axios({
-                url: `https://sauced-backend.vercel.app/api/admin/block-unblock-user`,
+                url: `https://aws.markcoders.com/sauced-backend/api/admin/block-unblock-user`,
                 method: "post",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

@@ -8,18 +8,35 @@ import { handleAuth } from '../../Redux/Slice/UserSlice/UserSlice';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
+import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const authState = useSelector(state => state.auth);
+    const [snackAlertData, setSnackAlertData] = useState({
+        open: false,
+        message: "",
+        severity: "success",
+        anchorOrigin: { vertical: "top", horizontal: "right" }
+    });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError('');
+        setError({});
+
+        // Custom validation
+        let validationErrors = {};
+        if (!email) validationErrors.email = "Email is required";
+        if (!password) validationErrors.password = "Password is required";
+
+        if (Object.keys(validationErrors).length > 0) {
+            setError(validationErrors);
+            return;
+        }
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -46,10 +63,9 @@ const Login = () => {
                     _id: userData._id,
                     username: userData.name,
                     email: userData.email,
-                    authenticated : true,
-                    type : userData.type
-                }))
-                // dispatch(handleAuth({ ...userData, authenticated: true }));
+                    authenticated: true,
+                    type: userData.type
+                }));
 
                 sessionStorage.setItem("accessToken", userData.token);
                 localStorage.setItem("accessToken", userData.token);
@@ -60,11 +76,22 @@ const Login = () => {
 
             } catch (error) {
                 console.error(error);
+                setSnackAlertData({
+                    ...snackAlertData,
+                    open: true,
+                    message: "Invalid Login Credentials",
+                    severity: "error"
+                });
             }
 
         } catch (error) {
-            setError(error.message);
             console.error('Error signing in:', error);
+            setSnackAlertData({
+                ...snackAlertData,
+                open: true,
+                message: "Invalid Login Credentials",
+                severity: "error"
+            });
         }
     };
 
@@ -96,8 +123,8 @@ const Login = () => {
                 </Typography>
             </Box>
 
-            <Box sx={{ mt: "40px" }}>
                 <form onSubmit={handleSubmit}>
+            <Box sx={{  display:"flex", flexDirection:"column", gap:"30px" }}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                         <Typography sx={{
                             color: "#FFA100",
@@ -116,9 +143,12 @@ const Login = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             name="email"
-                            error={error}
+                            error={error.email}
                         />
+                        
+
                     </div>
+
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                         <Typography sx={{
                             color: "#FFA100",
@@ -137,28 +167,36 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
                             name="password"
-                            error={error}
+                            error={error.password}
                         />
+                       
                     </div>
-                    <Typography sx={{
-                        color: "#C1C1C1",
-                        fontWeight: "500",
-                        fontSize: {
-                            sm: "14px",
-                            xs: "14px"
-                        },
-                        textAlign: "end",
-                        fontFamily: "Montserrat !important",
-                    }}>
-                        Forgot Password
-                    </Typography>
+                    <Typography 
+    sx={{
+        color: "#C1C1C1",
+        fontWeight: "500",
+        fontSize: {
+            sm: "14px",
+            xs: "14px"
+        },
+        textAlign: "end",
+        fontFamily: "Montserrat !important",
+        mt: "20px",
+        cursor: "pointer",
+        transition: "color 0.4s ease",
+        '&:hover': {
+            color: "#FFA100",
+        }
+    }}
+>
+    Forgot Password
+</Typography>
+
                    <Box
                    sx={{
                     mt:"80px"
                    }}
                    >
-
-                 
                     <CustomButton
                         border='1px solid #FFA100'
                         ButtonText='Sign in'
@@ -171,11 +209,19 @@ const Login = () => {
                         fontWeight='600'
                         type="submit"
                         fullWidth={true}
+                      
                         
                     />
                       </Box>
-                </form>
             </Box>
+                </form>
+            <SnackAlert
+                severity={snackAlertData.severity}
+                message={snackAlertData.message}
+                open={snackAlertData.open}
+                handleClose={() => { setSnackAlertData(prev => ({ ...prev, open: false })) }}
+                anchorOrigin={{ vertical: "top", horizontal: "left" }} // Custom position for login page
+            />
         </div>
     );
 };
