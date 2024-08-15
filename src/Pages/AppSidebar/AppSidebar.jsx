@@ -10,6 +10,7 @@ import icon4 from '../../assets/icons-04.png';
 import logoAdmin from '../../assets/logoAdmin.png';
 import { RxCross2 } from "react-icons/rx";
 import LogoutButton from '../../Components/Logout/Logout';
+import crossIcon from '../../assets/crossIcon.png'
 
 
 
@@ -30,7 +31,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         mt: '40px',
         p: '1px 7px',
         transition: 'width 0.3s ease-in-out',
-        position:"relative"
+        position:"relative",
+        height:"100%"
       }}
     >
       <Box
@@ -58,8 +60,9 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         >
           {isOpen && (
             <>
-  <Typography sx={{color:"red !important"}} >
-  <RxCross2 style={{color:"red", position:"absolute", top:"-20px", right:"10px", fontSize:"1.3rem", cursor:"pointer"}} onClick={toggleSidebar} />
+  <Typography sx={{color:"red !important", position:"absolute", top:"-20px", right:"10px", width:"30px", height:"30px", backgroundColor:"white", display:"flex", justifyContent:"center", alignItems:"center" ,borderRadius:"5px"}} >
+    <img src={crossIcon} alt="" style={{color:"white", width:"20px" , cursor:"pointer"}} onClick={toggleSidebar} />
+  {/* <RxCross2  /> */}
   </Typography>
             <Box
             sx={{
@@ -192,7 +195,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            overflow: 'hidden',
+            
           }}
         >
              <Box
@@ -281,9 +284,12 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
               </Box>
+              
+              <LogoutButton/>
+
             </>
           )}
-        <LogoutButton/>
+          
         </Box>
       </Box>
     </Box>

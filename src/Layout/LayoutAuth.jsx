@@ -22,12 +22,13 @@ const LayoutAuth = () => {
             boxSizing: "border-box",
             fontFamily: "Poppins",
             width: {
-              xs: "100vw",
+              xs: "100%",
               sm: "100vw",
               md: "100%",
             },
             height: {
-              height: "100vh",
+             md: "100vh",
+             xs:"100vh"
             },
     
            
@@ -37,9 +38,7 @@ const LayoutAuth = () => {
               md: "row",
               xs: "column",
             },
-            minWidth: {
-              md: "400px"
-            },
+           
             backgroundImage: `url(${backgroundImg1})`,
             backgroundColor: "black",
             backgroundSize: 'cover',
@@ -65,7 +64,7 @@ const LayoutAuth = () => {
                     md:"1"
                 },
                 p: {
-                  md: "100px 120px",
+                  lg: "100px 120px",
                   xs: "60px 20px",
       
                 },
@@ -77,7 +76,7 @@ const LayoutAuth = () => {
             <Box
              sx={{
                 flexBasis: {
-                  xs: "34 %",
+                  xs: "40%",
                 },
                 
                 // flexShrink: "1",
@@ -85,6 +84,10 @@ const LayoutAuth = () => {
                     lg:"0",
                     md:"1"
                 },
+                display:{
+                  md:"flex",
+                  xs:"none"
+                }
                
                
               }}
