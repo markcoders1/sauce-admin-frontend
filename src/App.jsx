@@ -43,7 +43,7 @@ function App() {
           <Route path="sauce-management" element={<SauceManagement />} />
           <Route path="add-sauce" element={<AddSauce />} />
           <Route path="brand-management" element={<BrandManagement />} />
-          <Route path="specific-management/:id" element={<TabooManagement />} />
+          <Route path="specific-brand-management/:id" element={<TabooManagement />} />
           <Route path="add-brand-sauce" element={<AddBrandSauce />} />
           <Route path="events-management" element={<EventsManagement />} />
           <Route path="add-event" element={<AddEvent />} />

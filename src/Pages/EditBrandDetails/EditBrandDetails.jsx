@@ -6,6 +6,7 @@ import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 
 const EditBrandDetails = () => {
   const { id } = useParams();
@@ -24,8 +25,7 @@ const EditBrandDetails = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
   const [currentImage, setCurrentImage] = useState("");
-  const [getUser, setGetUser] = useState({});
-  const auth = useSelector(state => state.auth)
+  const auth = useSelector(state => state.auth);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -44,6 +44,13 @@ const EditBrandDetails = () => {
     }
   };
 
+  const handleSelectChange = (name, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
   const fetchUser = async () => {
     try {
       const response = await axios({
@@ -53,15 +60,14 @@ const EditBrandDetails = () => {
           Authorization: `Bearer ${auth.accessToken}`
         },
       });
-      console.log(response);
       const userData = response?.data?.user;
-      setGetUser(userData);
+      console.log('Fetched user data:', userData); // Add this line to verify data
       setFormData({
-        name: userData?.name,
+        name: userData?.name || '',
         image: null,
-        type: userData?.type,
-        status: userData?.status,
-        points: userData?.points
+        type: userData?.type || '', // Ensure this is being set correctly
+        status: userData?.status || '', // Ensure this is being set correctly
+        points: userData?.points || 0
       });
       setCurrentImage(userData.image); // Assuming the API returns the image URL
     } catch (error) {
@@ -110,13 +116,7 @@ const EditBrandDetails = () => {
         data: data
       });
 
-      setFormData({
-        name: '',
-        image: null,
-        type: '',
-        status: '',
-        points: ''
-      });
+    
       setSelectedFileName(""); // Reset file name
       setCurrentImage(''); // Reset current image
       setSnackAlertData({
@@ -125,7 +125,6 @@ const EditBrandDetails = () => {
         severity: "success",
       });
       console.log(response);
-      setGetUser(response.data.user)
     } catch (error) {
       console.error('Error submitting brand induction:', error);
       setSnackAlertData({
@@ -180,11 +179,12 @@ const EditBrandDetails = () => {
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
           }}>
             Name
           </Typography>
           <CustomInputShadow
-            placeholder={getUser.name || 'Enter Name'}
+            placeholder='Enter Name'
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -200,14 +200,19 @@ const EditBrandDetails = () => {
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
           }}>
             Type
           </Typography>
-          <CustomInputShadow
-            placeholder={getUser.type || 'Enter Type'}
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
+          <CustomSelectForType
+            label="Select Type"
+            options={[
+              { label: 'User', value: 'user' },
+              { label: 'Brand', value: 'brand' },
+              { label: 'Admin', value: 'admin' }
+            ]}
+            value={formData.type} // This should display the initial value
+            handleChange={(value) => handleSelectChange('type', value)}
             error={errors.type}
           />
         </Box>
@@ -220,14 +225,18 @@ const EditBrandDetails = () => {
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
           }}>
             Status
           </Typography>
-          <CustomInputShadow
-            placeholder={getUser.status || 'Enter Status'}
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
+          <CustomSelectForType
+            label="Select Status"
+            options={[
+              { label: 'Active', value: 'active' },
+              { label: 'Inactive', value: 'inactive' }
+            ]}
+            value={formData.status} // This should display the initial value
+            handleChange={(value) => handleSelectChange('status', value)}
             error={errors.status}
           />
         </Box>
@@ -240,11 +249,12 @@ const EditBrandDetails = () => {
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
           }}>
             Points
           </Typography>
           <CustomInputShadow
-            placeholder={getUser.points}
+            placeholder='Enter Points'
             name="points"
             type="number"
             value={formData.points}

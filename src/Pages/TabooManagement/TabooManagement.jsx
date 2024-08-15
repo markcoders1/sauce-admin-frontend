@@ -42,7 +42,7 @@ const TabooManagement = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchBrands = async (id) => {
+    const fetchBrands = async () => {
         try {
             setLoading(true);
             const response = await axios({
@@ -62,11 +62,9 @@ const TabooManagement = () => {
         }
     };
 
-    useEffect(() => {
-        if (id) {
-            fetchBrands(id);
-        }
-    }, [id]);
+useEffect(()=>{
+fetchBrands()
+},[])
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -87,6 +85,11 @@ const TabooManagement = () => {
     const handleNavigate = () => {
         navigate(`/admin/add-specific-sauce/${id}`)
     }
+
+    const handleNavigateToEditSauce = (id) => {
+        navigate(`/admin/edit-sauce-details/${id}`)
+    }
+
 
     return (
         <Box>
@@ -167,12 +170,12 @@ const TabooManagement = () => {
                             >
                                 <TableCell className="MuiTableCell-root-head" sx={{
                                     fontWeight: "500",
-                                    padding: "0px 0px",
+                                    padding: "0px 20px 0px 40px",
                                     fontSize: {
                                         sm: "21px",
                                         xs: "16px"
                                     },
-                                    textAlign: "center",
+                                    textAlign: "start",
                                     borderRadius: "8px 0px 0px 8px",
                                     color: "white"
                                 }}>Image</TableCell>
@@ -183,7 +186,7 @@ const TabooManagement = () => {
                                         sm: "21px",
                                         xs: "16px"
                                     },
-                                    textAlign: "center",
+                                    textAlign: "start",
                                     color: "white"
                                 }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                 <TableCell sx={{
@@ -193,7 +196,7 @@ const TabooManagement = () => {
                                         sm: "21px",
                                         xs: "16px"
                                     },
-                                    textAlign: "center",
+                                    textAlign: "start",
                                     color: "white"
                                 }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                 <TableCell sx={{
@@ -214,14 +217,15 @@ const TabooManagement = () => {
                                 <TableRow key={index} sx={{
                                     border: "2px solid #FFA100"
                                 }} className="MuiTableRow-root">
-                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
+                                    <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", display:"flex", ml:{md:"20px", xs:"10px"} }} className="MuiTableCell-root">
                                         <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px' }} />
                                     </TableCell>
-                                    <TableCell className="MuiTableCell-root">{brand.name}</TableCell>
-                                    <TableCell className="MuiTableCell-root">{formatDate(brand.createdAt)}</TableCell>
+                                    <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{brand.name}</TableCell>
+                                    <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{formatDate(brand.createdAt)}</TableCell>
                                     <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                         <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                            <img src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                        <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={()=> handleNavigateToEditSauce(brand._id)} />
+                                            
                                         </Box>
                                     </TableCell>
                                 </TableRow>

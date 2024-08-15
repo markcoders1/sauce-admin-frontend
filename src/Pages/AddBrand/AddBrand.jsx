@@ -119,7 +119,7 @@ const AddBrand = () => {
       }}>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Enter Brand Name"
+            placeholder="Brand Name"
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -128,7 +128,7 @@ const AddBrand = () => {
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Email"
+            placeholder="Brand Email"
             name="email"
             value={formData.email}
             onChange={handleChange}
@@ -137,7 +137,7 @@ const AddBrand = () => {
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
-            placeholder="Password"
+            placeholder="Brand Password"
             name="password"
             value={formData.password}
             onChange={handleChange}

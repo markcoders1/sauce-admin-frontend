@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
-const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8px 26px -4px rgba(0, 0, 0, 0.1)" }) => {
-  const [selectedType, setSelectedType] = useState("");
+const CustomSelectForType = ({ label, options, handleChange, value, error, boxShadow = "0px 8px 26px -4px rgba(0, 0, 0, 0.1)" }) => {
+  const [selectedValue, setSelectedValue] = useState(value);
+
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
 
   const handleSelectionChange = (e) => {
-    const selectedType = e.target.value;
-    setSelectedType(selectedType);
-    handleChange(selectedType); // Call the parent's handler with the selected type
+    const selectedValue = e.target.value;
+    setSelectedValue(selectedValue);
+    handleChange(selectedValue); // Call the parent's handler with the selected value
   };
 
   return (
@@ -16,7 +20,7 @@ const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8p
         sx={{
           display: "flex",
           flexDirection: "column",
-          padding: "0px 10px",
+          padding: "7px 10px",
           justifyContent: "space-between",
           borderRadius: "10px",
           boxShadow: boxShadow,
@@ -46,23 +50,23 @@ const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8p
             lineHeight: "30px",
             fontWeight: "500",
             color: "grey",
-            display: selectedType ? 'none' : 'flex',
+            display: selectedValue ? 'none' : 'flex',
           }}
-          id="demo-simple-select-type-label"
+          id={`select-${label}-label`}
         >
-          Select Type
+          {label}
         </InputLabel>
         <Select
-          labelId="demo-simple-select-type-label"
-          id="demo-simple-select-type"
-          value={selectedType}
+          labelId={`select-${label}-label`}
+          id={`select-${label}`}
+          value={selectedValue}
           onChange={handleSelectionChange}
           sx={{
             width: "100%",
             fontSize: "22px",
             lineHeight: "30px",
             fontWeight: "500",
-            color: selectedType ? "black" : "black",
+            color: selectedValue ? "white" : "white",
             "& .MuiSelect-select": {
               backgroundColor: "#2e210a",
               color: "white",
@@ -86,7 +90,7 @@ const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8p
                   lineHeight: "30px",
                   fontWeight: "500",
                   color: "white",
-                  backgroundColor:"#2e210a",
+                  backgroundColor: "#2e210a",
                   "&.Mui-selected": {
                     backgroundColor: "#2e210a",
                     color: "white",
@@ -100,12 +104,12 @@ const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8p
             },
           }}
         >
-          <MenuItem value="user">User</MenuItem>
-          <MenuItem value="brand">Brand</MenuItem>
-          <MenuItem value="admin">Admin</MenuItem>
+          {options.map((option) => (
+            <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+          ))}
         </Select>
       </FormControl>
-      {typeError && (
+      {error && (
         <Typography sx={{
           background: "#2e210a",
           p: "10px",
@@ -114,7 +118,7 @@ const CustomSelectForType = ({ handleChange, typeError = "", boxShadow = "0px 8p
           wordBreak: "break-word",
           borderRadius: "5px"
         }}>
-          {typeError}
+          {error}
         </Typography>
       )}
     </Box>

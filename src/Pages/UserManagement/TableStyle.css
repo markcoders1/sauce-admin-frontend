@@ -11,6 +11,7 @@
 .MuiTableContainer-root {
     background-color: transparent !important;
     color: white;
+    box-shadow: 0px 0px 0px 0px !important;
 }
 
 .MuiTableCell-root {
@@ -114,7 +115,7 @@ table > tbody > tr {
 @media (max-width: 992px) {
     .MuiTableCell-root {
         font-size: 16px;
-        padding-left: 20px !important;
+        padding-left: 0px !important;
     }
 
     .MuiTableBody-root .MuiTableCell-root {

@@ -141,7 +141,7 @@ const SauceManagement = () => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"600px" }}>
+                        <Box sx={{ mt: "30px", padding: {sm: "0px 20px", xs:"0px"}, minWidth:"600px" }}>
                             <TableContainer component={Paper} className="MuiTableContainer-root">
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
@@ -216,7 +216,7 @@ const SauceManagement = () => {
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
                                                 <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign: "start !important",  paddingLeft: {
-                                                    md:"40px !important",
+                                                    md:"20px !important",
                                                     xs:"20px !important"
                                                 } }} className="MuiTableCell-root">
                                                     <img src={sauce.bannerImage} alt="Sauce" style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain" }} />
@@ -225,8 +225,9 @@ const SauceManagement = () => {
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(sauce.owner.date)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
-                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                        <img onClick={() => handleNavigateToEdit(sauce._id)} src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "start" }}>
+                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={()=> handleNavigateToEdit(sauce._id)} />
+                                                    
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>

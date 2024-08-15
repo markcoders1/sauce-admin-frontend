@@ -52,7 +52,8 @@ const DashboardLayout = () => {
           xs: "10px 10px"
         },
         boxSizing: 'border-box',
-        m: "0px"
+        m: "0px",
+        
       }}
     >
       <Box
@@ -61,7 +62,9 @@ const DashboardLayout = () => {
           width: '100%',
           maxWidth: '100%',
           boxSizing: 'border-box',
-          gap: "1rem"
+        gap: {
+          md:"1rem",sx:"0px"
+        }
         }}
       >
         <Box

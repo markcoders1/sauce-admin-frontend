@@ -16,7 +16,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
         sx={{
           display: "flex",
           flexDirection: "column",
-          padding: "0px 10px",
+          padding: "7px 10px",
           justifyContent: "space-between",
           borderRadius: "10px",
           boxShadow: boxShadow,
@@ -32,6 +32,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           position: "relative",
           background: "#2e210a",
           color: "white",
+          
         }}
         variant="outlined"
       >

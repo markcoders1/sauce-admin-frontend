@@ -50,6 +50,7 @@ const EventsManagement = () => {
             });
             setAllEvents(response?.data?.events || []);
             setLoading(false);
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching events:', error);
             setLoading(false);
@@ -64,13 +65,14 @@ const EventsManagement = () => {
         setSearchTerm(event.target.value);
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
         const day = String(date.getDate()).padStart(2, "0");
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
         return `${month}/${day}/${year}`;
     };
+    
 
     const filteredEvents = allEvents.filter(event =>
         event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -156,7 +158,7 @@ const EventsManagement = () => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+                        <Box sx={{ mt: "30px", padding: {md:"0px 20px" , xs:"0px"},minWidth:"700px"}}>
                             <TableContainer component={Paper} className="MuiTableContainer-root">
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
@@ -169,12 +171,12 @@ const EventsManagement = () => {
                                         >
                                             <TableCell className="MuiTableCell-root-head" sx={{
                                                 fontWeight: "500",
-                                                padding: "0px 0px",
+                                                padding: "0px 20px",
                                                 fontSize: {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "center",
+                                                textAlign: "start",
                                                 borderRadius: "8px 0px 0px 8px",
                                                 color: "white"
                                             }}>Image</TableCell>
@@ -185,7 +187,7 @@ const EventsManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "center",
+                                                textAlign: "start",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Events Name</TableCell>
                                             <TableCell sx={{
@@ -195,7 +197,7 @@ const EventsManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "center",
+                                                textAlign: "start",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Organized By</TableCell>
                                             <TableCell sx={{
@@ -205,7 +207,7 @@ const EventsManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "center",
+                                                textAlign: "start",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Destination</TableCell>
                                             <TableCell sx={{
@@ -236,16 +238,18 @@ const EventsManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" }} className="MuiTableCell-root">
+                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", display:"flex" }} className="MuiTableCell-root">
                                                     <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
                                                 </TableCell>
-                                                <TableCell className="MuiTableCell-root">{event.eventName}</TableCell>
-                                                <TableCell className="MuiTableCell-root">{event.owner.name}</TableCell>
-                                                <TableCell className="MuiTableCell-root">{event.venueName}</TableCell>
+                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
+                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>
+                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.venueName}</TableCell>
                                                 <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                        <img onClick={() => handleNavigateToEdit(event._id)} src={EditIcon} alt="Edit" style={{ width: '20px', height: '20px', cursor: 'pointer' }} />
+                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)} />
+                                                     
+                                                        
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>

@@ -168,7 +168,10 @@ const EditSauce = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 21px"
+        padding: {
+          sm:"0px 21px",
+          xs:"0px 0px"
+        }
       }}
     >
       <Typography sx={{
@@ -176,7 +179,7 @@ const EditSauce = () => {
         fontWeight: "600",
         fontSize: {
           sm: "45px",
-          xs: "26px"
+          xs: "36px"
         },
         fontFamily: "Fira Sans !important",
       }}>
@@ -270,7 +273,7 @@ const EditSauce = () => {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}>
        
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -291,7 +294,7 @@ const EditSauce = () => {
             error={errors.type}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -312,6 +315,7 @@ const EditSauce = () => {
             error={errors.title}
           />
         </Box>
+       
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
       
@@ -369,7 +373,7 @@ const EditSauce = () => {
                 height="100px"
                 width={"98px"}
                 borderRadius='6px'
-                buttonStyle={{ height: "39px" }}
+                buttonStyle={{ height: "75px",mt:"13px" }}
                 onClick={() => removeBullet('ingredients', index)}
               />
             )}
@@ -384,6 +388,7 @@ const EditSauce = () => {
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet('ingredients')}
+          fontSize='20px'
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>

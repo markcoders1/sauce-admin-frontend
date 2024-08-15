@@ -81,7 +81,7 @@ const SauceManagement = () => {
     );
 
     const handleNavigate = (id) => {
-        navigate(`/admin/specific-management/${id}`);
+        navigate(`/admin/specific-brand-management/${id}`);
     }
 
     const navigateToEdit = (id) => {
@@ -148,7 +148,7 @@ const SauceManagement = () => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ mt: "30px", padding: "0px 20px", minWidth: "700px" }}>
+                    <Box sx={{ mt: "30px", padding: {md:"0px 20px", xs:"0px"}, minWidth: "700px" }}>
                         <TableContainer component={Paper} className="MuiTableContainer-root">
                             <Table className="data-table">
                                 <TableHead className="MuiTableHead-root">
@@ -190,7 +190,7 @@ const SauceManagement = () => {
                                             fontWeight: "500",
                                             padding: "12px 0px",
                                             fontSize: "21px",
-                                            textAlign: "start",
+                                            textAlign: "center",
                                             borderRadius: "0px 8px 8px 0px",
                                             color: "white",
                                               paddingLeft:"10px"
@@ -208,7 +208,7 @@ const SauceManagement = () => {
                                             <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{brand.name}</TableCell>
                                             <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>
                                             <TableCell sx={{ borderRadius: "0px 8px 8px 0px",textAlign:"start !important" }} className="MuiTableCell-root">
-                                                <Box sx={{ display: "flex", gap: "30px",   justifyContent: "start", alignItems:"center" }}>
+                                                <Box sx={{ display: "flex", gap: "30px",   justifyContent: "center", alignItems:"center" }}>
                                                     <CustomButton
                                                     border='1px solid #FFA100'
                                                     ButtonText={"View Sauces"}
@@ -218,7 +218,9 @@ const SauceManagement = () => {
                                                     buttonStyle={{ height: "45px" }}
                                                     onClick={() => handleNavigate(brand._id)}
                                                     />
-                                                    <img  className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border:"0  px solid red", borderRadius:"10px",padding:"8px" }} onClick={() => navigateToEdit(brand._id)} />
+                                                     <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => navigateToEdit(brand._id)} />
+
+                                                    
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
