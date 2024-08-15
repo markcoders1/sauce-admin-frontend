@@ -291,8 +291,8 @@ const EditEvents = () => {
                 color='white'
                 height="100px"
                 width={"98px"}
-                borderRadius='6px'
-                buttonStyle={{ height: "39px" }}
+                borderRadius='8px'
+                buttonStyle={{ height: "75px" , mb:"18px" }}
                 onClick={() => removeBullet('details', index)}
               />
             )}
@@ -307,6 +307,8 @@ const EditEvents = () => {
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet('details')}
+          fontSize='20px'
+          fontWeight='600'
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>

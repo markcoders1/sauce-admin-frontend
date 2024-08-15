@@ -372,7 +372,7 @@ const EditSauce = () => {
                 color='white'
                 height="100px"
                 width={"98px"}
-                borderRadius='6px'
+                borderRadius='8px'
                 buttonStyle={{ height: "75px",mt:"13px" }}
                 onClick={() => removeBullet('ingredients', index)}
               />

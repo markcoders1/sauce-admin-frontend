@@ -270,6 +270,8 @@ const {id} = useParams();
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet('ingredients')}
+          fontSize='18px'
+          fontWeight='500'
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>

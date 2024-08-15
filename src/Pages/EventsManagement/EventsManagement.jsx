@@ -238,9 +238,9 @@ const EventsManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", display:"flex" }} className="MuiTableCell-root">
-                                                    <img src={event.bannerImage} alt="Event" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
-                                                </TableCell>
+                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"10px !important", textAlign:"start !important",}} className="MuiTableCell-root">
+                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
+                                            </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.venueName}</TableCell>
