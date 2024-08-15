@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {logout} from '../../Redux/Slice/UserSlice/UserSlice'
 import { CgLogOff } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
-import crossIcon from '../../assets/crossIcon.png'
+import crossIcon from '../../assets/crossIcon.png';
+import logoutpng from '../../assets/logout.png'
 const LogoutButton = () => {
     const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,9 +31,11 @@ const auth = useSelector(state => state.auth);
     style={{
         border:"none", color:"red",
         outline:"none",
-        backgroundColor:"transparent"
+        backgroundColor:"transparent",
+        cursor:"pointer",
+        marginTop:"5px"
     }}
-    onClick={handleLogout}><CgLogOff style={{color:"red", fontSize:"35px",cursor:"pointer"}} /></button>
+    onClick={handleLogout}> <img src={logoutpng} alt="" /> </button>
   );
 };
 

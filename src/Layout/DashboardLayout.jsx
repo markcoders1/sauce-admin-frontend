@@ -6,6 +6,9 @@ import Header from '../Components/Header/Header';
 // import { useSelector } from 'react-redux';
 import backgroundImg1 from '../assets/backgroundImg1.png';
 import AppSidebar from '../Pages/AppSidebar/AppSidebar';
+// import crossIcon from '../../assets/crossIcon.png';
+// import LogoutButton from '../../Components/Logout/Logout';
+import LogoutButton from '../Components/Logout/Logout';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -79,15 +82,31 @@ const DashboardLayout = () => {
               xs: 'none',
               lg: 'block',
             },
+            alignItems:"center",
+            justifyContent:"center",
             borderRadius: "15px",
             background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
-            transition: 'width 0.3s ease-in-out' // Smooth transition for width change
-          }}
+            transition: 'width 0.3s ease-in-out' ,// Smooth transition for width change
+            gap:"10rem" }}
         >
-          <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          <Box>
+
+          <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
+          </Box>
+          <Box sx={{
+            position:"absolute", bottom:"2rem",
+            ml:"15px",
+            backgroundColor:"white", cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
+              boxShadow: '15px 14px 32px rgba(0, 0, 0, 0.1)', // Box shadow on hover
+            }
+          }} >
+          <LogoutButton /> 
+
+          </Box>
+
         </Box>
         <Box>
-          {/* <MobileSidebar /> */}
+         
         </Box>
         <Box
           sx={{
