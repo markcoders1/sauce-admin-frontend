@@ -11,6 +11,7 @@ import AppSidebar from '../Pages/AppSidebar/AppSidebar';
 import LogoutButton from '../Components/Logout/Logout';
 import MobileSidebar from '../Pages/AppSidebar/MobileSidebar';
 
+
 const DashboardLayout = () => {
   const location = useLocation();
   // const snackAlert = useSelector(state => state.snackAlert);
@@ -100,7 +101,9 @@ const DashboardLayout = () => {
             position:"absolute", bottom:"2rem",
             ml:"15px",
             backgroundColor:"white", cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
-              boxShadow: '15px 14px 32px rgba(0, 0, 0, 0.1)', // Box shadow on hover
+              backgroundColor:'rgba(255, 0, 0, 0.6)',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Box shadow on hover
+              transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
             }
           }} >
           <LogoutButton /> 

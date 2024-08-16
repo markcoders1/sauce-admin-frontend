@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../../Redux/Slice/UserSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import LogoutConfirmationModal from '../LogoutConfirmationModal/LogoutConfirmationModal';
 import logoutpng from '../../assets/logout.png';
+import logoutHover from '../../assets/logoutHover.png';
 
 const LogoutButton = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleLogout = () => {
         dispatch(logout({
@@ -40,8 +42,10 @@ const LogoutButton = () => {
                     marginTop: "5px"
                 }}
                 onClick={handleOpenModal}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
-                <img src={logoutpng} alt="Logout" />
+                <img src={isHovered ? logoutHover : logoutpng} alt="Logout" />
             </button>
             <LogoutConfirmationModal 
                 open={modalOpen} 
