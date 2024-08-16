@@ -37,6 +37,7 @@ const MobileSidebar = () => {
         height: '100vh',
         width: '100%',
         backgroundColor: '#1A1A1A',
+        // background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
         color: '#FFF',
         zIndex: 1300,
         transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
@@ -69,21 +70,21 @@ const MobileSidebar = () => {
           
           <Box onClick={() => handleNavigate('/admin/sauce-management')} className="nav-link">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <img src={icon2} style={{ width: '30px' }} alt="Sauce Management" />
+              <img src={icon2} style={{ width: '28px' }} alt="Sauce Management" />
               <Typography>Sauce Management</Typography>
             </Box>
           </Box>
           
           <Box onClick={() => handleNavigate('/admin/brand-management')} className="nav-link">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <img src={icon3} style={{ width: '30px' }} alt="Brand Management" />
+              <img src={icon3} style={{ width: '23px' }} alt="Brand Management" />
               <Typography>Brand Management</Typography>
             </Box>
           </Box>
           
           <Box onClick={() => handleNavigate('/admin/events-management')} className="nav-link">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <img src={icon4} style={{ width: '30px' }} alt="Events Management" />
+              <img src={icon4} style={{ width: '25px' }} alt="Events Management" />
               <Typography>Events Management</Typography>
             </Box>
           </Box>

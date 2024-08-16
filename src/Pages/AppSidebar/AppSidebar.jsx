@@ -108,7 +108,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon1} style={{ width: '27px' }} alt="User Management" />
                   </Typography>
-                  <Typography>User Management</Typography>
+                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >User Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -129,7 +129,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon3} style={{ width: '27px' }} alt="Sauce Management" />
                   </Typography>
-                  <Typography>Sauce Management</Typography>
+                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Sauce Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -150,7 +150,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
                   </Typography>
-                  <Typography>Brand Management</Typography>
+                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Brand Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -171,7 +171,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
                   </Typography>
-                  <Typography>Events Management</Typography>
+                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Events Management</Typography>
                 </Box>
               </NavLink>
             </>
