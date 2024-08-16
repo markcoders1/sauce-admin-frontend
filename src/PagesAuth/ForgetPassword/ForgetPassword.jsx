@@ -5,10 +5,13 @@ import { Typography, Box } from '@mui/material';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState({});
+    const [resetSuccess, setResetSuccess] = useState(false); // New state for successful reset
+    const navigate = useNavigate();
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
         message: "",
@@ -32,6 +35,8 @@ const ForgotPassword = () => {
                 message: "Password reset email sent! Please check your inbox.",
                 severity: "success"
             });
+            setResetSuccess(true); // Set reset success to true
+
         } catch (error) {
             console.error('Error sending password reset email:', error);
             setSnackAlertData({
@@ -40,6 +45,10 @@ const ForgotPassword = () => {
                 severity: "error"
             });
         }
+    };
+
+    const handleBackToLogin = () => {
+        navigate('/'); // Navigate to login page
     };
 
     return (
@@ -66,38 +75,41 @@ const ForgotPassword = () => {
                     },
                     fontFamily: "Montserrat !important",
                 }}>
-                    Enter your email address to reset your password.
+                    {resetSuccess ? "":" Enter your email address to reset your password."}
+                  
                 </Typography>
             </Box>
 
-            <form onSubmit={handlePasswordReset}>
+            <form onSubmit={resetSuccess ? handleBackToLogin : handlePasswordReset}>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: { sm: "30px", xs: "20px" }, marginTop: "20px" }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Email
-                        </Typography>
-                        <CustomInputShadow
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
-                            name="email"
-                            error={error.email}
-                        />
-                    </div>
+                    {!resetSuccess && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                            <Typography sx={{
+                                color: "#FFA100",
+                                fontWeight: "500",
+                                fontSize: {
+                                    sm: "16px",
+                                    xs: "16px"
+                                },
+                                fontFamily: "Montserrat !important",
+                            }}>
+                                Email
+                            </Typography>
+                            <CustomInputShadow
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email"
+                                name="email"
+                                error={error.email}
+                            />
+                        </div>
+                    )}
 
                     <Box sx={{ mt: { md: "80px", xs: "30px" } }}>
                         <CustomButton
                             border='1px solid #FFA100'
-                            ButtonText='Send Reset Link'
+                            ButtonText={resetSuccess ? 'Back to Login' : 'Send Reset Link'}
                             color='white'
                             width={"100%"}
                             borderRadius='8px'
