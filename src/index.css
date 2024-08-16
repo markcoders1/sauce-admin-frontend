@@ -80,13 +80,13 @@ select:-webkit-autofill:focus {
   
 } 
 
-/* input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(100%) sepia(100%) saturate(200%) hue-rotate(180deg) brightness(90%) contrast(90%);
   color: yellow;
-} */
+}
 
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
@@ -96,4 +96,3 @@ input[type="date"] {
   background-position: right;
   background-size: 20px;
   padding-right: 30px; /* Adjust padding to make space for the icon */
-}
