@@ -60,8 +60,15 @@ const EditSauce = () => {
   };
 
   const handleImageChange = async (e) => {
+
     const file = e.target.files[0];
-    
+    const {name} = e.target
+    if(name=="bannerImage"){
+      setBannerImage(file)
+    }
+    else{
+      setSauceImage(file)
+    }
     if (file && file.size > 4 * 1024 * 1024) {
       setSnackAlertData({
         open: true,
@@ -71,17 +78,17 @@ const EditSauce = () => {
       return;
     }
 
-    if (file) {
-      console.log(file)
-      const base64 = await convertToBase64(file);
-      if (e.target.id === "uploadSauceImage") {
-        setSauceImage(base64);
-        setSelectedSauceFileName(file.name);
-      } else if (e.target.id === "uploadBannerImage") {
-        setBannerImage(base64);
-        setSelectedBannerFileName(file.name);
-      }
-    }
+    // if (file) {
+    //   console.log(file)
+    //   const base64 = await convertToBase64(file);
+    //   if (e.target.id === "uploadSauceImage") {
+    //     setSauceImage(base64);
+    //     setSelectedSauceFileName(file.name);
+    //   } else if (e.target.id === "uploadBannerImage") {
+    //     setBannerImage(base64);
+    //     setSelectedBannerFileName(file.name);
+    //   }
+    // }
   };
 
   const addBullet = (field) => {
@@ -102,30 +109,38 @@ const EditSauce = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(id)
-    const data = {
-      files:{sauceImage,bannerImage},
-      name: formData.sauceName,
-      description: formData.details,
-      ingredients: formData.ingredients,
-      productLink: formData.productLink,
-      websiteLink: formData.websiteLink,
-      email: formData.email,
-      type: formData.type,
-      title: formData.title,
-      sauceId: id
-    };
-
+    const formDataToSend = new FormData();
+  
+    // Append all the form fields
+    formDataToSend.append('name', formData.sauceName);
+    formDataToSend.append('description', formData.details);
+    formDataToSend.append('ingredients', JSON.stringify(formData.ingredients)); // Convert array to string
+    formDataToSend.append('productLink', formData.productLink);
+    formDataToSend.append('websiteLink', formData.websiteLink);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('type', formData.type);
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('sauceId', id);
+  
+    // Check and append the sauce image file if it exists
+    if (sauceImage) {
+      formDataToSend.append('image', sauceImage); // Adding sauce image as binary
+    }
+  
+    // Check and append the banner image file if it exists
+    if (bannerImage) {
+      formDataToSend.append('bannerImage', bannerImage); // Adding banner image as binary
+    }
+    console.log(bannerImage)
     try {
       const response = await axios({
-
-        url: `https://hgjk9dq9-6000.inc1.devtunnels.ms/api/admin/edit-sauce`,
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`, // Replace with your actual endpoint
         method: "post",
         headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${auth.accessToken}`, // Assuming you have a Bearer token
+          'Content-Type': 'multipart/form-data' // Important for file uploads
         },
-        data: data
+        data: formDataToSend
       });
       console.log(response);
       setSnackAlertData({
@@ -142,11 +157,13 @@ const EditSauce = () => {
       });
     }
   };
+  
+  
 
   const fetchSauce = async () => {
     try {
       const response = await axios({
-        url: `https://hgjk9dq9-6000.inc1.devtunnels.ms/api/admin/get-sauce/${id}`,
+        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-sauce/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
@@ -212,7 +229,7 @@ const EditSauce = () => {
           </Typography>
         </label>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
+          <input type="file" name="bannerImage" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
           </Typography>

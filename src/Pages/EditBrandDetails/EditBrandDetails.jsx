@@ -79,6 +79,25 @@ const EditBrandDetails = () => {
     fetchUser();
   }, []);
 
+  // const handleImageChange = async (e) => {
+
+  //   const file = e.target.files[0];
+  //   const {name} = e.target
+  //   if(name=="image"){
+  //     setCurrentImage(file)
+  //   }
+  //   else{
+  //     setSauceImage(file)
+  //   }
+  //   if (file && file.size > 4 * 1024 * 1024) {
+  //     setSnackAlertData({
+  //       open: true,
+  //       message: `Selected ${e.target.id === 'uploadSauceImage' ? 'sauce' : 'banner'} image size exceeds 4MB.`,
+  //       severity: "error",
+  //     });
+  //     return;
+  //   }
+
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
