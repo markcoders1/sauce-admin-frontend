@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase.config';
 import axios from 'axios';
@@ -16,6 +16,7 @@ const Login = () => {
     const [error, setError] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
     const authState = useSelector(state => state.auth);
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
@@ -23,6 +24,14 @@ const Login = () => {
         severity: "success",
         anchorOrigin: { vertical: "top", horizontal: "right" }
     });
+    console.log(authState.authenticated)
+
+    useEffect(()=>{
+        if (authState.authenticated ===  true){
+            navigate('/admin')
+        }
+
+    },[])
 
     const handleSubmit = async (event) => {
         event.preventDefault();

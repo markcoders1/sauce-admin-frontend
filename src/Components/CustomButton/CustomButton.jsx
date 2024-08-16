@@ -42,9 +42,10 @@ const   CustomButton = ({
                 ...buttonStyle,
                 '&:hover': {
                     background: hoverBg,
-                    color: hovercolor,
-                    border : hoverBorder
-                }
+                    border : "1.5px solid red"
+                },
+                // transition:" all ease-in .2s"
+                transition:".3s ease-in all"
             }} 
             type={`${type}`}
         >
