@@ -284,7 +284,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={hoveredIcon === 'icon4' ? icon41 : icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
               </Box>
-              {/* <LogoutButton /> */}
+              
             </>
           )}
         </Box>

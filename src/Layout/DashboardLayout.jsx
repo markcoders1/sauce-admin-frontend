@@ -9,6 +9,7 @@ import AppSidebar from '../Pages/AppSidebar/AppSidebar';
 // import crossIcon from '../../assets/crossIcon.png';
 // import LogoutButton from '../../Components/Logout/Logout';
 import LogoutButton from '../Components/Logout/Logout';
+import MobileSidebar from '../Pages/AppSidebar/MobileSidebar';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -70,6 +71,7 @@ const DashboardLayout = () => {
         }
         }}
       >
+         <MobileSidebar />
         <Box
           sx={{
             mt: "15px",
@@ -80,7 +82,7 @@ const DashboardLayout = () => {
             zIndex: 1,
             display: {
               xs: 'none',
-              lg: 'block',
+              md: 'block',
             },
             alignItems:"center",
             justifyContent:"center",
@@ -92,6 +94,7 @@ const DashboardLayout = () => {
           <Box>
 
           <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
+         
           </Box>
           <Box sx={{
             position:"absolute", bottom:"2rem",
@@ -111,7 +114,7 @@ const DashboardLayout = () => {
         <Box
           sx={{
             marginLeft: {
-              lg: isSidebarOpen ? '270px' : '50px', // Adjust margin based on sidebar state
+              md: isSidebarOpen ? '270px' : '50px', // Adjust margin based on sidebar state
               xs: '0px',
             },
             width: '100%',

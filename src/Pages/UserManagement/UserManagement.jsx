@@ -11,6 +11,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActionModal';
 import EditIcon from '../../assets/EditIcon.png'; 
 import { useNavigate } from 'react-router-dom';
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -139,6 +140,9 @@ const UserManagement = () => {
                         position: "relative",
                         gap: "20px"
                     }}>
+                        <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+
+                       
                         <Typography sx={{
                             color: "white",
                             fontWeight: "600",
@@ -150,8 +154,14 @@ const UserManagement = () => {
                         }}>
                             Users Management
                         </Typography>
+                        <Typography>
+                            <MenuBar />
+                        </Typography>
+                        </Box>
+                        <Box sx={{width:"100%", display:"flex", justifyContent:"end"}} >
 
-                        <Box sx={{ position: "relative", width: "100%", maxWidth: "300px" }}>
+                      
+                        <Box sx={{ position: "relative", width: "100%", maxWidth: "100%" }}>
                             <input
                                 type="search"
                                 name="search"
@@ -171,6 +181,7 @@ const UserManagement = () => {
                                     right: "20px",
                                 }}
                             />
+                        </Box>
                         </Box>
                     </Box>
 

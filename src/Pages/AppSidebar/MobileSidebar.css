@@ -1,0 +1,82 @@
+/* MobileSidebar.css */
+
+/* General link styling */
+.nav-link {
+    text-decoration: none;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #FFB74D; /* Change link color on hover */
+}
+
+/* Active link styling */
+.nav-link.active {
+    color: #FFB74D; /* Active link color */
+}
+
+/* Logo styling */
+.logo-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Sidebar animations and transitions */
+.sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.cross-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.cross-icon:hover {
+    transform: rotate(90deg); /* Rotate on hover for a fun effect */
+}
+
+/* Navigation item styling */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-item:hover {
+    background-color: #333;
+    border-radius: 8px;
+}
+
+.nav-item img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Logout button */
+.logout-button {
+    margin-top: auto;
+    padding: 10px 20px;
+    border: 2px solid #FFF;
+    background: transparent;
+    color: #FFF;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #FFB74D;
+    color: #1A1A1A;
+}
