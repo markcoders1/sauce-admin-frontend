@@ -231,7 +231,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 <Box
   sx={{
     borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.3)' : 'white',
+    backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.6)' : 'white',
     width: '50px',
     height: '50px',
     display: 'flex',
@@ -252,7 +252,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 <Box
   sx={{
     borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.3)' : 'white',
+    backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.6)' : 'white',
     width: '50px',
     height: '50px',
     display: 'flex',
@@ -273,7 +273,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 <Box
   sx={{
     borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.3)' : 'white',
+    backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.6)' : 'white',
     width: '50px',
     height: '50px',
     display: 'flex',
