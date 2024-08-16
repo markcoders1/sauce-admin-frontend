@@ -12,6 +12,9 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+// Import the Lightbox component
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -34,18 +37,21 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     },
 }));
 
-const SauceManagement = () => {
+const BrandManagement = () => {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [allBrands, setAllBrands] = useState([])
+    const [allBrands, setAllBrands] = useState([]);
     const brandInfo = useSelector(state => state.brand);
-    const auth = useSelector(state => state.auth)
-    console.log(brandInfo)
+    const auth = useSelector(state => state.auth);
+
+    // State for lightbox
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
 
     const fetchBrands = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
             const response = await axios({
                 url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
                 method: "get",
@@ -54,11 +60,11 @@ const SauceManagement = () => {
                 }
             });
             setAllBrands(response?.data?.users || []);
-            setLoading(false)
-            console.log(response?.data?.users)
+            setLoading(false);
+            console.log(response?.data?.users);
         } catch (error) {
             console.error('Error fetching users:', error);
-            setLoading(false)
+            setLoading(false);
         }
     };
 
@@ -77,17 +83,24 @@ const SauceManagement = () => {
         const year = date.getFullYear();
         return `${month}/${day}/${year}`;
     };
+
     const filteredEmployees = allBrands.filter(brand =>
-        brand.name.toLowerCase().includes(searchTerm.toLowerCase()) 
+        brand.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleNavigate = (id) => {
         navigate(`/admin/specific-brand-management/${id}`);
-    }
+    };
 
     const navigateToEdit = (id) => {
-        navigate(`/admin/edit-brand-details/${id}`)
-    }
+        navigate(`/admin/edit-brand-details/${id}`);
+    };
+
+    const openLightbox = (imageSrc) => {
+        setSelectedImage(imageSrc);
+        setIsOpen(true);
+    };
+
     return (
         <>
             {loading ? (
@@ -118,7 +131,7 @@ const SauceManagement = () => {
                             <Typography>
                             <MenuBar/>
                             </Typography>
-                            </Box>
+                        </Box>
 
                         <Box sx={{ display: "flex",flexDirection:{sm:"row" , xs:"column"}, justifyContent: {md:"center", sm:"end"}, alignItems: {sm:"center", xs:"end"}, gap: "1rem",width:{md:"800px", xs:"100%"} }}>
                             <Box sx={{ position: "relative", maxWidth: {sm:"350px", xs:"100%"}, width:"100%" }}>
@@ -165,7 +178,6 @@ const SauceManagement = () => {
                                     <TableRow
                                         sx={{
                                             backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-
                                             '&:hover': { 
                                                 backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
                                             },
@@ -182,7 +194,6 @@ const SauceManagement = () => {
                                             borderRadius: "8px 0px 0px 8px",
                                             color: "white",
                                             paddingLeft:"50px"
-
                                         }}>Image</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
@@ -198,7 +209,7 @@ const SauceManagement = () => {
                                             fontSize: "21px",
                                             textAlign: "start",
                                             color: "white",
-                                              paddingLeft:"10px"
+                                            paddingLeft:"10px"
                                         }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
@@ -207,7 +218,7 @@ const SauceManagement = () => {
                                             textAlign: "center",
                                             borderRadius: "0px 8px 8px 0px",
                                             color: "white",
-                                              paddingLeft:"10px"
+                                            paddingLeft:"10px"
                                         }} className="MuiTableCell-root-head">Action</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -216,25 +227,34 @@ const SauceManagement = () => {
                                         <TableRow key={index} sx={{
                                             border: "2px solid #FFA100"
                                         }} className="MuiTableRow-root" >
-                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"40px !important", textAlign:"start !important"}} className="MuiTableCell-root">
-                                                <img src={brand.image} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
+                                            <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", paddingLeft:"40px !important", textAlign:"start !important"}} className="MuiTableCell-root">
+                                                <img 
+                                                    src={brand.image} 
+                                                    alt="Brand" 
+                                                    style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain", cursor:"pointer" }}  
+                                                    onClick={() => openLightbox(brand.image)} 
+                                                />
                                             </TableCell>
                                             <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{brand.name}</TableCell>
                                             <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{formatDate(brand.date)}</TableCell>
                                             <TableCell sx={{ borderRadius: "0px 8px 8px 0px",textAlign:"start !important" }} className="MuiTableCell-root">
-                                                <Box sx={{ display: "flex", gap: "30px",   justifyContent: "center", alignItems:"center" }}>
+                                                <Box sx={{ display: "flex", gap: "30px", justifyContent: "center", alignItems:"center" }}>
                                                     <CustomButton
-                                                    border='1px solid #FFA100'
-                                                    ButtonText={"View Sauces"}
-                                                    color='white'
-                                                    width={"128px"}
-                                                    borderRadius='6px'
-                                                    buttonStyle={{ height: "45px" }}
-                                                    onClick={() => handleNavigate(brand._id)}
+                                                        border='1px solid #FFA100'
+                                                        ButtonText={"View Sauces"}
+                                                        color='white'
+                                                        width={"128px"}
+                                                        borderRadius='6px'
+                                                        buttonStyle={{ height: "45px" }}
+                                                        onClick={() => handleNavigate(brand._id)}
                                                     />
-                                                     <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => navigateToEdit(brand._id)} />
-
-                                                    
+                                                    <img 
+                                                        className="edit-icon" 
+                                                        src={EditIcon} 
+                                                        alt="Edit" 
+                                                        style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} 
+                                                        onClick={() => navigateToEdit(brand._id)} 
+                                                    />
                                                 </Box>
                                             </TableCell>
                                         </TableRow>
@@ -245,8 +265,15 @@ const SauceManagement = () => {
                     </Box>
                 </Box>
             )}
+            {isOpen && (
+                <Lightbox
+                    open={isOpen}
+                    close={() => setIsOpen(false)}
+                    slides={[{ src: selectedImage }]}
+                />
+            )}
         </>
     );
 }
 
-export default SauceManagement;
+export default BrandManagement;

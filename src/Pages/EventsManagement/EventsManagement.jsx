@@ -11,6 +11,11 @@ import axios from 'axios';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import { useSelector } from 'react-redux';
 
+
+// Import the Lightbox component
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -38,6 +43,11 @@ const EventsManagement = () => {
     const [allEvents, setAllEvents] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const auth = useSelector(state => state.auth);
+
+
+    // State for lightbox
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
     
     const fetchEvents = async () => {
         setLoading(true);
@@ -83,6 +93,12 @@ const EventsManagement = () => {
     const handleNavigateToEdit = (id) => {
         navigate(`/admin/edit-event-details/${id}`);
     };
+
+    const openLightbox = (imageSrc) => {
+        setSelectedImage(imageSrc);
+        setIsOpen(true);
+    };
+
 
     return (
         <>
@@ -253,7 +269,7 @@ const EventsManagement = () => {
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px !important", color: "white" ,  textAlign:"start !important"}} className="MuiTableCell-root">
-                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain" }} />
+                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor:"pointer" }}  onClick={() => openLightbox(event.bannerImage)}  />
                                             </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>
@@ -261,7 +277,7 @@ const EventsManagement = () => {
                                                 <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)} />
+                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)}  />
                                                      
                                                         
                                                     </Box>
@@ -275,6 +291,15 @@ const EventsManagement = () => {
                     </Box>
                 )
             }
+
+            {/* Lightbox component */}
+            {isOpen && (
+                <Lightbox
+                    open={isOpen}
+                    close={() => setIsOpen(false)}
+                    slides={[{ src: selectedImage }]}
+                />
+            )}
         </>
     );
 }

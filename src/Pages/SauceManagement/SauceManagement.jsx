@@ -11,6 +11,10 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+// Import the Lightbox component
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+
 const SauceManagement = () => {
     const [snackAlertData, setSnackAlertData] = useState({
         open: false,
@@ -21,6 +25,10 @@ const SauceManagement = () => {
     const [loading, setLoading] = useState(false);
     const [allSauce, setAllSauce] = useState([]);
     const auth = useSelector(state => state.auth);
+
+    // State for lightbox
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
 
     const fetchSauce = async () => {
         setLoading(true);
@@ -65,6 +73,11 @@ const SauceManagement = () => {
 
     const handleNavigateToEdit = (id) => {
         navigate(`/admin/edit-sauce-details/${id}`);
+    };
+
+    const openLightbox = (imageSrc) => {
+        setSelectedImage(imageSrc);
+        setIsOpen(true);
     };
 
     return (
@@ -144,7 +157,6 @@ const SauceManagement = () => {
                                         fontSize='18px'
                                         fontWeight='600'
                                         onClick={() => navigate("/admin/add-sauce")}
-                                        // fullWidth={true}
                                     />
                                 </Box>
                             </Box>
@@ -157,7 +169,6 @@ const SauceManagement = () => {
                                         <TableRow
                                             sx={{
                                                 backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-
                                                 '&:hover': { 
                                                     backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
                                                 },
@@ -228,19 +239,26 @@ const SauceManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign: "start !important",  paddingLeft: {
+                                                <TableCell 
+                                                    sx={{ borderRadius: "8px 0px 0px 8px", color: "white", textAlign: "start !important",  paddingLeft: {
                                                     md:"20px !important",
                                                     xs:"20px !important"
-                                                } }} className="MuiTableCell-root">
-                                                    <img src={sauce.bannerImage} alt="Sauce" style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain" }} />
+                                                } }} 
+                                                    className="MuiTableCell-root"
+                                                >
+                                                    <img 
+                                                        src={sauce.bannerImage} 
+                                                        alt="Sauce" 
+                                                        style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain", cursor: 'pointer' }} 
+                                                        onClick={() => openLightbox(sauce.bannerImage)}
+                                                    />
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.owner.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(sauce.owner.date)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "start" }}>
-                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={()=> handleNavigateToEdit(sauce._id)} />
-                                                    
+                                                        <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={()=> handleNavigateToEdit(sauce._id)} />
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -252,6 +270,15 @@ const SauceManagement = () => {
                     </Box>
                 )
             }
+
+            {/* Lightbox component */}
+            {isOpen && (
+                <Lightbox
+                    open={isOpen}
+                    close={() => setIsOpen(false)}
+                    slides={[{ src: selectedImage }]}
+                />
+            )}
         </>
     );
 }
