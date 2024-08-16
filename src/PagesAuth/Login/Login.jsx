@@ -95,6 +95,10 @@ const Login = () => {
         }
     };
 
+    const navigateToFP = () => {
+        navigate('/forget-password')
+    }
+
     return (
         <div>
             <Box>
@@ -186,8 +190,9 @@ const Login = () => {
         transition: "color 0.4s ease",
         '&:hover': {
             color: "#FFA100",
-        }
+        }   
     }}
+    onClick={navigateToFP}
 >
     Forgot Password
 </Typography>
