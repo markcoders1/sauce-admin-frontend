@@ -142,7 +142,7 @@ const EditBrandDetails = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: {sm:"0px 21px", xs:"0px 10px"}
+        padding: {sm:"0px 21px", xs:"0px 15px"}
       }}
     >
 <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >

@@ -19,7 +19,7 @@
     text-align: start;
     font-weight: 600;
     background-color: transparent !important;
-    font-size: 21px;
+    font-size: 20px !important;
     border: none !important;
 }
 
@@ -45,9 +45,15 @@
     font-size: 21px;
 }
 
-.MuiTableRow-root:hover {
+.MuiTableRow-root:not(:first-child):hover {
     background: #5A3D0A;
+  
 }
+
+.header-row > .MuiTableCell-root-head:hover {
+    background: #5A3D0A !important;
+}
+
 
 .search-input1 {
     color: #ffffff;
