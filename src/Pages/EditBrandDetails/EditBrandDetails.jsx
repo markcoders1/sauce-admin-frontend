@@ -19,9 +19,9 @@ const EditBrandDetails = () => {
   const [formData, setFormData] = useState({
     name: '',
     image: null,
-    type: '', // input field
-    status: '', // input field
-    points: '' // number input
+    type: '',
+    status: '',
+    points: ''
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -62,15 +62,14 @@ const EditBrandDetails = () => {
         },
       });
       const userData = response?.data?.user;
-      console.log('Fetched user data:', userData); // Add this line to verify data
       setFormData({
         name: userData?.name || '',
         image: null,
-        type: userData?.type || '', // Ensure this is being set correctly
-        status: userData?.status || '', // Ensure this is being set correctly
+        type: userData?.type || '',
+        status: userData?.status || '',
         points: userData?.points || 0
       });
-      setCurrentImage(userData.image); // Assuming the API returns the image URL
+      setCurrentImage(userData.image);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -82,6 +81,16 @@ const EditBrandDetails = () => {
 
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
+
+    // Check for file size
+    if (formData.image && formData.image.size > 4 * 1024 * 1024) {
+      setSnackAlertData({
+        open: true,
+        message: "Selected image size exceeds 4MB.",
+        severity: "error",
+      });
+      return;
+    }
 
     const convertToBase64 = (file) => {
       return new Promise((resolve, reject) => {
@@ -117,7 +126,6 @@ const EditBrandDetails = () => {
         data: data
       });
 
-    
       setSelectedFileName(""); // Reset file name
       setCurrentImage(''); // Reset current image
       setSnackAlertData({
@@ -145,24 +153,23 @@ const EditBrandDetails = () => {
         padding: {sm:"0px 21px", xs:"0px 15px"}
       }}
     >
-<Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Edit Brand / User
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm:"40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Edit Brand / User
+        </Typography>
+        <Typography>
+          <MenuBar/>
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
         <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
@@ -187,7 +194,7 @@ Edit Brand / User
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
+            marginBottom: "0.4rem"
           }}>
             Name
           </Typography>
@@ -208,7 +215,7 @@ Edit Brand / User
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
+            marginBottom: "0.4rem"
           }}>
             Type
           </Typography>
@@ -219,7 +226,7 @@ Edit Brand / User
               { label: 'Brand', value: 'brand' },
               { label: 'Admin', value: 'admin' }
             ]}
-            value={formData.type} // This should display the initial value
+            value={formData.type}
             handleChange={(value) => handleSelectChange('type', value)}
             error={errors.type}
           />
@@ -233,7 +240,7 @@ Edit Brand / User
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
+            marginBottom: "0.4rem"
           }}>
             Status
           </Typography>
@@ -243,7 +250,7 @@ Edit Brand / User
               { label: 'Active', value: 'active' },
               { label: 'Inactive', value: 'inactive' }
             ]}
-            value={formData.status} // This should display the initial value
+            value={formData.status}
             handleChange={(value) => handleSelectChange('status', value)}
             error={errors.status}
           />
@@ -257,7 +264,7 @@ Edit Brand / User
               xs: "16px"
             },
             fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem" // Add this line to create a gap between label and input field
+            marginBottom: "0.4rem"
           }}>
             Points
           </Typography>

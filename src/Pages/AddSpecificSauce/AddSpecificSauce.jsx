@@ -10,16 +10,15 @@ import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
-const  AddSpecificSauce= () => {
+const AddSpecificSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
     severity: "success"
   });
   const brandInfo = useSelector(state => state.brand);
-const auth = useSelector(state => state.auth)
-const {id} = useParams();
-  // console.log(brandInfo)
+  const auth = useSelector(state => state.auth);
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -28,7 +27,6 @@ const {id} = useParams();
     productLink: '',
     details: '',
     ingredients: [''],
- 
     type: '',
     title: ""
   });
@@ -83,6 +81,26 @@ const {id} = useParams();
   };
 
   const handleSubmit = async () => {
+    let validationErrors = {};
+
+    // Check file sizes
+    if (sauceImage && sauceImage.size > 4 * 1024 * 1024) {
+      validationErrors.sauceImage = "Sauce image size exceeds 4MB.";
+    }
+    if (bannerImage && bannerImage.size > 4 * 1024 * 1024) {
+      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setSnackAlertData({
+        open: true,
+        message: `${Object.values(validationErrors).join(" ")}`,
+        severity: "error",
+      });
+      return;
+    }
+
     const data = new FormData();
     data.append('image', sauceImage);
     data.append('bannerImage', bannerImage);
@@ -91,12 +109,12 @@ const {id} = useParams();
     data.append('ingredients', formData.ingredients);
     data.append('productLink', formData.productLink);
     data.append('websiteLink', formData.websiteLink);
-    data.append('userId',id);
+    data.append('userId', id);
     data.append('type', formData.type);
     data.append('title', formData.title);
 
     try {
-      console.log(formData)
+      console.log(formData);
       const response = await axios({
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
         method: "post",
@@ -111,25 +129,24 @@ const {id} = useParams();
         open: true,
         message: response?.data?.message,
         severity: "success",
-      })
+      });
 
       setFormData({
         sauceName: '',
-    websiteLink: '',
-    productLink: '',
-    details: '',
-    ingredients: [''],
- 
-    type: '',
-    title: ""
-      })
+        websiteLink: '',
+        productLink: '',
+        details: '',
+        ingredients: [''],
+        type: '',
+        title: ""
+      });
     } catch (error) {
       console.error('Error submitting sauce:', error);
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.message,
         severity: "error",
-      })
+      });
     }
   };
 
@@ -142,24 +159,23 @@ const {id} = useParams();
         padding: "0px 21px"
       }}
     >
-       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Add {brandInfo.name} Brand Sauce
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }} >
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm: "40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Add {brandInfo.name} Brand Sauce
+        </Typography>
+        <Typography>
+          <MenuBar />
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
@@ -210,8 +226,7 @@ Add {brandInfo.name} Brand Sauce
           />
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: {md:"row", xs:"column"}, gap: "1.5rem" }}>
-       
+      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem" }}>
         <Box sx={{ flexBasis: "50%" }}>
           <CustomInputShadow
             placeholder="Type"
@@ -231,7 +246,7 @@ Add {brandInfo.name} Brand Sauce
           />
         </Box>
       </Box>
-      <Box sx={{ flexBasis: "100%", display:"flex", flexDirection:"column", gap:"8px" }}>
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Details' />
         <CustomInputShadow
           name="details"
@@ -242,14 +257,13 @@ Add {brandInfo.name} Brand Sauce
           height="160px"
         />
       </Box>
-      <Box sx={{ flexBasis: "100%", display:"flex", flexDirection:"column", gap:"8px" }}>
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Ingredients' />
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Box sx={{width:"100%"}} >
+            <Box sx={{ width: "100%" }}>
               <CustomInputShadow
                 name={`ingredients-${index}`}
-              
                 value={ingredient}
                 onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
                 error={errors.ingredients}
@@ -263,7 +277,7 @@ Add {brandInfo.name} Brand Sauce
                 height="100px"
                 width={"98px"}
                 borderRadius='6px'
-                buttonStyle={{ height: {sm:"75px", xs:"68px"}, mt:"-16px" }}
+                buttonStyle={{ height: { sm: "75px", xs: "68px" }, mt: "-16px" }}
                 onClick={() => removeBullet('ingredients', index)}
               />
             )}

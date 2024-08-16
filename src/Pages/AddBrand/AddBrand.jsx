@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
@@ -40,6 +40,23 @@ const AddBrand = () => {
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
+    let validationErrors = {};
+
+    // Check file size for bannerImage
+    if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
+      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setSnackAlertData({
+        open: true,
+        message: `${Object.values(validationErrors).join(" ")}`,
+        severity: "error",
+      });
+      return;
+    }
+
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
@@ -51,7 +68,7 @@ const AddBrand = () => {
         url: "https://aws.markcoders.com/sauced-backend/api/admin/create-brand",
         method: "post",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzZTgyYTVkY2FlY2IyNGI4Nzc4YjkiLCJpYXQiOjE3MjIwMTc4MzQsImV4cCI6MTcyNzIwMTgzNH0.jAigSu6rrFjBiJjBKlvShm0--WNo-0YgaJXq6eW_QlU`,
+          Authorization: `Bearer YOUR_ACCESS_TOKEN`,
           'Content-Type': 'multipart/form-data' 
         },
         data: data
@@ -92,24 +109,23 @@ const AddBrand = () => {
         padding: "0px 21px"
       }}
     >
-     <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Add New Brand
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm:"40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Add New Brand
+        </Typography>
+        <Typography>
+          <MenuBar/>
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />

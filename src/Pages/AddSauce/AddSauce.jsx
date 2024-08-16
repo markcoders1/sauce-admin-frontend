@@ -76,6 +76,26 @@ const AddSauce = () => {
   };
 
   const handleSubmit = async () => {
+    let validationErrors = {};
+
+    // Check file sizes
+    if (sauceImage && sauceImage.size > 4 * 1024 * 1024) {
+      validationErrors.sauceImage = "Sauce image size exceeds 4MB.";
+    }
+    if (bannerImage && bannerImage.size > 4 * 1024 * 1024) {
+      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setSnackAlertData({
+        open: true,
+        message: `${Object.values(validationErrors).join(" ")}`,
+        severity: "error",
+      });
+      return;
+    }
+
     const data = new FormData();
     data.append('image', sauceImage);
     data.append('bannerImage', bannerImage);
@@ -124,24 +144,23 @@ const AddSauce = () => {
         padding: {sm:"0px 21px", xs:"0px 20px"}
       }}
     >
-<Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Add Sauce
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm:"40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Add Sauce
+        </Typography>
+        <Typography>
+          <MenuBar/>
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
@@ -149,12 +168,14 @@ Add Sauce
             {selectedSauceFileName ? `Selected File: ${selectedSauceFileName}` : "Upload Sauce Image"}
           </Typography>
         </label>
+      
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
           </Typography>
         </label>
+        
       </Box>
       <Box sx={{
         display: "flex",
@@ -239,7 +260,6 @@ Add Sauce
             <Box sx={{width:"100%"}} >
               <CustomInputShadow
                 name={`ingredients-${index}`}
-              
                 value={ingredient}
                 onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
                 error={errors.ingredients}

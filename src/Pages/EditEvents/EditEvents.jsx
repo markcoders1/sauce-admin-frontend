@@ -77,6 +77,16 @@ const EditEvents = () => {
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
 
+    // Check for file size
+    if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
+      setSnackAlertData({
+        open: true,
+        message: "Selected banner image size exceeds 4MB.",
+        severity: "error",
+      });
+      return;
+    }
+
     const convertToBase64 = (file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -97,7 +107,6 @@ const EditEvents = () => {
       eventDate: Math.floor(new Date(formData.date).getTime() / 1000),
       venueDescription: formData?.description,
       venueName: formData?.destination,
-    
       bannerImage: imageBase64,
       eventDetails: formData?.details,
       eventId: id,
@@ -113,16 +122,7 @@ const EditEvents = () => {
         },
         data: data
       });
-      // setFormData({
-      //   eventName: '',
-      //   organizedBy: '',
-      //   // ownerId: "",
-      //   date: '',
-      //   description: '',
-      //   details: [''],
-      //   destination: '',
-      //   bannerImage: null,
-      // });
+
       setSelectedBannerFileName(""); // Reset file name
       setSnackAlertData({
         open: true,
@@ -154,7 +154,6 @@ const EditEvents = () => {
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner.name,
-        // ownerId: eventData?.owner?._id,
         date: new Date(eventData?.eventDate * 1000).toISOString().split('T')[0], // Convert Unix timestamp to 'YYYY-MM-DD' format
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [''], // Ensure details is an array
@@ -171,10 +170,6 @@ const EditEvents = () => {
     fetchEvent();
   }, []);
 
-  const handleBrandChange = (ownerId) => {
-    setFormData(prev => ({ ...prev, ownerId }));
-  };
-
   return (
     <Box
       className="hide-scrollbar"
@@ -186,23 +181,21 @@ const EditEvents = () => {
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-                       
-<Typography sx={{
-    color: "white",
-    fontWeight: "600",
-    fontSize: {
-        sm: "45px",
-        xs: "30px"
-    },
-    fontFamily: "Fira Sans !important",
-}}>
-    Edit Event
-</Typography>
-<Typography>
-    <MenuBar />
-</Typography>
-</Box>
+        <Typography sx={{
+            color: "white",
+            fontWeight: "600",
+            fontSize: {
+                sm: "45px",
+                xs: "30px"
+            },
+            fontFamily: "Fira Sans !important",
+        }}>
+            Edit Event
+        </Typography>
+        <Typography>
+            <MenuBar />
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />

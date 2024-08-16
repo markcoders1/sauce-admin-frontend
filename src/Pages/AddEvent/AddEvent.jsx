@@ -33,11 +33,12 @@ const AddSEvent = () => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
+      const file = files[0];
       setFormData({
         ...formData,
-        [name]: files[0] // Save the file
+        [name]: file 
       });
-      setSelectedBannerFileName(files[0]?.name || ""); // Update selected file name
+      setSelectedBannerFileName(file?.name || ""); // Update selected file name
     } else {
       setFormData({
         ...formData,
@@ -74,7 +75,22 @@ const AddSEvent = () => {
   };
 
   const handleSubmit = async () => {
-    console.log('Form data submitted:', formData);
+    let validationErrors = {};
+
+    // Check file size
+    if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
+      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setSnackAlertData({
+        open: true,
+        message: `${Object.values(validationErrors).join(" ")}`,
+        severity: "error",
+      });
+      return;
+    }
 
     try {
       const data = new FormData();
@@ -96,29 +112,31 @@ const AddSEvent = () => {
         },
         data: data
       });
+
       setFormData({
         eventName: '',
         organizedBy: '',
         ownerId: "",
         date: '',
         description: '',
-        details: ['',], // Initialize with two bullet points
+        details: ['',], // Initialize with one bullet point
         destination: '',
         bannerImage: null,
-      })
+      });
+      setSelectedBannerFileName(""); // Reset file name
       console.log(response);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
-      })
+      });
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.message,
         severity: "error",
-      })
+      });
     }
   };
 
@@ -156,24 +174,22 @@ const AddSEvent = () => {
         padding: "0px 21px"
       }}
     >
-     <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-                       
-<Typography sx={{
-    color: "white",
-    fontWeight: "600",
-    fontSize: {
-        sm: "45px",
-        xs: "30px"
-    },
-    fontFamily: "Fira Sans !important",
-}}>
-    Add Event
-</Typography>
-<Typography>
-    <MenuBar />
-</Typography>
-</Box>
+      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+              sm: "45px",
+              xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Add Event
+        </Typography>
+        <Typography>
+          <MenuBar />
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />

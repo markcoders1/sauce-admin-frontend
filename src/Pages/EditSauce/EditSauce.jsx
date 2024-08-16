@@ -12,7 +12,6 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 const EditSauce = () => {
   const auth = useSelector(state => state.auth);
   const { id } = useParams();
-  console.log("sauceId",id)
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -62,6 +61,16 @@ const EditSauce = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    
+    if (file && file.size > 4 * 1024 * 1024) {
+      setSnackAlertData({
+        open: true,
+        message: `Selected ${e.target.id === 'uploadSauceImage' ? 'sauce' : 'banner'} image size exceeds 4MB.`,
+        severity: "error",
+      });
+      return;
+    }
+
     if (file) {
       const base64 = await convertToBase64(file);
       if (e.target.id === "uploadSauceImage") {
@@ -178,23 +187,22 @@ const EditSauce = () => {
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Edit Sauce
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm:"40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Edit Sauce
+        </Typography>
+        <Typography>
+          <MenuBar/>
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
@@ -282,7 +290,6 @@ Edit Sauce
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: {md:"row", xs:"column"}, gap: "1.5rem" }}>
-       
         <Box sx={{ flexBasis: "50%" }}>
           <Typography sx={{
             color: "#FFA100",
@@ -325,10 +332,8 @@ Edit Sauce
             error={errors.title}
           />
         </Box>
-       
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-      
         <Typography sx={{
           color: "#FFA100",
           fontWeight: "500",
@@ -351,7 +356,6 @@ Edit Sauce
         />
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-       
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>
@@ -369,7 +373,6 @@ Edit Sauce
               </Typography>
               <CustomInputShadow
                 name={`ingredients-${index}`}
-                
                 value={ingredient}
                 onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
                 error={errors.ingredients}
