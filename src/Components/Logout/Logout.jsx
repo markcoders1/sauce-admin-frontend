@@ -41,7 +41,7 @@ const LogoutButton = () => {
                     backgroundColor: "transparent",
                     
                     marginTop: "5px",
-                    backgroundColor:"white", cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
+                  cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
                       backgroundColor:'rgba(255, 0, 0, 0.6)',
                       boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Box shadow on hover
                       transition: 'background-color 0.3s ease, box-shadow 0.3s ease',

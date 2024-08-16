@@ -290,6 +290,7 @@ const AddSEvent = () => {
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet('details')}
+          fontSize='20px'
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
