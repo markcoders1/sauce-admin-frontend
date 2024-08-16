@@ -251,10 +251,10 @@ const SauceManagement = () => {
                                                     className="MuiTableCell-root"
                                                 >
                                                     <img 
-                                                        src={sauce.bannerImage ? sauce.bannerImage : logoAdmin} 
+                                                        src={sauce.image ? sauce.bannerImage : logoAdmin} 
                                                         alt="Sauce" 
                                                         style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain", cursor: 'pointer' }} 
-                                                        onClick={() => openLightbox(sauce.bannerImage)}
+                                                        onClick={() => openLightbox(sauce.image)}
                                                     />
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.owner.name}</TableCell>

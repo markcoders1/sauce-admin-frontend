@@ -72,6 +72,7 @@ const EditSauce = () => {
     }
 
     if (file) {
+      console.log(file)
       const base64 = await convertToBase64(file);
       if (e.target.id === "uploadSauceImage") {
         setSauceImage(base64);
@@ -103,8 +104,7 @@ const EditSauce = () => {
   const handleSubmit = async () => {
     console.log(id)
     const data = {
-      image: sauceImage,
-      bannerImage: bannerImage,
+      files:{sauceImage,bannerImage},
       name: formData.sauceName,
       description: formData.details,
       ingredients: formData.ingredients,
@@ -118,7 +118,8 @@ const EditSauce = () => {
 
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`,
+
+        url: `https://hgjk9dq9-6000.inc1.devtunnels.ms/api/admin/edit-sauce`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -145,7 +146,7 @@ const EditSauce = () => {
   const fetchSauce = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-sauce/${id}`,
+        url: `https://hgjk9dq9-6000.inc1.devtunnels.ms/api/admin/get-sauce/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`

@@ -62,6 +62,7 @@ const EditSauce = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      console.log(file)
       const base64 = await convertToBase64(file);
       if (e.target.id === "uploadSauceImage") {
         setSauceImage(base64);
