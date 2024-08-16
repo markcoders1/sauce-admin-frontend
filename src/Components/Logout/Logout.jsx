@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LogoutConfirmationModal from '../LogoutConfirmationModal/LogoutConfirmationModal';
 import logoutpng from '../../assets/logout.png';
 import logoutHover from '../../assets/logoutHover.png';
+import { Box } from '@mui/material';
 
 const LogoutButton = () => {
     const navigate = useNavigate();
@@ -33,20 +34,25 @@ const LogoutButton = () => {
 
     return (
         <>
-            <button
-                style={{
+            <Box
+                sx={{
                     border: "none", color: "red",
                     outline: "none",
                     backgroundColor: "transparent",
-                    cursor: "pointer",
-                    marginTop: "5px"
+                    
+                    marginTop: "5px",
+                    backgroundColor:"white", cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
+                      backgroundColor:'rgba(255, 0, 0, 0.6)',
+                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Box shadow on hover
+                      transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                    }
                 }}
                 onClick={handleOpenModal}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
                 <img src={isHovered ? logoutHover : logoutpng} alt="Logout" />
-            </button>
+            </Box>
             <LogoutConfirmationModal 
                 open={modalOpen} 
                 handleClose={handleCloseModal} 

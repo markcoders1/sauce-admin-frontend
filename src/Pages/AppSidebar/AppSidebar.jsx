@@ -66,7 +66,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             opacity: isOpen ? 1 : 0,
             visibility: isOpen ? 'visible' : 'hidden',
             transform: isOpen ? 'translateX(0)' : 'translateX(-500%)',
-            transition: 'opacity .5s ease, transform .8s ease, visibility 1s ease',
+            transition: 'opacity 0.5s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
@@ -108,7 +108,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon1} style={{ width: '27px' }} alt="User Management" />
                   </Typography>
-                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >User Management</Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >User Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -129,7 +129,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon3} style={{ width: '27px' }} alt="Sauce Management" />
                   </Typography>
-                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Sauce Management</Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Sauce Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -150,7 +150,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
                   </Typography>
-                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Brand Management</Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Brand Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -171,7 +171,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
                     <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
                   </Typography>
-                  <Typography sx={{fontSize:"18px", fontWeight:"600" , fontFamily:"Montserrat !important"}} >Events Management</Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Events Management</Typography>
                 </Box>
               </NavLink>
             </>
@@ -183,7 +183,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             opacity: !isOpen ? 1 : 0,
             visibility: !isOpen ? 'visible' : 'hidden',
             transform: !isOpen ? 'translateX(0)' : 'translateX(-10%)',
-            transition: 'opacity .5s ease, transform .8s ease, visibility 1s ease',
+            transition: 'opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
@@ -207,90 +207,90 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 <img src={hambergImg} alt="Toggle Sidebar" />
               </Box>
               <Box
-  sx={{
-    borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon1' ? 'rgba(255, 0, 0, 0.6)' : 'white', // Lighter red with lower opacity
-    width: '50px',
-    height: '50px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    color: 'black',
-    fontWeight: '600',
-    boxShadow: hoveredIcon === 'icon1' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none', // Smooth box-shadow
-    transition: 'background-color 0.3s ease, box-shadow 0.3s ease', // Smooth transition for both
-    mt: "40px",
-  }}
-  onClick={() => handleNavigate('/admin/user-management')}
-  onMouseEnter={() => handleMouseEnter('icon1')}
-  onMouseLeave={handleMouseLeave}
->
-  <img src={hoveredIcon === 'icon1' ? icon11 : icon1} style={{ width: '55%', zIndex: '100' }} alt="User Management" />
-</Box>
-<Box
-  sx={{
-    borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-    width: '50px',
-    height: '50px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    color: 'black',
-    fontWeight: '600',
-    boxShadow: hoveredIcon === 'icon3' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
-    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-  }}
-  onClick={() => handleNavigate('/admin/sauce-management')}
-  onMouseEnter={() => handleMouseEnter('icon3')}
-  onMouseLeave={handleMouseLeave}
->
-  <img src={hoveredIcon === 'icon3' ? icon21 : icon3} style={{ width: '45%', zIndex: '100' }} alt="Sauce Management" />
-</Box>
-<Box
-  sx={{
-    borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-    width: '50px',
-    height: '50px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    color: 'black',
-    fontWeight: '600',
-    boxShadow: hoveredIcon === 'icon2' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
-    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-  }}
-  onClick={() => handleNavigate('/admin/brand-management')}
-  onMouseEnter={() => handleMouseEnter('icon2')}
-  onMouseLeave={handleMouseLeave}
->
-  <img src={hoveredIcon === 'icon2' ? icon31 : icon2} style={{ width: '55%', zIndex: '100' }} alt="Brand Management" />
-</Box>
-<Box
-  sx={{
-    borderRadius: '50%',
-    backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-    width: '50px',
-    height: '50px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    color: 'black',
-    fontWeight: '600',
-    boxShadow: hoveredIcon === 'icon4' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
-    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-  }}
-  onClick={() => handleNavigate('/admin/events-management')}
-  onMouseEnter={() => handleMouseEnter('icon4')}
-  onMouseLeave={handleMouseLeave}
->
-  <img src={hoveredIcon === 'icon4' ? icon41 : icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
-</Box>
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon1' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon1' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                  mt: "40px",
+                }}
+                onClick={() => handleNavigate('/admin/user-management')}
+                onMouseEnter={() => handleMouseEnter('icon1')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon1' ? icon11 : icon1} style={{ width: '55%', zIndex: '100' }} alt="User Management" />
+              </Box>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon3' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/sauce-management')}
+                onMouseEnter={() => handleMouseEnter('icon3')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon3' ? icon21 : icon3} style={{ width: '45%', zIndex: '100' }} alt="Sauce Management" />
+              </Box>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon2' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/brand-management')}
+                onMouseEnter={() => handleMouseEnter('icon2')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon2' ? icon31 : icon2} style={{ width: '55%', zIndex: '100' }} alt="Brand Management" />
+              </Box>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon4' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/events-management')}
+                onMouseEnter={() => handleMouseEnter('icon4')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon4' ? icon41 : icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
+              </Box>
               
             </>
           )}
