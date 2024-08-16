@@ -13,6 +13,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); // Loading state for the button
     const [error, setError] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -26,16 +27,16 @@ const Login = () => {
     });
     console.log(authState.authenticated)
 
-    useEffect(()=>{
-        if (authState.authenticated ===  true){
+    useEffect(() => {
+        if (authState.authenticated === true) {
             navigate('/admin')
         }
-
-    },[])
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError({});
+        setLoading(true); // Set loading state to true when request starts
 
         // Custom validation
         let validationErrors = {};
@@ -44,6 +45,7 @@ const Login = () => {
 
         if (Object.keys(validationErrors).length > 0) {
             setError(validationErrors);
+            setLoading(false); // Reset loading state if validation fails
             return;
         }
 
@@ -101,6 +103,8 @@ const Login = () => {
                 message: "Invalid Login Credentials",
                 severity: "error"
             });
+        } finally {
+            setLoading(false); // Reset loading state after request completes
         }
     };
 
@@ -136,9 +140,9 @@ const Login = () => {
                 </Typography>
             </Box>
 
-                <form onSubmit={handleSubmit}>
-            <Box sx={{  display:"flex", flexDirection:"column", gap:{sm:"30px", xs:"20px",marginTop:"20px"}}}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem",   }}>
+            <form onSubmit={handleSubmit}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: { sm: "30px", xs: "20px" }, marginTop: "20px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                         <Typography sx={{
                             color: "#FFA100",
                             fontWeight: "500",
@@ -158,8 +162,6 @@ const Login = () => {
                             name="email"
                             error={error.email}
                         />
-                        
-
                     </div>
 
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
@@ -182,55 +184,54 @@ const Login = () => {
                             name="password"
                             error={error.password}
                         />
-                       
                     </div>
-                    <Typography 
-    sx={{
-        color: "#C1C1C1",
-        fontWeight: "500",
-        fontSize: {
-            sm: "14px",
-            xs: "14px"
-        },
-        textAlign: "end",
-        fontFamily: "Montserrat !important",
-        mt: "20px",
-        cursor: "pointer",
-        transition: "color 0.4s ease",
-        '&:hover': {
-            color: "#FFA100",
-        }   
-    }}
-    onClick={navigateToFP}
->
-    Forgot Password
-</Typography>
+                    <Typography
+                        sx={{
+                            color: "#C1C1C1",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "14px",
+                                xs: "14px"
+                            },
+                            textAlign: "end",
+                            fontFamily: "Montserrat !important",
+                            mt: "20px",
+                            cursor: "pointer",
+                            transition: "color 0.4s ease",
+                            '&:hover': {
+                                color: "#FFA100",
+                            }
+                        }}
+                        onClick={navigateToFP}
+                    >
+                        Forgot Password
+                    </Typography>
 
-                   <Box
-                   sx={{
-                    mt:{
-                        md:"80px",
-                    xs:"30px"                    }
-                   }}
-                   >
-                    <CustomButton
-                        border='1px solid #FFA100'
-                        ButtonText='Sign in'
-                        color='white'
-                        width={"100%"}
-                        borderRadius='8px'
-                        background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
-                        padding='16px 0px'
-                        fontSize='18px'
-                        fontWeight='600'
-                        type="submit"
-                        fullWidth={true}
-                      
-                        
-                    />
-                      </Box>
-            </Box>
-                </form>
+                    <Box
+                        sx={{
+                            mt: {
+                                md: "80px",
+                                xs: "30px"
+                            }
+                        }}
+                    >
+                        <CustomButton
+                            border='1px solid #FFA100'
+                            ButtonText={loading ? 'Signing in...' : 'Sign in'}
+                            color={loading ? '#FFA100' : 'white'}
+                            width={"100%"}
+                            borderRadius='8px'
+                            background={loading ? 'linear-gradient(90deg, #2E210A 0%, #5A3D0A 100%)' : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
+                            padding='16px 0px'
+                            fontSize='18px'
+                            fontWeight='600'
+                            type="submit"
+                            fullWidth={true}
+                            disabled={loading} // Disable the button while loading
+                        />
+                    </Box>
+                </Box>
+            </form>
             <SnackAlert
                 severity={snackAlertData.severity}
                 message={snackAlertData.message}

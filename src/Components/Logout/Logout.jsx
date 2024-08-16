@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import LogoutConfirmationModal from '../LogoutConfirmationModal/LogoutConfirmationModal';
 import logoutpng from '../../assets/logout.png';
 import logoutHover from '../../assets/logoutHover.png';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-const LogoutButton = () => {
+const LogoutButton = ({ isSidebarOpen }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
@@ -36,22 +36,53 @@ const LogoutButton = () => {
         <>
             <Box
                 sx={{
-                    border: "none", color: "red",
-                    outline: "none",
-                    backgroundColor: "white",
-                    
-                    marginTop: "5px",
-                  cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {
-                      backgroundColor:'rgba(255, 0, 0, 0.6)',
-                      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Box shadow on hover
-                      transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-                    }
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    '&:hover .logout-text': {
+                        color: 'red', // Change text color on hover
+                    },
+                    // border:"1px solid red",
+                   
                 }}
                 onClick={handleOpenModal}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <img src={isHovered ? logoutHover : logoutpng} alt="Logout" />
+                <Box
+                className=  "logout-text"
+                    sx={{
+                        border: "none",
+                        outline: "none",
+                        backgroundColor: "white",
+                        marginTop: "5px",
+                        height: "50px", 
+                        width: "50px", 
+                        display: "flex", 
+                        justifyContent: "center", 
+                        alignItems: "center", 
+                        borderRadius: "50%", 
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 0, 0, 0.6)',
+                            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Box shadow on hover
+                            transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                        }
+                    }}
+                >
+                    <img src={isHovered ? logoutpng : logoutpng} alt="Logout" />
+                </Box>
+                {isSidebarOpen && (
+                    <Typography
+                        className="logout-text"
+                        sx={{
+                         fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important",
+                            ml: "10px",
+                            transition: "color 0.3s ease",
+                        }}
+                    >
+                        Logout
+                    </Typography>
+                )}
             </Box>
             <LogoutConfirmationModal 
                 open={modalOpen} 

@@ -2,20 +2,13 @@ import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../Components/Header/Header';
-// import SnackAlert from '../Components/SnackAlert/SnackAlert';
-// import { useSelector } from 'react-redux';
 import backgroundImg1 from '../assets/backgroundImg1.png';
 import AppSidebar from '../Pages/AppSidebar/AppSidebar';
-// import crossIcon from '../../assets/crossIcon.png';
-// import LogoutButton from '../../Components/Logout/Logout';
 import LogoutButton from '../Components/Logout/Logout';
 import MobileSidebar from '../Pages/AppSidebar/MobileSidebar';
 
-
 const DashboardLayout = () => {
   const location = useLocation();
-  // const snackAlert = useSelector(state => state.snackAlert);
-
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -89,23 +82,20 @@ const DashboardLayout = () => {
             justifyContent:"center",
             borderRadius: "15px",
             background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
-            transition: 'width 0.3s ease-in-out' ,// Smooth transition for width change
+            transition: 'width 0.3s ease-in-out', // Smooth transition for width change
             gap:"10rem" }}
         >
           <Box>
-
-          <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
-         
+            <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
           </Box>
           <Box sx={{
             position:"absolute", bottom:"2rem",
             ml:"15px",
-            
+            display: "flex", // Ensure the text appears next to the button
+            alignItems: "center",
           }} >
-          <LogoutButton /> 
-
+            <LogoutButton isSidebarOpen={isSidebarOpen} /> 
           </Box>
-
         </Box>
         <Box>
          
@@ -122,19 +112,16 @@ const DashboardLayout = () => {
               md: '20px',
               xs: '0px 0px',
             },
-            // borderRadius: '30px',
             boxSizing: 'border-box',
             overflowY: 'hidden', // Enable scrolling for the main content
             transition: 'margin-left 0.3s ease-in-out', // Smooth transition for margin change
           }}
         >
-          {/* <Header title={headerTitle} /> */}
           <Box sx={{ mt: "20px" }}>
             <Outlet />
           </Box>
         </Box>
       </Box>
-      {/* <SnackAlert open={snackAlert.open} message={snackAlert.message} severity={snackAlert.severity} /> */}
     </Box>
   );
 };

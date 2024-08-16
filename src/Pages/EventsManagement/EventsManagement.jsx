@@ -11,6 +11,9 @@ import axios from 'axios';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import { useSelector } from 'react-redux';
 
+import logoAdmin from '../../assets/logoAdmin.png';
+
+
 
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
@@ -218,7 +221,8 @@ const EventsManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "start",
-                                                color: "white"
+                                                color: "white",
+                                                pl:"10px"
                                             }} className="MuiTableCell-root-head">Events Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -269,7 +273,7 @@ const EventsManagement = () => {
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px !important", color: "white" ,  textAlign:"start !important"}} className="MuiTableCell-root">
-                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor:"pointer" }}  onClick={() => openLightbox(event.bannerImage)}  />
+                                                <img src={event.bannerImage ? event.bannerImage : logoAdmin} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor:"pointer" }}  onClick={() => openLightbox(event.bannerImage)}  />
                                             </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>

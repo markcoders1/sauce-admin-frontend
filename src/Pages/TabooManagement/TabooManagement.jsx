@@ -10,6 +10,8 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBrandInfo, clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import logoAdmin from '../../assets/logoAdmin.png';
+
 
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightbox
@@ -195,9 +197,10 @@ const TabooManagement = () => {
                                             sm: "21px",
                                             xs: "16px"
                                         },
-                                        textAlign: "start",
+                                        textAlign: "center",
                                         borderRadius: "8px 0px 0px 8px",
-                                        color: "white"
+                                        color: "white",
+                                       
                                     }}>Image</TableCell>
                                     <TableCell sx={{
                                         fontWeight: "500",
@@ -207,7 +210,8 @@ const TabooManagement = () => {
                                             xs: "16px"
                                         },
                                         textAlign: "start",
-                                        color: "white"
+                                        color: "white",
+                                        pl:"10px"
                                     }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                     <TableCell sx={{
                                         fontWeight: "500",
@@ -217,7 +221,8 @@ const TabooManagement = () => {
                                             xs: "16px"
                                         },
                                         textAlign: "start",
-                                        color: "white"
+                                        color: "white",
+                                        pl:"10px"
                                     }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                     <TableCell sx={{
                                         fontWeight: "500",
@@ -239,9 +244,9 @@ const TabooManagement = () => {
                                     }} className="MuiTableRow-root">
                                         <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", ml:{md:"20px", xs:"10px"} }} className="MuiTableCell-root">
                                             <img 
-                                                src={brand.image} 
-                                                alt="Sauce" 
-                                                style={{ width: '80px', height: '50px', borderRadius: '8px', cursor: 'pointer' }} 
+                                                src={brand.image ? brand.image : logoAdmin } 
+                                                
+                                                style={{ width: '80px', height: '50px', borderRadius: '8px', cursor: 'pointer', objectFit:"contain" }} 
                                                 onClick={() => openLightbox(brand.image)} 
                                             />
                                         </TableCell>

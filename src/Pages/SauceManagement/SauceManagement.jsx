@@ -10,6 +10,8 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import logoAdmin from '../../assets/logoAdmin.png';
+
 
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
@@ -199,7 +201,8 @@ const SauceManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "start",
-                                                color: "white"
+                                                color: "white",
+                                                paddingLeft:"8px"
                                             }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -209,7 +212,8 @@ const SauceManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "start",
-                                                color: "white"
+                                                color: "white",
+                                                paddingLeft:"8px"
                                             }} className="MuiTableCell-root-head">Sauce Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -247,7 +251,7 @@ const SauceManagement = () => {
                                                     className="MuiTableCell-root"
                                                 >
                                                     <img 
-                                                        src={sauce.bannerImage} 
+                                                        src={sauce.bannerImage ? sauce.bannerImage : logoAdmin} 
                                                         alt="Sauce" 
                                                         style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain", cursor: 'pointer' }} 
                                                         onClick={() => openLightbox(sauce.bannerImage)}

@@ -11,6 +11,8 @@ import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import logoAdmin from '../../assets/logoAdmin.png';
+
 
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
@@ -229,7 +231,7 @@ const BrandManagement = () => {
                                         }} className="MuiTableRow-root" >
                                             <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", paddingLeft:"40px !important", textAlign:"start !important"}} className="MuiTableCell-root">
                                                 <img 
-                                                    src={brand.image} 
+                                                    src={brand.image? brand.image : logoAdmin} 
                                                     alt="Brand" 
                                                     style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain", cursor:"pointer" }}  
                                                     onClick={() => openLightbox(brand.image)} 
@@ -247,6 +249,7 @@ const BrandManagement = () => {
                                                         borderRadius='6px'
                                                         buttonStyle={{ height: "45px" }}
                                                         onClick={() => handleNavigate(brand._id)}
+                                                        hoverBg='linear-gradient(90deg, #2E210A 0%, #2E210A 100%)' 
                                                     />
                                                     <img 
                                                         className="edit-icon" 

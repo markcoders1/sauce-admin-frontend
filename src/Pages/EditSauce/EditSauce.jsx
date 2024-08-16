@@ -12,6 +12,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 const EditSauce = () => {
   const auth = useSelector(state => state.auth);
   const { id } = useParams();
+  console.log("sauceId",id)
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -91,6 +92,7 @@ const EditSauce = () => {
   };
 
   const handleSubmit = async () => {
+    console.log(id)
     const data = {
       image: sauceImage,
       bannerImage: bannerImage,

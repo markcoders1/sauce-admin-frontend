@@ -277,6 +277,7 @@ const UserManagement = () => {
                                                         borderRadius='6px'
                                                         buttonStyle={{ height: "39px" }}
                                                         onClick={() => toggleBlock(user._id, user.status)}
+                                                        hoverBg='linear-gradient(90deg, #2E210A 0%, #2E210A 100%)' 
                                                     />
                                                     <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => navigateToEdit(user._id)} />
                                                 </Box>

@@ -112,7 +112,7 @@ table > tbody > tr {
 @media (max-width: 992px) {
     .MuiTableCell-root {
         font-size: 16px;
-        padding-left: 20px !important;
+        padding-left: 0px !important;
     }
 
     .MuiTableBody-root .MuiTableCell-root {
