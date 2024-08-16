@@ -3,6 +3,7 @@ import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const AddSauce = () => {
   const [formData, setFormData] = useState({

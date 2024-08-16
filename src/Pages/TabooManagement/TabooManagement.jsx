@@ -9,6 +9,8 @@ import EditIcon from '../../assets/EditIcon.png';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBrandInfo , clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
+import MenuBar from '../../Components/MenuBar/MenuBar';
+
 
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -107,20 +109,26 @@ fetchBrands()
                 },
                 gap: "20px"
             }}>
-                <Typography sx={{
-                    color: "white",
-                    fontWeight: "600",
-                    fontSize: {
-                        sm: "45px",
-                        xs: "36px"
-                    },
-                    fontFamily: "Fira Sans !important",
-                }}>
-                    {brandName}
-                </Typography>
+               <Box sx={{display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%"}} >
+                            <Typography sx={{
+                                color: "white",
+                                fontWeight: "600",
+                                fontSize: {
+                                    lg: "45px",
+                                    sm:"40px",
+                                    xs: "30px"
+                                },
+                                fontFamily: "Fira Sans !important",
+                            }}>
+                               {brandName}
+                            </Typography>
+                            <Typography>
+                            <MenuBar/>
+                            </Typography>
+                            </Box>
 
-                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-                    <Box sx={{ position: "relative", width: "100%", maxWidth: "300px" }}>
+                <Box sx={{ display: "flex",flexDirection:{sm:"row" , xs:"column"}, justifyContent: {md:"center", sm:"end"}, alignItems: {sm:"center", xs:"end"}, gap: "1rem",width:{md:"800px", xs:"100%"} }}>
+                    <Box sx={{ position: "relative", maxWidth: {sm:"350px", xs:"100%"}, width:"100%" }}>
                         <input
                             type="search"
                             name="search"
@@ -148,7 +156,7 @@ fetchBrands()
                             width={"178px"}
                             borderRadius='8px'
                             background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
-                            padding='10px 0px'
+                            padding='7px 0px'
                             fontSize='18px'
                             fontWeight='600'
                             onClick={handleNavigate}

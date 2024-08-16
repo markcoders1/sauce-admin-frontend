@@ -7,6 +7,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const EditBrandDetails = () => {
   const { id } = useParams();
@@ -141,20 +142,27 @@ const EditBrandDetails = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 21px"
+        padding: {sm:"0px 21px", xs:"0px 10px"}
       }}
     >
-      <Typography sx={{
-        color: "white",
-        fontWeight: "600",
-        fontSize: {
-          sm: "45px",
-          xs: "26px"
-        },
-        fontFamily: "Fira Sans !important",
-      }}>
-        Edit Brand / User
-      </Typography>
+<Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+
+<Typography sx={{
+color: "white",
+fontWeight: "600",
+fontSize: {
+lg: "45px",
+sm:"40px",
+xs: "30px"
+},
+fontFamily: "Fira Sans !important",
+}}>
+Edit Brand / User
+</Typography>
+<Typography>
+<MenuBar/>
+</Typography>
+</Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
         <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>

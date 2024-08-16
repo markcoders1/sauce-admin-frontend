@@ -7,6 +7,7 @@ import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
@@ -184,17 +185,24 @@ const EditEvents = () => {
         padding: "0px 21px"
       }}
     >
-      <Typography sx={{
-        color: "white",
-        fontWeight: "600",
-        fontSize: {
-          sm: "45px",
-          xs: "26px"
-        },
-        fontFamily: "Fira Sans !important",
-      }}>
-        Edit Event
-      </Typography>
+      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+
+                       
+<Typography sx={{
+    color: "white",
+    fontWeight: "600",
+    fontSize: {
+        sm: "45px",
+        xs: "30px"
+    },
+    fontFamily: "Fira Sans !important",
+}}>
+    Edit Event
+</Typography>
+<Typography>
+    <MenuBar />
+</Typography>
+</Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />

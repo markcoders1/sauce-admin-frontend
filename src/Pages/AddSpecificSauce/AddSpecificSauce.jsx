@@ -8,6 +8,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import { useNavigate, useParams } from 'react-router-dom';
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const  AddSpecificSauce= () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -105,7 +106,7 @@ const {id} = useParams();
         },
         data: data
       });
-      console.log(response);
+      console.log(response.data);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -141,17 +142,24 @@ const {id} = useParams();
         padding: "0px 21px"
       }}
     >
-      <Typography sx={{
-        color: "white",
-        fontWeight: "600",
-        fontSize: {
-          sm: "45px",
-          xs: "26px"
-        },
-        fontFamily: "Fira Sans !important",
-      }}>
-        Add {brandInfo.name} Brand Sauce
-      </Typography>
+       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+
+<Typography sx={{
+color: "white",
+fontWeight: "600",
+fontSize: {
+lg: "45px",
+sm:"40px",
+xs: "30px"
+},
+fontFamily: "Fira Sans !important",
+}}>
+Add {brandInfo.name} Brand Sauce
+</Typography>
+<Typography>
+<MenuBar/>
+</Typography>
+</Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
@@ -202,7 +210,7 @@ const {id} = useParams();
           />
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}>
+      <Box sx={{ display: "flex", flexDirection: {md:"row", xs:"column"}, gap: "1.5rem" }}>
        
         <Box sx={{ flexBasis: "50%" }}>
           <CustomInputShadow
@@ -241,7 +249,7 @@ const {id} = useParams();
             <Box sx={{width:"100%"}} >
               <CustomInputShadow
                 name={`ingredients-${index}`}
-                multiline={true}
+              
                 value={ingredient}
                 onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
                 error={errors.ingredients}
@@ -255,7 +263,7 @@ const {id} = useParams();
                 height="100px"
                 width={"98px"}
                 borderRadius='6px'
-                buttonStyle={{ height: "39px" }}
+                buttonStyle={{ height: {sm:"75px", xs:"68px"}, mt:"-16px" }}
                 onClick={() => removeBullet('ingredients', index)}
               />
             )}

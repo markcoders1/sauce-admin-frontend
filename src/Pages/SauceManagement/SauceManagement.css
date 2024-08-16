@@ -75,6 +75,7 @@
 
 .header-row .MuiTableCell-root-head {
     border-bottom: none !important;
+    min-width: 160px !important;
 }
 
 table tr td {

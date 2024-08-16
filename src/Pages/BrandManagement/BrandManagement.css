@@ -132,4 +132,5 @@ table tr td:last-child {border-right: 1px solid #FFA100;}
 
 .header-row .MuiTableCell-root-head {
     border-bottom: none !important;
+    min-width: 160px !important;
 }

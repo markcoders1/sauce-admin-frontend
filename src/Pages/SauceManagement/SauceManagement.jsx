@@ -97,7 +97,7 @@ const SauceManagement = () => {
                                 color: "white",
                                 fontWeight: "600",
                                 fontSize: {
-                                    ld: "45px",
+                                    lg: "45px",
                                     sm:"40px",
                                     xs: "30px"
                                 },
@@ -140,7 +140,7 @@ const SauceManagement = () => {
                                         width={"178px"}
                                         borderRadius='8px'
                                         background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
-                                        padding='6px 0px'
+                                        padding='7px 0px'
                                         fontSize='18px'
                                         fontWeight='600'
                                         onClick={() => navigate("/admin/add-sauce")}

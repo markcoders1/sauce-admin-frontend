@@ -4,6 +4,7 @@ import { Box, Typography, Button } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const AddBrand = () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -91,17 +92,24 @@ const AddBrand = () => {
         padding: "0px 21px"
       }}
     >
-      <Typography sx={{
-        color: "white",
-        fontWeight: "600",
-        fontSize: {
-          sm: "45px",
-          xs: "26px"
-        },
-        fontFamily: "Fira Sans !important",
-      }}>
-        Add New Brand
-      </Typography>
+     <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+
+<Typography sx={{
+color: "white",
+fontWeight: "600",
+fontSize: {
+lg: "45px",
+sm:"40px",
+xs: "30px"
+},
+fontFamily: "Fira Sans !important",
+}}>
+Add New Brand
+</Typography>
+<Typography>
+<MenuBar/>
+</Typography>
+</Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
