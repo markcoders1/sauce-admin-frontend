@@ -1,42 +1,55 @@
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {logout} from '../../Redux/Slice/UserSlice/UserSlice'
-import { CgLogOff } from "react-icons/cg";
+import { logout } from '../../Redux/Slice/UserSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
-import crossIcon from '../../assets/crossIcon.png';
-import logoutpng from '../../assets/logout.png'
+import LogoutConfirmationModal from '../LogoutConfirmationModal/LogoutConfirmationModal';
+import logoutpng from '../../assets/logout.png';
+
 const LogoutButton = () => {
     const navigate = useNavigate();
-  const dispatch = useDispatch();
-const auth = useSelector(state => state.auth);
-// console.log(auth)
-  const handleLogout = () => {
-    dispatch(logout({
-        accessToken: null,
-        refreshToken: null,
-        _id: null,
-        username: null,
-        email: null,
-        createdAt: null,
-        updatedAt: null,
-        authenticated: false,
-        type: null
-      }));
-    // Add any additional logout logic such as redirecting to login page
-    navigate("/")
-    localStorage.removeItem("accessToken")
-  };    
+    const dispatch = useDispatch();
+    const [modalOpen, setModalOpen] = useState(false);
 
-  return (
-    <button
-    style={{
-        border:"none", color:"red",
-        outline:"none",
-        backgroundColor:"transparent",
-        cursor:"pointer",
-        marginTop:"5px"
-    }}
-    onClick={handleLogout}> <img src={logoutpng} alt="" /> </button>
-  );
+    const handleLogout = () => {
+        dispatch(logout({
+            accessToken: null,
+            refreshToken: null,
+            _id: null,
+            username: null,
+            email: null,
+            createdAt: null,
+            updatedAt: null,
+            authenticated: false,
+            type: null
+        }));
+        navigate("/");
+        localStorage.removeItem("accessToken");
+    };
+
+    const handleOpenModal = () => setModalOpen(true);
+    const handleCloseModal = () => setModalOpen(false);
+
+    return (
+        <>
+            <button
+                style={{
+                    border: "none", color: "red",
+                    outline: "none",
+                    backgroundColor: "transparent",
+                    cursor: "pointer",
+                    marginTop: "5px"
+                }}
+                onClick={handleOpenModal}
+            >
+                <img src={logoutpng} alt="Logout" />
+            </button>
+            <LogoutConfirmationModal 
+                open={modalOpen} 
+                handleClose={handleCloseModal} 
+                onLogoutConfirm={handleLogout} 
+            />
+        </>
+    );
 };
 
 export default LogoutButton;

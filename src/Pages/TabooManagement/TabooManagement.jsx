@@ -112,7 +112,7 @@ fetchBrands()
                     fontWeight: "600",
                     fontSize: {
                         sm: "45px",
-                        xs: "26px"
+                        xs: "36px"
                     },
                     fontFamily: "Fira Sans !important",
                 }}>
@@ -157,7 +157,7 @@ fetchBrands()
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
+            <Box sx={{ mt: "30px", padding: {md:"0px 20px", xs:"0px"} }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">
