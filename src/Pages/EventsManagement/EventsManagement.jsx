@@ -173,7 +173,11 @@ const EventsManagement = () => {
                                     <TableHead className="MuiTableHead-root">
                                         <TableRow
                                             sx={{
-                                                backgroundColor: "transparent",
+                                                backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
+
+                                                '&:hover': { 
+                                                    backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                                                },
                                                 padding: "0px"
                                             }}
                                             className="header-row"
@@ -248,8 +252,8 @@ const EventsManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"10px !important", textAlign:"start !important",display:"flex"}} className="MuiTableCell-root">
-                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
+                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px !important", color: "white" ,  textAlign:"start !important"}} className="MuiTableCell-root">
+                                                <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain" }} />
                                             </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>

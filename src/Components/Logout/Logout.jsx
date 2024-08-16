@@ -38,7 +38,7 @@ const LogoutButton = () => {
                 sx={{
                     border: "none", color: "red",
                     outline: "none",
-                    backgroundColor: "transparent",
+                    backgroundColor: "white",
                     
                     marginTop: "5px",
                   cursor:"pointer", height:"50px", width:"50px", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", '&:hover': {

@@ -164,7 +164,11 @@ const SauceManagement = () => {
                                 <TableHead className="MuiTableHead-root">
                                     <TableRow
                                         sx={{
-                                            backgroundColor: "transparent",
+                                            backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
+
+                                            '&:hover': { 
+                                                backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                                            },
                                             padding: "0px",
                                             border: "none"
                                         }}
