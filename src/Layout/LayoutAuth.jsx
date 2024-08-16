@@ -45,6 +45,7 @@ const LayoutAuth = () => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundAttachment: "fixed",
+          
 
          
             p:{
@@ -66,7 +67,7 @@ const LayoutAuth = () => {
                 p: {
                   lg: "70px 120px",
                   md: "50px 20px",
-                  xs: "60px 20px",
+                  xs: "30px 20px",
       
                 },
                 // backgroundColor:"red"

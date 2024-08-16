@@ -148,8 +148,8 @@ const SauceManagement = () => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ mt: "30px", padding: {md:"0px 20px", xs:"0px"}, minWidth: "700px" }}>
-                        <TableContainer component={Paper} className="MuiTableContainer-root">
+                    <Box sx={{ mt: "30px", padding: {md:"0px 20px", xs:"0px"} }}>
+                        <TableContainer component={Paper} className="MuiTableContainer-root" >
                             <Table className="data-table">
                                 <TableHead className="MuiTableHead-root">
                                     <TableRow

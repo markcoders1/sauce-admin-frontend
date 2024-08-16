@@ -62,7 +62,7 @@ const CustomInputShadow = forwardRef(({
             },
             '& input': {
               color: "white",
-              fontSize: "22px",
+              fontSize:{md:"22px", xs:"18px"},
             },
             '& .MuiInputBase-input': {
               color: "white",
@@ -72,13 +72,13 @@ const CustomInputShadow = forwardRef(({
             },
             borderRadius: "12px",
             mt: "7px",
-            height: height, // Use the height prop here
+            height: {sm: height, xs:"50"}, // Use the height prop here
             '& .MuiOutlinedInput-root': {
               borderRadius: "12px",
               border: "1px solid rgba(102, 102, 102, 0)",
             },
             backgroundColor: "",
-            fontSize: "22px",
+            fontSize: {md:"22px", xs:"10px"},
             fontWeight: "600",
             color: "white",
             ...inputStyle

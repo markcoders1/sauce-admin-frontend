@@ -158,8 +158,8 @@ const EventsManagement = () => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ mt: "30px", padding: {md:"0px 20px" , xs:"0px"},minWidth:"700px"}}>
-                            <TableContainer component={Paper} className="MuiTableContainer-root">
+                        <Box sx={{ mt: "30px", padding: {md:"0px 20px" , xs:"0px"}}}>
+                            <TableContainer component={Paper} className="MuiTableContainer-root" >
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
                                         <TableRow
@@ -178,7 +178,8 @@ const EventsManagement = () => {
                                                 },
                                                 textAlign: "start",
                                                 borderRadius: "8px 0px 0px 8px",
-                                                color: "white"
+                                                color: "white",
+                                                // paddingLeft:{sm:"4px", xs:"70px"}
                                             }}>Image</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -238,7 +239,7 @@ const EventsManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"10px !important", textAlign:"start !important",}} className="MuiTableCell-root">
+                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white" , paddingLeft:"10px !important", textAlign:"start !important",display:"flex"}} className="MuiTableCell-root">
                                                 <img src={event.bannerImage} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px', objectFit: "contain" }} />
                                             </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>

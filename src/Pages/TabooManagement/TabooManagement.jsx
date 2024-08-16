@@ -157,7 +157,7 @@ fetchBrands()
                 </Box>
             </Box>
 
-            <Box sx={{ mt: "30px", padding: "0px 20px", minWidth:"600px" }}>
+            <Box sx={{ mt: "30px", padding: "0px 20px" }}>
                 <TableContainer component={Paper} className="MuiTableContainer-root">
                     <Table className="data-table">
                         <TableHead className="MuiTableHead-root">

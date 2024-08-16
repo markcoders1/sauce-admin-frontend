@@ -124,8 +124,8 @@ const Login = () => {
             </Box>
 
                 <form onSubmit={handleSubmit}>
-            <Box sx={{  display:"flex", flexDirection:"column", gap:"30px" }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <Box sx={{  display:"flex", flexDirection:"column", gap:{sm:"30px", xs:"20px",marginTop:"20px"}}}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem",   }}>
                         <Typography sx={{
                             color: "#FFA100",
                             fontWeight: "500",
@@ -194,7 +194,9 @@ const Login = () => {
 
                    <Box
                    sx={{
-                    mt:"80px"
+                    mt:{
+                        md:"80px",
+                    xs:"30px"                    }
                    }}
                    >
                     <CustomButton

@@ -161,7 +161,7 @@ const UserManagement = () => {
                         <Box sx={{width:"100%", display:"flex", justifyContent:"end"}} >
 
                       
-                        <Box sx={{ position: "relative", width: "100%", maxWidth: "100%" }}>
+                        <Box sx={{ position: "relative", width: "100%", maxWidth: {md:"350px", xs:"100%"} }}>
                             <input
                                 type="search"
                                 name="search"
@@ -185,7 +185,7 @@ const UserManagement = () => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ mt: "30px", padding: {md: "0px 20px", xs:"0px"} }}>
+                    <Box sx={{ mt: "30px", padding: {md: "0px 20px", xs:"0px"},   }}>
                         <TableContainer component={Paper} className="MuiTableContainer-root">
                             <Table className="data-table">
                                 <TableHead className="MuiTableHead-root">
@@ -227,7 +227,8 @@ const UserManagement = () => {
                                                 xs: "16px"
                                             },
                                             textAlign: "center",
-                                            color: "white"
+                                            color: "white",
+                                            minWidth:"150px"
                                         }} className="MuiTableCell-root-head">Check-Ins</TableCell>
                                         <TableCell sx={{
                                             fontWeight: "500",
