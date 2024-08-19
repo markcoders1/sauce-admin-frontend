@@ -116,7 +116,7 @@ const UserManagement = () => {
     );
 
     const navigateToEdit = (id) => {
-        navigate(`/admin/edit-brand-details/${id}`);
+        navigate(`/admin/edit-brand-user-details/${id}`);
     };
 
     return (
