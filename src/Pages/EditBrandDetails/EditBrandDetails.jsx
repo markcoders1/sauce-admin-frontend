@@ -25,7 +25,6 @@ const EditBrandDetails = () => {
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
-  const [currentImage, setCurrentImage] = useState("");
   const auth = useSelector(state => state.auth);
 
   const handleChange = (e) => {
@@ -64,12 +63,12 @@ const EditBrandDetails = () => {
       const userData = response?.data?.user;
       setFormData({
         name: userData?.name || '',
-        image: null,
+        image: userData.image||'',
         type: userData?.type || '',
         status: userData?.status || '',
         points: userData?.points || 0
       });
-      setCurrentImage(userData.image);
+      setSelectedFileName(userData.image);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -78,25 +77,6 @@ const EditBrandDetails = () => {
   useEffect(() => {
     fetchUser();
   }, []);
-
-  // const handleImageChange = async (e) => {
-
-  //   const file = e.target.files[0];
-  //   const {name} = e.target
-  //   if(name=="image"){
-  //     setCurrentImage(file)
-  //   }
-  //   else{
-  //     setSauceImage(file)
-  //   }
-  //   if (file && file.size > 4 * 1024 * 1024) {
-  //     setSnackAlertData({
-  //       open: true,
-  //       message: `Selected ${e.target.id === 'uploadSauceImage' ? 'sauce' : 'banner'} image size exceeds 4MB.`,
-  //       severity: "error",
-  //     });
-  //     return;
-  //   }
 
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
@@ -111,28 +91,13 @@ const EditBrandDetails = () => {
       return;
     }
 
-    const convertToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    };
-
-    let imageBase64 = null;
-    if (formData.image) {
-      imageBase64 = await convertToBase64(formData.image);
-    }
-
-    const data = {
-      name: formData.name,
-      image: imageBase64,
-      type: formData.type,
-      status: formData.status,
-      points: formData.points,
-      userId: id
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('image', formData.image);
+    formDataToSend.append('type', formData.type);
+    formDataToSend.append('status', formData.status);
+    formDataToSend.append('points', formData.points);
+    formDataToSend.append('userId', id);
 
     try {
       const response = await axios({
@@ -140,13 +105,11 @@ const EditBrandDetails = () => {
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         },
-        data: data
+        data: formDataToSend
       });
 
-      setSelectedFileName(""); // Reset file name
-      setCurrentImage(''); // Reset current image
       setSnackAlertData({
         open: true,
         message: response?.data?.message,

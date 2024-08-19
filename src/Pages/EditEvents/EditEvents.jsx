@@ -87,40 +87,28 @@ const EditEvents = () => {
       return;
     }
 
-    const convertToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    };
 
-    let imageBase64 = null;
-    if (formData.bannerImage) {
-      imageBase64 = await convertToBase64(formData.bannerImage);
-    }
-
-    const data = {
-      eventName: formData?.eventName,
-      organizedBy: formData?.organizedBy,
-      eventDate: Math.floor(new Date(formData.date).getTime() / 1000),
-      venueDescription: formData?.description,
-      venueName: formData?.destination,
-      bannerImage: imageBase64,
-      eventDetails: formData?.details,
-      eventId: id,
-    };
-
+      const formDataToSend = new FormData();
+  formDataToSend.append('eventName', formData.eventName);
+  formDataToSend.append('organizedBy', formData.organizedBy);
+  formDataToSend.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
+  formDataToSend.append('venueDescription', formData.description);
+  formDataToSend.append('venueName', formData.destination);
+  formDataToSend.append('bannerImage', formData.bannerImage);
+  formData.details.forEach((detail, index) => {
+    formDataToSend.append(`eventDetails[${index}]`, detail);
+  });
+  formDataToSend.append('eventId', id);
+   
     try {
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/update-event`,
         method: "put",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         },
-        data: data
+        data: formDataToSend
       });
 
       setSelectedBannerFileName(""); // Reset file name
