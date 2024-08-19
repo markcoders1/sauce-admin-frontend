@@ -11,6 +11,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
+  const [loading, setLoading]= useState(false)
   const { id } = useParams();
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -101,6 +102,7 @@ const EditEvents = () => {
   formDataToSend.append('eventId', id);
    
     try {
+      setLoading(true)
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/update-event`,
         method: "put",
@@ -118,6 +120,8 @@ const EditEvents = () => {
         severity: "success",
       });
       console.log(response);
+      setLoading(false)
+
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({
@@ -125,6 +129,8 @@ const EditEvents = () => {
         message: error?.response?.data?.message,
         severity: "error",
       });
+      setLoading(false)
+
     }
   };
 
@@ -303,11 +309,11 @@ const EditEvents = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText='Save'
+          ButtonText={loading ? "Saving": "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

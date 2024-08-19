@@ -26,6 +26,7 @@ const EditBrandDetails = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
   const auth = useSelector(state => state.auth);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -100,6 +101,7 @@ const EditBrandDetails = () => {
     formDataToSend.append('userId', id);
 
     try {
+      setLoading(true)
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-user`,
         method: "post",
@@ -116,8 +118,10 @@ const EditBrandDetails = () => {
         severity: "success",
       });
       console.log(response);
+      setLoading(false)
     } catch (error) {
       console.error('Error submitting brand induction:', error);
+      setLoading(false)
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.error?.message || error?.response?.data?.message,
@@ -263,11 +267,11 @@ const EditBrandDetails = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText='Save'
+          ButtonText={loading ? "Saving": "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

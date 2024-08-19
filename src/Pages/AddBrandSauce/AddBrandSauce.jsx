@@ -20,6 +20,7 @@ const AddSauce = () => {
   const [errors, setErrors] = useState({});
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const [loading , setLoading] = useState(false);
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -80,7 +81,7 @@ const AddSauce = () => {
     }
 
     console.log('Form data submitted:', formData);
-    // Handle form submission here
+  
   };
 
   return (

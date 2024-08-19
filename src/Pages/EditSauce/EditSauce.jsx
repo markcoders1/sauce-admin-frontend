@@ -12,6 +12,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 const EditSauce = () => {
   const auth = useSelector(state => state.auth);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -133,6 +134,7 @@ const EditSauce = () => {
     }
     console.log(bannerImage)
     try {
+      setLoading(true)
       const response = await axios({
         url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`, // Replace with your actual endpoint
         method: "post",
@@ -143,6 +145,8 @@ const EditSauce = () => {
         data: formDataToSend
       });
       console.log(response);
+      setLoading(false)
+
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -155,6 +159,8 @@ const EditSauce = () => {
         message: error?.response?.data?.message,
         severity: "error",
       });
+      setLoading(false)
+
     }
   };
   
@@ -426,11 +432,12 @@ const EditSauce = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText='Save'
+          ButtonText={loading ? "Saving": "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
+
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

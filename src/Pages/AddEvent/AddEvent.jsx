@@ -16,6 +16,7 @@ const AddSEvent = () => {
     severity: "success"
   });
   const auth = useSelector(state => state.auth)
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
@@ -93,6 +94,7 @@ const AddSEvent = () => {
     }
 
     try {
+      setLoading(true)
       const data = new FormData();
       data.append('eventName', formData.eventName);
       data.append('organizedBy', formData.organizedBy);
@@ -123,6 +125,8 @@ const AddSEvent = () => {
         destination: '',
         bannerImage: null,
       });
+      setLoading(false)
+
       setSelectedBannerFileName(""); // Reset file name
       console.log(response);
       setSnackAlertData({
@@ -137,6 +141,8 @@ const AddSEvent = () => {
         message: error?.response?.data?.message,
         severity: "error",
       });
+      setLoading(false)
+
     }
   };
 
@@ -312,11 +318,12 @@ const AddSEvent = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText='Save'
+          ButtonText={loading ? "Saving": "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
+
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

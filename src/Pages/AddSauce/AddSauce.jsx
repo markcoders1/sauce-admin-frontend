@@ -30,6 +30,7 @@ const AddSauce = () => {
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const auth = useSelector(state => state.auth)
+  const [loading, setLoading]= useState(false)
 
   const handleChange = (e) => {
     setFormData({
@@ -109,6 +110,7 @@ const AddSauce = () => {
     data.append('title', formData.title);
 
     try {
+      setLoading(true)
       console.log(formData)
       const response = await axios({
         url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
@@ -125,6 +127,8 @@ const AddSauce = () => {
         message: response?.data?.message,
         severity: "success",
       })
+      setLoading(false)
+
     } catch (error) {
       console.error('Error submitting sauce:', error);
       setSnackAlertData({
@@ -132,6 +136,8 @@ const AddSauce = () => {
         message: error?.response?.data?.message,
         severity: "error",
       })
+      setLoading(false)
+
     }
   };
 
@@ -295,11 +301,11 @@ const AddSauce = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText='Save'
+          ButtonText={loading ? "Saving": "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'
