@@ -93,7 +93,7 @@ const EditBrandDetails = () => {
 
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
-
+  
     // Check for file size
     if (formData.image && formData.image.size > 4 * 1024 * 1024) {
       setSnackAlertData({
@@ -103,7 +103,7 @@ const EditBrandDetails = () => {
       });
       return;
     }
-
+  
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
     formDataToSend.append('image', formData.image);
@@ -111,34 +111,32 @@ const EditBrandDetails = () => {
     formDataToSend.append('status', formData.status);
     formDataToSend.append('points', formData.points);
     formDataToSend.append('userId', id);
-    if (formData.type === 'admin') {
-      formData.about.forEach((about, index) => {
-        formDataToSend.append(`about${index + 1}`, about);
-      });
-    }
-
+  
+    // Handle about array
+    formDataToSend.append('about', JSON.stringify(formData.about));
+  
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios({
         url: `${appUrl}/admin/edit-user`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
         },
-        data: formDataToSend
+        data: formDataToSend,
       });
-
+  
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
       });
       console.log(response.data);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
-      setLoading(false)
+      setLoading(false);
       setSnackAlertData({
         open: true,
         message: error?.response?.data?.error?.message || error?.response?.data?.message,
@@ -146,6 +144,7 @@ const EditBrandDetails = () => {
       });
     }
   };
+  
 
   return (
     <Box

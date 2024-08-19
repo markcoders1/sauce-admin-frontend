@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./SauceManagement.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
@@ -10,16 +10,11 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-
 import logoAdmin from '../../assets/logoAdmin.png';
-
-
-const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
-
-// Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const SauceManagement = () => {
     const [snackAlertData, setSnackAlertData] = useState({
@@ -30,36 +25,43 @@ const SauceManagement = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [allSauce, setAllSauce] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const [itemsPerPage] = useState(8); // Set items per page
     const auth = useSelector(state => state.auth);
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
 
-    const fetchSauce = async () => {
+    const fetchSauce = async (page) => {
         setLoading(true);
         try {
             const response = await axios({
                 url: `${appUrl}/get-sauces`,
                 method: "get",
-                
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 },
+                params: {
+                    limit: itemsPerPage,
+                    page: page,
+                },
             });
             setAllSauce(response?.data?.sauces || []);
+            setTotalPages(response?.data?.pagination?.totalPages || 1);
             setLoading(false);
-            console.log(response)
+            console.log(response);
         } catch (error) {
             console.error('Error fetching events:', error);
             setLoading(false);
-            console.log(error)
+            console.log(error);
         }
     };
 
     useEffect(() => {
-        fetchSauce();
-    }, []);
+        fetchSauce(page);
+    }, [page]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -89,6 +91,10 @@ const SauceManagement = () => {
         setIsOpen(true);
     };
 
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
     return (
         <>
             {
@@ -115,23 +121,22 @@ const SauceManagement = () => {
                             gap: "20px"
                         }}>
                             <Box sx={{display:"flex", alignItems:"center", justifyContent:"space-between", width:"100%"}} >
-                            <Typography sx={{
-                                color: "white",
-                                fontWeight: "600",
-                                fontSize: {
-                                    lg: "45px",
-                                    sm:"40px",
-                                    xs: "30px"
-                                },
-                                fontFamily: "Fira Sans !important",
-                            }}>
-                                Sauce Management
-                            </Typography>
-                            <Typography>
-                            <MenuBar/>
-                            </Typography>
+                                <Typography sx={{
+                                    color: "white",
+                                    fontWeight: "600",
+                                    fontSize: {
+                                        lg: "45px",
+                                        sm:"40px",
+                                        xs: "30px"
+                                    },
+                                    fontFamily: "Fira Sans !important",
+                                }}>
+                                    Sauce Management
+                                </Typography>
+                                <Typography>
+                                    <MenuBar/>
+                                </Typography>
                             </Box>
-                           
 
                             <Box sx={{ display: "flex",flexDirection:{sm:"row" , xs:"column"}, justifyContent: {md:"center", sm:"end"}, alignItems: {sm:"center", xs:"end"}, gap: "1rem",width:{md:"800px", xs:"100%"} }}>
                                 <Box sx={{ position: "relative", maxWidth: {sm:"350px", xs:"100%"}, width:"100%" }}>
@@ -278,6 +283,35 @@ const SauceManagement = () => {
                                 </Table>
                             </TableContainer>
                         </Box>
+
+                        {/* Pagination */}
+                        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+    <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handlePageChange}
+        sx={{
+            '& .MuiPaginationItem-root': {
+                color: 'white', // Text color
+                backgroundColor: '#2E210A', // Background color for pagination buttons
+                border: '2px solid #FFA100', // Border color matching the theme
+            },
+            '& .Mui-selected': {
+                color: 'black', // Text color for selected page
+                backgroundColor: '#FFA100', // Background color for selected page
+                fontWeight: 'bold', // Bold text for selected page
+            },
+            '& .MuiPaginationItem-ellipsis': {
+                color: 'white', // Color for ellipsis (...)
+            },
+            '& .MuiPaginationItem-root:hover': {
+                backgroundColor: '#5A3D0A', // Background color on hover
+                borderColor: '#FF7B00', // Border color on hover
+            },
+        }}
+    />
+</Box>
+
                     </Box>
                 )
             }

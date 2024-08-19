@@ -67,7 +67,7 @@ const EventsManagement = () => {
             });
             setAllEvents(response?.data?.events || []);
             setLoading(false);
-            console.log(response.data)
+            console.log(response)
         } catch (error) {
             console.error('Error fetching events:', error);
             setLoading(false);

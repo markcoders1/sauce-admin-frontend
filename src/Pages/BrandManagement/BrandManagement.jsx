@@ -67,12 +67,14 @@ const BrandManagement = () => {
             });
             setAllBrands(response?.data?.users || []);
             setLoading(false);
-            console.log(response?.data?.users);
+            // console.log(response?.data?.users);
+            console.log(response)
         } catch (error) {
             console.error('Error fetching users:', error);
             setLoading(false);
         }
     };
+   
 
     useEffect(() => {
         fetchBrands();

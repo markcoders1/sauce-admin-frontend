@@ -78,7 +78,7 @@ const AddBrand = () => {
     data.append('websiteLink', formData.websiteLink);
     data.append('password', formData.password);
     data.append('image', formData.bannerImage); // Append the file
-    data.append('about', formData.about); // Serialize the array to JSON
+    data.append('about',  JSON.stringify(formData.about)); // Serialize the array to JSON
   
     try {
       setLoading(true);
