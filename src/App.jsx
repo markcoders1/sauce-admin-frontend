@@ -49,7 +49,7 @@ function App() {
           <Route path="add-event" element={<AddEvent />} />
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="add-specific-sauce/:id" element={<AddSpecificSauce />} />
-          <Route path="edit-brand-details/:id" element={<EditBrandDetails />} />
+          <Route path="edit-brand-user-details/:id" element={<EditBrandDetails />} />
           <Route path="edit-event-details/:id" element={<EditEvents />} />
           <Route path="edit-sauce-details/:id" element={<EditSauce />} />
         </Route>
