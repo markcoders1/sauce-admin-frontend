@@ -132,7 +132,7 @@ const EditBrandDetails = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: {sm:"0px 21px", xs:"0px 15px"}
+        padding: {sm:"0px 21px", xs:"0px 15px 20px 25px"}
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
@@ -155,7 +155,7 @@ const EditBrandDetails = () => {
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
         <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>{selectedFileName ? `Selected File: ${selectedFileName}` : "Upload Banner Image"}</Typography>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: {sm:"22px",xs:"16px"}, fontWeight: "600" }}>{selectedFileName ? `Selected File: ${selectedFileName}` : "Upload Banner Image"}</Typography>
         </label>
       </Box>
 

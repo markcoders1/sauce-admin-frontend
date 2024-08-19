@@ -91,6 +91,8 @@ const EditSauce = () => {
     }
   };
 
+  console.log(hello wedit sauce)
+
   const handleSubmit = async () => {
     const data = {
       image: sauceImage,

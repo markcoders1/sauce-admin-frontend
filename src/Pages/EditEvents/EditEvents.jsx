@@ -165,7 +165,7 @@ const EditEvents = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 21px"
+        padding: "0px 10px 25px 10px"
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
@@ -187,7 +187,7 @@ const EditEvents = () => {
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
+          <Typography sx={{ color: "white", textAlign: "center", fontSize: {sm:"22px",xs:"15px"}, fontWeight: "600" }}>
             {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
           </Typography>
         </label>
