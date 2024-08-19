@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs,Tab } from '@mui/material';
-import { styled } from '@mui/system';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TableStyle.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
@@ -12,29 +11,6 @@ import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActio
 import EditIcon from '../../assets/EditIcon.png'; 
 import { useNavigate } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-
-
-
-const StyledTabs = styled(Tabs)({
-    '& .MuiTabs-indicator': {
-        backgroundColor: 'black',
-    },
-});
-
-const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
-    textTransform: 'none',
-    minWidth: 72,
-    fontWeight: theme.typography,
-    marginRight: theme.spacing(4),
-    color: '#9B9B9B',
-    fontSize: '22px',
-    '&.Mui-selected': {
-        color: 'black',
-    },
-    '&.Mui-focusVisible': {
-        backgroundColor: '#d1eaff',
-    },
-}));
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -51,24 +27,29 @@ const UserManagement = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [action, setAction] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
+    const [page, setPage] = useState(1); // Current page
+    const [totalPages, setTotalPages] = useState(1); // Total number of pages
     const navigate = useNavigate();
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (page) => {
         try {
             setLoading(true);
             const response = await axios({
                 url: `${appUrl}/admin/get-all-users`,
                 method: "get",
                 params: {
-                    type: "user"
+                    type: "user",
+                    page: page, // Pass current page to backend
+                    limit: 8 // Number of items per page
                 },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            setAllUsers(response?.data?.users);
+            setAllUsers(response?.data?.users || []);
+            setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
             setLoading(false);
-            console.log("appRul", response)
+            console.log("appRul", response);
         } catch (error) {
             console.error('Error fetching users:', error);
             setLoading(false);
@@ -95,11 +76,15 @@ const UserManagement = () => {
     };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        fetchUsers(page); // Fetch data based on the current page
+    }, [page]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
+    };
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
     };
 
     const formatDate = (dateString) => {
@@ -144,47 +129,43 @@ const UserManagement = () => {
                         gap: "20px"
                     }}>
                         <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-
-                       
-                        <Typography sx={{
-                            color: "white",
-                            fontWeight: "600",
-                            fontSize: {
-                                sm: "45px",
-                                xs: "30px"
-                            },
-                            fontFamily: "Fira Sans !important",
-                        }}>
-                            Users Management
-                        </Typography>
-                        <Typography>
-                            <MenuBar />
-                        </Typography>
+                            <Typography sx={{
+                                color: "white",
+                                fontWeight: "600",
+                                fontSize: {
+                                    sm: "45px",
+                                    xs: "30px"
+                                },
+                                fontFamily: "Fira Sans !important",
+                            }}>
+                                Users Management
+                            </Typography>
+                            <Typography>
+                                <MenuBar />
+                            </Typography>
                         </Box>
                         <Box sx={{width:"100%", display:"flex", justifyContent:"end"}} >
-
-                      
-                        <Box sx={{ position: "relative", width: "100%", maxWidth: {md:"350px", xs:"100%"} }}>
-                            <input
-                                type="search"
-                                name="search"
-                                id="search"
-                                className="search-input"
-                                placeholder="Search"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                                style={{ color: "white" }}
-                            />
-                            <img
-                                src={SearchIcon}
-                                alt=""
-                                style={{
-                                    position: "absolute",
-                                    top: "14px",
-                                    right: "20px",
-                                }}
-                            />
-                        </Box>
+                            <Box sx={{ position: "relative", width: "100%", maxWidth: {md:"350px", xs:"100%"} }}>
+                                <input
+                                    type="search"
+                                    name="search"
+                                    id="search"
+                                    className="search-input"
+                                    placeholder="Search"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    style={{ color: "white" }}
+                                />
+                                <img
+                                    src={SearchIcon}
+                                    alt=""
+                                    style={{
+                                        position: "absolute",
+                                        top: "14px",
+                                        right: "20px",
+                                    }}
+                                />
+                            </Box>
                         </Box>
                     </Box>
 
@@ -195,7 +176,6 @@ const UserManagement = () => {
                                     <TableRow
                                         sx={{
                                             backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-
                                             '&:hover': { 
                                                 backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
                                             },
@@ -291,6 +271,35 @@ const UserManagement = () => {
                             </Table>
                         </TableContainer>
                     </Box>
+
+                    {/* Pagination */}
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={handlePageChange}
+                            sx={{
+                                '& .MuiPaginationItem-root': {
+                                    color: 'white', // Text color
+                                    backgroundColor: '#2E210A', // Background color for pagination buttons
+                                    border: '2px solid #FFA100', // Border color matching the theme
+                                },
+                                '& .Mui-selected': {
+                                    color: 'black', // Text color for selected page
+                                    backgroundColor: '#FFA100', // Background color for selected page
+                                    fontWeight: 'bold', // Bold text for selected page
+                                },
+                                '& .MuiPaginationItem-ellipsis': {
+                                    color: 'white', // Color for ellipsis (...)
+                                },
+                                '& .MuiPaginationItem-root:hover': {
+                                    backgroundColor: '#5A3D0A', // Background color on hover
+                                    borderColor: '#FF7B00', // Border color on hover
+                                },
+                            }}
+                        />
+                    </Box>
+
                     <SnackAlert
                         severity={snackAlertData.severity}
                         message={snackAlertData.message}

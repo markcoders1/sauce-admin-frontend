@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./BrandManagement.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
-import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
 import { useSelector } from 'react-redux';
@@ -15,73 +14,58 @@ import logoAdmin from '../../assets/logoAdmin.png';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-
-
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-
-const StyledTabs = styled(Tabs)({
-    '& .MuiTabs-indicator': {
-        backgroundColor: 'black',
-    },
-});
-
-const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
-    textTransform: 'none',
-    minWidth: 72,
-    fontWeight: theme.typography,
-    marginRight: theme.spacing(4),
-    color: '#9B9B9B',
-    fontSize: '22px',
-    '&.Mui-selected': {
-        color: 'black',
-    },
-    '&.Mui-focusVisible': {
-        backgroundColor: '#d1eaff',
-    },
-}));
 
 const BrandManagement = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [allBrands, setAllBrands] = useState([]);
-    const brandInfo = useSelector(state => state.brand);
+    const [page, setPage] = useState(1); // Current page state
+    const [totalPages, setTotalPages] = useState(1); // Total pages state
     const auth = useSelector(state => state.auth);
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
 
-    const fetchBrands = async () => {
+    const fetchBrands = async (page) => {
         try {
             setLoading(true);
             const response = await axios({
-
-        url: `${appUrl}/admin/get-all-users?type=brand`,
+                url: `${appUrl}/admin/get-all-users`,
                 method: "get",
+                params: {
+                    type: "brand",
+                    page: page, // Pass current page to backend
+                    limit: 8 // Number of items per page
+                },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
             setAllBrands(response?.data?.users || []);
+            setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
             setLoading(false);
-            // console.log(response?.data?.users);
             console.log(response)
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error fetching brands:', error);
             setLoading(false);
         }
     };
-   
 
     useEffect(() => {
-        fetchBrands();
-    }, []);
+        fetchBrands(page); // Fetch data based on the current page
+    }, [page]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
+    };
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
     };
 
     const formatDate = (dateString) => {
@@ -92,7 +76,7 @@ const BrandManagement = () => {
         return `${month}/${day}/${year}`;
     };
 
-    const filteredEmployees = allBrands.filter(brand =>
+    const filteredBrands = allBrands.filter(brand =>
         brand.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -137,7 +121,7 @@ const BrandManagement = () => {
                                 Brand Management
                             </Typography>
                             <Typography>
-                            <MenuBar/>
+                                <MenuBar/>
                             </Typography>
                         </Box>
 
@@ -231,7 +215,7 @@ const BrandManagement = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody className="MuiTableBody-root">
-                                    {filteredEmployees.map((brand, index) => (
+                                    {filteredBrands.map((brand, index) => (
                                         <TableRow key={index} sx={{
                                             border: "2px solid #FFA100"
                                         }} className="MuiTableRow-root" >
@@ -271,6 +255,34 @@ const BrandManagement = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                    </Box>
+
+                    {/* Pagination */}
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={handlePageChange}
+                            sx={{
+                                '& .MuiPaginationItem-root': {
+                                    color: 'black', // Text color
+                                    backgroundColor: '#2E210A', // Background color for pagination buttons
+                                    border: '2px solid #FFA100', // Border color matching the theme
+                                },
+                                '& .Mui-selected': {
+                                    color: 'white', // Text color for selected page
+                                    backgroundColor: '#FFA100', // Background color for selected page
+                                    fontWeight: 'bold', // Bold text for selected page
+                                },
+                                '& .MuiPaginationItem-ellipsis': {
+                                    color: 'white', // Color for ellipsis (...)
+                                },
+                                '& .MuiPaginationItem-root:hover': {
+                                    backgroundColor: '#5A3D0A', // Background color on hover
+                                    borderColor: '#FF7B00', // Border color on hover
+                                },
+                            }}
+                        />
                     </Box>
                 </Box>
             )}

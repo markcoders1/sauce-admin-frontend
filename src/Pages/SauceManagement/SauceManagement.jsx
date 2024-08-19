@@ -292,12 +292,12 @@ const SauceManagement = () => {
         onChange={handlePageChange}
         sx={{
             '& .MuiPaginationItem-root': {
-                color: 'white', // Text color
+                color: 'black', // Text color
                 backgroundColor: '#2E210A', // Background color for pagination buttons
                 border: '2px solid #FFA100', // Border color matching the theme
             },
             '& .Mui-selected': {
-                color: 'black', // Text color for selected page
+                color: 'white', // Text color for selected page
                 backgroundColor: '#FFA100', // Background color for selected page
                 fontWeight: 'bold', // Bold text for selected page
             },
