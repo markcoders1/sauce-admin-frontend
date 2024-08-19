@@ -11,6 +11,7 @@ import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActio
 import EditIcon from '../../assets/EditIcon.png'; 
 import { useNavigate } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -138,6 +139,7 @@ const UserManagement = () => {
                                 },
                                 fontFamily: "Fira Sans !important",
                             }}>
+                               
                                 Users Management
                             </Typography>
                             <Typography>
@@ -280,12 +282,12 @@ const UserManagement = () => {
                             onChange={handlePageChange}
                             sx={{
                                 '& .MuiPaginationItem-root': {
-                                    color: 'white', // Text color
+                                    color: 'black', // Text color
                                     backgroundColor: '#2E210A', // Background color for pagination buttons
                                     border: '2px solid #FFA100', // Border color matching the theme
                                 },
                                 '& .Mui-selected': {
-                                    color: 'black', // Text color for selected page
+                                    color: 'white', // Text color for selected page
                                     backgroundColor: '#FFA100', // Background color for selected page
                                     fontWeight: 'bold', // Bold text for selected page
                                 },

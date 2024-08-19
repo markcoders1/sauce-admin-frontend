@@ -8,6 +8,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -233,8 +234,8 @@ const EditSauce = () => {
         }}>
           Edit Sauce
         </Typography>
-        <Typography>
-          <MenuBar/>
+        <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
+          <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>

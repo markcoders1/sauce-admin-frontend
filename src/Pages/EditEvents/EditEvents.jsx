@@ -8,7 +8,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 
@@ -189,8 +189,8 @@ const EditEvents = () => {
         }}>
             Edit Event
         </Typography>
-        <Typography>
-            <MenuBar />
+        <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
+          <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>

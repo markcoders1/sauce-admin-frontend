@@ -225,7 +225,8 @@ const EventsManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "start",
-                                                color: "white"
+                                                color: "white",
+                                                pl:"5px"
                                             }} className="MuiTableCell-root-head">Destination</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -235,7 +236,8 @@ const EventsManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "center",
-                                                color: "white"
+                                                color: "white",
+                                                // paddingLeft:"1"
                                             }} className="MuiTableCell-root-head">Start Date</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -282,12 +284,12 @@ const EventsManagement = () => {
                                 onChange={handlePageChange}
                                 sx={{
                                     '& .MuiPaginationItem-root': {
-                                        color: 'white', // Text color
+                                        color: 'black', // Text color
                                         backgroundColor: '#2E210A', // Background color for pagination buttons
                                         border: '2px solid #FFA100', // Border color matching the theme
                                     },
                                     '& .Mui-selected': {
-                                        color: 'black', // Text color for selected page
+                                        color: 'white', // Text color for selected page
                                         backgroundColor: '#FFA100', // Background color for selected page
                                         fontWeight: 'bold', // Bold text for selected page
                                     },

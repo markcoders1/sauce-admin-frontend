@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -184,8 +185,8 @@ const AddSpecificSauce = () => {
         }}>
           Add {brandInfo.name} Brand Sauce
         </Typography>
-        <Typography>
-          <MenuBar />
+        <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
+          <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
