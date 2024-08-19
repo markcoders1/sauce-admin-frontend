@@ -65,7 +65,7 @@ const Login = () => {
                         Authorization: `Bearer ${user.accessToken}`
                     }
                 });
-                console.log(response);
+                console.log(response.data);
 
                 const userData = response.data.user;
                 dispatch(handleAuth({

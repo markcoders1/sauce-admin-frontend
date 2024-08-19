@@ -119,7 +119,7 @@ const EditEvents = () => {
         message: response?.data?.message,
         severity: "success",
       });
-      console.log(response);
+      console.log(response.data);
       setLoading(false)
 
     } catch (error) {
@@ -143,7 +143,7 @@ const EditEvents = () => {
           Authorization: `Bearer ${auth.accessToken}`
         },
       });
-      console.log(response);
+      console.log(response.data);
       const eventData = response?.data?.event;
       setFormData({
         eventName: eventData?.eventName,

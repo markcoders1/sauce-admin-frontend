@@ -117,7 +117,7 @@ const EditBrandDetails = () => {
         message: response?.data?.message,
         severity: "success",
       });
-      console.log(response);
+      console.log(response.data);
       setLoading(false)
     } catch (error) {
       console.error('Error submitting brand induction:', error);

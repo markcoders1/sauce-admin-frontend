@@ -86,9 +86,9 @@ const resetPassword = async()=>{
               },
             });
             setLoading(false);
-            console.log(response)
+            console.log(response.data)
             if(response){
-                console.log(response)
+                console.log(response.data)
                 setSnackAlertData({
                     open:true,
                     message:response?.data?.message,

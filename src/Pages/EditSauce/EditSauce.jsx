@@ -144,7 +144,7 @@ const EditSauce = () => {
         },
         data: formDataToSend
       });
-      console.log(response);
+      console.log(response.data);
       setLoading(false)
 
       setSnackAlertData({
@@ -175,7 +175,7 @@ const EditSauce = () => {
           Authorization: `Bearer ${auth.accessToken}`
         }
       });
-      console.log(response)
+      console.log(response.data)
       console.log("hello edit sauce")
       const sauceData = response?.data?.sauce;
       setFormData({

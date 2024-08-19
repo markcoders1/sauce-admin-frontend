@@ -92,7 +92,7 @@ const AddBrand = () => {
         severity: "success",
       })
 
-      console.log(response);
+      console.log(response.data);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
       setSnackAlertData({

@@ -128,7 +128,7 @@ const AddSEvent = () => {
       setLoading(false)
 
       setSelectedBannerFileName(""); // Reset file name
-      console.log(response);
+      console.log(response.data);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -155,7 +155,7 @@ const AddSEvent = () => {
           Authorization: `Bearer ${auth.accessToken}`
         }
       });
-      console.log(response);
+      console.log(response.data);
       setAllBrands(response?.data?.users);
     } catch (error) {
       console.error('Error fetching users:', error);

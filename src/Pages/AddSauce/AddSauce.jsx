@@ -121,7 +121,7 @@ const AddSauce = () => {
         },
         data: data
       });
-      console.log(response);
+      console.log(response.data);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,

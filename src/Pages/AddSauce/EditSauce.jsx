@@ -90,9 +90,6 @@ const EditSauce = () => {
       });
     }
   };
-
-  console.log(hello wedit sauce)
-
   const handleSubmit = async () => {
     const data = {
       image: sauceImage,
@@ -118,7 +115,7 @@ const EditSauce = () => {
         },
         data: data
       });
-      console.log(response);
+      console.log(response.data);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -143,7 +140,7 @@ const EditSauce = () => {
           Authorization: `Bearer ${auth.accessToken}`
         }
       });
-      console.log(response)
+      console.log(response.data)
       const sauceData = response?.data?.sauce;
       setFormData({
         sauceName: sauceData.name,
