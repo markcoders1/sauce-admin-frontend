@@ -78,7 +78,17 @@ const EditSauce = () => {
       return;
     }
 
-
+    // if (file) {
+    //   console.log(file)
+    //   const base64 = await convertToBase64(file);
+    //   if (e.target.id === "uploadSauceImage") {
+    //     setSauceImage(base64);
+    //     setSelectedSauceFileName(file.name);
+    //   } else if (e.target.id === "uploadBannerImage") {
+    //     setBannerImage(base64);
+    //     setSelectedBannerFileName(file.name);
+    //   }
+    // }
   };
 
   const addBullet = (field) => {
