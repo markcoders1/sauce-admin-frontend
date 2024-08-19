@@ -10,6 +10,9 @@ import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const AddSpecificSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -118,7 +121,7 @@ const AddSpecificSauce = () => {
       setLoading(true)
       console.log(formData);
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
+        url: `${appUrl}/admin/add-sauce`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

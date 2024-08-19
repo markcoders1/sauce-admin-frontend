@@ -13,6 +13,9 @@ import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import logoAdmin from '../../assets/logoAdmin.png';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
@@ -55,7 +58,8 @@ const BrandManagement = () => {
         try {
             setLoading(true);
             const response = await axios({
-                url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
+
+        url: `${appUrl}/admin/get-all-users?type=brand`,
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

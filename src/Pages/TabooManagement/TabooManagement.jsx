@@ -12,6 +12,9 @@ import { setBrandInfo, clearBrandInfo } from '../../Redux/Slice/brandSlice/brand
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import logoAdmin from '../../assets/logoAdmin.png';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightbox
@@ -54,7 +57,8 @@ const TabooManagement = () => {
         try {
             setLoading(true);
             const response = await axios({
-                url: `https://aws.markcoders.com/sauced-backend/api/admin/brand-sauces/${id}`,
+
+                url: `${appUrl}/admin/brand-sauces/${id}`,
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

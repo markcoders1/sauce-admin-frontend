@@ -9,6 +9,9 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const AddSEvent = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -106,7 +109,7 @@ const AddSEvent = () => {
       data.append('eventDetails', formData.details);
 
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-event",
+        url: `${appUrl}/admin/add-event`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

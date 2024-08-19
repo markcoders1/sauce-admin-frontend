@@ -10,7 +10,11 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+
 import logoAdmin from '../../assets/logoAdmin.png';
+
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 
 // Import the Lightbox component
@@ -36,7 +40,7 @@ const SauceManagement = () => {
         setLoading(true);
         try {
             const response = await axios({
-                url: "https://aws.markcoders.com/sauced-backend/api/get-sauces?type=all",
+                url: `${appUrl}/admin/get-sauces?type=all`,
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

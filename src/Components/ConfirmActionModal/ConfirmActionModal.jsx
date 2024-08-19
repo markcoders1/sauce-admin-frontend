@@ -9,7 +9,8 @@ import SnackAlert from '../SnackAlert/SnackAlert';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 
 const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) => {
     const [loading, setLoading] = React.useState(false);
@@ -30,7 +31,7 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
         try {
             setLoading(true);
             const response = await axios({
-                url: `https://aws.markcoders.com/sauced-backend/api/admin/block-unblock-user`,
+                url: `${appUrl}/admin/block-unblock-user`,
                 method: "post",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
@@ -41,6 +42,7 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
             });
 
             setLoading(false);
+          
             if (response) {
                 setSnackAlertData({
                     open: true,

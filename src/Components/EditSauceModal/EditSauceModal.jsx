@@ -11,7 +11,10 @@ import CustomButton from '../CustomButton/CustomButton';
 import CustomInputShadow from '../CustomInput/CustomInput';
 import SnackAlert from '../SnackAlert/SnackAlert';
 import axiosInstance from '../../Hooks/AuthHook/AuthHook';
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const EditSauceModal = ({
     open = false,
@@ -78,7 +81,7 @@ const resetPassword = async()=>{
 
             setLoading(true);
             const response = await axiosInstance({
-                url: `${apiUrl}/api/change-password`,
+                url: `${appUrl}/api/change-password`,
               method: "post",
               data: {
                 oldPassword : data.oldPassword,

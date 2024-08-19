@@ -13,6 +13,8 @@ import EditIcon from '../../assets/EditIcon.png';
 import { useNavigate } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+
+
 const StyledTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
         backgroundColor: 'black',
@@ -55,7 +57,7 @@ const UserManagement = () => {
         try {
             setLoading(true);
             const response = await axios({
-                url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users",
+                url: `${appUrl}/admin/get-all-users`,
                 method: "get",
                 params: {
                     type: "user"
@@ -66,6 +68,7 @@ const UserManagement = () => {
             });
             setAllUsers(response?.data?.users);
             setLoading(false);
+            console.log("appRul", response)
         } catch (error) {
             console.error('Error fetching users:', error);
             setLoading(false);

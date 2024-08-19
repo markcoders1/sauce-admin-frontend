@@ -8,6 +8,9 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const AddSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -113,7 +116,8 @@ const AddSauce = () => {
       setLoading(true)
       console.log(formData)
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/add-sauce",
+
+        url: `${appUrl}/admin/add-sauce`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

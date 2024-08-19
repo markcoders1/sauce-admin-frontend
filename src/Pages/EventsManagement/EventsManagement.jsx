@@ -14,6 +14,9 @@ import { useSelector } from 'react-redux';
 import logoAdmin from '../../assets/logoAdmin.png';
 
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 
 // Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
@@ -56,7 +59,7 @@ const EventsManagement = () => {
         setLoading(true);
         try {
             const response = await axios({
-                url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-events",
+                url: `${appUrl}/admin/get-all-events`,
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux';
 import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const EditBrandDetails = () => {
   const { id } = useParams();
   const [snackAlertData, setSnackAlertData] = useState({
@@ -55,7 +58,7 @@ const EditBrandDetails = () => {
   const fetchUser = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-user/${id}`,
+        url: `${appUrl}/admin/get-user/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
@@ -103,7 +106,7 @@ const EditBrandDetails = () => {
     try {
       setLoading(true)
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-user`,
+        url: `${appUrl}/admin/edit-user`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

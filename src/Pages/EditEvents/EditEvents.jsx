@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading]= useState(false)
@@ -104,7 +107,7 @@ const EditEvents = () => {
     try {
       setLoading(true)
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/update-event`,
+        url: `${appUrl}/admin/update-event`,
         method: "put",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

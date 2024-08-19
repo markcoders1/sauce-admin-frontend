@@ -9,6 +9,9 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const EditSauce = () => {
   const auth = useSelector(state => state.auth);
   const { id } = useParams();
@@ -107,7 +110,7 @@ const EditSauce = () => {
 
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/edit-sauce`,
+        url: `${appUrl}/admin/edit-sauce`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -134,7 +137,8 @@ const EditSauce = () => {
   const fetchSauce = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-sauce/${id}`,
+
+        url: `${appUrl}/admin/get-sauce/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`

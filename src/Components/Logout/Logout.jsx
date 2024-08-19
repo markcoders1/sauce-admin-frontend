@@ -6,12 +6,16 @@ import LogoutConfirmationModal from '../LogoutConfirmationModal/LogoutConfirmati
 import logoutpng from '../../assets/logout.png';
 import logoutHover from '../../assets/logoutHover.png';
 import { Box, Typography } from '@mui/material';
+import { toggleSidebar, closeSidebar } from '../../Redux/Slice/sidebarSlice/sidebarSlice';
+
 
 const LogoutButton = ({ isSidebarOpen }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+
+
 
     const handleLogout = () => {
         dispatch(logout({
@@ -27,6 +31,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
         }));
         navigate("/");
         localStorage.removeItem("accessToken");
+        dispatch(toggleSidebar())
     };
 
     const handleOpenModal = () => setModalOpen(true);

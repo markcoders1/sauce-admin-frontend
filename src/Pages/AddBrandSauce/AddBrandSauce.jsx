@@ -6,6 +6,9 @@ import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const AddSauce = () => {
   const [formData, setFormData] = useState({
     sauceName: '',

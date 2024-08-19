@@ -6,6 +6,10 @@ import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const AddBrand = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -67,7 +71,8 @@ const AddBrand = () => {
     try {
       setLoading(true)
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/create-brand",
+
+        url: `${appUrl}/admin/create-brand`,
         method: "post",
         headers: {
           Authorization: `Bearer YOUR_ACCESS_TOKEN`,
