@@ -7,6 +7,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import Heading from '../../Components/Heading/Heading';
 import { useSelector } from 'react-redux';
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -145,8 +146,8 @@ const AddBrand = () => {
         }}>
           Add New Brand
         </Typography>
-        <Typography>
-          <MenuBar/>
+        <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
+          <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>

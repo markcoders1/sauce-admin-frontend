@@ -8,6 +8,7 @@ import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -195,8 +196,8 @@ const AddSEvent = () => {
         }}>
           Add Event
         </Typography>
-        <Typography>
-          <MenuBar />
+        <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
+          <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
