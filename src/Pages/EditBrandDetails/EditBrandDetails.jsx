@@ -8,9 +8,9 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import Heading from '../../Components/Heading/Heading';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
 
 const EditBrandDetails = () => {
   const { id } = useParams();
@@ -24,7 +24,8 @@ const EditBrandDetails = () => {
     image: null,
     type: '',
     status: '',
-    points: ''
+    points: '',
+    about: Array(6).fill(''), // Initialize about with 6 empty strings
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -55,6 +56,12 @@ const EditBrandDetails = () => {
     }));
   };
 
+  const handleAboutChange = (index, value) => {
+    const newAbout = [...formData.about];
+    newAbout[index] = value;
+    setFormData({ ...formData, about: newAbout });
+  };
+
   const fetchUser = async () => {
     try {
       const response = await axios({
@@ -65,12 +72,14 @@ const EditBrandDetails = () => {
         },
       });
       const userData = response?.data?.user;
+      console.log(response.data)
       setFormData({
         name: userData?.name || '',
-        image: userData.image||'',
+        image: userData?.image || '',
         type: userData?.type || '',
         status: userData?.status || '',
-        points: userData?.points || 0
+        points: userData?.points || 0,
+        about: userData?.about || Array(6).fill(''), // Fetch about if available, else set to 6 empty strings
       });
       setSelectedFileName(userData.image);
     } catch (error) {
@@ -102,6 +111,11 @@ const EditBrandDetails = () => {
     formDataToSend.append('status', formData.status);
     formDataToSend.append('points', formData.points);
     formDataToSend.append('userId', id);
+    if (formData.type === 'admin') {
+      formData.about.forEach((about, index) => {
+        formDataToSend.append(`about${index + 1}`, about);
+      });
+    }
 
     try {
       setLoading(true)
@@ -267,6 +281,23 @@ const EditBrandDetails = () => {
           />
         </Box>
       </Box>
+
+      {formData.type === 'brand' && (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <Heading Heading='About' />
+          {formData.about.map((about, index) => (
+            <CustomInputShadow
+              key={index}
+              placeholder={`About ${index + 1}`}
+              name={`about${index + 1}`}
+              value={about} // Corrected the value reference
+              onChange={(e) => handleAboutChange(index, e.target.value)} // Changed to handleAboutChange
+              error={errors[`about${index + 1}`]}
+            />
+          ))}
+        </Box>
+      )}
+
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'

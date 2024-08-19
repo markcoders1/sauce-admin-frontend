@@ -26,10 +26,11 @@ const EditSauce = () => {
     websiteLink: '',
     productLink: '',
     details: '',
-    ingredients: [''],
+    chilli: ['',],
     email: '',
     type: '',
-    title: ""
+    title: "",
+    ingredients:"",
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -118,13 +119,15 @@ const EditSauce = () => {
     // Append all the form fields
     formDataToSend.append('name', formData.sauceName);
     formDataToSend.append('description', formData.details);
-    formDataToSend.append('ingredients', JSON.stringify(formData.ingredients)); // Convert array to string
+    formDataToSend.append('chilli', JSON.stringify(formData.chilli)); // Convert array to string
     formDataToSend.append('productLink', formData.productLink);
     formDataToSend.append('websiteLink', formData.websiteLink);
     formDataToSend.append('email', formData.email);
     formDataToSend.append('type', formData.type);
     formDataToSend.append('title', formData.title);
     formDataToSend.append('sauceId', id);
+    formDataToSend.append('ingredients', formData.ingredients);
+
   
     // Check and append the sauce image file if it exists
     if (sauceImage) {
@@ -186,10 +189,13 @@ const EditSauce = () => {
         websiteLink: sauceData.websiteLink,
         productLink: sauceData.productLink,
         details: sauceData.description,
-        ingredients: sauceData.ingredients,
+        chilli: sauceData.chilli,
         email: sauceData.email,
         type: sauceData.type,
-        title: sauceData.title
+        title: sauceData.title,
+        ingredients: sauceData.ingredients,
+
+
       });
       setSauceImage(sauceData.image);
       setBannerImage(sauceData.bannerImage);
@@ -382,9 +388,34 @@ const EditSauce = () => {
           error={errors.details}
           height="160px"
         />
+      
       </Box>
+
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        {formData.ingredients.map((ingredient, index) => (
+        <Typography sx={{
+          color: "#FFA100",
+          fontWeight: "500",
+          fontSize: {
+              sm: "16px",
+              xs: "16px"
+          },
+          fontFamily: "Montserrat !important",
+          marginBottom: "0.4rem"
+        }}>
+          Ingredients
+        </Typography>
+        <CustomInputShadow
+          name="ingredients"
+          multiline={true}
+          value={formData.ingredients}
+          onChange={handleChange}
+          error={errors.ingredients}
+          height="160px"
+        />
+      </Box>
+
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+        {formData.chilli.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>
               <Typography sx={{
@@ -397,16 +428,16 @@ const EditSauce = () => {
                 fontFamily: "Montserrat !important",
                 marginBottom: "0.4rem"
               }}>
-                Ingredient {index + 1}
+                chilli {index + 1}
               </Typography>
               <CustomInputShadow
-                name={`ingredients-${index}`}
+                name={`chilli-${index}`}
                 value={ingredient}
-                onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
-                error={errors.ingredients}
+                onChange={(e) => handleDetailChange('chilli', index, e.target.value)}
+                error={errors.chilli}
               />
             </Box>
-            {formData.ingredients.length > 1 && (
+            {formData.chilli.length > 1 && (
               <CustomButton
                 border='1px solid #FFA100'
                 ButtonText={"Remove"}
@@ -415,7 +446,7 @@ const EditSauce = () => {
                 width={"98px"}
                 borderRadius='8px'
                 buttonStyle={{ height: {sm:"75px", xs:"68px"},mt:"13px" }}
-                onClick={() => removeBullet('ingredients', index)}
+                onClick={() => removeBullet('chilli', index)}
               />
             )}
           </Box>
@@ -428,7 +459,7 @@ const EditSauce = () => {
           width={"100%"}
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
-          onClick={() => addBullet('ingredients')}
+          onClick={() => addBullet('chilli')}
           fontSize='20px'
         />
       </Box>

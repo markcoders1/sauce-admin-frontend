@@ -5,12 +5,13 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-
+import Heading from '../../Components/Heading/Heading';
+import { useSelector } from 'react-redux';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-
 const AddBrand = () => {
+  const auth = useSelector(state => state.auth)
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -20,11 +21,14 @@ const AddBrand = () => {
     name: '',
     email: '',
     password: '',
+    websiteLink: '',
+
     bannerImage: null,
+    about: ['','','','','',''], // Initialize an array of 6 empty strings
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -42,16 +46,22 @@ const AddBrand = () => {
     }
   };
 
+  const handleAboutChange = (index, value) => {
+    const newAbout = [...formData.about];
+    newAbout[index] = value;
+    setFormData({ ...formData, about: newAbout });
+  };
+
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
-
+  
     let validationErrors = {};
-
+  
     // Check file size for bannerImage
     if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
       validationErrors.bannerImage = "Banner image size exceeds 4MB.";
     }
-
+  
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       setSnackAlertData({
@@ -61,42 +71,45 @@ const AddBrand = () => {
       });
       return;
     }
-
+  
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
+    data.append('websiteLink', formData.websiteLink);
     data.append('password', formData.password);
     data.append('image', formData.bannerImage); // Append the file
-
+    data.append('about', formData.about); // Serialize the array to JSON
+  
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios({
-
         url: `${appUrl}/admin/create-brand`,
         method: "post",
         headers: {
-          Authorization: `Bearer YOUR_ACCESS_TOKEN`,
+          Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'multipart/form-data' 
         },
         data: data
       });
-
+  
       setFormData({
         name: '',
         email: '',
         password: '',
+        websiteLink:'',
         bannerImage: null,
+        about: Array(6).fill(''), // Reset about
       });
-
+  
       setSelectedFileName(""); // Reset file name
-      setLoading(false)
-
+      setLoading(false);
+  
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
-      })
-
+      });
+  
       console.log(response.data);
     } catch (error) {
       console.error('Error submitting brand induction:', error);
@@ -104,10 +117,11 @@ const AddBrand = () => {
         open: true,
         message: error?.response?.data?.error?.message || error?.response?.data?.message,
         severity: "error",
-      })
-      setLoading(false)
+      });
+      setLoading(false);
     }
   };
+  
 
   return (
     <Box
@@ -170,6 +184,15 @@ const AddBrand = () => {
         </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
+            placeholder="Brand Website"
+            name="websiteLink"
+            value={formData.websiteLink}
+            onChange={handleChange}
+            error={errors.websiteLink}
+          />
+        </Box>
+        <Box sx={{ flexBasis: "33%" }}>
+          <CustomInputShadow
             placeholder="Brand Password"
             name="password"
             value={formData.password}
@@ -179,6 +202,21 @@ const AddBrand = () => {
           />
         </Box>
       </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <Heading Heading='About' />
+        {formData.about.map((about, index) => (
+          <CustomInputShadow
+            key={index}
+            placeholder={`About ${index + 1}`}
+            name={`about${index + 1}`}
+            value={formData.about[index]} // Corrected the value reference
+            onChange={(e) => handleAboutChange(index, e.target.value)} // Changed to handleAboutChange
+            error={errors[`about${index + 1}`]}
+          />
+        ))}
+      </Box>
+
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
@@ -186,7 +224,7 @@ const AddBrand = () => {
           color='white'
           width={"178px"}
           borderRadius='8px'
-            background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
+          background={loading ? "" : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

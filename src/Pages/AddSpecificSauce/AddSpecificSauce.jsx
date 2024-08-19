@@ -30,9 +30,10 @@ const AddSpecificSauce = () => {
     websiteLink: '',
     productLink: '',
     details: '',
-    ingredients: [''],
+    chilli: [''],
     type: '',
-    title: ""
+    title: "",
+    ingredients:""
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -110,12 +111,13 @@ const AddSpecificSauce = () => {
     data.append('bannerImage', bannerImage);
     data.append('name', formData.sauceName);
     data.append('description', formData.details);
-    data.append('ingredients', formData.ingredients);
+    data.append('chilli', formData.chilli);
     data.append('productLink', formData.productLink);
     data.append('websiteLink', formData.websiteLink);
     data.append('userId', id);
     data.append('type', formData.type);
     data.append('title', formData.title);
+    data.append('ingredients', formData.ingredients);
 
     try {
       setLoading(true)
@@ -141,9 +143,10 @@ const AddSpecificSauce = () => {
         websiteLink: '',
         productLink: '',
         details: '',
-        ingredients: [''],
+        chilli: [''],
         type: '',
-        title: ""
+        title: "",
+        ingredients: ""
       });
       setLoading(false)
 
@@ -268,17 +271,28 @@ const AddSpecificSauce = () => {
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Ingredients' />
-        {formData.ingredients.map((ingredient, index) => (
+        <CustomInputShadow
+          name="ingredients"
+          multiline={true}
+          value={formData.ingredients}
+          onChange={handleChange}
+          error={errors.ingredients}
+          height="160px"
+        />
+      </Box>
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <Heading Heading='Chilli' />
+        {formData.chilli.map((chilli, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>
               <CustomInputShadow
-                name={`ingredients-${index}`}
-                value={ingredient}
-                onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
-                error={errors.ingredients}
+                name={`chilli-${index}`}
+                value={chilli}
+                onChange={(e) => handleDetailChange('chilli', index, e.target.value)}
+                error={errors.chilli}
               />
             </Box>
-            {formData.ingredients.length > 1 && (
+            {formData.chilli.length > 1 && (
               <CustomButton
                 border='1px solid #FFA100'
                 ButtonText={"Remove"}
@@ -287,7 +301,7 @@ const AddSpecificSauce = () => {
                 width={"98px"}
                 borderRadius='6px'
                 buttonStyle={{ height: { sm: "75px", xs: "68px" }, mt: "-16px" }}
-                onClick={() => removeBullet('ingredients', index)}
+                onClick={() => removeBullet('chilli', index)}
               />
             )}
           </Box>
@@ -300,7 +314,7 @@ const AddSpecificSauce = () => {
           width={"100%"}
           borderRadius='6px'
           buttonStyle={{ height: "75px" }}
-          onClick={() => addBullet('ingredients')}
+          onClick={() => addBullet('chilli')}
           fontSize='18px'
           fontWeight='500'
         />
