@@ -7,6 +7,7 @@ import logoutpng from '../../assets/logout.png';
 import logoutHover from '../../assets/logoutHover.png';
 import { Box, Typography } from '@mui/material';
 import { toggleSidebar, closeSidebar } from '../../Redux/Slice/sidebarSlice/sidebarSlice';
+import { useSelector } from 'react-redux';
 
 
 const LogoutButton = ({ isSidebarOpen }) => {
@@ -14,7 +15,8 @@ const LogoutButton = ({ isSidebarOpen }) => {
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-
+    const isOpen = useSelector((state) => state.sidebar.isOpen)
+    console.log("mobilesidebr",isOpen)
 
 
     const handleLogout = () => {
@@ -76,7 +78,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
                 >
                     <img src={isHovered ? logoutpng : logoutpng} alt="Logout" />
                 </Box>
-                {isSidebarOpen && (
+                {isSidebarOpen ||isOpen && (
                     <Typography
                         className="logout-text"
                         sx={{
