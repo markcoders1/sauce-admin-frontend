@@ -40,17 +40,20 @@ const SauceManagement = () => {
         setLoading(true);
         try {
             const response = await axios({
-                url: `${appUrl}/admin/get-sauces?type=all`,
+                url: `${appUrl}/get-sauces`,
                 method: "get",
+                
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 },
             });
             setAllSauce(response?.data?.sauces || []);
             setLoading(false);
+            console.log(response)
         } catch (error) {
             console.error('Error fetching events:', error);
             setLoading(false);
+            console.log(error)
         }
     };
 
