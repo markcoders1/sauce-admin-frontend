@@ -28,12 +28,6 @@ const Login = () => {
     });
     console.log(authState.authenticated)
 
-    useEffect(() => {
-        if (authState.authenticated === true) {
-            navigate('/admin')
-        }
-    }, []);
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError({});

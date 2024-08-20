@@ -88,7 +88,7 @@ const CustomInputShadow = forwardRef(({
           onChange={onChange}
           value={value}
           InputLabelProps={{
-            shrink: true,
+            shrink: true, 
           }}
           multiline={multiline}
           rows={rows}

@@ -49,8 +49,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
                     '&:hover .logout-text': {
                         color: 'red', // Change text color on hover
                     },
-                    // border:"1px solid red",
-                   
+            
                 }}
                 onClick={handleOpenModal}
                 onMouseEnter={() => setIsHovered(true)}
