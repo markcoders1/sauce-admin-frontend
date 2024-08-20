@@ -5,6 +5,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import BrandImg from '../../assets/brandimage.png'; // Adjust path as needed
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import { useNavigate } from 'react-router-dom';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -24,6 +25,7 @@ const AddSauce = () => {
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const [loading , setLoading] = useState(false);
+  const navigate = useNavigate()
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",

@@ -5,7 +5,7 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
@@ -37,6 +37,7 @@ const EditSauce = () => {
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
+  const navigate = useNavigate();
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
 
   const handleChange = (e) => {
@@ -152,7 +153,8 @@ const EditSauce = () => {
         data: formDataToSend
       });
       console.log(response.data);
-      setLoading(false)
+      setLoading(false);
+      navigate(-1)
 
       setSnackAlertData({
         open: true,

@@ -8,6 +8,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 import Heading from '../../Components/Heading/Heading';
 import { useSelector } from 'react-redux';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import { useNavigate } from 'react-router-dom';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -30,7 +31,7 @@ const AddBrand = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
@@ -101,6 +102,7 @@ const AddBrand = () => {
         bannerImage: null,
         about: Array(6).fill(''), // Reset about
       });
+      navigate(-1)
   
       setSelectedFileName(""); // Reset file name
       setLoading(false);

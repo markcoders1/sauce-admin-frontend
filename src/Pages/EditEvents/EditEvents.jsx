@@ -6,7 +6,7 @@ import axios from 'axios';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -14,7 +14,8 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
-  const [loading, setLoading]= useState(false)
+  const [loading, setLoading]= useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -124,7 +125,7 @@ const EditEvents = () => {
       });
       console.log(response.data);
       setLoading(false)
-
+      navigate(-1)
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({

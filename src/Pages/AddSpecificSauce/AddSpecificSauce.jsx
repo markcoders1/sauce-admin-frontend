@@ -139,6 +139,8 @@ const AddSpecificSauce = () => {
         severity: "success",
       });
 
+      navigate(-1)
+
       setFormData({
         sauceName: '',
         websiteLink: '',

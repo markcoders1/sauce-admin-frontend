@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 import MenuBar from '../../Components/MenuBar/MenuBar';
@@ -31,6 +31,7 @@ const EditBrandDetails = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
   const auth = useSelector(state => state.auth);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -128,6 +129,7 @@ const EditBrandDetails = () => {
         data: formDataToSend,
       });
   
+      navigate(-1)
       setSnackAlertData({
         open: true,
         message: response?.data?.message,

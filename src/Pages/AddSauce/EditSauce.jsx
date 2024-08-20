@@ -5,9 +5,10 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import axios from 'axios';
 import Heading from '../../Components/Heading/Heading';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -35,6 +36,7 @@ const EditSauce = () => {
   const [errors, setErrors] = useState({});
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -119,6 +121,7 @@ const EditSauce = () => {
         data: data
       });
       console.log(response.data);
+      navigate(-1)
       setSnackAlertData({
         open: true,
         message: response?.data?.message,

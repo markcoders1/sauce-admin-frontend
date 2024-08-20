@@ -8,6 +8,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import { useNavigate } from 'react-router-dom';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -35,7 +36,8 @@ const AddSauce = () => {
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const auth = useSelector(state => state.auth)
-  const [loading, setLoading]= useState(false)
+  const [loading, setLoading]= useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -135,6 +137,7 @@ const AddSauce = () => {
         severity: "success",
       })
       setLoading(false)
+      navigate(-1)
 
     } catch (error) {
       console.error('Error submitting sauce:', error);

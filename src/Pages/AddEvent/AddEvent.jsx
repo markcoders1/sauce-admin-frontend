@@ -9,6 +9,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import { useNavigate } from 'react-router-dom';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -20,7 +21,8 @@ const AddSEvent = () => {
     severity: "success"
   });
   const auth = useSelector(state => state.auth)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
@@ -119,6 +121,7 @@ const AddSEvent = () => {
         data: data
       });
 
+      navigate(-1)
       setFormData({
         eventName: '',
         organizedBy: '',
