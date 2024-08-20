@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab, Pagination } from '@mui/material';
 import { styled } from '@mui/system';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import queryString from 'query-string'; // Import query-string library
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./TabooManagement.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
-import { useNavigate, useParams } from 'react-router-dom';
-import EditIcon from '../../assets/EditIcon.png';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
@@ -13,6 +13,7 @@ import logoAdmin from '../../assets/logoAdmin.png';
 import PageLoader from '../../Components/Loader/PageLoader';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightbox
+import EditIcon from '../../assets/EditIcon.png'
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -39,32 +40,39 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
 
 const TabooManagement = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [brands, setBrands] = useState([]);
-    const [brandName, setBrandName] = useState([]);
+    const [brandName, setBrandName] = useState('');
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
+
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const fetchBrands = async () => {
+    const fetchBrands = async (currentPage) => {
         try {
             setLoading(true);
             const response = await axios({
                 url: `${appUrl}/admin/brand-sauces/${id}`,
                 method: "get",
+                params: {
+                    page: currentPage,
+                    limit: 8, // Assuming you want to fetch 8 items per page
+                },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
             setBrands(response?.data?.sauces || []);
+            setTotalPages(response?.data?.pagination?.totalPages || 1);
             const firstBrand = response?.data?.sauces[0]?.owner.name;
             setBrandName(firstBrand);
             setLoading(false);
-            console.log(response)
         } catch (error) {
             console.error('Error fetching brands:', error);
             setLoading(false);
@@ -72,8 +80,11 @@ const TabooManagement = () => {
     };
 
     useEffect(() => {
-        fetchBrands();
-    }, []);
+        const parsed = queryString.parse(location.search);
+        const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
+        setPage(currentPage);
+        fetchBrands(currentPage);
+    }, [location.search]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -95,8 +106,12 @@ const TabooManagement = () => {
         navigate(`/admin/add-specific-sauce/${id}`);
     };
 
-    const handleNavigateToEditSauce = (id) => {
-        navigate(`/admin/edit-sauce-details/${id}`);
+    const handleNavigateToEditSauce = (sauceId) => {
+        navigate(`/admin/edit-sauce-details/${sauceId}`);
+    };
+
+    const handlePageChange = (event, value) => {
+        navigate(`${location.pathname}?page=${value}`);
     };
 
     const openLightbox = (imageSrc) => {
@@ -271,6 +286,34 @@ const TabooManagement = () => {
                             </TableContainer>
                         </Box>
                     )}
+
+                    {/* Pagination */}
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={handlePageChange}
+                            sx={{
+                                '& .MuiPaginationItem-root': {
+                                    color: 'white', // Text color
+                                    backgroundColor: '#2E210A', // Background color for pagination buttons
+                                    border: '2px solid #FFA100', // Border color matching the theme
+                                },
+                                '& .Mui-selected': {
+                                    color: 'black', // Text color for selected page
+                                    backgroundColor: '#FFA100', // Background color for selected page
+                                    fontWeight: 'bold', // Bold text for selected page
+                                },
+                                '& .MuiPaginationItem-ellipsis': {
+                                    color: 'white', // Color for ellipsis (...)
+                                },
+                                '& .MuiPaginationItem-root:hover': {
+                                    backgroundColor: '#5A3D0A', // Background color on hover
+                                    borderColor: '#FF7B00', // Border color on hover
+                                },
+                            }}
+                        />
+                    </Box>
                 </Box>
             )}
 

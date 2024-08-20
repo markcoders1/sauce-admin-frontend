@@ -10,14 +10,12 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import axios from 'axios';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import { useSelector } from 'react-redux';
-
 import logoAdmin from '../../assets/logoAdmin.png';
-
-const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
-// Import the Lightbox component
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import queryString from 'query-string'; // Import query-string library
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const EventsManagement = () => {
     const navigate = useNavigate();
@@ -57,15 +55,18 @@ const EventsManagement = () => {
     };
 
     useEffect(() => {
-        fetchEvents(page); // Fetch data based on the current page
-    }, [page]);
+        const parsed = queryString.parse(window.location.search);
+        const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
+        setPage(currentPage);
+        fetchEvents(currentPage);
+    }, [window.location.search]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        navigate(`${window.location.pathname}?page=${value}`);
     };
 
     const formatDate = (timestamp) => {
@@ -284,13 +285,13 @@ const EventsManagement = () => {
                                 onChange={handlePageChange}
                                 sx={{
                                     '& .MuiPaginationItem-root': {
-                                        color: 'black', // Text color
+                                        color: 'white', // Text color
                                         backgroundColor: '#2E210A', // Background color for pagination buttons
                                         border: '2px solid #FFA100', // Border color matching the theme
                                     },
                                     '& .Mui-selected': {
-                                        color: 'white', // Text color for selected page
-                                        backgroundColor: '#FFA100', // Background color for selected page
+                                        color: '#FFA100', // Text color for selected page
+                                        backgroundColor: '', // Background color for selected page
                                         fontWeight: 'bold', // Bold text for selected page
                                     },
                                     '& .MuiPaginationItem-ellipsis': {

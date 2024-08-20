@@ -11,7 +11,7 @@ import ConfirmActionModal from '../../Components/ConfirmActionModal/ConfirmActio
 import EditIcon from '../../assets/EditIcon.png'; 
 import { useNavigate } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import queryString from 'query-string'; // Import query-string library
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -77,15 +77,18 @@ const UserManagement = () => {
     };
 
     useEffect(() => {
-        fetchUsers(page); // Fetch data based on the current page
-    }, [page]);
+        const parsed = queryString.parse(window.location.search);
+        const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
+        setPage(currentPage);
+        fetchUsers(currentPage);
+    }, [window.location.search]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        navigate(`${window.location.pathname}?page=${value}`);
     };
 
     const formatDate = (dateString) => {
@@ -139,7 +142,6 @@ const UserManagement = () => {
                                 },
                                 fontFamily: "Fira Sans !important",
                             }}>
-                               
                                 Users Management
                             </Typography>
                             <Typography>
@@ -282,13 +284,13 @@ const UserManagement = () => {
                             onChange={handlePageChange}
                             sx={{
                                 '& .MuiPaginationItem-root': {
-                                    color: 'black', // Text color
+                                    color: 'white', // Text color
                                     backgroundColor: '#2E210A', // Background color for pagination buttons
                                     border: '2px solid #FFA100', // Border color matching the theme
                                 },
                                 '& .Mui-selected': {
-                                    color: 'white', // Text color for selected page
-                                    backgroundColor: '#FFA100', // Background color for selected page
+                                    color: '#FFA100', // Text color for selected page
+                                    backgroundColor: '', // Background color for selected page
                                     fontWeight: 'bold', // Bold text for selected page
                                 },
                                 '& .MuiPaginationItem-ellipsis': {

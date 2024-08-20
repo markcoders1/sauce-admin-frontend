@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination, Tabs, Tab } from '@mui/material';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./SauceManagement.css";
 import CustomButton from '../../Components/CustomButton/CustomButton';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png';
 import axios from 'axios';
 import PageLoader from '../../Components/Loader/PageLoader';
@@ -13,6 +13,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 import logoAdmin from '../../assets/logoAdmin.png';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import queryString from 'query-string'; // Import query-string library
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -29,6 +30,7 @@ const SauceManagement = () => {
     const [page, setPage] = useState(1);
     const [itemsPerPage] = useState(8); // Set items per page
     const auth = useSelector(state => state.auth);
+    const location = useLocation();
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
@@ -60,8 +62,11 @@ const SauceManagement = () => {
     };
 
     useEffect(() => {
-        fetchSauce(page);
-    }, [page]);
+        const parsed = queryString.parse(location.search);
+        const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
+        setPage(currentPage);
+        fetchSauce(currentPage);
+    }, [location.search]);
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -92,7 +97,7 @@ const SauceManagement = () => {
     };
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        navigate(`${location.pathname}?page=${value}`);
     };
 
     return (
@@ -286,32 +291,31 @@ const SauceManagement = () => {
 
                         {/* Pagination */}
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-    <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-            '& .MuiPaginationItem-root': {
-                color: 'black', // Text color
-                backgroundColor: '#2E210A', // Background color for pagination buttons
-                border: '2px solid #FFA100', // Border color matching the theme
-            },
-            '& .Mui-selected': {
-                color: 'white', // Text color for selected page
-                backgroundColor: '#FFA100', // Background color for selected page
-                fontWeight: 'bold', // Bold text for selected page
-            },
-            '& .MuiPaginationItem-ellipsis': {
-                color: 'white', // Color for ellipsis (...)
-            },
-            '& .MuiPaginationItem-root:hover': {
-                backgroundColor: '#5A3D0A', // Background color on hover
-                borderColor: '#FF7B00', // Border color on hover
-            },
-        }}
-    />
-</Box>
-
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                onChange={handlePageChange}
+                                sx={{
+                                    '& .MuiPaginationItem-root': {
+                                        color: 'white', // Text color
+                                        backgroundColor: '#2E210A', // Background color for pagination buttons
+                                        border: '2px solid #FFA100', // Border color matching the theme
+                                    },
+                                    '& .Mui-selected': {
+                                        color: '#FFA100', // Text color for selected page
+                                        backgroundColor: '', // Background color for selected page
+                                        fontWeight: 'bold', // Bold text for selected page
+                                    },
+                                    '& .MuiPaginationItem-ellipsis': {
+                                        color: 'white', // Color for ellipsis (...)
+                                    },
+                                    '& .MuiPaginationItem-root:hover': {
+                                        backgroundColor: '#5A3D0A', // Background color on hover
+                                        borderColor: '#FF7B00', // Border color on hover
+                                    },
+                                }}
+                            />
+                        </Box>
                     </Box>
                 )
             }
@@ -329,3 +333,4 @@ const SauceManagement = () => {
 }
 
 export default SauceManagement;
+    
