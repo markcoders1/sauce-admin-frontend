@@ -1,14 +1,20 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, FormControl, InputLabel, MenuItem, Select, Typography, Checkbox, ListItemText } from '@mui/material';
+import React, { useState } from 'react';
 
-const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow = "0px 8px 26px -4px rgba(0, 0, 0, 0.1)" }) => {
-  const [selectedCategory, setSelectedCategory] = useState("")
+const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow = "0px 8px 26px -4px rgba(0, 0, 0, 0.1)", isMultiSelect = false }) => {
+  const [selectedCategory, setSelectedCategory] = useState(isMultiSelect ? [] : "");
 
   const handleSelectionChange = (e) => {
-    const selectedId = e.target.value;
-    setSelectedCategory(selectedId);
-    handleChange(selectedId); // Call the parent's handler with the selected brand's _id
-  }
+    const selectedValue = e.target.value;
+
+    if (isMultiSelect) {
+      setSelectedCategory(selectedValue);
+      handleChange(selectedValue); // Call the parent's handler with the selected array of values
+    } else {
+      setSelectedCategory(selectedValue);
+      handleChange(selectedValue); // Call the parent's handler with the selected value
+    }
+  };
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -32,7 +38,6 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           position: "relative",
           background: "#2e210a",
           color: "white",
-          
         }}
         variant="outlined"
       >
@@ -47,7 +52,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
             lineHeight: "30px",
             fontWeight: "500",
             color: "grey",
-            display: selectedCategory ? 'none' : 'flex',
+            display: selectedCategory.length > 0 ? 'none' : 'flex',
           }}
           id="demo-simple-select-label"
         >
@@ -56,8 +61,12 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
+          multiple={isMultiSelect} // Enable multi-select mode if the prop is true
           value={selectedCategory}
           onChange={handleSelectionChange}
+          renderValue={(selected) =>
+            isMultiSelect ? selected.map((id) => data.find((item) => item._id === id)?.name).join(', ') : selectedCategory
+          }
           sx={{
             width: "100%",
             fontSize: "22px",
@@ -87,7 +96,7 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
                   lineHeight: "30px",
                   fontWeight: "500",
                   color: "white",
-                  backgroundColor:"#2e210a",
+                  backgroundColor: "#2e210a",
                   "&.Mui-selected": {
                     backgroundColor: "#2e210a",
                     color: "white",
@@ -102,7 +111,10 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           }}
         >
           {data.map((item, index) => (
-            <MenuItem key={index} value={item._id}>{item.name}</MenuItem>
+            <MenuItem key={index} value={item._id}>
+              {isMultiSelect && <Checkbox checked={selectedCategory.indexOf(item._id) > -1} />}
+              <ListItemText primary={item.name} />
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
@@ -120,6 +132,6 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
       )}
     </Box>
   )
-}
+};
 
 export default CustomSelect;

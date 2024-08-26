@@ -40,7 +40,7 @@ const SauceManagement = () => {
         setLoading(true);
         try {
             const response = await axios({
-                url: `${appUrl}/get-sauces`,
+                url: `${appUrl}/get-sauces` ,
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
@@ -274,9 +274,9 @@ const SauceManagement = () => {
                                                         onClick={() => openLightbox(sauce.image)}
                                                     />
                                                 </TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.owner.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(sauce.owner.date)}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(sauce.createdAt)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "start" }}>
                                                         <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={()=> handleNavigateToEdit(sauce._id)} />

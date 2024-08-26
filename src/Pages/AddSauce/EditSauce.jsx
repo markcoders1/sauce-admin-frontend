@@ -8,6 +8,7 @@ import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
+import { isURL } from '../../../utils';
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -96,6 +97,30 @@ const EditSauce = () => {
     }
   };
   const handleSubmit = async () => {
+    // Validate productLink
+    if (formData.productLink) {
+      if (!isURL(formData.productLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Product link must be a valid URL",
+          severity: "error",
+        });
+        return; // Exit the function to prevent further execution
+      }
+    }
+  
+    // Validate websiteLink
+    if (formData.websiteLink) {
+      if (!isURL(formData.websiteLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Website link must be a valid URL",
+          severity: "error",
+        });
+        return; // Exit the function to prevent further execution
+      }
+    }
+  
     const data = {
       image: sauceImage,
       bannerImage: bannerImage,
@@ -109,7 +134,7 @@ const EditSauce = () => {
       title: formData.title,
       sauceId: id
     };
-
+  
     try {
       const response = await axios({
         url: `${appUrl}/admin/edit-sauce`,
@@ -121,7 +146,7 @@ const EditSauce = () => {
         data: data
       });
       console.log(response.data);
-      navigate(-1)
+      navigate(-1);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -136,7 +161,7 @@ const EditSauce = () => {
       });
     }
   };
-
+  
   const fetchSauce = async () => {
     try {
       const response = await axios({

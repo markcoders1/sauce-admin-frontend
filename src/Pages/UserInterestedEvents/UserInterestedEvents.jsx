@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -10,125 +10,105 @@ import {
   TableRow,
   Paper,
   Pagination,
-  Chip,
 } from "@mui/material";
+import { styled } from "@mui/system";
 import SearchIcon from "../../assets/SearchIcon.png";
-import "./TableStyle.css";
+import "../EventsManagement/EventsManagement.css"; // Import the CSS file for custom styles
 import CustomButton from "../../Components/CustomButton/CustomButton";
-import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import EditIcon from "../../assets/EditIcon.png"; // Adjust path as needed
 import PageLoader from "../../Components/Loader/PageLoader";
-import { useSelector } from "react-redux";
-import SnackAlert from "../../Components/SnackAlert/SnackAlert";
-import ConfirmActionModal from "../../Components/ConfirmActionModal/ConfirmActionModal";
-import EditIcon from "../../assets/EditIcon.png";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import MenuBar from "../../Components/MenuBar/MenuBar";
+import { useSelector } from "react-redux";
+import logoAdmin from "../../assets/logoAdmin.png";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import queryString from "query-string"; // Import query-string library
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const UserManagement = () => {
-  const auth = useSelector((state) => state.auth);
-  const [snackAlertData, setSnackAlertData] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
-  const [allUsers, setAllUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [action, setAction] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [page, setPage] = useState(1); // Current page
-  const [totalPages, setTotalPages] = useState(1); // Total number of pages
+const UserInterestedEvents = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [allEvents, setAllEvents] = useState([]);
+  // const [page, setPage] = useState(1); // Current page state
+  // const [totalPages, setTotalPages] = useState(1); // Total pages state
+  const [searchTerm, setSearchTerm] = useState("");
+  const auth = useSelector((state) => state.auth);
+  const { id } = useParams();
 
-  const fetchUsers = async (page) => {
+  // State for lightbox
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const fetchEvents = async (page) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-interested-event`,
         method: "get",
+        // params: {
+        //     page: page, // Pass current page to backend
+        //     limit: 8 // Number of items per page
+        // },
         params: {
-          type: "user",
-          page: page, // Pass current page to backend
-          limit: 8, // Number of items per page
+          userId: id,
         },
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
       });
-      setAllUsers(response?.data?.entities || []);
-      setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
+      setAllEvents(response?.data?.interestedEvents || []);
+      // setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
       setLoading(false);
-      console.log("appRul", response);
+      console.log(response);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching events:", error);
       setLoading(false);
     }
   };
 
-  const toggleBlock = (userId, currentStatus) => {
-    setSelectedUser(userId);
-    setAction(currentStatus === "active" ? "block" : "unblock");
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleModalSuccess = () => {
-    setAllUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user._id === selectedUser
-          ? { ...user, status: user.status === "active" ? "blocked" : "active" }
-          : user
-      )
-    );
-    setSelectedUser(null);
-  };
-
   useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
-    const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
-    setPage(currentPage);
-    fetchUsers(currentPage);
-  }, [window.location.search]);
+    fetchEvents();
+  }, []);
+
+  // useEffect(() => {
+  //     const parsed = queryString.parse(window.location.search);
+  //     const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
+  //     setPage(currentPage);
+  //     fetchEvents(currentPage);
+  // }, [window.location.search]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handlePageChange = (event, value) => {
-    navigate(`${window.location.pathname}?page=${value}`);
-  };
+  // const handlePageChange = (event, value) => {
+  //     navigate(`${window.location.pathname}?page=${value}`);
+  // };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
 
-  const filteredUsers = allUsers.filter(
-    (user) =>
-      (user.name &&
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.email &&
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredEvents = allEvents.filter(
+    (event) =>
+      event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const navigateToEdit = (id) => {
-    navigate(`/admin/edit-brand-user-details/${id}`);
+  const handleNavigateToSeeEvents = (id) => {
+    navigate(`/admin/see-user-events/${id}`);
   };
 
-  const handleNavigate = (id) => {
-    navigate(`/admin/user-interested-events/${id}`);
+  const openLightbox = (imageSrc) => {
+    setSelectedImage(imageSrc);
+    setIsOpen(true);
   };
 
   return (
@@ -142,7 +122,7 @@ const UserManagement = () => {
               display: "flex",
               justifyContent: "space-between",
               p: {
-                md: "0px 20px 0px 20px",
+                sm: "0px 20px 0px 20px",
                 xs: "0px 0px 0px 0px",
               },
               alignItems: {
@@ -169,24 +149,35 @@ const UserManagement = () => {
                   color: "white",
                   fontWeight: "600",
                   fontSize: {
-                    sm: "45px",
+                    lg: "45px",
+                    sm: "40px",
                     xs: "30px",
                   },
                   fontFamily: "Fira Sans !important",
                 }}
               >
-                Users Management
+                Events Interested
               </Typography>
               <Typography>
                 <MenuBar />
               </Typography>
             </Box>
-            <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { sm: "row", xs: "column" },
+                justifyContent: { md: "end", sm: "end" },
+                alignItems: { sm: "center", xs: "end" },
+                gap: "1rem",
+                width: { md: "700px", xs: "100%" },
+              }}
+            >
               <Box
                 sx={{
                   position: "relative",
+                  maxWidth: { sm: "350px", xs: "100%" },
                   width: "100%",
-                  maxWidth: { md: "350px", xs: "100%" },
                 }}
               >
                 <input
@@ -194,10 +185,9 @@ const UserManagement = () => {
                   name="search"
                   id="search"
                   className="search-input"
-                  placeholder="Search"
+                  placeholder="Search Event..."
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  style={{ color: "white" }}
                 />
                 <img
                   src={SearchIcon}
@@ -233,7 +223,7 @@ const UserManagement = () => {
                       className="MuiTableCell-root-head"
                       sx={{
                         fontWeight: "500",
-                        padding: "0px 0px",
+                        padding: "0px 20px",
                         fontSize: {
                           sm: "21px",
                           xs: "16px",
@@ -241,10 +231,9 @@ const UserManagement = () => {
                         textAlign: "start",
                         borderRadius: "8px 0px 0px 8px",
                         color: "white",
-                        paddingLeft: "40px",
                       }}
                     >
-                      Full Name
+                      Image
                     </TableCell>
                     <TableCell
                       sx={{
@@ -256,11 +245,42 @@ const UserManagement = () => {
                         },
                         textAlign: "start",
                         color: "white",
-                        paddingLeft: "0px",
+                        pl: "10px",
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Email
+                      Events Name
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "500",
+                        padding: "12px 0px",
+                        fontSize: {
+                          sm: "21px",
+                          xs: "16px",
+                        },
+                        textAlign: "start",
+                        color: "white",
+                      }}
+                      className="MuiTableCell-root-head"
+                    >
+                      Organized By
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "500",
+                        padding: "12px 0px",
+                        fontSize: {
+                          sm: "21px",
+                          xs: "16px",
+                        },
+                        textAlign: "start",
+                        color: "white",
+                        pl: "5px",
+                      }}
+                      className="MuiTableCell-root-head"
+                    >
+                      Destination
                     </TableCell>
                     <TableCell
                       sx={{
@@ -272,43 +292,11 @@ const UserManagement = () => {
                         },
                         textAlign: "center",
                         color: "white",
-                        minWidth: "150px",
+                        // paddingLeft:"1"
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Interested Events
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "center",
-                        color: "white",
-                        minWidth: "150px",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Check-Ins
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "center",
-                        color: "white",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Joining Date
+                      Start Date
                     </TableCell>
                     <TableCell
                       sx={{
@@ -329,7 +317,7 @@ const UserManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
-                  {filteredUsers.map((user, index) => (
+                  {filteredEvents.map((event, index) => (
                     <TableRow
                       key={index}
                       sx={{
@@ -339,45 +327,47 @@ const UserManagement = () => {
                     >
                       <TableCell
                         sx={{
-                          borderRadius: "8px 0px 0px 8px",
+                          borderRadius: "8px 0px 0px 8px !important",
                           color: "white",
                           textAlign: "start !important",
-                          paddingLeft: "40px !important",
                         }}
                         className="MuiTableCell-root"
                       >
-                        {user.name}
+                        <img
+                          src={
+                            event.bannerImage ? event.bannerImage : logoAdmin
+                          }
+                          alt="Sauce"
+                          style={{
+                            width: "80px",
+                            height: "50px",
+                            borderRadius: "8px !important",
+                            objectFit: "contain",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => openLightbox(event.bannerImage)}
+                        />
                       </TableCell>
                       <TableCell
-                        sx={{
-                          textAlign: "start !important",
-                          paddingLeft: "0px !important",
-                        }}
+                        sx={{ textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                        {user.email}
+                        {event.eventName}
                       </TableCell>
-                      <Tooltip title="see all events">
                       <TableCell
-                      onClick={()=> handleNavigate(user._id)}
-                        sx={{
-                        //   border: "1px solid red !important",
-                          cursor: "pointer",
-                        }}
+                        sx={{ textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                         
-                          {user.interestedEvents}
-                          
+                        {/* {event.owner.name} */}
                       </TableCell>
-                        </Tooltip>
-                    
-
-                      <TableCell className="MuiTableCell-root">
-                        {user.checkins}
+                      <TableCell
+                        sx={{ textAlign: "start !important" }}
+                        className="MuiTableCell-root"
+                      >
+                        {event.venueName}
                       </TableCell>
                       <TableCell className="MuiTableCell-root">
-                        {formatDate(user.date)}
+                        {formatDate(event.eventDate)}
                       </TableCell>
                       <TableCell
                         sx={{ borderRadius: "0px 8px 8px 0px" }}
@@ -386,35 +376,19 @@ const UserManagement = () => {
                         <Box
                           sx={{
                             display: "flex",
-                            gap: "30px",
+                            gap: "10px",
                             justifyContent: "center",
                           }}
                         >
                           <CustomButton
                             border="1px solid #FFA100"
-                            ButtonText={
-                              user.status === "active" ? "Block" : "Unblock"
-                            }
+                            ButtonText="View Details"
                             color="white"
-                            width={"98px"}
+                            width={"128px"}
                             borderRadius="6px"
                             buttonStyle={{ height: "39px" }}
-                            onClick={() => toggleBlock(user._id, user.status)}
+                            onClick={() => handleNavigateToSeeEvents(event._id)}
                             hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                          />
-                          <img
-                            className="edit-icon"
-                            src={EditIcon}
-                            alt="Edit"
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              cursor: "pointer",
-                              border: "0 px solid red",
-                              borderRadius: "10px",
-                              padding: "8px",
-                            }}
-                            onClick={() => navigateToEdit(user._id)}
                           />
                         </Box>
                       </TableCell>
@@ -426,52 +400,45 @@ const UserManagement = () => {
           </Box>
 
           {/* Pagination */}
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handlePageChange}
-              sx={{
-                "& .MuiPaginationItem-root": {
-                  color: "white", // Text color
-                  backgroundColor: "#2E210A", // Background color for pagination buttons
-                  border: "2px solid #FFA100", // Border color matching the theme
-                },
-                "& .Mui-selected": {
-                  color: "#FFA100", // Text color for selected page
-                  backgroundColor: "", // Background color for selected page
-                  fontWeight: "bold", // Bold text for selected page
-                },
-                "& .MuiPaginationItem-ellipsis": {
-                  color: "white", // Color for ellipsis (...)
-                },
-                "& .MuiPaginationItem-root:hover": {
-                  backgroundColor: "#5A3D0A", // Background color on hover
-                  borderColor: "#FF7B00", // Border color on hover
-                },
-              }}
-            />
-          </Box>
-
-          <SnackAlert
-            severity={snackAlertData.severity}
-            message={snackAlertData.message}
-            open={snackAlertData.open}
-            handleClose={() => {
-              setSnackAlertData((prev) => ({ ...prev, open: false }));
-            }}
-          />
-          <ConfirmActionModal
-            open={modalOpen}
-            handleClose={handleModalClose}
-            userId={selectedUser}
-            action={action}
-            onSuccess={handleModalSuccess}
-          />
+          {/* <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                onChange={handlePageChange}
+                                sx={{
+                                    '& .MuiPaginationItem-root': {
+                                        color: 'white', // Text color
+                                        backgroundColor: '#2E210A', // Background color for pagination buttons
+                                        border: '2px solid #FFA100', // Border color matching the theme
+                                    },
+                                    '& .Mui-selected': {
+                                        color: '#FFA100', // Text color for selected page
+                                        backgroundColor: '', // Background color for selected page
+                                        fontWeight: 'bold', // Bold text for selected page
+                                    },
+                                    '& .MuiPaginationItem-ellipsis': {
+                                        color: 'white', // Color for ellipsis (...)
+                                    },
+                                    '& .MuiPaginationItem-root:hover': {
+                                        backgroundColor: '#5A3D0A', // Background color on hover
+                                        borderColor: '#FF7B00', // Border color on hover
+                                    },
+                                }}
+                            />
+                        </Box> */}
         </Box>
+      )}
+
+      {/* Lightbox component */}
+      {isOpen && (
+        <Lightbox
+          open={isOpen}
+          close={() => setIsOpen(false)}
+          slides={[{ src: selectedImage }]}
+        />
       )}
     </>
   );
 };
 
-export default UserManagement;
+export default UserInterestedEvents;

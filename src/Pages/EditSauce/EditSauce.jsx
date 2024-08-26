@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import { isURL } from '../../../utils';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -116,8 +117,32 @@ const EditSauce = () => {
   };
 
   const handleSubmit = async () => {
-    const formDataToSend = new FormData();
+    // Validate productLink
+    if (formData.productLink) {
+      if (!isURL(formData.productLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Product link must be a valid URL",
+          severity: "error",
+        });
+        return; // Exit the function to prevent further execution
+      }
+    }
   
+    // Validate websiteLink
+    if (formData.websiteLink) {
+      if (!isURL(formData.websiteLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Website link must be a valid URL",
+          severity: "error",
+        });
+        return; // Exit the function to prevent further execution
+      }
+    }
+  
+    const formDataToSend = new FormData();
+    
     // Append all the form fields
     formDataToSend.append('name', formData.sauceName);
     formDataToSend.append('description', formData.details);
@@ -129,7 +154,6 @@ const EditSauce = () => {
     formDataToSend.append('title', formData.title);
     formDataToSend.append('sauceId', id);
     formDataToSend.append('ingredients', formData.ingredients);
-
   
     // Check and append the sauce image file if it exists
     if (sauceImage) {
@@ -140,9 +164,11 @@ const EditSauce = () => {
     if (bannerImage) {
       formDataToSend.append('bannerImage', bannerImage); // Adding banner image as binary
     }
-    console.log(bannerImage)
+  
+    console.log(bannerImage);
+    
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios({
         url: `${appUrl}/admin/edit-sauce`,
         method: "post",
@@ -154,8 +180,8 @@ const EditSauce = () => {
       });
       console.log(response.data);
       setLoading(false);
-      navigate(-1)
-
+      navigate(-1);
+  
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -168,10 +194,10 @@ const EditSauce = () => {
         message: error?.response?.data?.message,
         severity: "error",
       });
-      setLoading(false)
-
+      setLoading(false);
     }
   };
+  
   
   
 

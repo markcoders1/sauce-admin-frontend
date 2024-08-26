@@ -68,6 +68,7 @@ const TabooManagement = () => {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
+            console.log(response)
             setBrands(response?.data?.sauces || []);
             setTotalPages(response?.data?.pagination?.totalPages || 1);
             const firstBrand = response?.data?.sauces[0]?.owner.name;

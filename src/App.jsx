@@ -18,6 +18,11 @@ import ForgetPassword from "./PagesAuth/ForgetPassword/ForgetPassword";
 import EditBrandDetails from "./Pages/EditBrandDetails/EditBrandDetails";
 import EditEvents from "./Pages/EditEvents/EditEvents";
 import EditSauce from "./Pages/EditSauce/EditSauce";
+import UserInterestedEvents from "./Pages/UserInterestedEvents/UserInterestedEvents";
+import SeeEventsDetail from "./Pages/SeeEvents/SeeEventDetail";
+
+
+
 
 import ProtectedRoute from './Protected/Protected';
 
@@ -52,6 +57,10 @@ function App() {
           <Route path="edit-brand-user-details/:id" element={<EditBrandDetails />} />
           <Route path="edit-event-details/:id" element={<EditEvents />} />
           <Route path="edit-sauce-details/:id" element={<EditSauce />} />
+          <Route path="user-interested-events/:id" element={<UserInterestedEvents />} />
+          <Route path="see-user-events/:id" element={<SeeEventsDetail />} />
+
+
         </Route>
 
         <Route path="*" element={<>Page Not Found</>} />
