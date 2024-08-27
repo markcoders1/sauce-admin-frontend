@@ -9,6 +9,7 @@ import Heading from '../../Components/Heading/Heading';
 import { useSelector } from 'react-redux';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import { useNavigate } from 'react-router-dom';
+import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -27,6 +28,7 @@ const AddBrand = () => {
 
     bannerImage: null,
     about: ['','','','','',''], // Initialize an array of 6 empty strings
+    isTopRated: false
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -75,6 +77,8 @@ const AddBrand = () => {
     }
   
     const data = new FormData();
+    data.append("isTopRated", formData.isTopRated);
+
     data.append('name', formData.name);
     data.append('email', formData.email);
     data.append('websiteLink', formData.websiteLink);
@@ -82,6 +86,7 @@ const AddBrand = () => {
     data.append('image', formData.bannerImage); // Append the file
     data.append('about',  JSON.stringify(formData.about)); // Serialize the array to JSON
   
+    console.log(data)
     try {
       setLoading(true);
       const response = await axios({
@@ -101,6 +106,7 @@ const AddBrand = () => {
         websiteLink:'',
         bannerImage: null,
         about: Array(6).fill(''), // Reset about
+        isTopRated: false
       });
       navigate(-1)
   
@@ -194,6 +200,20 @@ const AddBrand = () => {
             error={errors.websiteLink}
           />
         </Box>
+        <Box>
+      <CustomSelectForType
+        label={"Brand Type"}
+        options={[
+          { label: "None", value: false },
+          { label: "Top Rated", value: true },
+        ]}
+        handleChange={(selectedValue) =>
+          setFormData({ ...formData, isTopRated: selectedValue })
+        }
+        labelField="label"
+        valueField="value"
+      />
+      </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <CustomInputShadow
             placeholder="Brand Password"

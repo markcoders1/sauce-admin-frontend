@@ -27,6 +27,8 @@ const EditBrandDetails = () => {
     status: '',
     points: '',
     about: Array(6).fill(''), // Initialize about with 6 empty strings
+    isTopRated: null,
+
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -82,6 +84,7 @@ const EditBrandDetails = () => {
         status: userData?.status || '',
         points: userData?.points || 0,
         about: userData?.about || Array(6).fill(''), // Fetch about if available, else set to 6 empty strings
+        isTopRated : userData?.isTopRated || null
       });
       setSelectedFileName(userData.image);
     } catch (error) {
@@ -113,6 +116,8 @@ const EditBrandDetails = () => {
     formDataToSend.append('status', formData.status);
     formDataToSend.append('points', formData.points);
     formDataToSend.append('userId', id);
+    formDataToSend.append('isTopRated', formData.isTopRated);
+
   
     // Handle about array
     formDataToSend.append('about', JSON.stringify(formData.about));
@@ -285,6 +290,7 @@ const EditBrandDetails = () => {
       </Box>
 
       {formData.type === 'brand' && (
+        <>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <Heading Heading='About' />
           {formData.about.map((about, index) => (
@@ -298,6 +304,22 @@ const EditBrandDetails = () => {
             />
           ))}
         </Box>
+        
+        <Box>
+      <CustomSelectForType
+        label={"Brand Type"}
+        options={[
+          { label: "None", value: false },
+          { label: "Top Rated", value: true },
+        ]}
+        handleChange={(selectedValue) =>
+          setFormData({ ...formData, isTopRated: selectedValue })
+        }
+        labelField="label"
+        valueField="value"
+      />
+      </Box>
+        </>
       )}
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
