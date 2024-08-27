@@ -44,7 +44,7 @@ const BrandManagement = () => {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            setAllBrands(response?.data?.users || []);
+            setAllBrands(response?.data?.entities || response?.data?.users);
             setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
             setLoading(false);
             console.log(response)
