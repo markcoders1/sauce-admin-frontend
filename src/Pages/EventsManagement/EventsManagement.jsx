@@ -44,7 +44,7 @@ const EventsManagement = () => {
                     Authorization: `Bearer ${auth.accessToken}`
                 }
             });
-            setAllEvents(response?.data?.events || []);
+            setAllEvents(response?.data?.events);
             setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
             setLoading(false);
             console.log(response)
@@ -262,7 +262,7 @@ const EventsManagement = () => {
                                                 <img src={event.bannerImage ? event.bannerImage : logoAdmin} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor:"pointer" }}  onClick={() => openLightbox(event.bannerImage)}  />
                                             </TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
-                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.owner.name}</TableCell>
+                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event?.owner?.name}</TableCell>
                                                 <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.venueName}</TableCell>
                                                 <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">

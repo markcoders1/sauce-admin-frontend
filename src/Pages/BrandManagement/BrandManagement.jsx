@@ -100,6 +100,7 @@ const BrandManagement = () => {
             {loading ? (
                 <PageLoader />
             ) : (
+              
                 <Box>
                     <Box sx={{
                         display: "flex",

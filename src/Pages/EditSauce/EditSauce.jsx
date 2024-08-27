@@ -304,7 +304,7 @@ const EditSauce = () => {
           <CustomInputShadow
             placeholder="Sauce Name"
             name="sauceName"
-            value={formData.sauceName}
+            value={formData?.sauceName}
             onChange={handleChange}
             error={errors.sauceName}
           />
@@ -325,7 +325,7 @@ const EditSauce = () => {
           <CustomInputShadow
             placeholder="Website Link"
             name="websiteLink"
-            value={formData.websiteLink}
+            value={formData?.websiteLink}
             onChange={handleChange}
             error={errors.websiteLink}
           />
@@ -346,7 +346,7 @@ const EditSauce = () => {
           <CustomInputShadow
             placeholder="Product Link"
             name="productLink"
-            value={formData.productLink}
+            value={formData?.productLink}
             onChange={handleChange}
             error={errors.productLink}
           />
@@ -369,7 +369,7 @@ const EditSauce = () => {
           <CustomInputShadow
             placeholder="Type"
             name="type"
-            value={formData.type}
+            value={formData?.type}
             onChange={handleChange}
             error={errors.type}
           />
@@ -390,7 +390,7 @@ const EditSauce = () => {
           <CustomInputShadow
             placeholder="Title"
             name="title"
-            value={formData.title}
+            value={formData?.title}
             onChange={handleChange}
             error={errors.title}
           />
@@ -412,7 +412,7 @@ const EditSauce = () => {
         <CustomInputShadow
           name="details"
           multiline={true}
-          value={formData.details}
+          value={formData?.details}
           onChange={handleChange}
           error={errors.details}
           height="160px"
@@ -436,7 +436,7 @@ const EditSauce = () => {
         <CustomInputShadow
           name="ingredients"
           multiline={true}
-          value={formData.ingredients}
+          value={formData?.ingredients}
           onChange={handleChange}
           error={errors.ingredients}
           height="160px"

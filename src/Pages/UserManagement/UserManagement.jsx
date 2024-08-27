@@ -61,7 +61,7 @@ const UserManagement = () => {
           Authorization: `Bearer ${auth.accessToken}`,
         },
       });
-      setAllUsers(response?.data?.entities || []);
+      setAllUsers(response?.data?.entities || response?.data?.users);
       setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
       setLoading(false);
       console.log("appRul", response);
@@ -346,7 +346,7 @@ const UserManagement = () => {
                         }}
                         className="MuiTableCell-root"
                       >
-                        {user.name}
+                        {user?.name}
                       </TableCell>
                       <TableCell
                         sx={{
@@ -355,7 +355,7 @@ const UserManagement = () => {
                         }}
                         className="MuiTableCell-root"
                       >
-                        {user.email}
+                        {user?.email}
                       </TableCell>
                       <Tooltip title="see all events">
                       <TableCell
@@ -367,17 +367,17 @@ const UserManagement = () => {
                         className="MuiTableCell-root"
                       >
                          
-                          {user.interestedEvents}
+                          {user?.interestedEvents}
                           
                       </TableCell>
                         </Tooltip>
                     
 
                       <TableCell className="MuiTableCell-root">
-                        {user.checkins}
+                        {user?.checkins}
                       </TableCell>
                       <TableCell className="MuiTableCell-root">
-                        {formatDate(user.date)}
+                        {formatDate(user?.date)}
                       </TableCell>
                       <TableCell
                         sx={{ borderRadius: "0px 8px 8px 0px" }}

@@ -136,7 +136,7 @@ const Login = () => {
             </Box>
 
             <form onSubmit={handleSubmit}>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: { sm: "30px", xs: "20px" }, marginTop: "20px" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: { md: "10px", xs: "10px" }, marginTop: "10px" }}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                         <Typography sx={{
                             color: "#FFA100",
@@ -156,6 +156,7 @@ const Login = () => {
                             placeholder="Enter your email"
                             name="email"
                             error={error.email}
+                            
                         />
                     </div>
 
@@ -205,8 +206,9 @@ const Login = () => {
                     <Box
                         sx={{
                             mt: {
-                                md: "80px",
-                                xs: "30px"
+                                md: "30px",
+                                xs: "30px",
+                                xl:"80px"
                             }
                         }}
                     >

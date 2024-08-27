@@ -65,7 +65,7 @@ const LayoutAuth = () => {
                     md:"1"
                 },
                 p: {
-                  lg: "70px 120px",
+                  lg: "40px 120px",
                   md: "50px 20px",
                   xs: "30px 20px",
       
