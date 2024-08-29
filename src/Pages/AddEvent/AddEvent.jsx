@@ -13,25 +13,26 @@ import { useNavigate } from 'react-router-dom';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-
 const AddSEvent = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
     severity: "success"
   });
-  const auth = useSelector(state => state.auth)
+  const auth = useSelector(state => state.auth);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     eventName: '',
     organizedBy: '',
     ownerId: "",
     date: '',
     description: '',
-    details: ['',], 
+    details: [''], 
     destination: '',
     bannerImage: null,
+    latitude: "",
+    longitude: "",
   });
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
@@ -100,16 +101,19 @@ const AddSEvent = () => {
     }
 
     try {
-      setLoading(true)
+      setLoading(true);
       const data = new FormData();
       data.append('eventName', formData.eventName);
       data.append('organizedBy', formData.organizedBy);
-      data.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
+      // Convert the date to Unix timestamp in milliseconds
+      data.append('eventDate', new Date(formData.date).getTime());
       data.append('venueDescription', formData.description);
       data.append('venueName', formData.destination);
       data.append('owner', formData.ownerId);
       data.append('bannerImage', formData.bannerImage);
-      data.append('eventDetails', formData.details);
+      data.append('eventDetails', JSON.stringify(formData.details));
+      data.append('venueLocation.longitude', formData.longitude || '0.127758');
+      data.append('venueLocation.latitude', formData.latitude || '0.127758');
 
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
@@ -121,21 +125,22 @@ const AddSEvent = () => {
         data: data
       });
 
-      navigate(-1)
+      navigate(-1);
       setFormData({
         eventName: '',
         organizedBy: '',
         ownerId: "",
         date: '',
         description: '',
-        details: ['',], // Initialize with one bullet point
+        details: [''], // Initialize with one bullet point
         destination: '',
         bannerImage: null,
+        latitude: "",
+        longitude: "",
       });
-      setLoading(false)
+      setLoading(false);
 
       setSelectedBannerFileName(""); // Reset file name
-      console.log(response.data);
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -148,8 +153,7 @@ const AddSEvent = () => {
         message: error?.response?.data?.message,
         severity: "error",
       });
-      setLoading(false)
-
+      setLoading(false);
     }
   };
 
@@ -162,7 +166,6 @@ const AddSEvent = () => {
           Authorization: `Bearer ${auth.accessToken}`
         }
       });
-      console.log(response.data);
       setAllBrands(response?.data?.users);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -246,6 +249,33 @@ const AddSEvent = () => {
         },
         gap: "1.5rem",
       }}>
+        <Box sx={{ flexBasis: "50%" }}>
+          <CustomInputShadow
+            placeholder="Longitude"
+            name="longitude"
+            value={formData.longitude}
+            onChange={handleChange}
+            error={errors.longitude}
+          />
+        </Box>
+        <Box sx={{ flexBasis: "50%" }}>
+          <CustomInputShadow
+            placeholder="Latitude"
+            name="latitude"
+            value={formData.latitude}
+            onChange={handleChange}
+            error={errors.latitude}
+          />
+        </Box>
+      </Box>
+      <Box sx={{
+        display: "flex",
+        flexDirection: {
+          md: "row",
+          xs: "column"
+        },
+        gap: "1.5rem",
+      }}>
         <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           <Box sx={{ display: "flex", gap: "1.5rem", flexDirection: { md: "row", xs: "column" } }}>
             <Box flexBasis={"50%"}>
@@ -290,7 +320,6 @@ const AddSEvent = () => {
             <Box sx={{ width: "100%" }}>
               <CustomInputShadow
                 name={`details-${index}`}
-                
                 value={detail}
                 onChange={(e) => handleDetailChange(index, e.target.value)}
                 error={errors.details}
@@ -330,7 +359,6 @@ const AddSEvent = () => {
           width={"178px"}
           borderRadius='8px'
           background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
-
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'

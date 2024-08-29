@@ -20,6 +20,7 @@ import EditEvents from "./Pages/EditEvents/EditEvents";
 import EditSauce from "./Pages/EditSauce/EditSauce";
 import UserInterestedEvents from "./Pages/UserInterestedEvents/UserInterestedEvents";
 import SeeEventsDetail from "./Pages/SeeEvents/SeeEventDetail";
+import ReviewsManagement from "./Pages/ReviewsManagement/ReviewsManagement";
 
 
 
@@ -59,6 +60,9 @@ function App() {
           <Route path="edit-sauce-details/:id" element={<EditSauce />} />
           <Route path="user-interested-events/:id" element={<UserInterestedEvents />} />
           <Route path="see-user-events/:id" element={<SeeEventsDetail />} />
+
+          <Route path="reviews-management" element={<ReviewsManagement />} />
+
 
 
         </Route>

@@ -315,6 +315,7 @@ const EditBrandDetails = () => {
         handleChange={(selectedValue) =>
           setFormData({ ...formData, isTopRated: selectedValue })
         }
+        value={formData.isTopRated}
         labelField="label"
         valueField="value"
       />

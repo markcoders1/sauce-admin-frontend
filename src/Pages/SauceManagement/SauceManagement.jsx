@@ -319,6 +319,7 @@ const SauceManagement = () => {
                     </Box>
                 )
             }
+            
 
             {/* Lightbox component */}
             {isOpen && (
@@ -328,6 +329,7 @@ const SauceManagement = () => {
                     slides={[{ src: selectedImage }]}
                 />
             )}
+            
         </>
     );
 }

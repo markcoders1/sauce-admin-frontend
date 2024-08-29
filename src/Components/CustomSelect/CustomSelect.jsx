@@ -64,9 +64,9 @@ const CustomSelect = ({ data = [], handleChange, categoryError = "", boxShadow =
           multiple={isMultiSelect} // Enable multi-select mode if the prop is true
           value={selectedCategory}
           onChange={handleSelectionChange}
-          renderValue={(selected) =>
-            isMultiSelect ? selected.map((id) => data.find((item) => item._id === id)?.name).join(', ') : selectedCategory
-          }
+          // renderValue={(selected) =>
+          //   isMultiSelect ? selected.map((id) => data.find((item) => item._id === id)?.name).join(', ') : selectedCategory
+          // }
           sx={{
             width: "100%",
             fontSize: "22px",

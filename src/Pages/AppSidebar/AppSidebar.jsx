@@ -12,12 +12,16 @@ import icon1 from '../../assets/icons-01.png';
 import icon2 from '../../assets/icons-02.png';
 import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
+import icon5 from '../../assets/notReview.png'
 
 // When hovered, these icons will be displayed
 import icon11 from '../../assets/icon11.png';
 import icon21 from '../../assets/icon21.png';
 import icon31 from '../../assets/icon31.png';
 import icon41 from '../../assets/icon41.png';
+import icon51 from '../../assets/hovered.png';
+
+
 
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -174,6 +178,27 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Events Management</Typography>
                 </Box>
               </NavLink>
+              <NavLink
+                to="/admin/reviews-management"
+                className={({ isActive }) =>
+                  isActive ? 'active-nav-link' : 'nav-link'
+                }
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    p: '5px 5px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
+                  </Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
+                </Box>
+              </NavLink>
             </>
           )}
         </Box>
@@ -290,6 +315,27 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 onMouseLeave={handleMouseLeave}
               >
                 <img src={hoveredIcon === 'icon4' ? icon41 : icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
+              </Box>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon5' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/reviews-management')}
+                onMouseEnter={() => handleMouseEnter('icon5')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon5' ? icon51 : icon5} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
               </Box>
               
             </>
