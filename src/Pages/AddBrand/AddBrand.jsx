@@ -108,7 +108,7 @@ const AddBrand = () => {
         about: Array(6).fill(''), // Reset about
         isTopRated: false
       });
-      navigate(-1)
+      // navigate(-1)
   
       setSelectedFileName(""); // Reset file name
       setLoading(false);

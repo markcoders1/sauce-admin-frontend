@@ -77,7 +77,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
                 >
                     <img src={isHovered ? logoutpng : logoutpng} alt="Logout" />
                 </Box>
-                {isSidebarOpen ||isOpen && (
+                {isSidebarOpen && (
                     <Typography
                         className="logout-text"
                         sx={{

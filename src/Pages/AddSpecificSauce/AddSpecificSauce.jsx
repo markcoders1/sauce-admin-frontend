@@ -10,6 +10,7 @@ import { clearBrandInfo } from '../../Redux/Slice/brandSlice/brandSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
+import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -34,7 +35,9 @@ const AddSpecificSauce = () => {
     chilli: [''],
     type: '',
     title: "",
-    ingredients:""
+    ingredients:"",
+    isFeatured: false
+
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -119,6 +122,7 @@ const AddSpecificSauce = () => {
     data.append('type', formData.type);
     data.append('title', formData.title);
     data.append('ingredients', formData.ingredients);
+    data.append('isFeatured', formData.isFeatured);
 
     try {
       setLoading(true)
@@ -139,7 +143,7 @@ const AddSpecificSauce = () => {
         severity: "success",
       });
 
-      navigate(-1)
+      // navigate(-1)
 
       setFormData({
         sauceName: '',
@@ -149,7 +153,9 @@ const AddSpecificSauce = () => {
         chilli: [''],
         type: '',
         title: "",
-        ingredients: ""
+        ingredients: "",
+        isFeatured: false
+
       });
       setLoading(false)
 
@@ -282,6 +288,20 @@ const AddSpecificSauce = () => {
           error={errors.ingredients}
           height="160px"
         />
+      </Box>
+      <Box>
+      <CustomSelectForType
+        label={"Sauce Type"}
+        options={[
+          { label: "None", value: "false" },
+          { label: "Featured", value: "true" },
+        ]}
+        handleChange={(selectedValue) =>
+          setFormData({ ...formData, isFeatured: selectedValue })
+        }
+        labelField="label"
+        valueField="value"
+      />
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
         <Heading Heading='Chilli' />

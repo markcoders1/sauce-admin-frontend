@@ -462,9 +462,10 @@
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isFeatured: selectedValue })
           }
+          value={formData.isFeatured}
           labelField="label"
           valueField="value"
-        />
+        />  
         </Box>
 
         <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
