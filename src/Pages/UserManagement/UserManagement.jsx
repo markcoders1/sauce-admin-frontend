@@ -36,7 +36,6 @@ const UserManagement = () => {
     message: "",
     severity: "success",
   });
-  console.log(auth)
   const [allUsers, setAllUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);

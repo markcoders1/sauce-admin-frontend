@@ -161,6 +161,7 @@ const RequestedSauce = () => {
                           color: "white",
                           pl: "10px",
                           borderRadius: "8px 0px 0px 8px",
+                          pl:"40px"
                         }}
                       >
                         Sauce Name
@@ -215,7 +216,7 @@ const RequestedSauce = () => {
                       >
                       
                         <TableCell
-                          sx={{ textAlign: "start !important",    borderRadius: "8px 0px 0px 8px", }}
+                          sx={{ textAlign: "start !important",    borderRadius: "8px 0px 0px 8px", pl:"40px !important" }}
                           className="MuiTableCell-root"
                         >
                           {sauce?.name || "No Sauce Name"}
@@ -242,9 +243,9 @@ const RequestedSauce = () => {
                         >
                              <CustomButton
                             border="1px solid #FFA100"
-                            ButtonText="Approve"
+                            ButtonText="Add Sauce"
                             color="white"
-                            width={"98px"}
+                            width={"128px"}
                             borderRadius="6px"
                             buttonStyle={{ height: "39px" }}
                             onClick={() => handleNavigate(sauce)}
