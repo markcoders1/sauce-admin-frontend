@@ -8,7 +8,7 @@ import SnackAlert from "../../Components/SnackAlert/SnackAlert";
 import { useSelector } from "react-redux";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { isURL } from "../../../utils";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import CustomSelect from "../../Components/CustomSelect/CustomSelect";
@@ -20,18 +20,21 @@ const AddSauce = () => {
     message: "",
     severity: "success",
   });
+  const { state } = useLocation();
+
   const [formData, setFormData] = useState({
-    sauceName: "",
-    websiteLink: "",
+    sauceName: state?.name ? state?.name : "",
+    websiteLink: state?.websiteLink ?  state?.websiteLink : "",
     productLink: "",
     details: "",
     chilli: [""],
-    email: "",
+    email: state?.owner?.email ? state?.owner?.email : "",
     type: "",
     title: "",
     ingredients: "",
-    isFeatured: false
+    isFeatured: false,
   });
+  console.log(state)
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -131,7 +134,7 @@ const AddSauce = () => {
         data.append("websiteLink", formData.websiteLink);
       }
     }
-    data.append("isFeatured", formData.isFeatured);
+    data.append("isFeatured",  formData.isFeatured);
     data.append("image", sauceImage);
     data.append("bannerImage", bannerImage);
     data.append("name", formData.sauceName);

@@ -199,6 +199,28 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
                 </Box>
               </NavLink>
+
+              <NavLink
+                to="/admin/requested-sauce"
+                className={({ isActive }) =>
+                  isActive ? 'active-nav-link' : 'nav-link'
+                }
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    p: '5px 5px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
+                  </Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
+                </Box>
+              </NavLink>
             </>
           )}
         </Box>
@@ -332,6 +354,28 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                 }}
                 onClick={() => handleNavigate('/admin/reviews-management')}
+                onMouseEnter={() => handleMouseEnter('icon5')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon5' ? icon51 : icon5} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+              </Box>
+
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon5' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/requested-sauce')}
                 onMouseEnter={() => handleMouseEnter('icon5')}
                 onMouseLeave={handleMouseLeave}
               >

@@ -209,7 +209,7 @@
     const fetchSauce = async () => {
       try {
         const response = await axios({
-          url: `https://aws.markcoders.com/sauced-backend/api/admin/get-sauce/${id}`,
+          url: `${appUrl}/admin/get-sauce/${id}`,
           method: "get",
           headers: {
             Authorization: `Bearer ${auth.accessToken}`

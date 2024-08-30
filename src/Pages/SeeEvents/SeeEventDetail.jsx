@@ -8,6 +8,9 @@ import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import Heading from '../../Components/Heading/Heading';
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 const SeeEventDetail = () => {
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
@@ -25,7 +28,7 @@ const SeeEventDetail = () => {
   const fetchEvent = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-event/${id}`,
+        url: `${appUrl}/admin/get-event/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`

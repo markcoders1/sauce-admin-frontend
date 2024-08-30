@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
 
 
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -43,7 +45,7 @@ const Login = () => {
             setLoading(false); // Reset loading state if validation fails
             return;
         }
-
+       
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -51,7 +53,7 @@ const Login = () => {
 
             try {
                 const response = await axios({
-                    url: `https://aws.markcoders.com/sauced-backend/api/auth/firebase-authentication`,
+                    url: `${appUrl}/auth/firebase-authentication`,
                     method: "post",
                     data: {
                         accessToken: user.accessToken

@@ -21,6 +21,8 @@ import EditSauce from "./Pages/EditSauce/EditSauce";
 import UserInterestedEvents from "./Pages/UserInterestedEvents/UserInterestedEvents";
 import SeeEventsDetail from "./Pages/SeeEvents/SeeEventDetail";
 import ReviewsManagement from "./Pages/ReviewsManagement/ReviewsManagement";
+import RequestedSauce from "./Pages/RequestedSauce/RequestedSauce";
+
 
 
 
@@ -39,9 +41,9 @@ function App() {
         <Route
           path="admin"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <DashboardLayout />
-            </ProtectedRoute>
+            // {/* </ProtectedRoute> */}
           }
         >
           <Route index element={<UserManagement />} />
@@ -62,6 +64,8 @@ function App() {
           <Route path="see-user-events/:id" element={<SeeEventsDetail />} />
 
           <Route path="reviews-management" element={<ReviewsManagement />} />
+          <Route path="requested-sauce" element={<RequestedSauce />} />
+
 
 
 

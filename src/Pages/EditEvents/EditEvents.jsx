@@ -141,7 +141,7 @@ const EditEvents = () => {
   const fetchEvent = async () => {
     try {
       const response = await axios({
-        url: `https://aws.markcoders.com/sauced-backend/api/admin/get-event/${id}`,
+        url: `${appUrl}/admin/get-event/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`

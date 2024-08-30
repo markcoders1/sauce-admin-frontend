@@ -160,7 +160,7 @@ const AddSEvent = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: "https://aws.markcoders.com/sauced-backend/api/admin/get-all-users?type=brand",
+        url: `${appUrl}/admin/get-all-users?type=brand`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
