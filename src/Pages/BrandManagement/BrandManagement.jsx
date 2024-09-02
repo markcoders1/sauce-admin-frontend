@@ -13,20 +13,21 @@ import logoAdmin from '../../assets/logoAdmin.png';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import queryString from 'query-string'; // Import query-string library
-import { debounce } from "lodash"; // Import lodash debounce
+import { debounce } from "lodash";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const BrandManagement = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [inputValue, setInputValue] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [allBrands, setAllBrands] = useState([]);
     const [page, setPage] = useState(1); // Current page state
     const [totalPages, setTotalPages] = useState(1); // Total pages state
     const auth = useSelector(state => state.auth);
 
-    // State for lightbox
+  
     const [isOpen, setIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
 
@@ -41,7 +42,7 @@ const BrandManagement = () => {
                     type: "brand",
                     page: page,
                     limit: 8,
-                    searchTerm: searchTerm, // Pass the search term to the server
+                    searchTerm: searchTerm, 
                 },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
@@ -56,7 +57,7 @@ const BrandManagement = () => {
         }
     }, [auth.accessToken]);
 
-    // Effect to fetch brands when the page or search term changes
+
     useEffect(() => {
         const parsed = queryString.parse(window.location.search);
         const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
@@ -64,17 +65,22 @@ const BrandManagement = () => {
         fetchBrands(currentPage, searchTerm);
     }, [window.location.search, searchTerm, fetchBrands]);
 
-    // Debounced search to reduce the frequency of API calls
-    const debouncedSearch = useCallback(
+
+   const debouncedSearch = useCallback(
         debounce((value) => {
+            navigate(`${location.pathname}?page=1`);  // Reset to page 1 for new search
             setSearchTerm(value);
-        }, 2000),
+            
+        }, 2000), 
         []
     );
 
+
     // Handle search input change
     const handleSearchChange = (event) => {
-        debouncedSearch(event.target.value);
+        const value = event.target.value;
+        setInputValue(value); // Update input field immediately
+        debouncedSearch(value); // Debounce the search term update
         setPage(1); // Reset to first page on new search
     };
 
@@ -145,7 +151,7 @@ const BrandManagement = () => {
                                 id="search"
                                 className="search-input"
                                 placeholder="Search"
-                                value={searchTerm}
+                                value={inputValue}
                                 onChange={handleSearchChange}
                             />
                             <img

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
@@ -14,6 +14,8 @@ import logoAdmin from '../../assets/logoAdmin.png';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import queryString from 'query-string'; // Import query-string library
+import { debounce } from 'lodash';
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -25,6 +27,8 @@ const EventsManagement = () => {
     const [totalPages, setTotalPages] = useState(1); // Total pages state
     const [searchTerm, setSearchTerm] = useState('');
     const auth = useSelector(state => state.auth);
+    const [inputValue, setInputValue] = useState('');
+
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +42,8 @@ const EventsManagement = () => {
                 method: "get",
                 params: {
                     page: page, // Pass current page to backend
-                    limit: 8 // Number of items per page
+                    limit: 8 ,// Number of items per page
+                    searchTerm : searchTerm
                 },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
@@ -59,15 +64,33 @@ const EventsManagement = () => {
         const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
         setPage(currentPage);
         fetchEvents(currentPage);
-    }, [window.location.search]);
+    }, [window.location.search, searchTerm]);
 
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            navigate(`${location.pathname}?page=1`);  // Reset to page 1 for new search
+            setSearchTerm(value);
+            
+        }, 2000), 
+        []
+    );
+
+
+
+    // Handle search input change
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        const value = event.target.value;
+        setInputValue(value); // Update input field immediately
+        debouncedSearch(value); // Debounce the search term update
+        setPage(1); // Reset to first page on new search
     };
 
-    const handlePageChange = (event, value) => {
+  
+    // Handle pagination change
+    const handlePageChange = useCallback((event, value) => {
+        setPage(value);
         navigate(`${window.location.pathname}?page=${value}`);
-    };
+    }, [navigate]);
 
     const formatDate = (timestamp) => {
         const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
@@ -142,7 +165,7 @@ const EventsManagement = () => {
                                         id="search"
                                         className="search-input"
                                         placeholder="Search Event..."
-                                        value={searchTerm}
+                                        value={inputValue}
                                         onChange={handleSearchChange}
                                     />
                                     <img

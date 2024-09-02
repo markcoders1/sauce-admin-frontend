@@ -25,8 +25,10 @@ const SauceManagement = () => {
     const [itemsPerPage] = useState(8); // Set items per page
     const [searchTerm, setSearchTerm] = useState('');
     const auth = useSelector(state => state.auth);
-    const location = useLocation();
+    const location = useLocation(); 
     const navigate = useNavigate();
+    const [inputValue, setInputValue] = useState('');
+
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
@@ -75,9 +77,18 @@ const SauceManagement = () => {
     );
 
     const handleSearchChange = (event) => {
-        debouncedSearch(event?.target?.value);
-        setPage(1)
+        const value = event.target.value;
+        setInputValue(value); // Update input field immediately
+        debouncedSearch(value); // Debounce the search term update
+        setPage(1); // Reset to first page on new search
     };
+
+      // Handle pagination change
+      const handlePageChange = useCallback((event, value) => {
+        setPage(value);
+        navigate(`${window.location.pathname}?page=${value}`);
+    }, [navigate]);
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -96,9 +107,9 @@ const SauceManagement = () => {
         setIsOpen(true);
     };
 
-    const handlePageChange = (event, value) => {
-        navigate(`${location.pathname}?page=${value}`);
-    };
+    // const handlePageChange = (event, value) => {
+    //     navigate(`${location.pathname}?page=${value}`);
+    // };
 
     return (
         <>
