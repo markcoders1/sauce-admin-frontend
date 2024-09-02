@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -10,8 +10,9 @@ import {
   TableRow,
   Paper,
   Pagination,
-  Chip,
+  Tooltip,
 } from "@mui/material";
+import { debounce } from "lodash"; // Import lodash debounce
 import SearchIcon from "../../assets/SearchIcon.png";
 import "./TableStyle.css";
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -23,9 +24,8 @@ import ConfirmActionModal from "../../Components/ConfirmActionModal/ConfirmActio
 import EditIcon from "../../assets/EditIcon.png";
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../../Components/MenuBar/MenuBar";
-import queryString from "query-string"; // Import query-string library
+import queryString from "query-string";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -42,8 +42,8 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [action, setAction] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [page, setPage] = useState(1); // Current page
-  const [totalPages, setTotalPages] = useState(1); // Total number of pages
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
   const fetchUsers = async (page) => {
@@ -54,17 +54,17 @@ const UserManagement = () => {
         method: "get",
         params: {
           type: "user",
-          page: page, // Pass current page to backend
-          limit: 8, // Number of items per page
+          page,
+          limit: 8,
+          searchTerm: searchTerm,
         },
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
       });
       setAllUsers(response?.data?.entities || response?.data?.users);
-      setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
+      setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
-      console.log("appRul", response);
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
@@ -97,15 +97,35 @@ const UserManagement = () => {
     const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
     setPage(currentPage);
     fetchUsers(currentPage);
-  }, [window.location.search]);
+    
+  }, [window.location.search, searchTerm]);
+
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setSearchTerm(value);
+    }, 2000),
+    []
+  );
+
+    // Handle pagination change
+    const handlePageChange = useCallback(
+      (event, value) => {
+        setPage(value); // Update the current page
+        navigate(`${window.location.pathname}?page=${value}`);
+      },
+      [navigate]
+    );
+  
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    setPage(1)
+    debouncedSearch(event.target.value);
   };
 
-  const handlePageChange = (event, value) => {
-    navigate(`${window.location.pathname}?page=${value}`);
-  };
+  // const handlePageChange = (event, value) => {
+  //   navigate(`${window.location.pathname}?page=${value}`);
+  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -114,14 +134,6 @@ const UserManagement = () => {
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
-
-  const filteredUsers = allUsers.filter(
-    (user) =>
-      (user.name &&
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.email &&
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
 
   const navigateToEdit = (id) => {
     navigate(`/admin/edit-brand-user-details/${id}`);
@@ -133,10 +145,9 @@ const UserManagement = () => {
 
   return (
     <>
-      {loading ? (
-        <PageLoader />
-      ) : (
+   
         <Box>
+          {/* Header Section */}
           <Box
             sx={{
               display: "flex",
@@ -195,7 +206,6 @@ const UserManagement = () => {
                   id="search"
                   className="search-input"
                   placeholder="Search"
-                  value={searchTerm}
                   onChange={handleSearchChange}
                   style={{ color: "white" }}
                 />
@@ -212,6 +222,14 @@ const UserManagement = () => {
             </Box>
           </Box>
 
+          {/* Table Section */}
+
+          {
+            loading ? (
+              <PageLoader />
+            ) : ( 
+              <>
+             
           <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
             <TableContainer
               component={Paper}
@@ -329,7 +347,7 @@ const UserManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
-                  {filteredUsers.map((user, index) => (
+                  {allUsers.map((user, index) => (
                     <TableRow
                       key={index}
                       sx={{
@@ -424,8 +442,6 @@ const UserManagement = () => {
               </Table>
             </TableContainer>
           </Box>
-
-          {/* Pagination */}
           <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
             <Pagination
               count={totalPages}
@@ -433,25 +449,28 @@ const UserManagement = () => {
               onChange={handlePageChange}
               sx={{
                 "& .MuiPaginationItem-root": {
-                  color: "white", // Text color
-                  backgroundColor: "#2E210A", // Background color for pagination buttons
-                  border: "2px solid #FFA100", // Border color matching the theme
+                  color: "white",
+                  backgroundColor: "#2E210A",
+                  border: "2px solid #FFA100",
                 },
                 "& .Mui-selected": {
-                  color: "#FFA100", // Text color for selected page
-                  backgroundColor: "", // Background color for selected page
-                  fontWeight: "bold", // Bold text for selected page
+                  color: "#FFA100",
+                  fontWeight: "bold",
                 },
                 "& .MuiPaginationItem-ellipsis": {
-                  color: "white", // Color for ellipsis (...)
+                  color: "white",
                 },
                 "& .MuiPaginationItem-root:hover": {
-                  backgroundColor: "#5A3D0A", // Background color on hover
-                  borderColor: "#FF7B00", // Border color on hover
+                  backgroundColor: "#5A3D0A",
+                  borderColor: "#FF7B00",
                 },
               }}
             />
-          </Box>
+          </Box> 
+          </>
+           )}
+
+          {/* Pagination */}
 
           <SnackAlert
             severity={snackAlertData.severity}
@@ -469,7 +488,7 @@ const UserManagement = () => {
             onSuccess={handleModalSuccess}
           />
         </Box>
-      )}
+      
     </>
   );
 };

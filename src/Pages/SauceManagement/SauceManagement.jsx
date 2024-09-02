@@ -44,7 +44,7 @@ const SauceManagement = () => {
                 params: {
                     limit: itemsPerPage,
                     page: page,
-                    searchTerm: searchTerm,  // Pass the searchTerm to the API
+                    searchTerm: searchTerm,  
                 },
             });
             setAllSauce(response?.data?.sauces || []);
@@ -70,12 +70,13 @@ const SauceManagement = () => {
             navigate(`${location.pathname}?page=1`);  // Reset to page 1 for new search
             setSearchTerm(value);
             
-        }, 2000), // Adjust debounce time (500ms)
+        }, 2000), 
         []
     );
 
     const handleSearchChange = (event) => {
         debouncedSearch(event?.target?.value);
+        setPage(1)
     };
 
     const formatDate = (dateString) => {
