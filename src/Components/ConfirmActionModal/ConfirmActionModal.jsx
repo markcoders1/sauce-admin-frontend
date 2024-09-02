@@ -36,7 +36,7 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
                 },
-                data: { 
+                params: { 
                     userId: userId,
                 }
             });

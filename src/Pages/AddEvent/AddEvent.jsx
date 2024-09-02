@@ -222,7 +222,19 @@ const AddSEvent = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%", display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+          
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Event Name
+                        </Typography>
           <CustomInputShadow
             placeholder="Event Name"
             name="eventName"
@@ -231,7 +243,19 @@ const AddSEvent = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%"  ,  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+              
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Organized By
+                        </Typography>
           <CustomInputShadow
             placeholder="Organized By"
             name="organizedBy"
@@ -249,7 +273,18 @@ const AddSEvent = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%" ,  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Longitude
+                        </Typography>
           <CustomInputShadow
             placeholder="Longitude"
             name="longitude"
@@ -258,7 +293,18 @@ const AddSEvent = () => {
             error={errors.longitude}
           />
         </Box>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%" ,  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Latitude
+                        </Typography>
           <CustomInputShadow
             placeholder="Latitude"
             name="latitude"
@@ -278,7 +324,18 @@ const AddSEvent = () => {
       }}>
         <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           <Box sx={{ display: "flex", gap: "1.5rem", flexDirection: { md: "row", xs: "column" } }}>
-            <Box flexBasis={"50%"}>
+            <Box sx={{flexBasis:"50%", display:"flex", flexDirection:"column", gap:"0.3rem"}} >
+            <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Date
+                        </Typography>
               <CustomInputShadow
                 placeholder="Date"
                 name="date"
@@ -288,7 +345,18 @@ const AddSEvent = () => {
                 type={"date"}
               />
             </Box>
-            <Box flexBasis={"50%"}>
+            <Box sx={{flexBasis:"50%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+            <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Description
+                        </Typography>
               <CustomInputShadow
                 placeholder="Description"
                 name="description"
@@ -299,7 +367,18 @@ const AddSEvent = () => {
               />
             </Box>
           </Box>
-          <Box>
+          <Box sx={{ display:"flex", flexDirection:"column", gap:"0.3rem"}} >
+          <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Destination
+                        </Typography>
             <CustomInputShadow
               placeholder="Destination"
               name="destination"
@@ -310,11 +389,33 @@ const AddSEvent = () => {
           </Box>
         </Box>
       </Box>
-      <Box>
+      <Box sx={{ display:"flex", flexDirection:"column", gap:"0.3rem"}} >
+      <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Brand Type
+                        </Typography>
+        
         <CustomSelect data={allBrands} handleChange={handleBrandChange} />
       </Box>
-      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        <Heading Heading='Details' />
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+      <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Details
+                        </Typography>
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>

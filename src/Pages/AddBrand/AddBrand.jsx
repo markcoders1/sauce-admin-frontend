@@ -173,7 +173,18 @@ const AddBrand = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem"  }}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                           Brand Name
+                        </Typography>
           <CustomInputShadow
             placeholder="Brand Name"
             name="name"
@@ -182,7 +193,18 @@ const AddBrand = () => {
             error={errors.name}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "33%" , display:"flex", flexDirection:"column", gap:"0.3rem"}}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Brand Email
+                        </Typography>
           <CustomInputShadow
             placeholder="Brand Email"
             name="email"
@@ -191,7 +213,18 @@ const AddBrand = () => {
             error={errors.email}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "33%" , display:"flex", flexDirection:"column", gap:"0.3rem"}}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Brand Website
+                        </Typography>
           <CustomInputShadow
             placeholder="Brand Website"
             name="websiteLink"
@@ -200,7 +233,18 @@ const AddBrand = () => {
             error={errors.websiteLink}
           />
         </Box>
-        <Box>
+        <Box sx={{ display:"flex", flexDirection:"column", gap:"0.3rem"}} >
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Brand Type
+                        </Typography>
       <CustomSelectForType
         label={"Brand Type"}
         options={[
@@ -214,7 +258,18 @@ const AddBrand = () => {
         valueField="value"
       />
       </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            Brand Password
+                        </Typography>
           <CustomInputShadow
             placeholder="Brand Password"
             name="password"
@@ -226,8 +281,18 @@ const AddBrand = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Heading Heading='About' />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+      <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                            About
+                        </Typography>
         {formData.about.map((about, index) => (
           <CustomInputShadow
             key={index}

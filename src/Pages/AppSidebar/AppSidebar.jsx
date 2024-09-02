@@ -12,7 +12,10 @@ import icon1 from '../../assets/icons-01.png';
 import icon2 from '../../assets/icons-02.png';
 import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
-import icon5 from '../../assets/notReview.png'
+import icon5 from '../../assets/reviewedMan.png';
+import icon6 from '../../assets/icon-05.png';
+
+
 
 // When hovered, these icons will be displayed
 import icon11 from '../../assets/icon11.png';
@@ -20,6 +23,8 @@ import icon21 from '../../assets/icon21.png';
 import icon31 from '../../assets/icon31.png';
 import icon41 from '../../assets/icon41.png';
 import icon51 from '../../assets/hovered.png';
+import icon61 from '../../assets/icon51.png';
+
 
 
 
@@ -363,7 +368,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               <Box
                 sx={{
                   borderRadius: '50%',
-                  backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  backgroundColor: hoveredIcon === 'icon6' ? 'rgba(255, 0, 0, 0.6)' : 'white',
                   width: '50px',
                   height: '50px',
                   display: 'flex',
@@ -372,14 +377,14 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   cursor: 'pointer',
                   color: 'black',
                   fontWeight: '600',
-                  boxShadow: hoveredIcon === 'icon5' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  boxShadow: hoveredIcon === 'icon6' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
                   transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                 }}
                 onClick={() => handleNavigate('/admin/requested-sauce')}
-                onMouseEnter={() => handleMouseEnter('icon5')}
+                onMouseEnter={() => handleMouseEnter('icon6')}
                 onMouseLeave={handleMouseLeave}
               >
-                <img src={hoveredIcon === 'icon5' ? icon51 : icon5} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+                <img src={hoveredIcon === 'icon6' ? icon61 : icon6} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
               </Box>
               
             </>

@@ -46,15 +46,15 @@ const UserInterestedEvents = () => {
     setLoading(true);
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-interested-event`,
+        url: `${appUrl}/admin/get-interested-event/${id}`,
         method: "get",
         // params: {
         //     page: page, // Pass current page to backend
         //     limit: 8 // Number of items per page
         // },
-        params: {
-          userId: id,
-        },
+        // params: {
+        //   userId: id,
+        // },
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },

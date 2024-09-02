@@ -210,7 +210,22 @@ const EditEvents = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%", display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",   }}>
+        <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          >
+             Event Name
+          </Typography>
           <CustomInputShadow
             placeholder="Event Name"
             name="eventName"
@@ -219,7 +234,22 @@ const EditEvents = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%", display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",   }}>
+               <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          >
+             Organized By
+          </Typography>
           <CustomInputShadow
             placeholder="Organized By"
             name="organizedBy"
@@ -239,7 +269,22 @@ const EditEvents = () => {
       }}>
         <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           <Box sx={{ display: "flex", gap: "1.5rem", flexDirection: { md: "row", xs: "column" } }}>
-            <Box flexBasis={"50%"}>
+            <Box sx={{flexBasis: "50%", display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem", }}>
+            <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          > 
+          Date
+          </Typography>
               <CustomInputShadow
                 placeholder="Date"
                 name="date"
@@ -249,7 +294,22 @@ const EditEvents = () => {
                 type={"date"}
               />
             </Box>
-            <Box flexBasis={"50%"}>
+            <Box sx={{flexBasis:"50%",  display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",}}>
+            <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          > 
+          Date
+          </Typography>
               <CustomInputShadow
                 placeholder="Description"
                 name="description"
@@ -260,7 +320,22 @@ const EditEvents = () => {
               />
             </Box>
           </Box>
-          <Box>
+          <Box sx={{display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",}} >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          > 
+          Destination
+          </Typography>
             <CustomInputShadow
               placeholder="Destination"
               name="destination"
@@ -271,8 +346,20 @@ const EditEvents = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        <Heading Heading='Details' />
+      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+      <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },  
+              fontFamily: "Montserrat !important",
+            }}
+          > 
+          Details
+          </Typography>
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>

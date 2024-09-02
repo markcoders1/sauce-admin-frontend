@@ -69,11 +69,14 @@ const EditBrandDetails = () => {
   const fetchUser = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-user/${id}`,
+        url: `${appUrl}/admin/get-user`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
         },
+        params: {
+          userId : id
+        }
       });
       const userData = response?.data?.user;
       console.log(response.data)
@@ -292,7 +295,17 @@ const EditBrandDetails = () => {
       {formData.type === 'brand' && (
         <>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Heading Heading='About' />
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                           About
+                        </Typography>
           {formData.about.map((about, index) => (
             <CustomInputShadow
               key={index}
