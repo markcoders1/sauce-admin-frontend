@@ -199,7 +199,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   }}
                 >
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
+                    <img src={icon5} style={{ width: '37px' }} alt="Events Management" />
                   </Typography>
                   <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
                 </Box>
@@ -221,9 +221,9 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   }}
                 >
                   <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
+                    <img src={icon6} style={{ width: '40px' }} alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Requested Sauce</Typography>
                 </Box>
               </NavLink>
             </>
