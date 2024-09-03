@@ -6,17 +6,21 @@ import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import CustomButton from '../CustomButton/CustomButton';
 import SnackAlert from '../SnackAlert/SnackAlert';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-const ConfirmDeleteModal = ({ open, handleClose, onConfirm }) => {
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+const ConfirmDeleteModal = ({ open, handleClose, reviewId, onSuccess }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackAlertData, setSnackAlertData] = React.useState({
         message: "",
         severity: "success",
         open: false,
     });
+    const auth = useSelector(state => state.auth);
 
     const handleConfirm = async () => {
-        setLoading(true);
         setSnackAlertData({
             open: false,
             message: "",
@@ -24,14 +28,27 @@ const ConfirmDeleteModal = ({ open, handleClose, onConfirm }) => {
         });
 
         try {
-            onConfirm(); // Trigger the confirm action passed from parent
-            setLoading(false);
-            handleClose();
-            setSnackAlertData({
-                open: true,
-                message: "Review deleted successfully.",
-                severity: "success",
+            setLoading(true);
+            const response = await axios({
+                url: `${appUrl}/admin/delete-official-review/${reviewId}`,
+                method: "delete",  // Set method to DELETE
+                headers: {
+                    Authorization: `Bearer ${auth.accessToken}`,
+                },
             });
+
+            setLoading(false);
+
+            if (response) {
+                setSnackAlertData({
+                    open: true,
+                    message: "Review deleted successfully.",
+                    severity: "success",
+                });
+                onSuccess();  // Refresh reviews list
+                handleClose();
+            }
+
         } catch (error) {
             setLoading(false);
             setSnackAlertData({

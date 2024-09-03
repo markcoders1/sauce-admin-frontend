@@ -103,17 +103,18 @@ const EditEvents = () => {
   formData.details.forEach((detail, index) => {
     formDataToSend.append(`eventDetails[${index}]`, detail);
   });
-  formDataToSend.append('eventId', id);
+
    
     try {
       setLoading(true)
       const response = await axios({
-        url: `${appUrl}/admin/update-event`,
+        url: `${appUrl}/admin/update-event/${id}`,
         method: "put",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           'Content-Type': 'multipart/form-data'
         },
+       
         data: formDataToSend
       });
 
@@ -125,7 +126,7 @@ const EditEvents = () => {
       });
       console.log(response.data);
       setLoading(false)
-      navigate(-1)
+      // navigate(-1)
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({

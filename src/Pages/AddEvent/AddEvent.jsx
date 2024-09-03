@@ -103,17 +103,17 @@ const AddSEvent = () => {
     try {
       setLoading(true);
       const data = new FormData();
-      data.append('eventName', formData.eventName);
-      data.append('organizedBy', formData.organizedBy);
+      data.append('eventName', formData?.eventName);
+      data.append('organizedBy', formData?.organizedBy);
       // Convert the date to Unix timestamp in milliseconds
-      data.append('eventDate', new Date(formData.date).getTime());
-      data.append('venueDescription', formData.description);
-      data.append('venueName', formData.destination);
-      data.append('owner', formData.ownerId);
-      data.append('bannerImage', formData.bannerImage);
-      data.append('eventDetails', JSON.stringify(formData.details));
-      data.append('venueLocation.longitude', formData.longitude || '0.127758');
-      data.append('venueLocation.latitude', formData.latitude || '0.127758');
+      data.append('eventDate', new Date(formData?.date).getTime());
+      data.append('venueDescription', formData?.description);
+      data.append('venueName', formData?.destination);
+      data.append('owner', formData?.ownerId);
+      data.append('bannerImage', formData?.bannerImage);
+      data.append('eventDetails', JSON.stringify(formData?.details));
+      data.append('venueLocation.longitude', formData?.longitude || '0.127758');
+      data.append('venueLocation.latitude', formData?.latitude || '0.127758');
 
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
@@ -125,7 +125,7 @@ const AddSEvent = () => {
         data: data
       });
 
-      navigate(-1);
+   
       setFormData({
         eventName: '',
         organizedBy: '',
@@ -266,12 +266,13 @@ const AddSEvent = () => {
         </Box>
       </Box>
       <Box sx={{
-        display: "flex",
+        display: "none",
         flexDirection: {
           md: "row",
           xs: "column"
         },
         gap: "1.5rem",
+
       }}>
         <Box sx={{ flexBasis: "50%" ,  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
         <Typography sx={{

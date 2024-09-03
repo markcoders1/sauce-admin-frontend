@@ -402,7 +402,7 @@
             />
           </Box>
         </Box>
-        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", }}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -426,7 +426,7 @@
         
         </Box>
 
-        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column",}}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -451,9 +451,21 @@
 
 
 {/* here isthe select component */}
-        <Box>
+        <Box  sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", }} >
+        <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Sauce type
+          </Typography>
         <CustomSelectForType
-          label={"Sauce Type"}
+          
           
           options={[
             { label: "None", value: "false"  },
@@ -468,7 +480,7 @@
         />  
         </Box>
 
-        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           {formData.chilli.map((ingredient, index) => (
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <Box sx={{ width: "100%" }}>

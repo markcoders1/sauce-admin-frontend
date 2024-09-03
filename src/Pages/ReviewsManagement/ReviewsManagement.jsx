@@ -62,17 +62,13 @@ const ReviewsManagement = () => {
     }
   };
 
-  const deleteOfficialReview = async (reviewId) => {
-    console.log(reviewId);
+  const deleteOfficialReview = async (id) => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/delete-specific-review`,
-        method: "post",
+        url: `${appUrl}/admin/delete-official-review/${id}`,
+        method: "delete", // Correctly set to DELETE method
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
-        },
-        params: {
-          reviewId: reviewId,
         },
       });
       console.log(response);
@@ -117,8 +113,8 @@ const ReviewsManagement = () => {
     setAddReviewModalOpen(false);
   };
 
-  const handleOpenDeleteModal = (reviewId) => {
-    setReviewToDelete(reviewId);
+  const handleOpenDeleteModal = (id) => {
+    setReviewToDelete(id);
     setDeleteModalOpen(true);
   };
 
@@ -170,22 +166,21 @@ const ReviewsManagement = () => {
               </Typography>
               <MenuBar />
             </Box>
-            <Tooltip title="Add Review">    
+            <Tooltip title="Add Review">
               <CustomButton
                 border="1px solid #FFA100"
                 ButtonText="Add Review+"
                 color="white"
-                width={"178px"}
+                width={"198px"}
                 borderRadius="8px"
                 background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
-                padding="7px 0px"
-                fontSize="18px"
+                padding="10px 0px"
+                fontSize="16px"
                 fontWeight="600"
                 onClick={handleAddReview}
               />
             </Tooltip>
           </Box>
-
           {officialReviews.length === 0 ? (
             <Typography
               sx={{
@@ -243,6 +238,19 @@ const ReviewsManagement = () => {
                         }}
                       >
                         URL
+                      </TableCell>
+                      <TableCell
+                        className="MuiTableCell-root-head"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: { sm: "21px", xs: "16px" },
+                          textAlign: "start",
+                          color: "white",
+                          pl: "10px",
+                        }}
+                      >
+                        Video Title
                       </TableCell>
                       <TableCell
                         className="MuiTableCell-root-head"
@@ -319,6 +327,12 @@ const ReviewsManagement = () => {
                           ) : (
                             "No URL Available"
                           )}
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "start !important" }}
+                          className="MuiTableCell-root"
+                        >
+                          {review.videoTitle && review?.videoTitle.slice(0, 45)}
                         </TableCell>
                         <TableCell
                           sx={{
@@ -399,7 +413,6 @@ const ReviewsManagement = () => {
               </Box>
             </Box>
           )}
-
           {isOpen && (
             <Lightbox
               open={isOpen}
@@ -407,12 +420,12 @@ const ReviewsManagement = () => {
               slides={[{ src: selectedImage }]}
             />
           )}
-
           {deleteModalOpen && (
             <ConfirmDeleteModal
               open={deleteModalOpen}
               handleClose={handleCloseDeleteModal}
-              onConfirm={handleConfirmDelete}
+              reviewId={reviewToDelete} // Pass the review ID here
+              onSuccess={() => fetchReviews(page)} // Refresh reviews list after deletion
             />
           )}
           {addReviewModalOpen && (
@@ -429,3 +442,4 @@ const ReviewsManagement = () => {
 };
 
 export default ReviewsManagement;
+  

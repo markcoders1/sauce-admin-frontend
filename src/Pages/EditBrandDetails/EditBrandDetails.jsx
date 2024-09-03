@@ -137,7 +137,7 @@ const EditBrandDetails = () => {
         data: formDataToSend,
       });
   
-      navigate(-1)
+      // navigate(-1)
       setSnackAlertData({
         open: true,
         message: response?.data?.message,

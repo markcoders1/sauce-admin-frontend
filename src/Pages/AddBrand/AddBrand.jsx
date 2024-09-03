@@ -79,12 +79,12 @@ const AddBrand = () => {
     const data = new FormData();
     data.append("isTopRated", formData.isTopRated);
 
-    data.append('name', formData.name);
-    data.append('email', formData.email);
-    data.append('websiteLink', formData.websiteLink);
-    data.append('password', formData.password);
-    data.append('image', formData.bannerImage); // Append the file
-    data.append('about',  JSON.stringify(formData.about)); // Serialize the array to JSON
+    data.append('name', formData?.name);
+    data.append('email', formData?.email);
+    data.append('websiteLink', formData?.websiteLink);
+    data.append('password', formData?.password);
+    data.append('image', formData?.bannerImage); // Append the file
+    data.append('about',  JSON.stringify(formData?.about)); // Serialize the array to JSON
   
     console.log(data)
     try {
