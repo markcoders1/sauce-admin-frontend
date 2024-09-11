@@ -197,7 +197,7 @@ const TabooManagement = () => {
                     </Box>
 
                     {filteredBrands.length === 0 ? (
-                        <Typography sx={{ color: "white", textAlign: "center", fontWeight:"600", mt: 4, fontSize:"1.5rem", color:"#FFA100" }}>
+                        <Typography sx={{textAlign: "center", fontWeight:"600", mt: 4, fontSize:"1.5rem", color:"#FFA100" }}>
                             Sauce not found
                         </Typography>
                     ) : (

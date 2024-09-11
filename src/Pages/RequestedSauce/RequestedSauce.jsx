@@ -120,7 +120,7 @@ const RequestedSauce = () => {
           {sauces.length === 0 ? (
             <Typography
               sx={{
-                color: "white",
+             
                 textAlign: "center",
                 fontWeight: "600",
                 mt: 4,
@@ -159,7 +159,7 @@ const RequestedSauce = () => {
                           fontSize: { sm: "21px", xs: "16px" },
                           textAlign: "start",
                           color: "white",
-                          pl: "10px",
+                        
                           borderRadius: "8px 0px 0px 8px",
                           pl:"40px"
                         }}

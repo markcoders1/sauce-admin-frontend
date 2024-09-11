@@ -184,7 +184,7 @@ const ReviewsManagement = () => {
           {officialReviews.length === 0 ? (
             <Typography
               sx={{
-                color: "white",
+             
                 textAlign: "center",
                 fontWeight: "600",
                 mt: 4,
