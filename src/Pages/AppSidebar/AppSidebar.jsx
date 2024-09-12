@@ -63,7 +63,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         flexDirection: 'column',
         gap: '4rem',
         justifyContent: 'center',
-        mt: '40px',
+        mt: '20px',
         p: '1px 7px',
         transition: 'width 0.3s ease-in-out',
         position: "relative",
@@ -91,7 +91,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         >
           {isOpen && (
             <>
-              <Typography className={isOpen ? 'logo-admin' : ''} sx={{ color: "red !important", position: "absolute", top: "-20px", right: "-5px", width: "30px", height: "30px", backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }} >
+              <Typography className={isOpen ? 'logo-admin' : ''} sx={{ color: "red !important", position: "absolute", top: "-10px", right: "-0px", width: "30px", height: "30px", backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }} >
                 <img src={crossIcon} alt="" style={{ color: "white", width: "20px", cursor: "pointer" }} onClick={toggleSidebar} />
               </Typography>
               <Box

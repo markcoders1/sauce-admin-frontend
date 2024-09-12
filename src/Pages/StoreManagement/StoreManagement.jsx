@@ -27,12 +27,12 @@ import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
 
-import ConfirmDeleteModalForBadge from "../../Components/DeleteBadge/DeleteBadgeModal";
+import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL
 
 
 
-const BadgeManagement = () => {
+const StoreManagement = () => {
   const [loading, setLoading] = useState(false);
   const [allBadges, setAllBadges] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -43,6 +43,10 @@ const BadgeManagement = () => {
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [addReviewModalOpen, setAddReviewModalOpen] = useState(false);
   const navigate = useNavigate()
+
+
+//   here stores varaible define 
+const [allStores, setAllStores] = useState([]);
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -71,34 +75,45 @@ const BadgeManagement = () => {
     }
   };
 
-  const deleteOfficialReview = async (id) => {
+  const fetchAllStores = async () => {
     try {
+      setLoading(true);
       const response = await axios({
-        url: `${appUrl}/admin/delete-official-review/${id}`,
-        method: "delete", // Correctly set to DELETE method
+        url: `${appUrl}/get-stores`,
+        method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
+          "Content-Type": "application/json",
         },
+        // params: {
+        //   page: currentPage, // Pass the current page to the backend
+        //   limit: 8, // Assuming each page should show 8 badges
+        // },
       });
-      console.log(response);
-      fetchReviews(page); // Refresh the reviews list
+      setAllStores(response.data.stores)
+      
+      console.log(response)
+    //   setAllBadges(response?.data?.badges || []); // Set the badges data
+    //   setTotalPages(response?.data?.pagination?.totalPages || 1); // Update total pages based on response
+      setLoading(false);
     } catch (error) {
-      console.error("Error deleting review:", error);
+      console.error("Error fetching reviews:", error);
+      setLoading(false);
     }
   };
 
+
+
   useEffect(() => {
     fetchReviews(page);
+    // fetchAllStores()
   }, [page]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
+  useEffect(()=>{
+fetchAllStores()
+  },[])
 
+  
   const openLightbox = (imageSrc) => {
     setSelectedImage(imageSrc);
     setIsOpen(true);
@@ -176,14 +191,14 @@ const BadgeManagement = () => {
                   fontFamily: "Fira Sans !important",
                 }}
               >
-                Badge Management
+                Store Management
               </Typography>
               <MenuBar />
             </Box>
-            <Tooltip title="Add Review">
+            <Tooltip title="Add Store">
               <CustomButton
                 border="1px solid #FFA100"
-                ButtonText="Add Badge+"
+                ButtonText="Add Store+"
                 color="white"
                 width={"198px"}
                 borderRadius="8px"
@@ -206,7 +221,7 @@ const BadgeManagement = () => {
                 color: "#FFA100",
               }}
             >
-              No reviews found
+              No Store found
             </Typography>
           ) : (
             <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
@@ -238,7 +253,7 @@ const BadgeManagement = () => {
                           color: "white",
                         }}
                       >
-                        Image
+                        Owner Image
                       </TableCell>
                       <TableCell
                         className="MuiTableCell-root-head"
@@ -251,7 +266,7 @@ const BadgeManagement = () => {
                           pl: "10px",
                         }}
                       >
-                       Name
+                       Store Name
                       </TableCell>
                     
                       <TableCell
@@ -265,7 +280,22 @@ const BadgeManagement = () => {
                           pl: "10px",
                         }}
                       >
-                       Points Required
+                      Owner Name
+                      </TableCell>
+
+
+                      <TableCell
+                        className="MuiTableCell-root-head"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: { sm: "21px", xs: "16px" },
+                          textAlign: "start",
+                          color: "white",
+                          pl: "10px",
+                        }}
+                      >
+                      Owner Email
                       </TableCell>
                       <TableCell
                         className="MuiTableCell-root-head"
@@ -284,7 +314,7 @@ const BadgeManagement = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody className="MuiTableBody-root">
-                    {allBadges.map((review, index) => (
+                    {allStores.map((review, index) => (
                       <TableRow
                         key={index}
                         sx={{ border: "2px solid #FFA100" }}
@@ -301,7 +331,7 @@ const BadgeManagement = () => {
                           <img
                             src={
                               review.icon
-                                ? review.icon
+                                ? review?.postedBy?.image
                                 : logoAdmin
                             }
                             style={{
@@ -311,7 +341,7 @@ const BadgeManagement = () => {
                               cursor: "pointer",
                               objectFit: "contain",
                             }}
-                            onClick={() => openLightbox(review?.icon)}
+                            onClick={() => openLightbox(review?.postedBy?.image)}
                             alt="Review"
                           />
                         </TableCell>
@@ -347,13 +377,19 @@ const BadgeManagement = () => {
                           sx={{ textAlign: "start !important" }}
                           className="MuiTableCell-root"
                         >
-                         {review?.name}
+                         {review?.storeName}
                         </TableCell>
                         <TableCell
                           sx={{ textAlign: "start !important" }}
                           className="MuiTableCell-root"
                         >
-                         {review?.pointsRequired}
+                         {review?.postedBy?.name} 
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "start !important" }}
+                          className="MuiTableCell-root"
+                        >
+                         {review?.postedBy?.email}
                         </TableCell>
                         <TableCell
                           sx={{
@@ -392,7 +428,7 @@ const BadgeManagement = () => {
                                   objectFit: "contain",
                                 }}
                                 onClick={() =>
-                                  handleOpenDeleteModal(review?._id)
+                                  handleOpenDeleteModal(review._id)
                                 }
                                 alt="Delete"
                               />
@@ -442,25 +478,19 @@ const BadgeManagement = () => {
             />
           )}
           {deleteModalOpen && (
-            <ConfirmDeleteModalForBadge
+            <ConfirmDeleteModalForStore
               open={deleteModalOpen}
               handleClose={handleCloseDeleteModal}
               reviewId={reviewToDelete} // Pass the review ID here
               onSuccess={() => fetchReviews(page)} // Refresh reviews list after deletion
             />
           )}
-          {addReviewModalOpen && (
-            <AddReviewModal
-              open={addReviewModalOpen}
-              handleClose={handleCloseAddReviewModal}
-              onSuccess={() => fetchReviews(page)}
-            />
-          )}
+        
         </Box>
       )}
     </>
   );
 };
 
-export default BadgeManagement;
+export default StoreManagement;
   
