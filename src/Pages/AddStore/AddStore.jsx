@@ -14,6 +14,7 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AddStore = () => {
   const auth = useSelector((state) => state.auth);
+//   console.log(auth)
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: '',
@@ -97,9 +98,9 @@ const AddStore = () => {
 
     const data = {
       storeName: formData.storeName,
-      latitude: formData.coordinates.lat, // Send latitude
-      longitude: formData.coordinates.lng, // Send longitude
-      
+      latitude: formData.coordinates.lat.toString(), // Send latitude
+      longitude: formData.coordinates.lng.toString(), // Send longitude
+      postedBy : auth._id
     };
 
     try {
