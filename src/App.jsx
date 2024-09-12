@@ -26,6 +26,8 @@ import BadgeManagement from "./Pages/BadgeManagement/BadgeManagement";
 import AddBadge from "./Pages/AddBadge/AddBadge";
 import EditBadge from "./Pages/EditBadge/EditBadge";
 import StoreManagement from "./Pages/StoreManagement/StoreManagement";
+import AddStore from "./Pages/AddStore/AddStore";
+import EditStore from "./Pages/EditStore/EditStore";
 
 
 
@@ -76,6 +78,10 @@ function App() {
           <Route path="badge-management/edit-badge" element={<EditBadge />} />
 
           <Route path="store-management" element={<StoreManagement />} />
+          <Route path="store-management/add-store" element={<AddStore />} />
+          <Route path="store-management/edit-store" element={<EditStore />} />
+
+
 
 
 

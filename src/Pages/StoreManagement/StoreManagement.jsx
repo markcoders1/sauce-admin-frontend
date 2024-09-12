@@ -130,7 +130,7 @@ fetchAllStores()
   };
 
   const handleNavigate = () => {
-  navigate("/admin/badge-management/add-badge")
+  navigate("/admin/store-management/add-store")
   };
 
   const handleCloseAddReviewModal = () => {
@@ -156,7 +156,7 @@ fetchAllStores()
   };
 
  const handleNavigateToEdit = (state) => {
-    navigate("/admin/badge-management/edit-badge", {state: state})
+    navigate("/admin/store-management/edit-store", {state: state})
  }
 
   return (
