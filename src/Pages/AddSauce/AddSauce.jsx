@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -14,6 +14,8 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
 
+import ConfirmDeleteModalRequestedSauce from "../../Components/DeleteRequestedSauce/DeleteRequestedSauce";
+
 const AddSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -24,7 +26,7 @@ const AddSauce = () => {
 
   const [formData, setFormData] = useState({
     sauceName: state?.name ? state?.name : "",
-    websiteLink: state?.websiteLink ?  state?.websiteLink : "",
+    websiteLink: state?.websiteLink ? state?.websiteLink : "",
     productLink: "",
     details: "",
     chilli: [""],
@@ -35,7 +37,7 @@ const AddSauce = () => {
     isFeatured: false,
     isTopRated: false,
   });
-  console.log(state)
+  // console.log(state);
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -44,6 +46,27 @@ const AddSauce = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false); 
+
+  useEffect(()=>{
+    console.log(state)  
+  },[])
+
+
+  const handleOpenDeleteModal = () => {
+  
+    setDeleteModalOpen(true);
+
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+  };
+
+  const handleDeleteSuccess = () => {
+    setDeleteModalOpen(false);
+    navigate(-1); // Navigate back after successful deletion
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -135,8 +158,8 @@ const AddSauce = () => {
         data.append("websiteLink", formData.websiteLink);
       }
     }
-    data.append("isFeatured",  formData.isFeatured);
-    data.append("isTopRated",  formData.isTopRated);
+    data.append("isFeatured", formData.isFeatured);
+    data.append("isTopRated", formData.isTopRated);
 
     data.append("image", sauceImage);
     data.append("bannerImage", bannerImage);
@@ -297,18 +320,27 @@ const AddSauce = () => {
           gap: "1.5rem",
         }}
       >
-        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Sauce Name
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Sauce Name
+          </Typography>
           <CustomInputShadow
             placeholder="Sauce Name"
             name="sauceName"
@@ -317,18 +349,27 @@ const AddSauce = () => {
             error={errors.sauceName}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" ,   display:"flex", flexDirection:"column", gap:"0.3rem"}}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Website Link
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Website Link
+          </Typography>
           <CustomInputShadow
             placeholder="Website Link"
             name="websiteLink"
@@ -337,18 +378,27 @@ const AddSauce = () => {
             error={errors.websiteLink}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Product Link
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Product Link
+          </Typography>
           <CustomInputShadow
             placeholder="Product Link"
             name="productLink"
@@ -365,18 +415,27 @@ const AddSauce = () => {
           gap: "1.5rem",
         }}
       >
-        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Email
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Email
+          </Typography>
           <CustomInputShadow
             placeholder="Email"
             name="email"
@@ -385,18 +444,27 @@ const AddSauce = () => {
             error={errors.email}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Type
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Type
+          </Typography>
           <CustomInputShadow
             placeholder="Type"
             name="type"
@@ -405,18 +473,27 @@ const AddSauce = () => {
             error={errors.type}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%",  display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Title
-                        </Typography>
+        <Box
+          sx={{
+            flexBasis: "33%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Title
+          </Typography>
           <CustomInputShadow
             placeholder="Title"
             name="title"
@@ -434,17 +511,19 @@ const AddSauce = () => {
           gap: "0.3rem",
         }}
       >
-         <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Details
-                        </Typography>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Details
+        </Typography>
         <CustomInputShadow
           name="details"
           multiline={true}
@@ -462,17 +541,19 @@ const AddSauce = () => {
           gap: "0.3rem",
         }}
       >
-          <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Ingredients
-                        </Typography>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Ingredients
+        </Typography>
         <CustomInputShadow
           name="ingredients"
           multiline={true}
@@ -482,59 +563,59 @@ const AddSauce = () => {
           height="160px"
         />
       </Box>
-      <Box sx={{  display: "flex",
-          flexDirection: "column",
-          gap: "0.3rem",}} >
-      <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                           Make Featured 
-                        </Typography>
-      <CustomSelectForType
-        label={"Featured Sauce"}
-        options={[
-          { label: "None", value: "false" },
-          { label: "Featured", value: "true" },
-        ]}
-        handleChange={(selectedValue) =>
-          setFormData({ ...formData, isFeatured: selectedValue })
-        }
-        labelField="label"
-        valueField="value"
-      />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Make Featured
+        </Typography>
+        <CustomSelectForType
+          label={"Featured Sauce"}
+          options={[
+            { label: "None", value: "false" },
+            { label: "Featured", value: "true" },
+          ]}
+          handleChange={(selectedValue) =>
+            setFormData({ ...formData, isFeatured: selectedValue })
+          }
+          labelField="label"
+          valueField="value"
+        />
       </Box>
-      <Box sx={{  display: "flex",
-          flexDirection: "column",
-          gap: "0.3rem",}} >
-      <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Make Top Rated
-                        </Typography>
-      <CustomSelectForType
-        label={"Top Rated Sauce"}
-        options={[
-          { label: "None", value: "false" },
-          { label: "Top Rated", value: "true" },
-        ]}
-        handleChange={(selectedValue) =>
-          setFormData({ ...formData, isTopRated: selectedValue })
-        }
-        labelField="label"
-        valueField="value"
-      />
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Make Top Rated
+        </Typography>
+        <CustomSelectForType
+          label={"Top Rated Sauce"}
+          options={[
+            { label: "None", value: "false" },
+            { label: "Top Rated", value: "true" },
+          ]}
+          handleChange={(selectedValue) =>
+            setFormData({ ...formData, isTopRated: selectedValue })
+          }
+          labelField="label"
+          valueField="value"
+        />
       </Box>
       <Box
         sx={{
@@ -544,24 +625,32 @@ const AddSauce = () => {
           gap: "0.3rem",
         }}
       >
-           <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                            Chilli
-                        </Typography>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Chilli
+        </Typography>
         {formData.chilli.map((ingredient, index) => (
           <Box
             key={index}
             sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
           >
-            <Box sx={{ width: "100%", display:"flex", flexDirection:"column", gap:"0.3rem" }}>
-           
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
               <CustomInputShadow
                 name={`chilli-${index}`}
                 value={ingredient}
@@ -601,11 +690,31 @@ const AddSauce = () => {
           fontWeight="500"
         />
       </Box>
-      
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
+
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 , gap:"2rem"}}>
+        {
+          state ? (
+            <CustomButton
+            border="1px solid #FFA100"
+            ButtonText={loading ? "Delete" : "Delete Request"}
+            color="white"
+            width={"188px"}
+            borderRadius="8px"
+            // background={
+            //   loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
+            // }
+            padding="10px 0px"
+            fontSize="18px"
+            fontWeight="600"
+            
+            onClick={handleOpenDeleteModal} 
+          />
+          ) : ""
+        }
+     
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Saving" : "Save"}
+          ButtonText={loading ? "Adding" : "Add "}
           color="white"
           width={"178px"}
           borderRadius="8px"
@@ -616,6 +725,7 @@ const AddSauce = () => {
           fontSize="18px"
           fontWeight="600"
           onClick={handleSubmit}
+        
         />
       </Box>
       <SnackAlert
@@ -625,6 +735,12 @@ const AddSauce = () => {
         handleClose={() => {
           setSnackAlertData((prev) => ({ ...prev, open: false }));
         }}
+      />
+          <ConfirmDeleteModalRequestedSauce
+        open={deleteModalOpen}
+        handleClose={handleCloseDeleteModal}
+        reviewId={state?._id} // Assuming you pass the ID of the review to delete
+        onSuccess={handleDeleteSuccess} // Callback for success handling
       />
     </Box>
   );

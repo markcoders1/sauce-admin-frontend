@@ -22,7 +22,8 @@ import logoAdmin from "../../assets/logoAdmin.png"; // Placeholder image for sau
 import CustomButton from "../../Components/CustomButton/CustomButton";
 
 import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the design consistent
-
+// delete requested sauce modal
+import ConfirmDeleteModalRequestedSauce from "../../Components/DeleteRequestedSauce/DeleteRequestedSauce";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const RequestedSauce = () => {
@@ -32,6 +33,9 @@ const RequestedSauce = () => {
   const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+
 
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -40,13 +44,14 @@ const RequestedSauce = () => {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/get-sauces?type=requested`,
+        url: `${appUrl}/get-sauces`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
         params: {
           page: currentPage,
+          type: "requested"
         },
       });
       setSauces(response?.data?.sauces || []);
@@ -243,7 +248,7 @@ const RequestedSauce = () => {
                         >
                              <CustomButton
                             border="1px solid #FFA100"
-                            ButtonText="Add Sauce"
+                            ButtonText="View Request"
                             color="white"
                             width={"128px"}
                             borderRadius="6px"

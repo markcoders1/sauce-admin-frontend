@@ -36,6 +36,7 @@ const AddSpecificSauce = () => {
     title: "",
     ingredients: "",
     isFeatured: false,
+    isTopRated: false
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -121,6 +122,10 @@ const AddSpecificSauce = () => {
     data.append("title", formData.title);
     data.append("ingredients", formData.ingredients);
     data.append("isFeatured", formData.isFeatured);
+    data.append("isTopRated",  formData.isTopRated);
+
+    console.log(data)
+    console.log(formData)
 
     try {
       setLoading(true);
@@ -153,6 +158,7 @@ const AddSpecificSauce = () => {
         title: "",
         ingredients: "",
         isFeatured: false,
+        isFeatured: true,
       });
       setLoading(false);
     } catch (error) {
@@ -491,7 +497,7 @@ const AddSpecificSauce = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-             Sauce Type
+             Make Featured
           </Typography>
         <CustomSelectForType
           label={"Sauce Type"}
@@ -501,6 +507,35 @@ const AddSpecificSauce = () => {
           ]}
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isFeatured: selectedValue })
+          }
+          labelField="label"
+          valueField="value"
+        />
+      </Box>
+      <Box sx={{display: "flex",
+          flexDirection: "column",
+          gap: "0.3rem",}} >
+      <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+             Make Top Rated
+          </Typography>
+        <CustomSelectForType
+          label={"Sauce Type"}
+          options={[
+            { label: "None", value: "false" },
+            { label: "Top Rated", value: "true" },
+          ]}
+          handleChange={(selectedValue) =>
+            setFormData({ ...formData, isTopRated: selectedValue })
           }
           labelField="label"
           valueField="value"

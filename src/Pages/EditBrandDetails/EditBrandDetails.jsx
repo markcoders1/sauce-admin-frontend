@@ -69,14 +69,14 @@ const EditBrandDetails = () => {
   const fetchUser = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-user`,
+        url: `${appUrl}/admin/get-user/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
         },
-        params: {
-          userId : id
-        }
+        // params: {
+        //   userId : id
+        // }
       });
       const userData = response?.data?.user;
       console.log(response.data)
@@ -128,7 +128,7 @@ const EditBrandDetails = () => {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/admin/edit-user`,
+        url: `${appUrl}/admin/edit-user/${id}`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

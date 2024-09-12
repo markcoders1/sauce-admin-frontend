@@ -96,6 +96,18 @@ const SeeEventDetail = () => {
         gap: "1.5rem",
       }}>
         <Box sx={{ flexBasis: "50%" }}>
+        <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Event Name
+          </Typography>
           <CustomInputShadow
             placeholder="Event Name"
             name="eventName"
@@ -104,6 +116,18 @@ const SeeEventDetail = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "50%" }}>
+        <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Organized By
+          </Typography>
           <CustomInputShadow
             placeholder="Organized By"
             name="organizedBy"
@@ -121,6 +145,18 @@ const SeeEventDetail = () => {
         gap: "1.5rem",
       }}>
         <Box sx={{ flexBasis: "50%" }}>
+        <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Event Date
+          </Typography>
           <CustomInputShadow
             placeholder="Date"
             name="date"
@@ -130,6 +166,18 @@ const SeeEventDetail = () => {
           />
         </Box>
         <Box sx={{ flexBasis: "50%" }}>
+        <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Event Description
+          </Typography>
           <CustomInputShadow
             placeholder="Description"
             name="description"
@@ -140,6 +188,18 @@ const SeeEventDetail = () => {
         </Box>
       </Box>
       <Box>
+      <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Event Destination
+          </Typography>
         <CustomInputShadow
           placeholder="Destination"
           name="destination"
@@ -148,7 +208,18 @@ const SeeEventDetail = () => {
         />
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-        <Heading Heading='Details' />
+      <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+                sm: "16px",
+                xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+          Event Details
+          </Typography>
         {formData.details.map((detail, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>

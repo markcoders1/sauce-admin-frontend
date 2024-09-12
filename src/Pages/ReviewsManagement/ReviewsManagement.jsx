@@ -49,7 +49,7 @@ const ReviewsManagement = () => {
         url: `${appUrl}/get-official-reviews`,
         method: "get",
         headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
+          Authorization: `Bearer ${auth.accessToken}`, "Content-Type": `application/json`,
         },
       });
       setOfficialReviews(response?.data?.officialReviews || []); // Assume API returns reviews array
@@ -349,7 +349,7 @@ const ReviewsManagement = () => {
                               gap: "1rem",
                             }}
                           >
-                            <Tooltip title="copy to clip board">
+                            <Tooltip title="Copy Video URL">
                               <img
                                 src={copyIcon}
                                 style={{
@@ -361,7 +361,7 @@ const ReviewsManagement = () => {
                                 alt="Copy"
                               />
                             </Tooltip>
-                            <Tooltip title="delete review">
+                            <Tooltip title="Delete Review">
                               <img
                                 src={DeleteIcon}
                                 style={{

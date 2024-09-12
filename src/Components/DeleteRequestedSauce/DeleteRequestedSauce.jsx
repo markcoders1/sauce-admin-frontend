@@ -11,8 +11,7 @@ import { useSelector } from 'react-redux';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-
-const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) => {
+const ConfirmDeleteModalRequestedSauce = ({ open, handleClose, reviewId, onSuccess }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackAlertData, setSnackAlertData] = React.useState({
         message: "",
@@ -27,27 +26,27 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
             message: "",
             severity: "success",
         });
-
+      console.log(reviewId)
         try {
             setLoading(true);
             const response = await axios({
-                url: `${appUrl}/admin/block-unblock-user/${userId}`,
-                method: "post",
+                url: `${appUrl}/admin/delete-requested-sauce/${reviewId}`,
+                method: "delete", 
                 headers: {
-                    Authorization: `Bearer ${auth.accessToken}`
+                    Authorization: `Bearer ${auth.accessToken}`,
                 },
-                
             });
 
             setLoading(false);
-          
+            console.log(response)
+
             if (response) {
                 setSnackAlertData({
                     open: true,
-                    message: response?.data?.message,
+                    message: "Review deleted successfully.",
                     severity: "success",
                 });
-                onSuccess();
+                onSuccess();  // Refresh reviews list
                 handleClose();
             }
 
@@ -55,9 +54,11 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
             setLoading(false);
             setSnackAlertData({
                 open: true,
-                message: error.toString(),
+                message: "Failed to delete review.",
                 severity: "error",
             });
+            console.log(error.response)
+
         }
     };
 
@@ -96,10 +97,10 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            {action === 'block' ? 'Block User' : 'Unblock User'}
+                            Delete Review
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
-                            Are you sure you want to {action === 'unblock' ? 'unblock' : 'block'} this user?
+                            Are you sure you want to delete this review?
                         </Typography>
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 4, gap: "1rem" }}>
                             <CustomButton
@@ -139,4 +140,4 @@ const ConfirmActionModal = ({ open, handleClose, userId, action, onSuccess }) =>
     );
 };
 
-export default ConfirmActionModal;
+export default ConfirmDeleteModalRequestedSauce;

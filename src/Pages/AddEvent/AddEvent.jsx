@@ -400,7 +400,7 @@ const AddSEvent = () => {
                             },
                             fontFamily: "Montserrat !important",
                         }}>
-                            Brand Type
+                            Brand
                         </Typography>
         
         <CustomSelect data={allBrands} handleChange={handleBrandChange} />
