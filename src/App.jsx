@@ -22,6 +22,8 @@ import UserInterestedEvents from "./Pages/UserInterestedEvents/UserInterestedEve
 import SeeEventsDetail from "./Pages/SeeEvents/SeeEventDetail";
 import ReviewsManagement from "./Pages/ReviewsManagement/ReviewsManagement";
 import RequestedSauce from "./Pages/RequestedSauce/RequestedSauce";
+import BadgeManagement from "./Pages/BadgeManagement/BadgeManagement";
+import AddBadge from "./Pages/AddBadge/AddBadge";
 
 
 
@@ -65,6 +67,10 @@ function App() {
 
           <Route path="reviews-management" element={<ReviewsManagement />} />
           <Route path="requested-sauce" element={<RequestedSauce />} />
+
+
+          <Route path="badge-management" element={<BadgeManagement />} />
+          <Route path="badge-management/add-badge" element={<AddBadge />} />
 
 
 

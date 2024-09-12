@@ -386,6 +386,53 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={hoveredIcon === 'icon6' ? icon61 : icon6} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
               </Box>
+
+              {/* badge and store management
+               */}
+
+<Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon5' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/badge-management')}
+                onMouseEnter={() => handleMouseEnter('icon5')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon5' ? icon51 : icon5} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+              </Box>
+
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon6' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon6' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/store-management')}
+                onMouseEnter={() => handleMouseEnter('icon6')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon6' ? icon61 : icon6} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+              </Box>
               
             </>
           )}
