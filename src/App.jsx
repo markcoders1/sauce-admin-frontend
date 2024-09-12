@@ -24,6 +24,7 @@ import ReviewsManagement from "./Pages/ReviewsManagement/ReviewsManagement";
 import RequestedSauce from "./Pages/RequestedSauce/RequestedSauce";
 import BadgeManagement from "./Pages/BadgeManagement/BadgeManagement";
 import AddBadge from "./Pages/AddBadge/AddBadge";
+import EditBadge from "./Pages/EditBadge/EditBadge";
 
 
 
@@ -71,6 +72,8 @@ function App() {
 
           <Route path="badge-management" element={<BadgeManagement />} />
           <Route path="badge-management/add-badge" element={<AddBadge />} />
+          <Route path="badge-management/edit-badge" element={<EditBadge />} />
+
 
 
 

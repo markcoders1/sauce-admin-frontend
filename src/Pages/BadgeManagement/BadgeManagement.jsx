@@ -19,7 +19,7 @@ import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightb
 import PageLoader from "../../Components/Loader/PageLoader";
 import logoAdmin from "../../assets/logoAdmin.png"; // Placeholder image for reviews without images
 import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the design consistent
-import copyIcon from "../../assets/copyIcon.png";
+import EditIcon from "../../assets/EditIcon.png";
 import DeleteIcon from "../../assets/deleteIcon.png";
 import ConfirmDeleteModal from "../../Components/ConfirmReviewDeleteModal/ConfirmReviewDeleteModal"; // Import the ConfirmDeleteModal component
 import Tooltip from "@mui/material/Tooltip";
@@ -28,7 +28,9 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
 
 import ConfirmDeleteModalForBadge from "../../Components/DeleteBadge/DeleteBadgeModal";
-const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL
+
+
 
 const BadgeManagement = () => {
   const [loading, setLoading] = useState(false);
@@ -137,6 +139,10 @@ const BadgeManagement = () => {
     }
     handleCloseDeleteModal();
   };
+
+ const handleNavigateToEdit = (state) => {
+    navigate("/admin/badge-management/edit-badge", {state: state})
+ }
 
   return (
     <>
@@ -366,13 +372,13 @@ const BadgeManagement = () => {
                           >
                             <Tooltip title="Edit Badge">
                               <img
-                                src={copyIcon}
+                                src={EditIcon}
                                 style={{
-                                  width: "38px",
-                                  height: "38px",
+                                  width: "25px",
+                                  height: "24px",
                                   cursor: "pointer",
                                 }}
-                                onClick={() => handleCopyUrl(review.url)}
+                                onClick={()=> handleNavigateToEdit(review)}
                                 alt="Copy"
                               />
                             </Tooltip>
@@ -380,8 +386,8 @@ const BadgeManagement = () => {
                               <img
                                 src={DeleteIcon}
                                 style={{
-                                  width: "35px",
-                                  height: "35px",
+                                  width: "37px",
+                                  height: "37px",
                                   cursor: "pointer",
                                   objectFit: "contain",
                                 }}

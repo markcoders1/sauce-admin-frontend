@@ -14,6 +14,10 @@ import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
 import icon5 from '../../assets/reviewedMan.png';
 import icon6 from '../../assets/icon-05.png';
+import icon7 from '../../assets/icon6.png';
+import icon8 from '../../assets/icon7.png';
+
+
 
 
 
@@ -24,6 +28,10 @@ import icon31 from '../../assets/icon31.png';
 import icon41 from '../../assets/icon41.png';
 import icon51 from '../../assets/hovered.png';
 import icon61 from '../../assets/icon51.png';
+import icon71 from '../../assets/icon61.png';
+import icon81 from '../../assets/icon71.png';
+
+
 
 
 
@@ -78,7 +86,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             transition: 'opacity 0.5s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
-            gap: '20px',
+            gap: '10px',
           }}
         >
           {isOpen && (
@@ -224,6 +232,48 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     <img src={icon6} style={{ width: '40px' }} alt="Events Management" />
                   </Typography>
                   <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Requested Sauce</Typography>
+                </Box>
+              </NavLink>
+              <NavLink
+                to="/admin/badge-management"
+                className={({ isActive }) =>
+                  isActive ? 'active-nav-link' : 'nav-link'
+                }
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    p: '5px 5px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon71} style={{ width: '40px' }} alt="Events Management" />
+                  </Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Badge Management</Typography>
+                </Box>
+              </NavLink>
+              <NavLink
+                to="/admin/store-management"
+                className={({ isActive }) =>
+                  isActive ? 'active-nav-link' : 'nav-link'
+                }
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    p: '5px 5px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon81} style={{ width: '40px' }} alt="Events Management" />
+                  </Typography>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Store Management</Typography>
                 </Box>
               </NavLink>
             </>
@@ -393,7 +443,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 <Box
                 sx={{
                   borderRadius: '50%',
-                  backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  backgroundColor: hoveredIcon === 'icon7' ? 'rgba(255, 0, 0, 0.6)' : 'white',
                   width: '50px',
                   height: '50px',
                   display: 'flex',
@@ -402,20 +452,20 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   cursor: 'pointer',
                   color: 'black',
                   fontWeight: '600',
-                  boxShadow: hoveredIcon === 'icon5' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  boxShadow: hoveredIcon === 'icon7' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
                   transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                 }}
                 onClick={() => handleNavigate('/admin/badge-management')}
-                onMouseEnter={() => handleMouseEnter('icon5')}
+                onMouseEnter={() => handleMouseEnter('icon7')}
                 onMouseLeave={handleMouseLeave}
               >
-                <img src={hoveredIcon === 'icon5' ? icon51 : icon5} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+                <img src={hoveredIcon === 'icon7' ? icon7 : icon71} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
               </Box>
 
               <Box
                 sx={{
                   borderRadius: '50%',
-                  backgroundColor: hoveredIcon === 'icon6' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  backgroundColor: hoveredIcon === 'icon8' ? 'rgba(255, 0, 0, 0.6)' : 'white',
                   width: '50px',
                   height: '50px',
                   display: 'flex',
@@ -424,14 +474,14 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   cursor: 'pointer',
                   color: 'black',
                   fontWeight: '600',
-                  boxShadow: hoveredIcon === 'icon6' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  boxShadow: hoveredIcon === 'icon8' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
                   transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                 }}
                 onClick={() => handleNavigate('/admin/store-management')}
-                onMouseEnter={() => handleMouseEnter('icon6')}
+                onMouseEnter={() => handleMouseEnter('icon8')}
                 onMouseLeave={handleMouseLeave}
               >
-                <img src={hoveredIcon === 'icon6' ? icon61 : icon6} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
+                <img src={hoveredIcon === 'icon8' ? icon8 : icon81} style={{ width: '80%', zIndex: '100' }} alt="Reviews Management" />
               </Box>
               
             </>

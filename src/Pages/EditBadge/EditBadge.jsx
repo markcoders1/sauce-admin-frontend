@@ -1,37 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import axios from "axios";
 import SnackAlert from "../../Components/SnackAlert/SnackAlert";
 import MenuBar from "../../Components/MenuBar/MenuBar";
-import Heading from "../../Components/Heading/Heading";
-import { useSelector } from "react-redux";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const AddBadge = () => {
+const EditBadge = () => {
   const auth = useSelector((state) => state.auth);
+  const { state } = useLocation(); // To access the existing badge details for editing
+  const navigate = useNavigate();
+  console.log(state)
+
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
     severity: "success",
   });
+
+  // Pre-fill the formData if editing an existing badge, otherwise use empty values
   const [formData, setFormData] = useState({
-    name: "",
-    condition: "",
-    pointsRequired: "",
-    websiteLink: "",
-    icon: null,
-    description: "",
+    name: state?.name || "",
+    condition: state?.condition || "",
+    pointsRequired: state?.pointsRequired || "",
+    websiteLink: state?.websiteLink || "",
+    icon: state?.icon || null,
+    description: state?.description || "",
   });
+
   const [errors, setErrors] = useState({});
-  const [selectedFileName, setSelectedFileName] = useState("");
+  const [selectedFileName, setSelectedFileName] = useState(state?.icon || "");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [previewImage, setPreviewImage] = useState(state?.icon || ""); // For image preview
+
+  useEffect(() => {
+    if (state) {
+      // Pre-fill form when editing a badge
+      setFormData({
+        name: state?.name || "",
+        condition: state?.condition || "",
+        pointsRequired: state?.pointsRequired || "",
+        websiteLink: state?.websiteLink || "",
+        icon: state?.icon || null,
+        description: state?.description || "",
+      });
+      setSelectedFileName(state?.icon || "");
+      setPreviewImage(state?.icon || ""); // Set the initial preview image
+    }
+  }, [state]);
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
@@ -40,6 +63,7 @@ const AddBadge = () => {
         [name]: files[0],
       });
       setSelectedFileName(files[0]?.name || ""); // Update selected file name
+      setPreviewImage(URL.createObjectURL(files[0])); // Preview the selected image
     } else {
       setFormData({
         ...formData,
@@ -48,16 +72,13 @@ const AddBadge = () => {
     }
   };
 
-
-
   const handleSubmit = async () => {
     console.log("Form data submitted:", formData);
 
     let validationErrors = {};
 
-    // Check file size for bannerImage
-    if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
-      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    if (formData.icon && formData.icon.size > 4 * 1024 * 1024) {
+      validationErrors.icon = "Badge image size exceeds 4MB.";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -72,19 +93,19 @@ const AddBadge = () => {
 
     const data = new FormData();
     data.append("name", formData.name);
-
     data.append("condition", formData?.condition);
     data.append("description", formData?.description);
     data.append("pointsRequired", formData?.pointsRequired);
-    
     data.append("icon", formData?.icon); // Append the file
-    
 
-    console.log(data);
+    const url = state?._id
+      ? `${appUrl}/admin/edit-badge/${state._id}` // Edit badge route if editing
+      : `${appUrl}/admin/add-badge`; // Add new badge route if adding
+
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/admin/create-badge`,
+        url,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -95,13 +116,12 @@ const AddBadge = () => {
 
       setFormData({
         name: "",
-    condition: "",
-    pointsRequired: "",
-    websiteLink: "",
-    icon: null,
-    description: "",
+        condition: "",
+        pointsRequired: "",
+        websiteLink: "",
+        icon: null,
+        description: "",
       });
-      // navigate(-1)
 
       setSelectedFileName(""); // Reset file name
       setLoading(false);
@@ -112,9 +132,9 @@ const AddBadge = () => {
         severity: "success",
       });
 
-      console.log(response.data);
+    //   navigate(-1); // Navigate back after successful submission
     } catch (error) {
-      console.error("Error submitting brand induction:", error);
+      console.error("Error submitting badge:", error);
       setSnackAlertData({
         open: true,
         message:
@@ -150,7 +170,7 @@ const AddBadge = () => {
             fontFamily: "Fira Sans !important",
           }}
         >
-          Add New Badge
+          {state ? "Edit Badge" : "Add New Badge"}
         </Typography>
         <Typography
           sx={{ display: "flex", alignItems: "center", gap: ".3rem" }}
@@ -166,23 +186,58 @@ const AddBadge = () => {
           height: { lg: "100%", xs: "370px" },
         }}
       >
-        <label
-          htmlFor="uploadBannerImage"
-          style={{
-            flexBasis: "100%",
-            height: "165px",
-            backgroundColor: "#2E210A",
-            border: "2px dashed #FFA100",
+        <Box
+          sx={{
+            flex: 1,
             display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {previewImage ? (
+            <img
+              src={state?.icon}
+              alt="Selected Badge"
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "12px",
+                objectFit: "contain",
+              }}
+            />
+          ) : (
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontSize: "18px",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              No Image Available
+            </Typography>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor: "#2E210A",
+            border: "2px dashed #FFA100",
             borderRadius: "12px",
             cursor: "pointer",
+            height: "165px",
           }}
+          onClick={() => document.getElementById("uploadIcon").click()}
         >
           <input
             type="file"
-            id="uploadBannerImage"
+            id="uploadIcon"
             name="icon"
             style={{ display: "none" }}
             onChange={handleChange}
@@ -190,25 +245,21 @@ const AddBadge = () => {
           <Typography
             sx={{
               color: "white",
-              textAlign: "center",
               fontSize: "22px",
               fontWeight: "600",
             }}
           >
             {selectedFileName
-              ? `Selected File  ${selectedFileName}`
-              : "Upload Badge Image"}
+              ? `Selected File: ${selectedFileName}`
+              : "Click Here to Change Image"}
           </Typography>
-        </label>
+        </Box>
       </Box>
 
       <Box
         sx={{
           display: "flex",
-          flexDirection: {
-            md: "column",
-            xs: "column",
-          },
+          flexDirection: { md: "column", xs: "column" },
           gap: "1.5rem",
         }}
       >
@@ -224,10 +275,7 @@ const AddBadge = () => {
             sx={{
               color: "#FFA100",
               fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
+              fontSize: { sm: "16px", xs: "16px" },
               fontFamily: "Montserrat !important",
             }}
           >
@@ -241,17 +289,13 @@ const AddBadge = () => {
             error={errors.name}
           />
         </Box>
-     
-      
+
         <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
               color: "#FFA100",
               fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
+              fontSize: { sm: "16px", xs: "16px" },
               fontFamily: "Montserrat !important",
             }}
           >
@@ -268,43 +312,40 @@ const AddBadge = () => {
             }
             labelField="label"
             valueField="value"
+            value={formData.condition} // Set current value in select
           />
         </Box>
-        {
-            formData.condition === "points" && (
-                <Box
-                sx={{
-                  flexBasis: "33%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.3rem",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#FFA100",
-                    fontWeight: "500",
-                    fontSize: {
-                      sm: "16px",
-                      xs: "16px",
-                    },
-                    fontFamily: "Montserrat !important",
-                  }}
-                >
-                 Points Required
-                </Typography>
-                <CustomInputShadow
-                  placeholder="Points Required"
-                  name="pointsRequired"
-                  value={formData.pointsRequired}
-                  onChange={handleChange}
-                  error={errors.pointsRequired}
-                  type={"number"}
-                />
-              </Box>
-            )
-        }
-     
+
+        {formData.condition === "points" && (
+          <Box
+            sx={{
+              flexBasis: "33%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.3rem",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: { sm: "16px", xs: "16px" },
+                fontFamily: "Montserrat !important",
+              }}
+            >
+              Points Required
+            </Typography>
+            <CustomInputShadow
+              placeholder="Points Required"
+              name="pointsRequired"
+              value={formData.pointsRequired}
+              onChange={handleChange}
+              error={errors.pointsRequired}
+              type="number"
+            />
+          </Box>
+        )}
+
         <Box
           sx={{
             flexBasis: "33%",
@@ -317,10 +358,7 @@ const AddBadge = () => {
             sx={{
               color: "#FFA100",
               fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
+              fontSize: { sm: "16px", xs: "16px" },
               fontFamily: "Montserrat !important",
             }}
           >
@@ -333,19 +371,15 @@ const AddBadge = () => {
             onChange={handleChange}
             error={errors.description}
             height={"220px"}
-            // rows={"5"}
             multiline={true}
-            
           />
         </Box>
-      
       </Box>
-
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Saving" : "Save"}
+          ButtonText={loading ? "Saving" : state ? "Save Changes" : "Save"}
           color="white"
           width={"178px"}
           borderRadius="8px"
@@ -355,19 +389,20 @@ const AddBadge = () => {
           padding="10px 0px"
           fontSize="18px"
           fontWeight="600"
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
         />
       </Box>
+
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}
         open={snackAlertData.open}
-        handleClose={() => {
-          setSnackAlertData((prev) => ({ ...prev, open: false }));
-        }}
+        handleClose={() =>
+          setSnackAlertData((prev) => ({ ...prev, open: false }))
+        }
       />
     </Box>
   );
 };
 
-export default AddBadge;
+export default EditBadge;
