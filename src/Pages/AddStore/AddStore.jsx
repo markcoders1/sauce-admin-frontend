@@ -120,7 +120,7 @@ const AddStore = () => {
       storeName: formData.storeName,
       latitude: formData.coordinates.lat.toString(), // Send latitude
       longitude: formData.coordinates.lng.toString(), // Send longitude
-      postedBy : auth._id
+      // postedBy : auth._id
     };
 
     try {

@@ -145,6 +145,7 @@ const EditStore = () => {
 
   // Handle submitting updated store details
   const handleSubmit = async () => {
+    console.log(id)
     try {
       setLoading(true);
       const response = await axios({
