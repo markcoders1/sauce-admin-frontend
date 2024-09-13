@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import { useNavigate } from 'react-router-dom';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -37,6 +38,57 @@ const AddSEvent = () => {
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [marker, setMarker] = useState(null); // State to store marker instance
+
+  const loader = new Loader({
+    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your own API key
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+
+  const mapOptions = {
+    center: { lat: 0, lng: 0 },
+    zoom: 4,
+  };
+
+  const loadMap = async () => {
+    if (!mapLoaded) {
+      loader.load().then((google) => {
+        const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        // Set latitude and longitude on map click
+        map.addListener('click', (event) => {
+          const lat = event.latLng.lat();
+          const lng = event.latLng.lng();
+          setFormData((prev) => ({
+            ...prev,
+            latitude: lat.toString(),
+            longitude: lng.toString(),
+          }));
+
+          // Clear previous marker if exists and set new one
+          if (marker) marker.setMap(null);
+          const newMarker = new google.maps.Marker({
+            position: { lat, lng },
+            map,
+          });
+          setMarker(newMarker);
+        });
+
+        setMapLoaded(true); // Mark map as loaded
+      }).catch((e) => {
+        console.error("Error loading Google Maps:", e);
+      });
+    }
+  };
+
+  useEffect(()=>{
+loadMap()
+  },[])
+
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -112,8 +164,8 @@ const AddSEvent = () => {
       data.append('owner', formData?.ownerId);
       data.append('bannerImage', formData?.bannerImage);
       data.append('eventDetails', JSON.stringify(formData?.details));
-      data.append('venueLocation.longitude', formData?.longitude || '0.127758');
-      data.append('venueLocation.latitude', formData?.latitude || '0.127758');
+      data.append('venueLocation.longitude', formData?.longitude);
+      data.append('venueLocation.latitude', formData?.latitude);
 
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
@@ -453,6 +505,24 @@ const AddSEvent = () => {
           fontSize='20px'
         />
       </Box>
+         {/* Map for selecting location */}
+         {/* <CustomButton
+          border='1px solid #FFA100'
+          ButtonText={"Load Map"}
+          color='white'
+          width={"178px"}
+          borderRadius='8px'
+          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+          padding='10px 0px'
+          fontSize='18px'
+          fontWeight='600'
+          onClick={loadMap}
+        /> */}
+         <Box sx={{ width: "100%", height: "500px" }}>
+        <div style={{ width: "100%", height: "100%", borderRadius:"12px" }} id='map'></div>
+       
+      </Box>
+
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'

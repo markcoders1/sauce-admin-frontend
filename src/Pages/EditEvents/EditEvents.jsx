@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
+import { Loader } from '@googlemaps/js-api-loader';
 
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
@@ -31,9 +31,69 @@ const EditEvents = () => {
     details: [''],
     destination: '',
     bannerImage: null,
+    coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
   });
   const [errors, setErrors] = useState({});
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const [marker, setMarker] = useState(null); // State to store marker
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [previewImage, setPreviewImage] = useState(""); 
+  const loader = new Loader({
+    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your Google Maps API key
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+  const mapOptions = {
+    center: { lat: 0, lng: 0 },
+    zoom: 4,
+  };
+
+
+  const loadMapWithMarker = async (lat, lng) => {
+    loader.load()
+      .then((google) => {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          ...mapOptions,
+          center: { lat, lng },
+          zoom: 15,
+        });
+
+       map.addListener('click', (event) => {
+          const newLat = event.latLng.lat();
+          const newLng = event.latLng.lng();
+          setFormData((prev) => ({
+            ...prev,
+            coordinates: { lat: newLat, lng: newLng },
+          }));
+
+          // Remove the previous marker if it exists
+          if (marker) {
+            marker.setMap(null);
+            setMarker(null);
+          }
+
+          // Add the new marker
+          const newMarker = new google.maps.Marker({
+            position: { lat: newLat, lng: newLng },
+            map,
+          });
+
+          setMarker(newMarker);
+          console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 
+        });
+
+        const initialMarker = new google.maps.Marker({
+          position: { lat, lng },
+          map,
+        });
+        setMarker(initialMarker);
+      })
+      .catch((e) => {
+        console.error("Error loading Google Maps:", e);
+      });
+  };
+
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -43,7 +103,7 @@ const EditEvents = () => {
         ...formData,
         [name]: file // Save the file
       });
-      setSelectedBannerFileName(file?.name || ""); // Update selected file name
+      setPreviewImage(URL.createObjectURL(file)); // Show the new selected image as a preview
     } else {
       setFormData({
         ...formData,
@@ -93,16 +153,18 @@ const EditEvents = () => {
     }
 
 
-      const formDataToSend = new FormData();
-  formDataToSend.append('eventName', formData.eventName);
-  formDataToSend.append('organizedBy', formData.organizedBy);
-  formDataToSend.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
-  formDataToSend.append('venueDescription', formData.description);
-  formDataToSend.append('venueName', formData.destination);
-  formDataToSend.append('bannerImage', formData.bannerImage);
-  formData.details.forEach((detail, index) => {
-    formDataToSend.append(`eventDetails[${index}]`, detail);
-  });
+    const formDataToSend = new FormData();
+    formDataToSend.append('eventName', formData.eventName);
+    formDataToSend.append('organizedBy', formData.organizedBy);
+    formDataToSend.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
+    formDataToSend.append('venueDescription', formData.description);
+    formDataToSend.append('venueName', formData.destination);
+    formDataToSend.append('bannerImage', formData.bannerImage);
+    formDataToSend.append('venueLocation.latitude', formData.coordinates.lat);
+    formDataToSend.append('venueLocation.longitude', formData.coordinates.lng);
+    formData.details.forEach((detail, index) => {
+      formDataToSend.append(`eventDetails[${index}]`, detail);  
+    });
 
    
     try {
@@ -127,6 +189,8 @@ const EditEvents = () => {
       console.log(response.data);
       setLoading(false)
       // navigate(-1)
+      fetchEvent()
+     
     } catch (error) {
       console.error('Error submitting event:', error);
       setSnackAlertData({
@@ -157,9 +221,20 @@ const EditEvents = () => {
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [''], // Ensure details is an array
         destination: eventData?.venueName,
-        bannerImage: null,
+        bannerImage: eventData.bannerImage,
+        coordinates: {
+          lat: parseFloat(eventData?.venueLocation?.latitude),
+          lng: parseFloat(eventData?.venueLocation?.longitude),
+        },
       });
-      setSelectedBannerFileName(eventData.bannerImage);
+       // Set the preview image from the existing banner image URL
+       setPreviewImage(eventData.bannerImage);
+
+      // Load the map with the initial marker
+      loadMapWithMarker(
+        parseFloat(eventData?.venueLocation?.latitude),
+        parseFloat(eventData?.venueLocation?.longitude)
+      );
     } catch (error) {
       console.error('Error fetching event:', error);
     }
@@ -167,6 +242,8 @@ const EditEvents = () => {
 
   useEffect(() => {
     fetchEvent();
+    loadMapWithMarker();
+    
   }, []);
 
   return (
@@ -195,11 +272,28 @@ const EditEvents = () => {
           <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "170px" } }}>
-        <label htmlFor="uploadBannerImage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
+         {/* Image Preview and Upload Section */}
+         <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+        {/* Image Preview */}
+        <Box sx={{ width: "200px", height: "165px" }}>
+          {previewImage ? (
+            <img
+              src={formData.bannerImage}
+              alt="Event Banner"
+              style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+            />
+          ) : (
+            <Typography sx={{ color: "white", textAlign: "center", fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
+              No Image
+            </Typography>
+          )}
+        </Box>
+
+        {/* File Input */}
+        <label htmlFor="uploadBannerImage" style={{ cursor: "pointer", color: "#FFA100", textAlign: "center" , border:"2px solid yellow"}}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: {sm:"22px",xs:"15px"}, fontWeight: "600" }}>
-            {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
+          <Typography sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
+            {selectedBannerFileName ? `Click to change Image` : "Upload Image"}
           </Typography>
         </label>
       </Box>
@@ -397,6 +491,10 @@ const EditEvents = () => {
           fontSize='20px'
           fontWeight='600'
         />
+      </Box>
+       {/* Map for showing and selecting location */}
+       <Box sx={{ width: "100%", height: "500px" }}>
+        <div style={{ width: "100%", height: "100%", borderRadius: "12px" }} id="map"></div>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton

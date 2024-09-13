@@ -34,6 +34,7 @@ import EditStore from "./Pages/EditStore/EditStore";
 
 
 import ProtectedRoute from './Protected/Protected';
+import StoreDetails from "./Pages/StoreDetails/StoreDetails";
 
 function App() {
   return (
@@ -80,6 +81,8 @@ function App() {
           <Route path="store-management" element={<StoreManagement />} />
           <Route path="store-management/add-store" element={<AddStore />} />
           <Route path="store-management/edit-store/:id" element={<EditStore />} />
+          <Route path="store-management/view-store/:id" element={<StoreDetails />} />
+
 
 
 

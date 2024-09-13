@@ -193,6 +193,7 @@ const EditBadge = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+           width:"100%"
           }}
         >
           {previewImage ? (
@@ -200,8 +201,8 @@ const EditBadge = () => {
               src={state?.icon}
               alt="Selected Badge"
               style={{
-                width: "100%",
-                height: "auto",
+                width: "auto",
+                height: "190px",
                 borderRadius: "12px",
                 objectFit: "contain",
               }}

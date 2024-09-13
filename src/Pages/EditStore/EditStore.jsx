@@ -25,13 +25,16 @@ const EditStore = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  
   const navigate = useNavigate();
-  const [marker, setMarker] = useState(null); // State to store the marker
+  const [marker, setMarker] = useState(null); // State to store marker
+  const [mapLoaded, setMapLoaded] = useState(false);
   const { id } = useParams(); // Store ID from the URL parameters
 
+
+
   const loader = new Loader({
-    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY",
+    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your Google Maps API key
     version: "weekly",
     libraries: ["places"],
   });
@@ -41,28 +44,51 @@ const EditStore = () => {
     zoom: 4,
   };
 
-  // Function to load the map and set the marker for the coordinates from the API
+
   const loadMapWithMarker = async (lat, lng) => {
     loader.load()
       .then((google) => {
         const map = new google.maps.Map(document.getElementById("map"), {
           ...mapOptions,
           center: { lat, lng },
-          zoom: 15, // Adjust zoom to focus on the location
+          zoom: 15,
         });
 
-        // Create a marker and set it to the given coordinates
-        const marker = new google.maps.Marker({
+       map.addListener('click', (event) => {
+          const newLat = event.latLng.lat();
+          const newLng = event.latLng.lng();
+          setFormData((prev) => ({
+            ...prev,
+            coordinates: { lat: newLat, lng: newLng },
+          }));
+
+          // Remove the previous marker if it exists
+          if (marker) {
+            marker.setMap(null);
+            setMarker(null);
+          }
+
+          // Add the new marker
+          const newMarker = new google.maps.Marker({
+            position: { lat: newLat, lng: newLng },
+            map,
+          });
+
+          setMarker(newMarker);
+          console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 
+        });
+
+        const initialMarker = new google.maps.Marker({
           position: { lat, lng },
           map,
         });
-
-        setMarker(marker); // Save the marker instance
+        setMarker(initialMarker);
       })
       .catch((e) => {
         console.error("Error loading Google Maps:", e);
       });
   };
+
 
   // Fetch the store details from the API and populate the form
   const fetchStoreDetails = async () => {
@@ -102,6 +128,7 @@ const EditStore = () => {
 
   useEffect(() => {
     fetchStoreDetails(); // Fetch store details on component mount
+    loadMapWithMarker()
   }, []);
 
   const handleChange = (e) => {
@@ -144,7 +171,7 @@ const EditStore = () => {
       });
 
       setLoading(false);
-      navigate('/admin/store-management'); // Redirect to store management after success
+      fetchStoreDetails()
     } catch (error) {
       console.error('Error updating store:', error);
       setSnackAlertData({
@@ -203,54 +230,9 @@ const EditStore = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', flexDirection: { md: 'column', xs: 'column' }, gap: '1.5rem' }}>
-        <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-          <Typography
-            sx={{
-              color: '#FFA100',
-              fontWeight: '500',
-              fontSize: {
-                sm: '16px',
-                xs: '16px',
-              },
-              fontFamily: 'Montserrat !important',
-            }}
-          >
-            Latitude
-          </Typography>
-          <CustomInputShadow
-            placeholder="Latitude"
-            name="lat"
-            value={formData.coordinates.lat}
-            onChange={handleChange}
-            error={errors.latitude}
-          />
-        </Box>
-      </Box>
+    
 
-      <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-        <Typography
-          sx={{
-            color: '#FFA100',
-            fontWeight: '500',
-            fontSize: {
-              sm: '16px',
-              xs: '16px',
-            },
-            fontFamily: 'Montserrat !important',
-          }}
-        >
-          Longitude
-        </Typography>
-        <CustomInputShadow
-          placeholder="Longitude"
-          name="lng"
-          value={formData.coordinates.lng}
-          onChange={handleChange}
-          error={errors.longitude}
-        />
-      </Box>
-
+     
       <CustomButton
         border="1px solid #FFA100"
         ButtonText={loading ? 'Updating...' : 'Update Store'}
@@ -266,7 +248,7 @@ const EditStore = () => {
       />
 
       <Box sx={{ width: "100%", height: "500px" }}>
-        <div style={{ width: "100%", height: "100%" }} id='map'>Map</div>
+        <div style={{ width: "100%", height: "100%" }} id='map'></div>
       </Box>
 
       <SnackAlert

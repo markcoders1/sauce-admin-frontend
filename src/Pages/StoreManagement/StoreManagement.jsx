@@ -28,6 +28,7 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
 
 import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal";
+
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL
 
 
@@ -51,31 +52,7 @@ const [allStores, setAllStores] = useState([]);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const fetchReviews = async (currentPage) => {
-    try {
-      setLoading(true);
-      const response = await axios({
-        url: `${appUrl}/get-all-badges`,
-        method: "get",
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          page: currentPage, // Pass the current page to the backend
-          limit: 8, // Assuming each page should show 8 badges
-        },
-      });
-      setAllBadges(response?.data?.badges || []); // Set the badges data
-      setTotalPages(response?.data?.pagination?.totalPages || 1); // Update total pages based on response
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      setLoading(false);
-    }
-  };
-
-  const fetchAllStores = async () => {
+  const fetchStores = async (currentPage) => {
     try {
       setLoading(true);
       const response = await axios({
@@ -85,33 +62,31 @@ const [allStores, setAllStores] = useState([]);
           Authorization: `Bearer ${auth.accessToken}`,
           "Content-Type": "application/json",
         },
-        // params: {
-        //   page: currentPage, // Pass the current page to the backend
-        //   limit: 8, // Assuming each page should show 8 badges
-        // },
+        params: {
+          page: currentPage, // Pass the current page to the backend
+          limit: 8, // Set the limit per page
+        },
       });
-      setAllStores(response.data.stores)
-      
-      console.log(response)
-    //   setAllBadges(response?.data?.badges || []); // Set the badges data
-    //   setTotalPages(response?.data?.pagination?.totalPages || 1); // Update total pages based on response
+      console.log(response.data)
+
+      setAllStores(response.data.stores || []); // Set the stores data
+      setTotalPages(response.data.pagination.totalPages ||1); // Update total pages
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching reviews:", error);
+      console.error("Error fetching stores:", error);
       setLoading(false);
     }
   };
 
+  
 
 
-  useEffect(() => {
-    fetchReviews(page);
-    // fetchAllStores()
-  }, [page]);
+
+
 
   useEffect(()=>{
-fetchAllStores()
-  },[])
+    fetchStores(page)
+  },[page])
 
   
   const openLightbox = (imageSrc) => {
@@ -119,10 +94,14 @@ fetchAllStores()
     setIsOpen(true);
   };
 
-  const handlePageChange = (event, value) => {
+   // Handle Pagination Change
+   const handlePageChange = (event, value) => {
     setPage(value);
-    fetchReviews(value);
   };
+
+  useEffect(()=>{
+console.log(allStores)
+  },[])
 
   const handleCopyUrl = (url) => {
     navigator.clipboard.writeText(url);
@@ -158,6 +137,10 @@ fetchAllStores()
  const handleNavigateToEdit = (id) => {
     navigate(`/admin/store-management/edit-store/${id}`)
  }
+
+ const handleNavigateToView = (id) => {
+  navigate(`/admin/store-management/view-store/${id}`)
+}
 
   return (
     <>
@@ -210,7 +193,7 @@ fetchAllStores()
               />
             </Tooltip>
           </Box>
-          {allBadges?.length === 0 ? (
+          {allStores?.length === 0 ? (
             <Typography
               sx={{
              
@@ -406,7 +389,21 @@ fetchAllStores()
                               gap: "1rem",
                             }}
                           >
-                            <Tooltip title="Edit Badge">
+                              <Tooltip title="Delete Badge">
+                              <CustomButton
+                border="1px solid #FFA100"
+                ButtonText="View Store"
+                color="white"
+                width={"120px"}
+                borderRadius="8px"
+                // background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
+                padding="10px 0px"
+                fontSize="16px"
+                fontWeight="400"
+                onClick={()=>handleNavigateToView(review._id)}
+              />
+                            </Tooltip>
+                            <Tooltip title="Edit Store">
                               <img
                                 src={EditIcon}
                                 style={{

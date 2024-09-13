@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography } from '@mui/material';
@@ -27,7 +27,7 @@ const AddStore = () => {
   const [loading, setLoading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
-  const [marker, setMarker] = useState(null); // State to store the marker
+  const [marker, setMarker] = useState(); // State to store the marker
 
   const loader = new Loader({
     apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY",
@@ -59,6 +59,7 @@ const AddStore = () => {
             // Check if a marker exists and remove it
             if (marker) {
               marker.setMap(null); // Clear the previous marker
+              setMarker(null)
             }
 
             // Create a new marker and add it to the map
@@ -66,6 +67,7 @@ const AddStore = () => {
               position: { lat, lng },
               map,
             });
+            console.log(newMarker)
 
             setMarker(newMarker); // Save the new marker instance
 
@@ -79,6 +81,10 @@ const AddStore = () => {
         });
     }
   };
+
+  useEffect(()=>{
+    loadMap()
+  },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -197,7 +203,7 @@ const AddStore = () => {
         </Box>
       </Box>
 
-      <CustomButton
+      {/* <CustomButton
         border="1px solid #FFA100"
         ButtonText={"Open Map"}
         color="white"
@@ -208,10 +214,10 @@ const AddStore = () => {
         fontSize="18px"
         fontWeight="600"
         onClick={loadMap}
-      />
+      /> */}
 
       <Box sx={{ width: "100%", height: "500px" }}>
-        <div style={{ width: "100%", height: "100%" }} id='map'>Map</div>
+        <div style={{ width: "100%", height: "100%", borderRadius:"12px" }} id='map'></div>
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0 }}>
