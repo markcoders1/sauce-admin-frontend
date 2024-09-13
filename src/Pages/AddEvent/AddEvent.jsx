@@ -40,7 +40,7 @@ const AddSEvent = () => {
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
 
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [marker, setMarker] = useState(null); // State to store marker instance
+  let [marker, setMarker] = useState(null); // State to store marker instance
 
   const loader = new Loader({
     apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your own API key
@@ -69,13 +69,18 @@ const AddSEvent = () => {
             longitude: lng.toString(),
           }));
 
-          // Clear previous marker if exists and set new one
-          if (marker) marker.setMap(null);
-          const newMarker = new google.maps.Marker({
+           // Check if a marker exists and remove it
+           if (marker && marker.setMap) {
+            marker.setMap(null);
+          }
+
+          marker = new google.maps.Marker({
             position: { lat, lng },
             map,
           });
-          setMarker(newMarker);
+          setMarker(marker);
+          console.log(`Coordinates selected: Latitude: ${lat}, Longitude: ${lng}`);
+
         });
 
         setMapLoaded(true); // Mark map as loaded

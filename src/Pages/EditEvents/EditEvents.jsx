@@ -35,7 +35,7 @@ const EditEvents = () => {
   });
   const [errors, setErrors] = useState({});
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
-  const [marker, setMarker] = useState(null); // State to store marker
+  let [marker, setMarker] = useState(null); // State to store marker
   const [mapLoaded, setMapLoaded] = useState(false);
   const [previewImage, setPreviewImage] = useState(""); 
   const loader = new Loader({
@@ -67,19 +67,18 @@ const EditEvents = () => {
             coordinates: { lat: newLat, lng: newLng },
           }));
 
-          // Remove the previous marker if it exists
-          if (marker) {
-            marker.setMap(null);
-            setMarker(null);
-          }
+  // Check if a marker exists and remove it
+  if (marker && marker.setMap) {
+    marker.setMap(null);
+  }
 
           // Add the new marker
-          const newMarker = new google.maps.Marker({
+           marker = new google.maps.Marker({
             position: { lat: newLat, lng: newLng },
             map,
           });
 
-          setMarker(newMarker);
+          setMarker(marker);  
           console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 
         });
 
