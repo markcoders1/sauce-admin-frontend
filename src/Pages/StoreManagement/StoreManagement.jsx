@@ -155,8 +155,8 @@ fetchAllStores()
     handleCloseDeleteModal();
   };
 
- const handleNavigateToEdit = (state) => {
-    navigate("/admin/store-management/edit-store", {state: state})
+ const handleNavigateToEdit = (id) => {
+    navigate(`/admin/store-management/edit-store/${id}`)
  }
 
   return (
@@ -414,7 +414,7 @@ fetchAllStores()
                                   height: "24px",
                                   cursor: "pointer",
                                 }}
-                                onClick={()=> handleNavigateToEdit(review)}
+                                onClick={()=> handleNavigateToEdit(review._id)}
                                 alt="Copy"
                               />
                             </Tooltip>

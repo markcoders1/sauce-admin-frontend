@@ -14,7 +14,6 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AddStore = () => {
   const auth = useSelector((state) => state.auth);
-//   console.log(auth)
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: '',
@@ -28,6 +27,7 @@ const AddStore = () => {
   const [loading, setLoading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
+  const [marker, setMarker] = useState(null); // State to store the marker
 
   const loader = new Loader({
     apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY",
@@ -55,6 +55,20 @@ const AddStore = () => {
               ...prev,
               coordinates: { lat, lng },
             }));
+
+            // Check if a marker exists and remove it
+            if (marker) {
+              marker.setMap(null); // Clear the previous marker
+            }
+
+            // Create a new marker and add it to the map
+            const newMarker = new google.maps.Marker({
+              position: { lat, lng },
+              map,
+            });
+
+            setMarker(newMarker); // Save the new marker instance
+
             console.log(`Coordinates selected: Latitude: ${lat}, Longitude: ${lng}`);
           });
 

@@ -79,7 +79,7 @@ function App() {
 
           <Route path="store-management" element={<StoreManagement />} />
           <Route path="store-management/add-store" element={<AddStore />} />
-          <Route path="store-management/edit-store" element={<EditStore />} />
+          <Route path="store-management/edit-store/:id" element={<EditStore />} />
 
 
 
