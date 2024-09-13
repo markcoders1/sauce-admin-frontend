@@ -151,6 +151,7 @@ loadMap()
       });
       return;
     }
+    console.log(formData)
 
     try {
       setLoading(true);
@@ -168,7 +169,7 @@ loadMap()
       data.append('venueLocation.latitude', formData?.latitude);
 
       const response = await axios({
-        url: `${appUrl}/admin/add-event`,
+        // url: `${appUrl}/admin/add-event`,
         method: "post",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

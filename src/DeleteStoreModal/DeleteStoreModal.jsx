@@ -39,21 +39,22 @@ const ConfirmDeleteModalForStore = ({ open, handleClose, reviewId, onSuccess }) 
 
             setLoading(false);
 
-            if (response) {
+         
                 setSnackAlertData({
                     open: true,
-                    message: "Store deleted successfully.",
+                    message: response.data.message,
                     severity: "success",
                 });
                 onSuccess();  // Refresh reviews list
                 handleClose();
-            }
+            
 
         } catch (error) {
             setLoading(false);
+            console.log(error)
             setSnackAlertData({
                 open: true,
-                message: "Failed to delete Store.",
+                message: error.response.data.message,
                 severity: "error",
             });
         }
@@ -94,10 +95,10 @@ const ConfirmDeleteModalForStore = ({ open, handleClose, reviewId, onSuccess }) 
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            Delete Review
+                            Delete Store
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
-                            Are you sure you want to delete this Badge?
+                            Are you sure you want to delete this Store?
                         </Typography>
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 4, gap: "1rem" }}>
                             <CustomButton

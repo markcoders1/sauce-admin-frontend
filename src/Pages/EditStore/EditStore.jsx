@@ -31,8 +31,6 @@ const EditStore = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const { id } = useParams(); // Store ID from the URL parameters
 
-
-
   const loader = new Loader({
     apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your Google Maps API key
     version: "weekly",
@@ -44,7 +42,7 @@ const EditStore = () => {
     zoom: 4,
   };
 
-
+  // Load the map and add a marker
   const loadMapWithMarker = async (lat, lng) => {
     loader.load()
       .then((google) => {
@@ -54,7 +52,7 @@ const EditStore = () => {
           zoom: 15,
         });
 
-       map.addListener('click', (event) => {
+        map.addListener('click', (event) => {
           const newLat = event.latLng.lat();
           const newLng = event.latLng.lng();
           setFormData((prev) => ({
@@ -88,7 +86,6 @@ const EditStore = () => {
         console.error("Error loading Google Maps:", e);
       });
   };
-
 
   // Fetch the store details from the API and populate the form
   const fetchStoreDetails = async () => {
@@ -128,7 +125,7 @@ const EditStore = () => {
 
   useEffect(() => {
     fetchStoreDetails(); // Fetch store details on component mount
-    loadMapWithMarker()
+    loadMapWithMarker();
   }, []);
 
   const handleChange = (e) => {
@@ -171,7 +168,7 @@ const EditStore = () => {
       });
 
       setLoading(false);
-      fetchStoreDetails()
+      fetchStoreDetails();
     } catch (error) {
       console.error('Error updating store:', error);
       setSnackAlertData({
@@ -230,9 +227,16 @@ const EditStore = () => {
         </Box>
       </Box>
 
-    
+      {/* Map for selecting store location */}
+      <Box sx={{ width: "100%", height: "500px" }}>
+        <div style={{ width: "100%", height: "100%", borderRadius: "12px" }} id="map"></div>
+      </Box>
 
-     
+
+<Box sx={{
+  display:"flex",
+  justifyContent:"end"
+}} >
       <CustomButton
         border="1px solid #FFA100"
         ButtonText={loading ? 'Updating...' : 'Update Store'}
@@ -247,10 +251,7 @@ const EditStore = () => {
         disabled={loading}
       />
 
-      <Box sx={{ width: "100%", height: "500px" }}>
-        <div style={{ width: "100%", height: "100%" }} id='map'></div>
-      </Box>
-
+</Box>
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}

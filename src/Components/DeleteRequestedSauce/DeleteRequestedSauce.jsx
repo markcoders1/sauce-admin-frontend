@@ -97,10 +97,10 @@ const ConfirmDeleteModalRequestedSauce = ({ open, handleClose, reviewId, onSucce
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            Delete Review
+                            Delete Requested sauce
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
-                            Are you sure you want to delete this review?
+                            Are you sure you want to delete this Requested Sauce?
                         </Typography>
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 4, gap: "1rem" }}>
                             <CustomButton

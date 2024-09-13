@@ -273,14 +273,14 @@ const EditEvents = () => {
         </Typography>
       </Box>
          {/* Image Preview and Upload Section */}
-         <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+         <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center", }}>
         {/* Image Preview */}
-        <Box sx={{ width: "200px", height: "165px" }}>
+        <Box sx={{ width: "100%", height: "165px", flexBasis:"50%", display:"flex", justifyContent:"center  " }}>
           {previewImage ? (
             <img
-              src={formData.bannerImage}
+              src={previewImage}
               alt="Event Banner"
-              style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+              style={{ width:"200px", height: "100%", objectFit: "cover", borderRadius: "12px",}}
             />
           ) : (
             <Typography sx={{ color: "white", textAlign: "center", fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
@@ -290,10 +290,10 @@ const EditEvents = () => {
         </Box>
 
         {/* File Input */}
-        <label htmlFor="uploadBannerImage" style={{ cursor: "pointer", color: "#FFA100", textAlign: "center" , border:"2px solid yellow"}}>
+        <label htmlFor="uploadBannerImage" style={{ cursor: "pointer", color: "#FFA100", textAlign: "center" , border:"2px dashed #FFA100", flexBasis:"50%", height:"165px", display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#2E210A", borderRadius:"8px"}}>
           <input type="file" id="uploadBannerImage" name="bannerImage" style={{ display: 'none' }} onChange={handleChange} />
           <Typography sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
-            {selectedBannerFileName ? `Click to change Image` : "Upload Image"}
+            {selectedBannerFileName ? `${selectedBannerFileName}` : "Upload Image"}
           </Typography>
         </label>
       </Box>

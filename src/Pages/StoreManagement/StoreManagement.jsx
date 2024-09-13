@@ -27,7 +27,8 @@ import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
 
-import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal";
+// import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal";
+import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal.jsx";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL
 
@@ -479,7 +480,7 @@ console.log(allStores)
               open={deleteModalOpen}
               handleClose={handleCloseDeleteModal}
               reviewId={reviewToDelete} // Pass the review ID here
-              onSuccess={() => fetchReviews(page)} // Refresh reviews list after deletion
+              onSuccess={() => fetchStores(page)} // Refresh reviews list after deletion
             />
           )}
         

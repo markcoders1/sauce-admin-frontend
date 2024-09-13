@@ -8,7 +8,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CustomSelectForType from '../../Components/CustomSelectForType/CustomSelectForType';
 import MenuBar from '../../Components/MenuBar/MenuBar';
-import Heading from '../../Components/Heading/Heading';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -26,9 +25,8 @@ const EditBrandDetails = () => {
     type: '',
     status: '',
     points: '',
-    about: Array(6).fill(''), // Initialize about with 6 empty strings
-    isTopRated: null,
-
+    about: [''], // Initialize with one empty string, will allow adding more dynamically
+    isTopRated: false,
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -66,6 +64,24 @@ const EditBrandDetails = () => {
     setFormData({ ...formData, about: newAbout });
   };
 
+  // Function to add a new bullet point
+  const addBullet = () => {
+    setFormData({
+      ...formData,
+      about: [...formData.about, '']
+    });
+  };
+
+  const removeBullet = (index) => {
+    if (formData.about.length > 1) {
+      const updatedAbout = formData.about.filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        about: updatedAbout
+      });
+    }
+  };
+
   const fetchUser = async () => {
     try {
       const response = await axios({
@@ -74,20 +90,17 @@ const EditBrandDetails = () => {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
         },
-        // params: {
-        //   userId : id
-        // }
       });
       const userData = response?.data?.user;
-      console.log(response.data)
+      console.log(response.data);
       setFormData({
         name: userData?.name || '',
         image: userData?.image || '',
         type: userData?.type || '',
         status: userData?.status || '',
         points: userData?.points || 0,
-        about: userData?.about || Array(6).fill(''), // Fetch about if available, else set to 6 empty strings
-        isTopRated : userData?.isTopRated || null
+        about: userData?.about || [''], // Fetch about if available, else set to one empty string
+        isTopRated: userData?.isTopRated || false,
       });
       setSelectedFileName(userData.image);
     } catch (error) {
@@ -102,7 +115,6 @@ const EditBrandDetails = () => {
   const handleSubmit = async () => {
     console.log('Form data submitted:', formData);
   
-    // Check for file size
     if (formData.image && formData.image.size > 4 * 1024 * 1024) {
       setSnackAlertData({
         open: true,
@@ -121,7 +133,6 @@ const EditBrandDetails = () => {
     formDataToSend.append('userId', id);
     formDataToSend.append('isTopRated', formData.isTopRated);
 
-  
     // Handle about array
     formDataToSend.append('about', JSON.stringify(formData.about));
   
@@ -137,7 +148,6 @@ const EditBrandDetails = () => {
         data: formDataToSend,
       });
   
-      // navigate(-1)
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -155,7 +165,6 @@ const EditBrandDetails = () => {
       });
     }
   };
-  
 
   return (
     <Box
@@ -183,6 +192,7 @@ const EditBrandDetails = () => {
           <MenuBar/>  <NavigateBack /> 
         </Typography>
       </Box>
+
       <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
         <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
         <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
@@ -292,64 +302,119 @@ const EditBrandDetails = () => {
         </Box>
       </Box>
 
+      {/* Conditionally show 'About' section if the type is 'brand' */}
       {formData.type === 'brand' && (
         <>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Typography sx={{
-                            color: "#FFA100",
-                            fontWeight: "500",
-                            fontSize: {
-                                sm: "16px",
-                                xs: "16px"
-                            },
-                            fontFamily: "Montserrat !important",
-                        }}>
-                           About
-                        </Typography>
-          {formData.about.map((about, index) => (
-            <CustomInputShadow
-              key={index}
-              placeholder={`About ${index + 1}`}
-              name={`about${index + 1}`}
-              value={about} // Corrected the value reference
-              onChange={(e) => handleAboutChange(index, e.target.value)} // Changed to handleAboutChange
-              error={errors[`about${index + 1}`]}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <Typography sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px"
+              },
+              fontFamily: "Montserrat !important",
+            }}>
+              About
+            </Typography>
+            {formData.about.map((about, index) => (
+              <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem', width:"100%" }}>
+                <Box sx={{
+                  flexBasis:"95%"
+                }} >
+
+             
+                <CustomInputShadow
+                  placeholder={`About ${index + 1}`}
+                  name={`about${index + 1}`}
+                  value={about}
+                  onChange={(e) => handleAboutChange(index, e.target.value)}
+                  error={errors[`about${index + 1}`]}
+                  inputStyle={{
+                    width:"100%"
+                  }}
+
+                />
+                   </Box>
+                {formData.about.length > 0 && (
+                  <CustomButton
+                    border='1px solid #FFA100'
+                    ButtonText={"Remove"}
+                    color='white'
+                    width={"98"}
+                    height={"100px"}
+                    borderRadius='8px'
+                    buttonStyle={{height:"75px", mt:"-15px"}}
+                    
+                    onClick={() => removeBullet(index)}
+                  />
+                )}
+              </Box>
+            ))}
+
+            {/* Button to add more bullet points */}
+            <CustomButton
+              border='1px solid #FFA100'
+              ButtonText={"Add Bullet Point"}
+              color='white'
+              width={"100%"}
+              borderRadius='6px'
+              onClick={addBullet}
+              
+              fontSize='18px'
+              fontWeight='600'
+              buttonStyle={{
+                height:"80px"
+              }}
             />
-          ))}
-        </Box>
-        
-        <Box>
-      <CustomSelectForType
-        label={"Brand Type"}
-        options={[
-          { label: "None", value: false },
-          { label: "Top Rated", value: true },
-        ]}
-        handleChange={(selectedValue) =>
-          setFormData({ ...formData, isTopRated: selectedValue })
-        }
-        value={formData.isTopRated}
-        labelField="label"
-        valueField="value"
-      />
-      </Box>
+          </Box>
+
+          <Box sx={{ marginTop: '20px' }}>
+            <Typography sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px"
+              },
+              mb:"5px",
+              fontFamily: "Montserrat !important",
+            }}>
+              Make Top Rated
+            </Typography>
+                        
+            <CustomSelectForType
+              label={"Brand Type"}
+              options={[
+                { label: "None", value: false },
+                { label: "Top Rated", value: true },
+              ]}
+              handleChange={(selectedValue) =>
+                setFormData({ ...formData, isTopRated: selectedValue })
+              }
+              value={formData.isTopRated}
+              labelField="label"
+              valueField="value"
+            />
+          </Box>
         </>
       )}
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText={loading ? "Saving": "Save"}
+          ButtonText={loading ? "Saving" : "Save"}
           color='white'
           width={"178px"}
           borderRadius='8px'
-          background= {loading? "" :  'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
+          background={loading ? "" : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
           padding='10px 0px'
           fontSize='18px'
           fontWeight='600'
           onClick={handleSubmit}
         />
       </Box>
+
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}
