@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -26,6 +26,8 @@ import Tooltip from "@mui/material/Tooltip";
 import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
+import SearchIcon from "../../assets/SearchIcon.png";
+import { debounce } from "lodash"; // Import lodash debounce
 
 import ConfirmDeleteModalForBadge from "../../Components/DeleteBadge/DeleteBadgeModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL
@@ -42,7 +44,9 @@ const BadgeManagement = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [addReviewModalOpen, setAddReviewModalOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState(""); 
+
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -60,6 +64,7 @@ const BadgeManagement = () => {
         params: {
           page: currentPage, // Pass the current page to the backend
           limit: 8, // Assuming each page should show 8 badges
+          searchTerm: searchTerm,
         },
       });
       setAllBadges(response?.data?.badges || []); // Set the badges data
@@ -87,9 +92,23 @@ const BadgeManagement = () => {
     }
   };
 
+     // Debounce the search input
+     const debouncedSearch = useCallback(
+      debounce((value) => {
+        setSearchTerm(value);
+      }, 2000),
+      []
+    );
+
   useEffect(() => {
     fetchReviews(page);
-  }, [page]);
+  }, [page, searchTerm]);
+
+
+  const handleSearchChange = (event) => {
+    setPage(1); // Reset to page 1 on search
+    debouncedSearch(event.target.value); // Trigger debounced search
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -154,7 +173,7 @@ const BadgeManagement = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              p: { sm: "0px 20px 0px 20px", xs: "0px 0px 0px 0px" },
+              p: { md: "0px 20px 0px 20px", xs: "0px 0px 0px 0px" },
               alignItems: "center",
               flexDirection: { md: "row", xs: "column" },
               gap: "20px",
@@ -180,20 +199,53 @@ const BadgeManagement = () => {
               </Typography>
               <MenuBar />
             </Box>
-            <Tooltip title="Add Review">
-              <CustomButton
-                border="1px solid #FFA100"
-                ButtonText="Add Badge+"
-                color="white"
-                width={"198px"}
-                borderRadius="8px"
-                background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
-                padding="10px 0px"
-                fontSize="16px"
-                fontWeight="600"
-                onClick={handleNavigate}
-              />
-            </Tooltip>
+            <Box sx={{ display: "flex", gap: "1rem", flexDirection:{sm:"row", xs:"column"} }}>
+            <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: { md: "350px", xs: "100%" },
+                }}
+              >
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  className="search-input"
+                  placeholder="Search"
+                  onChange={handleSearchChange}
+                  style={{ color: "white" }}
+                />
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  style={{
+                    position: "absolute",
+                    top: "14px",
+                    right: "20px",
+                  }}
+                />
+              </Box>
+            </Box>
+            <Box sx={{ width: { sm: "200px", xs: "100%" } }}>
+              <Tooltip title="Add Badge">
+                <CustomButton
+                  border="1px solid #FFA100"
+                  ButtonText="Add Store+"
+                  color="white"
+                  width={"100%"}
+                  borderRadius="8px"
+                  background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
+                  padding="7px 0px"
+                  fontSize="16px"
+                  fontWeight="600"
+                  onClick={handleNavigate}
+                />
+              </Tooltip>
+            </Box>
+          </Box>
+
           </Box>
           {allBadges?.length === 0 ? (
             <Typography

@@ -65,6 +65,7 @@ const UserManagement = () => {
       setAllUsers(response?.data?.entities || response?.data?.users);
       setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
+      console.log(response)
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);

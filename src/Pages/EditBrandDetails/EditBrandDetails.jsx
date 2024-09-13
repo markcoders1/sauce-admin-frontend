@@ -33,6 +33,7 @@ const EditBrandDetails = () => {
   const auth = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -43,6 +44,7 @@ const EditBrandDetails = () => {
         [name]: file
       }));
       setSelectedFileName(file?.name || ""); // Update selected file name
+      setPreviewImage(URL.createObjectURL(file)); 
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -102,7 +104,7 @@ const EditBrandDetails = () => {
         about: userData?.about || [''], // Fetch about if available, else set to one empty string
         isTopRated: userData?.isTopRated || false,
       });
-      setSelectedFileName(userData.image);
+      setPreviewImage(userData?.image);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -193,10 +195,29 @@ const EditBrandDetails = () => {
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: { lg: "row", xs: "column" }, gap: "1.5rem", height: { lg: "100%", xs: "370px" } }}>
-        <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
-        <label htmlFor="uploadimage" style={{ flexBasis: "100%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <Typography sx={{ color: "white", textAlign: "center", fontSize: {sm:"22px",xs:"16px"}, fontWeight: "600" }}>{selectedFileName ? `Selected File: ${selectedFileName}` : "Upload Banner Image"}</Typography>
+         {/* Image Preview and Upload Section */}
+         <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+        {/* Image Preview */}
+        <Box sx={{ width: "100%", height: "165px", flexBasis: "50%", display: "flex", justifyContent: "center" }}>
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="Brand Banner"
+              style={{ width: "200px", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+            />
+          ) : (
+            <Typography sx={{ color: "white", textAlign: "center", fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
+              No Image
+            </Typography>
+          )}
+        </Box>
+
+        {/* File Input */}
+        <label htmlFor="uploadimage" style={{ cursor: "pointer", color: "#FFA100", textAlign: "center", border: "2px dashed #FFA100", flexBasis: "50%", height: "165px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#2E210A", borderRadius: "8px" }}>
+          <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
+          <Typography sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
+            {selectedFileName ? `${selectedFileName}` : "Upload Image"}
+          </Typography>
         </label>
       </Box>
 
@@ -301,6 +322,34 @@ const EditBrandDetails = () => {
           />
         </Box>
       </Box>
+      <Box sx={{  }}>
+            <Typography sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px"
+              },
+              mb:"5px",
+              fontFamily: "Montserrat !important",
+            }}>
+              Make Top Rated
+            </Typography>
+                        
+            <CustomSelectForType
+          
+              options={[
+                { label: "None", value: false },
+                { label: "Top Rated", value: true },
+              ]}
+              handleChange={(selectedValue) =>
+                setFormData({ ...formData, isTopRated: selectedValue })
+              }
+              value={formData.isTopRated}
+              labelField="label"
+              valueField="value"
+            />
+          </Box>
 
       {/* Conditionally show 'About' section if the type is 'brand' */}
       {formData.type === 'brand' && (
@@ -369,34 +418,7 @@ const EditBrandDetails = () => {
             />
           </Box>
 
-          <Box sx={{ marginTop: '20px' }}>
-            <Typography sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px"
-              },
-              mb:"5px",
-              fontFamily: "Montserrat !important",
-            }}>
-              Make Top Rated
-            </Typography>
-                        
-            <CustomSelectForType
-              label={"Brand Type"}
-              options={[
-                { label: "None", value: false },
-                { label: "Top Rated", value: true },
-              ]}
-              handleChange={(selectedValue) =>
-                setFormData({ ...formData, isTopRated: selectedValue })
-              }
-              value={formData.isTopRated}
-              labelField="label"
-              valueField="value"
-            />
-          </Box>
+        
         </>
       )}
 
