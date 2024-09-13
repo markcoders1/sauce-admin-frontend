@@ -158,7 +158,7 @@ const AddSpecificSauce = () => {
         title: "",
         ingredients: "",
         isFeatured: false,
-        isFeatured: true,
+    
       });
       setLoading(false);
     } catch (error) {
