@@ -157,8 +157,8 @@ const EditStore = () => {
         },
         data: {
           storeName: formData.storeName,
-          latitude: formData.coordinates.lat,
-          longitude: formData.coordinates.lng,
+          latitude: formData.coordinates.lat.toString(),
+          longitude: formData.coordinates.lng.toString(),
         },
       });
 
