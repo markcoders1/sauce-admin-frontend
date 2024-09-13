@@ -27,7 +27,7 @@ const EditStore = () => {
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
-  const [marker, setMarker] = useState(null); // State to store marker
+  let [marker, setMarker] = useState(null); // State to store marker
   const [mapLoaded, setMapLoaded] = useState(false);
   const { id } = useParams(); // Store ID from the URL parameters
 
@@ -61,18 +61,18 @@ const EditStore = () => {
           }));
 
           // Remove the previous marker if it exists
-          if (marker) {
+          if (marker && marker.setMap) {
             marker.setMap(null);
-            setMarker(null);
+          
           }
 
           // Add the new marker
-          const newMarker = new google.maps.Marker({
+          marker = new google.maps.Marker({
             position: { lat: newLat, lng: newLng },
             map,
           });
 
-          setMarker(newMarker);
+          setMarker(marker);
           console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 
         });
 

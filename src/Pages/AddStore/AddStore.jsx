@@ -27,7 +27,7 @@ const AddStore = () => {
   const [loading, setLoading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const navigate = useNavigate();
-  const [marker, setMarker] = useState(); // State to store the marker
+  let [marker, setMarker] = useState(); // State to store the marker
 
   const loader = new Loader({
     apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY",
@@ -57,19 +57,18 @@ const AddStore = () => {
             }));
 
             // Check if a marker exists and remove it
-            if (marker) {
-              marker.setMap(null); // Clear the previous marker
-              setMarker(null)
+            if (marker && marker.setMap) {
+              marker.setMap(null);
             }
 
             // Create a new marker and add it to the map
-            const newMarker = new google.maps.Marker({
+            marker = new google.maps.Marker({
               position: { lat, lng },
               map,
             });
-            console.log(newMarker)
+            console.log(marker)
 
-            setMarker(newMarker); // Save the new marker instance
+            setMarker(marker);
 
             console.log(`Coordinates selected: Latitude: ${lat}, Longitude: ${lng}`);
           });
