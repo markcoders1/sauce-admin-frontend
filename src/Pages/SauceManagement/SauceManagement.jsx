@@ -174,12 +174,14 @@ const SauceManagement = () => {
                                         }}
                                     />
                                 </Box>
-                                <Box>
+                                <Box sx={{
+                                    width:{sm:"200px", xs:"100%"}
+                                }} >
                                     <CustomButton
                                         border='1px solid #FFA100'
                                         ButtonText='Add Sauce+'
                                         color='white'
-                                        width={"178px"}
+                                        width={"100%"}
                                         borderRadius='8px'
                                         background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
                                         padding='7px 0px'

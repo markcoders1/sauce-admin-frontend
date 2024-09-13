@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -10,21 +10,23 @@ import {
   TableRow,
   Paper,
   Pagination,
+  Tooltip,
 } from "@mui/material";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightbox
+import "yet-another-react-lightbox/styles.css";
 import PageLoader from "../../Components/Loader/PageLoader";
-import logoAdmin from "../../assets/logoAdmin.png"; // Placeholder image for reviews without images
-import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the design consistent
+import logoAdmin from "../../assets/logoAdmin.png";
+import "../TabooManagement/TabooManagement.css";
 import copyIcon from "../../assets/copyIcon.png";
 import DeleteIcon from "../../assets/deleteIcon.png";
-import ConfirmDeleteModal from "../../Components/ConfirmReviewDeleteModal/ConfirmReviewDeleteModal"; // Import the ConfirmDeleteModal component
-import Tooltip from "@mui/material/Tooltip";
+import ConfirmDeleteModal from "../../Components/ConfirmReviewDeleteModal/ConfirmReviewDeleteModal";
 import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
+import { debounce } from "lodash";
+import SearchIcon from "../../assets/SearchIcon.png";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -38,9 +40,8 @@ const ReviewsManagement = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [addReviewModalOpen, setAddReviewModalOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState(""); // Added search term state
   const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   const fetchReviews = async (currentPage) => {
     try {
@@ -49,55 +50,48 @@ const ReviewsManagement = () => {
         url: `${appUrl}/get-official-reviews`,
         method: "get",
         headers: {
-          Authorization: `Bearer ${auth.accessToken}`, "Content-Type": `application/json`,
+          Authorization: `Bearer ${auth.accessToken}`,
+          "Content-Type": `application/json`,
+        },
+        params: {
+          page: currentPage,
+          limit: 8,
+          searchTerm, // Include search term in request
         },
       });
-      setOfficialReviews(response?.data?.officialReviews || []); // Assume API returns reviews array
-      setTotalPages(response?.data?.pagination?.totalPages || 1); // Adjust based on API response
+      setOfficialReviews(response?.data?.officialReviews || []);
+      setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching reviews:", error);
       setLoading(false);
     }
   };
 
-  const deleteOfficialReview = async (id) => {
-    try {
-      const response = await axios({
-        url: `${appUrl}/admin/delete-official-review/${id}`,
-        method: "delete", // Correctly set to DELETE method
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      });
-      console.log(response);
-      fetchReviews(page); // Refresh the reviews list
-    } catch (error) {
-      console.error("Error deleting review:", error);
-    }
-  };
+  // Debounced search handler
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setSearchTerm(value);
+    }, 2000),
+    []
+  );
 
   useEffect(() => {
     fetchReviews(page);
-  }, [page]);
+  }, [page, searchTerm]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const handleSearchChange = (event) => {
+    setPage(1); // Reset to page 1 on search
+    debouncedSearch(event.target.value); // Trigger debounced search
   };
 
   const openLightbox = (imageSrc) => {
     setSelectedImage(imageSrc);
     setIsOpen(true);
-  };
-
-  const handlePageChange = (event, value) => {
-    setPage(value);
-    fetchReviews(value);
   };
 
   const handleCopyUrl = (url) => {
@@ -166,12 +160,47 @@ const ReviewsManagement = () => {
               </Typography>
               <MenuBar />
             </Box>
+            <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: { md: "350px", xs: "100%" },
+                }}
+              >
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  className="search-input"
+                  placeholder="Search"
+                  onChange={handleSearchChange} // Handle search input change
+                  style={{ color: "white" }}
+                />
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  style={{
+                    position: "absolute",
+                    top: "14px",
+                    right: "20px",
+                  }}
+                />
+              </Box>
+            </Box  >
+            <Box
+            sx={{
+              width:{md:"300px", xs:"100%"}
+            }}
+            >
+
+           
             <Tooltip title="Add Review">
               <CustomButton
                 border="1px solid #FFA100"
                 ButtonText="Add Review+"
                 color="white"
-                width={"198px"}
+                width={"100%"}
                 borderRadius="8px"
                 background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
                 padding="10px 0px"
@@ -180,11 +209,11 @@ const ReviewsManagement = () => {
                 onClick={handleAddReview}
               />
             </Tooltip>
+            </Box>
           </Box>
           {officialReviews.length === 0 ? (
             <Typography
               sx={{
-             
                 textAlign: "center",
                 fontWeight: "600",
                 mt: 4,
@@ -442,4 +471,3 @@ const ReviewsManagement = () => {
 };
 
 export default ReviewsManagement;
-  
