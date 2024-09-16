@@ -16,7 +16,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const isOpen = useSelector((state) => state.sidebar.isOpen)
-    console.log("mobilesidebr",isOpen)
+    console.log("mobilesidebr",isOpen);
 
 
     const handleLogout = () => {
@@ -34,6 +34,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
         navigate("/");
         localStorage.removeItem("accessToken");
         dispatch(toggleSidebar())
+        dispatch(closeSidebar()); 
     };
 
     const handleOpenModal = () => setModalOpen(true);

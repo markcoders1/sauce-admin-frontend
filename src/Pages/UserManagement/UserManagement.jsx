@@ -281,6 +281,22 @@ const UserManagement = () => {
                     >
                       Email
                     </TableCell>
+                    {/* <TableCell
+                      sx={{
+                        fontWeight: "500",
+                        padding: "12px 0px",
+                        fontSize: {
+                          sm: "21px",
+                          xs: "16px",
+                        },
+                        textAlign: "center",
+                        color: "white",
+                        minWidth: "150px",
+                      }}
+                      className="MuiTableCell-root-head"
+                    >
+                       Badges Earned
+                    </TableCell> */}
                     <TableCell
                       sx={{
                         fontWeight: "500",
@@ -376,6 +392,22 @@ const UserManagement = () => {
                       >
                         {user?.email}
                       </TableCell>
+
+                      {/* <Tooltip title="See Badges Earned">
+                      <TableCell
+                      onClick={()=> handleNavigate(user._id)}
+                        sx={{
+                          
+                          cursor: "pointer",
+                        }}
+                        className="MuiTableCell-root"
+                      >
+                         
+                          {user?.badgeCount}
+                          
+                      </TableCell>
+                        </Tooltip> */}
+
                       <Tooltip title="see all events">
                       <TableCell
                       onClick={()=> handleNavigate(user._id)}
