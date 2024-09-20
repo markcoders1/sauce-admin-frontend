@@ -21,6 +21,7 @@ const AddStore = () => {
   });
   const [formData, setFormData] = useState({
     storeName: '',
+    zip:'',
     coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
   });
   const [errors, setErrors] = useState({});
@@ -117,6 +118,8 @@ const AddStore = () => {
 
     const data = {
       storeName: formData.storeName,
+      zip: formData.zip,
+
       latitude: formData.coordinates.lat.toString(), // Send latitude
       longitude: formData.coordinates.lng.toString(), // Send longitude
       // postedBy : auth._id
@@ -177,7 +180,7 @@ const AddStore = () => {
         </Typography>
       </Box>
 
-      <Box sx={{ display: 'flex', flexDirection: { md: 'column', xs: 'column' }, gap: '1.5rem' }}>
+      <Box sx={{ display: 'flex', flexDirection: { md: 'column', xs: 'column' }, gap: '1.3rem' }}>
         <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
           <Typography
             sx={{
@@ -198,6 +201,28 @@ const AddStore = () => {
             value={formData.storeName}
             onChange={handleChange}
             error={errors.storeName}
+          />
+        </Box>
+        <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <Typography
+            sx={{
+              color: '#FFA100',
+              fontWeight: '500',
+              fontSize: {
+                sm: '16px',
+                xs: '16px',
+              },
+              fontFamily: 'Montserrat !important',
+            }}
+          >
+            Zip Code
+          </Typography>
+          <CustomInputShadow
+            placeholder="Zip Code"
+            name="zip"
+            value={formData.zip}
+            onChange={handleChange}
+            error={errors.zip}
           />
         </Box>
       </Box>
