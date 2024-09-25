@@ -546,7 +546,6 @@ const EditEvents = () => {
     border:"1px solid #FFA100",
       fontSize: '22px',
       background: "#2e210a",
-      color:"black",
       height:"75px",
       color:"white",
       fontFamily: "poppins",
