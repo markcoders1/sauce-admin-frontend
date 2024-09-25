@@ -60,8 +60,9 @@ const [allStores, setAllStores] = useState([]);
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/get-stores`,
+        url: `${appUrl}/get-locations`,
         method: "get",
+        
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           "Content-Type": "application/json",
@@ -70,11 +71,12 @@ const [allStores, setAllStores] = useState([]);
           page: currentPage, // Pass the current page to the backend
           limit: 8, // Set the limit per page
           searchTerm: searchTerm,
+          type: "store"
         },
       });
       console.log(response.data)
 
-      setAllStores(response.data.stores || []); // Set the stores data
+      setAllStores(response.data.items || []); // Set the stores data
       setTotalPages(response.data.pagination.totalPages ||1); // Update total pages
       setLoading(false);
     } catch (error) {
@@ -336,7 +338,7 @@ const [allStores, setAllStores] = useState([]);
                         className="MuiTableCell-root"
                       >
                         <img
-                          src={review?.postedBy?.image || logoAdmin}
+                          src={ review.postedBy.image ?  review.postedBy.image :  logoAdmin}
                           style={{
                             width: "80px",
                             height: "50px",
@@ -345,7 +347,7 @@ const [allStores, setAllStores] = useState([]);
                             objectFit: "contain",
                           }}
                           onClick={() => openLightbox(review?.postedBy?.image)}
-                          alt="Review"
+                          alt=""
                         />
                       </TableCell>
                       <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">

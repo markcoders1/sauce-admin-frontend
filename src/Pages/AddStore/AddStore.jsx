@@ -10,6 +10,20 @@ import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+
+import {
+  setKey,
+  setDefaults,
+  setLanguage,
+  setRegion,
+  fromAddress,
+  fromLatLng,
+  fromPlaceId,
+  setLocationType,
+  geocode,
+  RequestType,
+} from "react-geocode";
+
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AddStore = () => {
@@ -19,9 +33,15 @@ const AddStore = () => {
     message: '',
     severity: 'success',
   });
+  setDefaults({
+    key: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Your API key here.
+    language: "en", // Default language for responses.
+    region: "es", // Default region for responses.
+  });
   const [formData, setFormData] = useState({
     storeName: '',
     zip:'',
+    place_Id: '',
     coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
   });
   const [errors, setErrors] = useState({});
@@ -52,6 +72,15 @@ const AddStore = () => {
           map.addListener('click', (event) => {
             const lat = event.latLng.lat();
             const lng = event.latLng.lng();
+
+            
+            getPostalCodeAndPlaceId(lat, lng)
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+
+           
+           
+
             setFormData((prev) => ({
               ...prev,
               coordinates: { lat, lng },
@@ -67,7 +96,7 @@ const AddStore = () => {
               position: { lat, lng },
               map,
             });
-            console.log(marker)
+            // console.log(marker)
 
             setMarker(marker);
 
@@ -94,9 +123,53 @@ const AddStore = () => {
     });
     console.log(`Store Name Input: ${value}`);
   };
+  // fromLatLng(formData.coordinates.lat, formData.coordinates.lng)
+  // fromLatLng(formData.coordinates.lat, formData.coordinates.lng).then(({ results }) => {
+  //   const response = results;
+  //   console.log("hello world",response);
+  // })
+  // .catch(console.error);
+
+
+  async function getPostalCodeAndPlaceId(latitude, longitude) {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY`;
+  
+    try {
+      const response = await axios.get(url);
+      const results = response.data.results;
+      console.log(response)
+  
+      if (results.length > 0) {
+        const addressComponents = results[0].address_components;
+        let postalCode = null;
+        let placeId = results[0].place_id;
+  
+        // Extract postal code from address components
+        addressComponents.forEach(component => {
+          if (component.types.includes('postal_code')) {
+            postalCode = component.long_name;
+          }
+        });
+  
+        setFormData((prev)=>({
+          ...prev,
+          place_Id : placeId,
+          zip : postalCode,
+          
+          }))
+        return { postalCode, placeId };
+      } else {
+        return { error: 'No results found' };
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return { error: error.message };
+    }
+  }
 
   const handleSubmit = async () => {
-    console.log('Form data submitted:', formData);
+    console.log('Form data submitted:============================', formData);
+
 
     if (!formData.storeName) {
       setSnackAlertData({
@@ -107,7 +180,7 @@ const AddStore = () => {
       return;
     }
 
-    if (!formData.coordinates.lat || !formData.coordinates.lng) {
+    if (!formData?.coordinates?.lat || !formData?.coordinates?.lng) {
       setSnackAlertData({
         open: true,
         message: 'Please select a location on the map',
@@ -119,12 +192,15 @@ const AddStore = () => {
     const data = {
       storeName: formData.storeName,
       zip: formData.zip,
+      place_id: formData.place_Id,
 
       latitude: formData.coordinates.lat.toString(), // Send latitude
       longitude: formData.coordinates.lng.toString(), // Send longitude
       // postedBy : auth._id
     };
 
+    console.log(data)
+    console.log('hello worl')
     try {
       setLoading(true);
       const response = await axios({
@@ -203,43 +279,8 @@ const AddStore = () => {
             error={errors.storeName}
           />
         </Box>
-        <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-          <Typography
-            sx={{
-              color: '#FFA100',
-              fontWeight: '500',
-              fontSize: {
-                sm: '16px',
-                xs: '16px',
-              },
-              fontFamily: 'Montserrat !important',
-            }}
-          >
-            Zip Code
-          </Typography>
-          <CustomInputShadow
-            placeholder="Zip Code"
-            name="zip"
-            value={formData.zip}
-            onChange={handleChange}
-            error={errors.zip}
-          />
-        </Box>
+       
       </Box>
-
-      {/* <CustomButton
-        border="1px solid #FFA100"
-        ButtonText={"Open Map"}
-        color="white"
-        width="178px"
-        borderRadius="8px"
-        background={loading ? '' : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
-        padding="10px 0px"
-        fontSize="18px"
-        fontWeight="600"
-        onClick={loadMap}
-      /> */}
-
       <Box sx={{ width: "100%", height: "500px" }}>
         <div style={{ width: "100%", height: "100%", borderRadius:"12px" }} id='map'></div>
       </Box>

@@ -22,6 +22,7 @@ const EditStore = () => {
   const [formData, setFormData] = useState({
     storeName: '',
     zip:'',
+    place_Id: '',
     coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
   });
   const [errors, setErrors] = useState({});
@@ -61,6 +62,11 @@ const EditStore = () => {
             coordinates: { lat: newLat, lng: newLng },
           }));
 
+
+          getPostalCodeAndPlaceId(newLat, newLng)
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+
           // Remove the previous marker if it exists
           if (marker && marker.setMap) {
             marker.setMap(null);
@@ -87,6 +93,42 @@ const EditStore = () => {
         console.error("Error loading Google Maps:", e);
       });
   };
+
+  async function getPostalCodeAndPlaceId(latitude, longitude) {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY`;
+  
+    try {
+      const response = await axios.get(url);
+      const results = response.data.results;
+      console.log(response)
+  
+      if (results.length > 0) {
+        const addressComponents = results[0].address_components;
+        let postalCode = null;
+        let placeId = results[0].place_id;
+  
+        // Extract postal code from address components
+        addressComponents.forEach(component => {
+          if (component.types.includes('postal_code')) {
+            postalCode = component.long_name;
+          }
+        });
+  
+        setFormData((prev)=>({
+          ...prev,
+          place_Id : placeId,
+          zip : postalCode,
+          
+          }))
+        return { postalCode, placeId };
+      } else {
+        return { error: 'No results found' };
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return { error: error.message };
+    }
+  }
 
   // Fetch the store details from the API and populate the form
   const fetchStoreDetails = async () => {
@@ -161,6 +203,8 @@ const EditStore = () => {
         data: {
           storeName: formData.storeName,
           zip: formData.zip,
+         
+      place_id: formData.place_Id,
           latitude: formData.coordinates.lat.toString(),
           longitude: formData.coordinates.lng.toString(),
         },
