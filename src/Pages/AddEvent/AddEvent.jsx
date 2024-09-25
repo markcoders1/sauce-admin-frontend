@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography } from '@mui/material';
 import CustomButton from '../../Components/CustomButton/CustomButton';
@@ -38,6 +38,8 @@ const AddSEvent = () => {
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const mapRef = useRef(null); // To store the map instance
+  const autocompleteRef = useRef(null);
 
   const [mapLoaded, setMapLoaded] = useState(false);
   let [marker, setMarker] = useState(null); // State to store marker instance
@@ -58,6 +60,36 @@ const AddSEvent = () => {
     if (!mapLoaded) {
       loader.load().then((google) => {
         const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        mapRef.current = map;
+
+           // Add autocomplete search box
+           const input = document.getElementById('autocomplete');
+           const autocomplete = new google.maps.places.Autocomplete(input, {
+             fields: ['place_id', 'geometry', 'formatted_address'],
+           });
+           autocompleteRef.current = autocomplete;
+
+           autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+              const lat = place.geometry.location.lat();
+              const lng = place.geometry.location.lng();
+
+              // Center map on the selected place
+              map.setCenter({ lat, lng });
+              map.setZoom(15);
+
+              setFormData((prev) => ({
+                ...prev,
+                coordinates: { lat, lng },
+              }));
+
+              // Set marker
+              setMapMarker(map, lat, lng);
+            }
+          });
+
+
 
         // Set latitude and longitude on map click
         map.addListener('click', (event) => {
@@ -322,6 +354,7 @@ loadMap()
             error={errors.organizedBy}
           />
         </Box>
+      
       </Box>
       <Box sx={{
         display: "none",
@@ -510,7 +543,45 @@ loadMap()
           onClick={() => addBullet('details')}
           fontSize='20px'
         />
+
+<Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem', mt:"30px" }}>
+        <Typography sx={{
+                            color: "#FFA100",
+                            fontWeight: "500",
+                            fontSize: {
+                                sm: "16px",
+                                xs: "16px"
+                            },
+                            fontFamily: "Montserrat !important",
+                        }}>
+                          Search Location
+                        </Typography>
+          <input
+    id="autocomplete"
+    type="text"
+    placeholder="Search for a place"
+    style={{
+      width: '100%',
+      padding: '0px 20px',
+      borderRadius: '10px',
+    border:"1px solid #FFA100",
+      fontSize: '22px',
+      background: "#2e210a",
+      color:"black",
+      height:"75px",
+      color:"white",
+      fontFamily: "poppins",
+
+    
+      
+      
+    }}
+    className='inputCustom'
+  />
+        </Box>
       </Box>
+
+      
          {/* Map for selecting location */}
          {/* <CustomButton
           border='1px solid #FFA100'

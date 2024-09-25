@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography } from '@mui/material';
@@ -9,6 +9,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import './AddStore.css'
 
 
 import {
@@ -47,6 +48,8 @@ const AddStore = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const mapRef = useRef(null); // To store the map instance
+  const autocompleteRef = useRef(null);
   const navigate = useNavigate();
   let [marker, setMarker] = useState(); // State to store the marker
 
@@ -67,6 +70,35 @@ const AddStore = () => {
       loader.load()
         .then((google) => {
           const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+          mapRef.current = map;
+
+           // Add autocomplete search box
+           const input = document.getElementById('autocomplete');
+           const autocomplete = new google.maps.places.Autocomplete(input, {
+             fields: ['place_id', 'geometry', 'formatted_address'],
+           });
+           autocompleteRef.current = autocomplete;
+
+           autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+              const lat = place.geometry.location.lat();
+              const lng = place.geometry.location.lng();
+
+              // Center map on the selected place
+              map.setCenter({ lat, lng });
+              map.setZoom(15);
+
+              setFormData((prev) => ({
+                ...prev,
+                coordinates: { lat, lng },
+              }));
+
+              // Set marker
+              setMapMarker(map, lat, lng);
+            }
+          });
+
 
           // Set latitude and longitude on map click
           map.addListener('click', (event) => {
@@ -77,6 +109,9 @@ const AddStore = () => {
             getPostalCodeAndPlaceId(lat, lng)
             .then(data => console.log(data))
             .catch(error => console.error(error));
+
+             // Listen for place selection in autocomplete
+        
 
            
            
@@ -109,6 +144,17 @@ const AddStore = () => {
           console.error("Error loading Google Maps:", e);
         });
     }
+  };
+
+  const setMapMarker = (map, lat, lng) => {
+    if (marker) {
+      marker.setMap(null); // Remove the previous marker
+    }
+    const newMarker = new google.maps.Marker({
+      position: { lat, lng },
+      map,
+    });
+    setMarker(newMarker);
   };
 
   useEffect(()=>{
@@ -278,6 +324,33 @@ const AddStore = () => {
             onChange={handleChange}
             error={errors.storeName}
           />
+        </Box>
+        <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <Typography sx={{ color: '#FFA100', fontWeight: '500', fontSize: '16px', fontFamily: 'Montserrat !important' }}>
+            Search Location
+          </Typography>
+          <input
+    id="autocomplete"
+    type="text"
+    placeholder="Search for a place"
+    style={{
+      width: '100%',
+      padding: '0px 20px',
+      borderRadius: '10px',
+    border:"1px solid #FFA100",
+      fontSize: '22px',
+      background: "#2e210a",
+      color:"black",
+      height:"75px",
+      color:"white",
+      fontFamily: "poppins",
+
+    
+      
+      
+    }}
+    className='inputCustom'
+  />
         </Box>
        
       </Box>

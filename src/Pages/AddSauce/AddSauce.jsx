@@ -189,6 +189,20 @@ const AddSauce = () => {
         message: response?.data?.message,
         severity: "success",
       });
+
+      setFormData({
+        sauceName: "",
+        websiteLink:  "",
+        productLink: "",
+        details: "",
+        chilli: [""],
+        email: "",
+        type: "",
+        title: "",
+        ingredients: "",
+        isFeatured: null,
+        isTopRated: null,
+      });
       setLoading(false);
       // navigate(-1);
     } catch (error) {

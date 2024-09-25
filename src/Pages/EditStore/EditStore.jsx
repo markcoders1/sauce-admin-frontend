@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import { Box, Typography } from '@mui/material';
@@ -27,6 +27,8 @@ const EditStore = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const mapRef = useRef(null); // To store the map instance
+  const autocompleteRef = useRef(null);
   
   const navigate = useNavigate();
   let [marker, setMarker] = useState(null); // State to store marker
@@ -53,6 +55,33 @@ const EditStore = () => {
           center: { lat, lng },
           zoom: 15,
         });
+
+
+           // Add autocomplete search box
+           const input = document.getElementById('autocomplete');
+           const autocomplete = new google.maps.places.Autocomplete(input, {
+             fields: ['place_id', 'geometry', 'formatted_address'],
+           });
+           autocompleteRef.current = autocomplete;
+           autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+              const lat = place.geometry.location.lat();
+              const lng = place.geometry.location.lng();
+
+              // Center map on the selected place
+              map.setCenter({ lat, lng });
+              map.setZoom(15);
+
+              setFormData((prev) => ({
+                ...prev,
+                coordinates: { lat, lng },
+              }));
+
+              // Set marker
+              setMapMarker(map, lat, lng);
+            }
+          });
 
         map.addListener('click', (event) => {
           const newLat = event.latLng.lat();
@@ -140,6 +169,8 @@ const EditStore = () => {
           Authorization: `Bearer ${auth.accessToken}`,
         },
       });
+
+      console.log(response)
 
       const { store } = response.data;
       setFormData({
@@ -275,26 +306,28 @@ const EditStore = () => {
           />
         </Box>
         <Box sx={{ flexBasis: '33%', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-          <Typography
-            sx={{
-              color: '#FFA100',
-              fontWeight: '500',
-              fontSize: {
-                sm: '16px',
-                xs: '16px',
-              },
-              fontFamily: 'Montserrat !important',
-            }}
-          >
-            Zip Code
-          </Typography>
-          <CustomInputShadow
-            placeholder="Zip Code"
-            name="zip"
-            value={formData.zip}
-            onChange={handleChange}
-            error={errors.zip}
-          />
+        <input
+    id="autocomplete"
+    type="text"
+    placeholder="Search for a place"
+    style={{
+      width: '100%',
+      padding: '0px 20px',
+      borderRadius: '10px',
+    border:"1px solid #FFA100",
+      fontSize: '22px',
+      background: "#2e210a",
+      color:"black",
+      height:"75px",
+      color:"white",
+      fontFamily: "poppins",
+
+    
+      
+      
+    }}
+    className='inputCustom'
+  />
         </Box>
       </Box>
 
