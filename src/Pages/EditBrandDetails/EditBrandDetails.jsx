@@ -322,6 +322,7 @@ const EditBrandDetails = () => {
           />
         </Box>
       </Box>
+      {formData.type === 'brand' && (
       <Box sx={{  }}>
             <Typography sx={{
               color: "#FFA100",
@@ -349,7 +350,8 @@ const EditBrandDetails = () => {
               labelField="label"
               valueField="value"
             />
-          </Box>
+          </Box> 
+      )}
 
       {/* Conditionally show 'About' section if the type is 'brand' */}
       {formData.type === 'brand' && (
