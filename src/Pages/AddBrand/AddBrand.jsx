@@ -27,7 +27,7 @@ const AddBrand = () => {
     websiteLink: '',
 
     bannerImage: null,
-    about: ['','','','','',''], // Initialize an array of 6 empty strings
+    about: '', // Initialize an array of 6 empty strings
     isTopRated: false
   });
   const [errors, setErrors] = useState({});
@@ -84,7 +84,7 @@ const AddBrand = () => {
     data.append('websiteLink', formData?.websiteLink);
     data.append('password', formData?.password);
     data.append('image', formData?.bannerImage); // Append the file
-    data.append('about',  JSON.stringify(formData?.about)); // Serialize the array to JSON
+    data.append('about',  formData?.about); // Serialize the array to JSON
   
     console.log(data)
     try {
@@ -105,7 +105,7 @@ const AddBrand = () => {
         password: '',
         websiteLink:'',
         bannerImage: null,
-        about: Array(6).fill(''), // Reset about
+        about: '', // Reset about
         isTopRated: false
       });
       // navigate(-1)
@@ -293,16 +293,15 @@ const AddBrand = () => {
                         }}>
                             About
                         </Typography>
-        {formData.about.map((about, index) => (
-          <CustomInputShadow
-            key={index}
-            placeholder={`About ${index + 1}`}
-            name={`about${index + 1}`}
-            value={formData.about[index]} // Corrected the value reference
-            onChange={(e) => handleAboutChange(index, e.target.value)} // Changed to handleAboutChange
-            error={errors[`about${index + 1}`]}
+      
+                        <CustomInputShadow
+            placeholder="About"
+            name="about"
+            value={formData.about}
+            onChange={handleChange}
+            error={errors.about}
+           
           />
-        ))}
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>

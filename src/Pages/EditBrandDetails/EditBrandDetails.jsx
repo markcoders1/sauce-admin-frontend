@@ -25,7 +25,7 @@ const EditBrandDetails = () => {
     type: '',
     status: '',
     points: '',
-    about: [''], // Initialize with one empty string, will allow adding more dynamically
+    about: '',
     isTopRated: false,
   });
   const [errors, setErrors] = useState({});
@@ -101,7 +101,7 @@ const EditBrandDetails = () => {
         type: userData?.type || '',
         status: userData?.status || '',
         points: userData?.points || 0,
-        about: userData?.about || [''], // Fetch about if available, else set to one empty string
+        about: userData?.about || '', // Fetch about if available, else set to one empty string
         isTopRated: userData?.isTopRated || false,
       });
       setPreviewImage(userData?.image);
@@ -368,56 +368,13 @@ const EditBrandDetails = () => {
             }}>
               About
             </Typography>
-            {formData.about.map((about, index) => (
-              <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem', width:"100%" }}>
-                <Box sx={{
-                  flexBasis:"95%"
-                }} >
-
-             
-                <CustomInputShadow
-                  placeholder={`About ${index + 1}`}
-                  name={`about${index + 1}`}
-                  value={about}
-                  onChange={(e) => handleAboutChange(index, e.target.value)}
-                  error={errors[`about${index + 1}`]}
-                  inputStyle={{
-                    width:"100%"
-                  }}
-
-                />
-                   </Box>
-                {formData.about.length > 0 && (
-                  <CustomButton
-                    border='1px solid #FFA100'
-                    ButtonText={"Remove"}
-                    color='white'
-                    width={"98"}
-                    height={"100px"}
-                    borderRadius='8px'
-                    buttonStyle={{height:"75px", mt:"-15px"}}
-                    
-                    onClick={() => removeBullet(index)}
-                  />
-                )}
-              </Box>
-            ))}
-
-            {/* Button to add more bullet points */}
-            <CustomButton
-              border='1px solid #FFA100'
-              ButtonText={"Add Bullet Point"}
-              color='white'
-              width={"100%"}
-              borderRadius='6px'
-              onClick={addBullet}
-              
-              fontSize='18px'
-              fontWeight='600'
-              buttonStyle={{
-                height:"80px"
-              }}
-            />
+            <CustomInputShadow
+            placeholder='About'
+            name="about"
+            value={formData.about}
+            onChange={handleChange}
+            error={errors.about}
+          />
           </Box>
 
         
