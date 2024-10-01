@@ -182,12 +182,13 @@ const EditEvents = () => {
       });
       return;
     }
+    const formattedDate = new Date(formData.date).toISOString();
 
 
     const formDataToSend = new FormData();
     formDataToSend.append('eventName', formData.eventName);
     formDataToSend.append('organizedBy', formData.organizedBy);
-    formDataToSend.append('eventDate', Math.floor(new Date(formData.date).getTime() / 1000));
+    formDataToSend.append('eventDate', formattedDate);
     formDataToSend.append('venueDescription', formData.description);
     formDataToSend.append('venueName', formData.destination);
     formDataToSend.append('bannerImage', formData.bannerImage);
@@ -248,7 +249,7 @@ const EditEvents = () => {
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner.name,
-        date: new Date(eventData?.eventDate * 1000).toISOString().split('T')[0], // Convert Unix timestamp to 'YYYY-MM-DD' format
+        date: new Date(eventData?.eventDate).toISOString().split('T')[0],
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [''], // Ensure details is an array
         destination: eventData?.venueName,

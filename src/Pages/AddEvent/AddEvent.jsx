@@ -189,6 +189,7 @@ loadMap()
       return;
     }
     console.log(formData)
+    const formattedDate = new Date(formData.date).toISOString();
 
     try {
       setLoading(true);
@@ -196,7 +197,7 @@ loadMap()
       data.append('eventName', formData?.eventName);
       data.append('organizedBy', formData?.organizedBy);
       // Convert the date to Unix timestamp in milliseconds
-      data.append('eventDate', new Date(formData?.date).getTime());
+      data.append('eventDate', formattedDate);
       data.append('venueDescription', formData?.description);
       data.append('venueName', formData?.destination);
       data.append('owner', formData?.ownerId);

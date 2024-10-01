@@ -34,11 +34,13 @@ const SeeEventDetail = () => {
           Authorization: `Bearer ${auth.accessToken}`
         },
       });
+      console.log(response)
       const eventData = response?.data?.event;
       setFormData({
         eventName: eventData?.eventName,
         // organizedBy: eventData?.owner.name,
-        date: new Date(eventData?.eventDate * 1000).toISOString().split('T')[0],
+        date: new Date(eventData?.eventDate).toISOString().split('T')[0],
+
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [''],
         destination: eventData?.venueName,
