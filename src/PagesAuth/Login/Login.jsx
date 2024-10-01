@@ -53,7 +53,7 @@ const Login = () => {
 
             try {
                 const response = await axios({
-                    url: `${appUrl}/auth/firebase-authentication`,
+                    url: `${appUrl}/auth/admin-firebase-authentication`,
                     method: "post",
                     data: {
                         accessToken: user.accessToken
@@ -87,7 +87,7 @@ const Login = () => {
                 setSnackAlertData({
                     ...snackAlertData,
                     open: true,
-                    message: "Invalid Login Credentials",
+                    message: error.response.data.message ? error.response.data.message :  "Invalid Login Credentials",
                     severity: "error"
                 });
             }

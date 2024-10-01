@@ -75,7 +75,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems:"start",
         }}
       >
         <Box
@@ -86,12 +86,12 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             transition: 'opacity 0.5s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px',
+            gap: '2px',
           }}
         >
           {isOpen && (
             <>
-              <Typography className={isOpen ? 'logo-admin' : ''} sx={{ color: "red !important", position: "absolute", top: "-10px", right: "-0px", width: "30px", height: "30px", backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }} >
+              <Typography className={isOpen ? 'logo-admin' : ''} sx={{ color: "red !important", position: "absolute", top: "-10px", right: "-10px", width: "30px", height: "30px", backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }} >
                 <img src={crossIcon} alt="" style={{ color: "white", width: "20px", cursor: "pointer" }} onClick={toggleSidebar} />
               </Typography>
               <Box
@@ -102,15 +102,15 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   mt: "0px"
                 }}
               >
-                <img src={logoAdmin} alt="" className={isOpen ? 'logo-admin' : ''} />
+                <img src={logoAdmin} alt=""   className={isOpen ? 'logo-admin logo-admin-width' : ''} />
               </Box>
               <NavLink
                 to="/admin/user-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
-                }
+                } 
                 style={{
-                  marginTop: "40px"
+                  marginTop: "10px"
                 }}
               >
                 <Box
@@ -118,14 +118,14 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
-                    p: '5px 5px',
+                    p: '4px 5px',
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon1} style={{ width: '27px' }} alt="User Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon1} className='navlink-image1' alt="User Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >User Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >User Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -143,10 +143,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon3} style={{ width: '27px' }} alt="Sauce Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon3} className='navlink-image' alt="Sauce Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Sauce Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Sauce Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -164,10 +164,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon2} style={{ width: '27px' }} alt="Brand Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon2} className='navlink-image1' alt="Brand Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Brand Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Brand Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -185,10 +185,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon4} style={{ width: '27px' }} alt="Events Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon4} className='navlink-image1' alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Events Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Events Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -206,10 +206,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon5} style={{ width: '37px' }} alt="Events Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px',display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon5} className='navlink-image2' alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Reviews Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Video Reviews Management</Typography>
                 </Box>
               </NavLink>
 
@@ -228,10 +228,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon6} style={{ width: '40px' }} alt="Events Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon6} className='navlink-image3' alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Requested Sauce</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Requested Sauce</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -249,10 +249,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon71} style={{ width: '40px' }} alt="Events Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon71} className='navlink-image3' alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Badge Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Badge Management</Typography>
                 </Box>
               </NavLink>
               <NavLink
@@ -270,10 +270,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white', width: '50px', height: '50px', display: "flex", justifyContent: "center", alignItems: "center" }} >
-                    <img src={icon81} style={{ width: '40px' }} alt="Events Management" />
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px',display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon81} className='navlink-image3' alt="Events Management" />
                   </Typography>
-                  <Typography sx={{ fontSize: "18px", fontWeight: "600", fontFamily: "Montserrat !important" }} >Store Management</Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Store Management</Typography>
                 </Box>
               </NavLink>
             </>
@@ -288,7 +288,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             transition: 'opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
-            gap: '20px',
+            gap: '10px',
+            alignItems:"center"
           }}
         >
           {!isOpen && (
@@ -297,8 +298,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '12px',
                   backgroundColor: 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -312,8 +313,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon1' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -334,8 +335,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -355,8 +356,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -376,8 +377,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -397,8 +398,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -419,8 +420,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon6' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -444,8 +445,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon7' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -466,8 +467,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon8' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: '50px',
-                  height: '50px',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',

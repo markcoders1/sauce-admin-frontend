@@ -69,7 +69,7 @@ const DashboardLayout = () => {
         <Box
           sx={{
             mt: "15px",
-            width: isSidebarOpen ? '300px' : '80px', // Adjust width based on sidebar state
+            width: isSidebarOpen ? '320px' : '55px', // Adjust width based on sidebar state
             position: 'fixed', // Fixed position
             maxHeight: "100%",
             minHeight: "96%",
@@ -78,7 +78,7 @@ const DashboardLayout = () => {
               xs: 'none',
               md: 'block',
             },
-            alignItems:"center",
+            alignItems:"start",
             justifyContent:"center",
             borderRadius: "15px",
             background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
@@ -89,8 +89,8 @@ const DashboardLayout = () => {
             <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
           </Box>
           <Box sx={{
-            position:"absolute", bottom:"2rem",
-            ml:"15px",
+            position:"absolute", bottom:".5rem",
+            ml:{xs:"8px", xl:"15px" },
             display: "flex", // Ensure the text appears next to the button
             alignItems: "center",
           }} >
@@ -103,7 +103,7 @@ const DashboardLayout = () => {
         <Box
           sx={{
             marginLeft: {
-              md: isSidebarOpen ? '270px' : '50px', // Adjust margin based on sidebar state
+              md: isSidebarOpen ? '300px' : '50px', // Adjust margin based on sidebar state
               xs: '0px',
             },
             width: '100%',

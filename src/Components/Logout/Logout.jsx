@@ -63,8 +63,8 @@ const LogoutButton = ({ isSidebarOpen }) => {
                         outline: "none",
                         backgroundColor: "white",
                         marginTop: "5px",
-                        height: "50px", 
-                        width: "50px", 
+                        height: "40px", 
+                        width: "40px", 
                         display: "flex", 
                         justifyContent: "center", 
                         alignItems: "center", 
@@ -76,7 +76,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
                         }
                     }}
                 >
-                    <img src={isHovered ? logoutpng : logoutpng} alt="Logout" />
+                    <img style={{width:"15px"}} src={isHovered ? logoutpng : logoutpng} alt="Logout" />
                 </Box>
                 {isSidebarOpen && (
                     <Typography

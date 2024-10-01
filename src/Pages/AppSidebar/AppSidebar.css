@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     color: white;
-    border-radius: 12px;
+    border-radius: 6px;
 
   }
  
@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     background-color: white;
-    border-radius: 12px;
+    border-radius: 6px;
   
     transition: .3s ease-in all;
   }
@@ -49,6 +49,10 @@
       opacity: 1;
     }
   }
+
+ .logo-admin-width{
+  width: 120px;
+ }
   
 
   .nav-link:hover{
@@ -60,4 +64,42 @@
     color: rgb(255, 0, 0) !important;
     display: flex;
     align-items: center;
+  }
+
+  .navlink-image1{
+    width: 27px;
+  }
+
+  .navlink-image{
+    width: 20px;
+  }
+
+
+  .navlink-image2{
+    width: 37px;
+  }
+  .navlink-image3{
+    width: 40px;
+  }
+
+  @media only screen and (max-width: 1600px) {
+    .navlink-image1{
+      width: 19px;
+    }
+  
+  
+    .navlink-image2{
+      width: 28px;
+    }
+    .navlink-image3{
+      width: 28px;
+    }
+   
+  }
+
+  @media only screen and (max-width: 1400px) {
+
+    .logo-admin-width{
+      width: 80px;
+     }
   }
