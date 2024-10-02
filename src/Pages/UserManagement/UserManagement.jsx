@@ -144,6 +144,12 @@ const UserManagement = () => {
     navigate(`/admin/user-interested-events/${id}`);
   };
 
+
+  const handleNavigateToReview = (id) => {
+    navigate(`/admin/user-reviews/${id}`);
+  };
+
+
   return (
     <>
    
@@ -329,6 +335,22 @@ const UserManagement = () => {
                     >
                       Check-Ins
                     </TableCell>
+                    <TableCell
+                      sx={{
+                        fontWeight: "500",
+                        padding: "12px 0px",
+                        fontSize: {
+                          sm: "21px",
+                          xs: "16px",
+                        },
+                        textAlign: "center",
+                        color: "white",
+                        minWidth: "150px",
+                      }}
+                      className="MuiTableCell-root-head"
+                    >
+                      Reviews
+                    </TableCell>
 
                     <TableCell
                       sx={{
@@ -423,10 +445,30 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip>
                     
-
-                      <TableCell className="MuiTableCell-root">
+                        <Tooltip title="See all Check-in">
+                      <TableCell className="MuiTableCell-root"
+                       onClick={()=> navigate(`/admin/user-checkin`)}
+                       sx={{
+                      
+                         cursor: "pointer",
+                       }}
+                      >
                         {user?.checkins}
                       </TableCell>
+                      </Tooltip>
+                      <Tooltip title="see all Reviews">
+
+                      <TableCell className="MuiTableCell-root"
+                       onClick={()=> handleNavigateToReview(user._id)}
+                       sx={{
+                     
+                         cursor: "pointer",
+                       }}
+                      >
+                        {user?.reviews}
+                      </TableCell>
+                      </Tooltip>
+
                       <TableCell className="MuiTableCell-root">
                         {formatDate(user?.date)}
                       </TableCell>

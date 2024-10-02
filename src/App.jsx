@@ -28,7 +28,8 @@ import EditBadge from "./Pages/EditBadge/EditBadge";
 import StoreManagement from "./Pages/StoreManagement/StoreManagement";
 import AddStore from "./Pages/AddStore/AddStore";
 import EditStore from "./Pages/EditStore/EditStore";
-
+import TextReviewManagement from "./Pages/UserReview/TextReviewManagement";
+import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 
 
 
@@ -82,6 +83,12 @@ function App() {
           <Route path="store-management/add-store" element={<AddStore />} />
           <Route path="store-management/edit-store/:id" element={<EditStore />} />
           <Route path="store-management/view-store/:id" element={<StoreDetails />} />
+          <Route path="user-reviews/:id" element={<TextReviewManagement />} />
+          <Route path="user-checkin" element={<UserCheckin />} />
+
+          
+
+
 
 
 

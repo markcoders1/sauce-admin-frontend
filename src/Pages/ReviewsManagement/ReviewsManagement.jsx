@@ -117,12 +117,12 @@ const ReviewsManagement = () => {
     setReviewToDelete(null);
   };
 
-  const handleConfirmDelete = () => {
-    if (reviewToDelete) {
-      deleteOfficialReview(reviewToDelete);
-    }
-    handleCloseDeleteModal();
-  };
+  // const handleConfirmDelete = () => {
+  //   if (reviewToDelete) {
+  //     deleteOfficialReview(reviewToDelete);
+  //   }
+  //   handleCloseDeleteModal();
+  // };
 
   return (
     <>

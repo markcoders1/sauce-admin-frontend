@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import {Outlet } from "react-router-dom";
 import React from 'react'
 
-import backgroundImg1 from '../assets/backgroundImg1.png';
-import authBg from '../assets/authBg.png'
+import backgroundImg1 from '../assets/backgroundImg1-min.webp';
+import authBg from '../assets/authBg-min.webp'
 
 
 

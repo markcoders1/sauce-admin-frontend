@@ -338,7 +338,7 @@ const [allStores, setAllStores] = useState([]);
                         className="MuiTableCell-root"
                       >
                         <img
-                          src={ review.postedBy.image ?  review.postedBy.image :  logoAdmin}
+                          src={ review?.postedBy?.image ?  review?.postedBy?.image :  logoAdmin}
                           style={{
                             width: "80px",
                             height: "50px",

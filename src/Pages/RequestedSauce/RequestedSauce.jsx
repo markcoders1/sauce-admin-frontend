@@ -269,8 +269,8 @@ const RequestedSauce = () => {
                         >
                           <TableCell
                             sx={{
-                              textAlign: "start !important",
                               borderRadius: "8px 0px 0px 8px",
+                              textAlign: "start !important",
                               pl: "40px !important",
                             }}
                             className="MuiTableCell-root"
