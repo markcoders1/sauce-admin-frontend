@@ -43,7 +43,6 @@ const RequestedEvents = () => {
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-
   // State for lightbox
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
@@ -142,6 +141,9 @@ const RequestedEvents = () => {
   };
 
 
+   const handleNavigateToAddEvent = (state) => {
+    navigate("/admin/add-event", { state: state });
+  };
   return (
     <>
       <Box>
@@ -399,10 +401,21 @@ const RequestedEvents = () => {
                             justifyContent: "center",
                           }}
                         >
+                          <CustomButton
+                            border="1px solid #FFA100"
+                            ButtonText={"View Event"}
+                            color="white"
+                            width={{xs:"120px", xl:"135px"}}
+                            borderRadius="6px"
+                            buttonStyle={{ height: "45px" }}
+                            onClick={() => handleNavigate(event._id)}
+                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
+                            onClick={() => handleNavigateToAddEvent(event)}
+                          />
                           <img
-                            className="edit-icon"
+                            className="delete-icon"
                             src={DeleteIcon}
-                            alt="Edit"
+                            alt="Delete"
                             style={{
                               width: "50px",
                               height: "50px",
@@ -460,14 +473,14 @@ const RequestedEvents = () => {
           slides={[{ src: selectedImage }]}
         />
       )}
-        {deleteModalOpen && (
-            <DeleteRequestedEvent 
-              open={deleteModalOpen}
-              handleClose={handleCloseDeleteModal}
-              reviewId={reviewToDelete} // Pass the review ID here
-              onSuccess={() => fetchEvents(page)} // Refresh reviews list after deletion
-            />
-          )}
+      {deleteModalOpen && (
+        <DeleteRequestedEvent
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          reviewId={reviewToDelete} // Pass the review ID here
+          onSuccess={() => fetchEvents(page)} // Refresh reviews list after deletion
+        />
+      )}
     </>
   );
 };

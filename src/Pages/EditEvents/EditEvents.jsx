@@ -27,6 +27,7 @@ const EditEvents = () => {
     organizedBy: '',
     ownerId: "",
     date: '',
+    time: '',
     description: '',
     details: [''],
     destination: '',
@@ -183,12 +184,14 @@ const EditEvents = () => {
       return;
     }
     const formattedDate = new Date(formData.date).toISOString();
+    const eventDateTime = new Date(`${formData.date}T${formData.time}`).toISOString();
 
 
     const formDataToSend = new FormData();
     formDataToSend.append('eventName', formData.eventName);
     formDataToSend.append('organizedBy', formData.organizedBy);
-    formDataToSend.append('eventDate', formattedDate);
+    formDataToSend.append('eventDate', eventDateTime);
+    
     formDataToSend.append('venueDescription', formData.description);
     formDataToSend.append('venueName', formData.destination);
     formDataToSend.append('bannerImage', formData.bannerImage);
@@ -246,10 +249,12 @@ const EditEvents = () => {
       });
       console.log(response.data);
       const eventData = response?.data?.event;
+      console.log(eventData.eventDate)
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner.name,
         date: new Date(eventData?.eventDate).toISOString().split('T')[0],
+        time: new Date(eventData?.eventDate).toISOString().split("T")[1].substring(0, 5),
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [''], // Ensure details is an array
         destination: eventData?.venueName,
@@ -285,7 +290,7 @@ const EditEvents = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 10px 25px 10px"
+        padding: "0px 10px 25px 20px"
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
@@ -421,7 +426,21 @@ const EditEvents = () => {
                 type={"date"}
               />
             </Box>
-            <Box sx={{flexBasis:"50%",  display: "flex",
+            <Box sx={{ flexBasis: "50%", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+    <Typography sx={{ color: "#FFA100", fontWeight: "500", fontSize: { sm: "16px", xs: "16px" }, fontFamily: "Montserrat !important" }}>
+      Time
+    </Typography>
+    <CustomInputShadow
+      placeholder="Time"
+      name="time"
+      value={formData.time}
+      onChange={handleChange}
+      error={errors.time}
+      type={"time"}  // Time input
+    />
+  </Box>
+          </Box>
+          <Box sx={{flexBasis:"50%",  display: "flex",
             flexDirection: "column",
             gap: "0.3rem",}}>
             <Typography
@@ -435,7 +454,7 @@ const EditEvents = () => {
               fontFamily: "Montserrat !important",
             }}
           > 
-          Date
+          Description
           </Typography>
               <CustomInputShadow
                 placeholder="Description"
@@ -446,7 +465,6 @@ const EditEvents = () => {
                 type={"text"}
               />
             </Box>
-          </Box>
           <Box sx={{display: "flex",
             flexDirection: "column",
             gap: "0.3rem",}} >

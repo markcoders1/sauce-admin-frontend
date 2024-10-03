@@ -16,6 +16,8 @@ import icon5 from '../../assets/reviewedMan.png';
 import icon6 from '../../assets/icon-05.png';
 import icon7 from '../../assets/icon6.png';
 import icon8 from '../../assets/icon7.png';
+import icon9 from '../../assets/requestedEventyellow.png';
+
 
 
 
@@ -30,10 +32,12 @@ import icon51 from '../../assets/hovered.png';
 import icon61 from '../../assets/icon51.png';
 import icon71 from '../../assets/icon61.png';
 import icon81 from '../../assets/icon71.png';
+import icon91 from '../../assets/requestedEvent.png';
 
 
 
-const vapi_key = import.meta.env.VAPID_KEY;
+
+const vapid_key = import.meta.env.VAPID_KEY;
 
 
 
@@ -193,6 +197,27 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 </Box>
               </NavLink>
               <NavLink
+                to="/admin/requested-events"
+                className={({ isActive }) =>
+                  isActive ? 'active-nav-link' : 'nav-link'
+                }
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    p: '5px 5px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <Typography sx={{ borderRadius: '50%', backgroundColor: 'white',  width: '40px', height: '40px', display: "flex", justifyContent: "center", alignItems: "center" }} >
+                    <img src={icon9} className='navlink-image1' alt="Events Management" />
+                  </Typography>
+                  <Typography sx={{ fontSize: {xs:"14px", xl:"16px"}, fontWeight: "600", fontFamily: "Montserrat !important" }} >Events Management</Typography>
+                </Box>
+              </NavLink>
+              <NavLink
                 to="/admin/reviews-management"
                 className={({ isActive }) =>
                   isActive ? 'active-nav-link' : 'nav-link'
@@ -289,7 +314,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             transition: 'opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px',
+            gap: {xs:'8px', xl:"13px"},
             alignItems:"center"
           }}
         >
@@ -324,7 +349,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   fontWeight: '600',
                   boxShadow: hoveredIcon === 'icon1' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
                   transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-                  mt: "50px",
+                  mt: "15px",
                 }}
                 onClick={() => handleNavigate('/admin/user-management')}
                 onMouseEnter={() => handleMouseEnter('icon1')}
@@ -395,6 +420,28 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={hoveredIcon === 'icon4' ? icon41 : icon4} style={{ width: '50%', zIndex: '100' }} alt="Events Management" />
               </Box>
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  backgroundColor: hoveredIcon === 'icon9' ? 'rgba(255, 0, 0, 0.6)' : 'white',
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  color: 'black',
+                  fontWeight: '600',
+                  boxShadow: hoveredIcon === 'icon9' ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : 'none',
+                  transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onClick={() => handleNavigate('/admin/requested-events')}
+                onMouseEnter={() => handleMouseEnter('icon9')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={hoveredIcon === 'icon91' ? icon91 : icon9} style={{ width: '80%', zIndex: '100' }} alt="Requested Events Mana" />
+              </Box>
+             
               <Box
                 sx={{
                   borderRadius: '50%',
