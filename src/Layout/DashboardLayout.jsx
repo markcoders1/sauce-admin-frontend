@@ -92,8 +92,8 @@ const DashboardLayout = () => {
             <AppSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> 
           </Box>
           <Box sx={{
-            position:"absolute", bottom:".5rem",
-            ml:{xs:isSidebarOpen ? "12px":" 8px" , xl:"15px" },
+            position:"absolute", bottom:".5rem", right:isSidebarOpen ?  "10px": "", left: isSidebarOpen ? "0rem" : "",
+            ml:{xs:isSidebarOpen ? "12px":"8px" , xl:"15px" },
             display: "flex", // Ensure the text appears next to the button
             alignItems: "center",
           }} >

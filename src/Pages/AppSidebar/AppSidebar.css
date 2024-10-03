@@ -97,9 +97,9 @@
    
   }
 
-  @media only screen and (max-width: 1400px) {
+  @media only screen and (max-width: 1500px) {
 
     .logo-admin-width{
-      width: 80px;
+      width: 60px;
      }
   }

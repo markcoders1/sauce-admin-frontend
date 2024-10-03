@@ -290,7 +290,7 @@ const EditEvents = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 10px 25px 20px"
+        padding: "0px 10px 25px 30px"
       }}
     >
       <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
