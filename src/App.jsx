@@ -33,34 +33,47 @@ import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 
 
-import { messaging } from "../firebase.config";
+import { getToken, onMessage } from 'firebase/messaging';
+import { messaging } from '../firebase.config'; 
 
 
 
 import ProtectedRoute from './Protected/Protected';
 import StoreDetails from "./Pages/StoreDetails/StoreDetails";
-const vapid_key = import.meta.env.VAPID_KEY;
+// const vapid_key = import.meta.env.VAPID_KEY;
+
 
 
 function App() {
+  const vapi_key = "BCE44hN31r7lt-Hm50bFYkoVLvzb-KSEqMmXiHYqFC0ABFdqdKMCR1Zo6DG5dN2bW54V4-akw21gd3_xLX2xuI4"
 
-  const requestNotificationPermission = async () => {
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const token = await messaging.getToken({ vapid_key });
-        console.log('FCM Token:', token);
-        // Send this token to your server to send notifications
-      } else {
-        console.log('Permission denied');
-      }
-    } catch (error) {
-      console.error('Failed to get permission', error);
-    }
-  };
-  
+  // const requestNotificationPermission = async () => {
+  //   try {
+  //     const permission = await Notification.requestPermission();
+  //     if (permission === 'granted') {
+  //       const token = await getToken(messaging, { vapidKey: vapi_key }); // Correct usage
+  //       console.log('FCM Token:', token);
+  //       // Send this token to your server to send notifications
+  //     } else {
+  //       console.log('Permission denied');
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to get permission', error);
+  //   }
+  // };
+
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker
+  //     .register('/firebase-messaging-sw.js')  // This will serve the file from the public folder
+  //     .then((registration) => {
+  //       console.log('Service Worker registered with scope: ', registration.scope);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Service Worker registration failed: ', err);
+  //     });
+  // }
   useEffect(() => {
-    requestNotificationPermission();
+    // requestNotificationPermission();
   }, []);
   return (
     <BrowserRouter>

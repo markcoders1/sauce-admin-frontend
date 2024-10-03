@@ -1,15 +1,29 @@
 import { Box } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import backgroundImg1 from '../assets/backgroundImg1-min.webp';
 import AppSidebar from '../Pages/AppSidebar/AppSidebar';
 import LogoutButton from '../Components/Logout/Logout';
 import MobileSidebar from '../Pages/AppSidebar/MobileSidebar';
+import { messaging } from '../../firebase.config';
+import { onMessage } from 'firebase/messaging';
 
 const DashboardLayout = () => {
   const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log('Message received: ', payload);
+      // Display notification in your app
+      const { title, body } = payload.notification;
+     const notify = new Notification(title, { body });
+     console.log(notify)
+    });
+
+    return unsubscribe;
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(prevState => !prevState);
