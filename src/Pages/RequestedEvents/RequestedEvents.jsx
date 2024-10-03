@@ -107,12 +107,16 @@ const RequestedEvents = () => {
 
   function formatDate(isoString) {
     const date = new Date(isoString);
-    const options = { year: "numeric", month: "short", day: "2-digit" };
-    return date
-      .toLocaleDateString("en-US", options)
-      .replace(/,/, "")
-      .toLowerCase()
-      .replace(/\s/g, "-");
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    let formattedDate = date.toLocaleDateString('en-US', options)
+                            .replace(/,/, '')
+                            .toLowerCase()
+                            .replace(/\s/g, '-');
+  
+    // Capitalize the first letter of the month
+    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+    
+    return formattedDate;
   }
 
   const filteredEvents = allEvents.filter(
@@ -252,6 +256,8 @@ const RequestedEvents = () => {
                         textAlign: "start",
                         borderRadius: "8px 0px 0px 8px",
                         color: "white",
+                        pl: "30px",
+
                       }}
                     >
                       Image
@@ -282,6 +288,7 @@ const RequestedEvents = () => {
                         },
                         textAlign: "start",
                         color: "white",
+                        pl:"5px"
                       }}
                       className="MuiTableCell-root-head"
                     >
@@ -297,7 +304,7 @@ const RequestedEvents = () => {
                         },
                         textAlign: "start",
                         color: "white",
-                        pl: "5px",
+                        pl: "10px",
                       }}
                       className="MuiTableCell-root-head"
                     >
@@ -317,7 +324,7 @@ const RequestedEvents = () => {
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Start Date
+                      Request Date
                     </TableCell>
                     <TableCell
                       sx={{
@@ -408,7 +415,7 @@ const RequestedEvents = () => {
                             width={{xs:"120px", xl:"135px"}}
                             borderRadius="6px"
                             buttonStyle={{ height: "45px" }}
-                            onClick={() => handleNavigate(event._id)}
+                           
                             hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
                             onClick={() => handleNavigateToAddEvent(event)}
                           />

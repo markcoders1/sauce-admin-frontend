@@ -301,7 +301,7 @@ const RequestedSauce = () => {
                               border="1px solid #FFA100"
                               ButtonText="View Request"
                               color="white"
-                              width={"128px"}
+                              width="148px"
                               borderRadius="6px"
                               buttonStyle={{ height: "39px" }}
                               onClick={() => handleNavigate(sauce)}

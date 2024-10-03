@@ -89,14 +89,19 @@ const SauceManagement = () => {
         navigate(`${window.location.pathname}?page=${value}`);
     }, [navigate]);
 
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        return `${month}/${day}/${year}`;
-    };
+    function formatDate(isoString) {
+        const date = new Date(isoString);
+        const options = { year: 'numeric', month: 'short', day: '2-digit' };
+        let formattedDate = date.toLocaleDateString('en-US', options)
+                                .replace(/,/, '')
+                                .toLowerCase()
+                                .replace(/\s/g, '-');
+      
+        // Capitalize the first letter of the month
+        formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+        
+        return formattedDate;
+      }
 
     const handleNavigateToEdit = (id) => {
         navigate(`/admin/edit-sauce-details/${id}`);
@@ -223,8 +228,8 @@ const SauceManagement = () => {
                                                 borderRadius: "8px 0px 0px 8px",
                                                 color: "white",
                                                 paddingLeft: {
-                                                    md: "40px",
-                                                    xs: "20px"
+                                                    xl: "40px",
+                                                    xs: "30px"
                                                 }
                                             }}>Image</TableCell>
                                             <TableCell sx={{
@@ -256,7 +261,7 @@ const SauceManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "start",
+                                                textAlign: "center",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Upload Date</TableCell>
                                             <TableCell sx={{
@@ -266,7 +271,7 @@ const SauceManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "start",
+                                                textAlign: "center",
                                                 borderRadius: "0px 8px 8px 0px",
                                                 color: "white"
                                             }} className="MuiTableCell-root-head">Action</TableCell>
@@ -299,9 +304,9 @@ const SauceManagement = () => {
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.owner?.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.name}</TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(sauce?.createdAt)}</TableCell>
+                                                <TableCell sx={{ textAlign: "center !important" }} className="MuiTableCell-root">{formatDate(sauce?.createdAt)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
-                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "start" }}>
+                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                                         <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(sauce._id)} />
                                                     </Box>
                                                 </TableCell>

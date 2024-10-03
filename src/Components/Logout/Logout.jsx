@@ -49,7 +49,13 @@ const LogoutButton = ({ isSidebarOpen }) => {
                     cursor: "pointer",
                     '&:hover .logout-text': {
                         color: 'red', // Change text color on hover
+                       
                     },
+                   
+                    width:"98%",
+                    borderRadius:"8px",
+
+
             
                 }}
                 onClick={handleOpenModal}
@@ -63,8 +69,8 @@ const LogoutButton = ({ isSidebarOpen }) => {
                         outline: "none",
                         backgroundColor: "white",
                         marginTop: "5px",
-                        height: "40px", 
-                        width: "40px", 
+                        height: "50px", 
+                        width: "50px", 
                         display: "flex", 
                         justifyContent: "center", 
                         alignItems: "center", 

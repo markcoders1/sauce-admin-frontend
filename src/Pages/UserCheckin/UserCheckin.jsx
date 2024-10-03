@@ -23,6 +23,8 @@ import { debounce } from "lodash"; // Import lodash debounce
 import DeleteIcon from "../../assets/deleteIcon.png";
 import ConfirmDeleteModalCheckin from "../../Components/DeleteUserCheckinModal/DeleteUserCheckinModal";
 import Lightbox from "yet-another-react-lightbox";
+import logoAdmin from "../../assets/logoAdmin.png";
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -124,7 +126,7 @@ const TextReviewManagement = () => {
       
         setAllReviews(response.data.checkins || []); // Set the reviews data
         setTotalPages(response.data.pagination.totalPages || 1); // Update total pages
-        
+     
 
 
       setLoading(false);
@@ -178,13 +180,19 @@ const TextReviewManagement = () => {
     };
 
 
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      return `${month}/${day}/${year}`;
-    };
+    function formatDate(isoString) {
+      const date = new Date(isoString);
+      const options = { year: 'numeric', month: 'short', day: '2-digit' };
+      let formattedDate = date.toLocaleDateString('en-US', options)
+                              .replace(/,/, '')
+                              .toLowerCase()
+                              .replace(/\s/g, '-');
+    
+      // Capitalize the first letter of the month
+      formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+      
+      return formattedDate;
+    }
   return (
     <>
       <Box>
@@ -304,7 +312,7 @@ const TextReviewManagement = () => {
                         pl: "10px",
                       }}
                     >
-                      Review
+                      Check-Ins
                     </TableCell>
                     <TableCell
                       className="MuiTableCell-root-head"
@@ -316,7 +324,7 @@ const TextReviewManagement = () => {
                         pl: "10px",
                       }}
                     >
-                      Joining Date
+                      Check-Ins Date
                     </TableCell>
                     <TableCell
                       className="MuiTableCell-root-head"
@@ -358,7 +366,7 @@ const TextReviewManagement = () => {
                             objectFit: "contain",
                             cursor: "pointer",
                           }}
-                          onClick={() => openLightbox(review.owner.image)}
+                          onClick={() => openLightbox(review?.owner.image)}
                         />
                       </TableCell>
                       <TableCell
@@ -407,7 +415,7 @@ const TextReviewManagement = () => {
                             gap: ".7rem",
                           }}
                         >
-                          <CustomButton
+                          {/* <CustomButton
                             border="1px solid #FFA100"
                             ButtonText={"View Comments"}
                             color="white"
@@ -416,7 +424,7 @@ const TextReviewManagement = () => {
                             
                             onClick={() => handleNavigate(brand._id)}
                             hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                          />
+                          /> */}
                           <Tooltip title="Delete Review">
                             <img
                               src={DeleteIcon}

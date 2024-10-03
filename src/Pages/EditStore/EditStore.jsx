@@ -107,6 +107,7 @@ const EditStore = () => {
             position: { lat: newLat, lng: newLng },
             map,
           });
+          
 
           setMarker(marker);
           console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 

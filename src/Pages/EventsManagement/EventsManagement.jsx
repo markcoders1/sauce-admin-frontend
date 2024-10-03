@@ -91,14 +91,18 @@ const EventsManagement = () => {
         setPage(value);
         navigate(`${window.location.pathname}?page=${value}`);
     }, [navigate]);
-
     function formatDate(isoString) {
         const date = new Date(isoString);
         const options = { year: 'numeric', month: 'short', day: '2-digit' };
-        return date.toLocaleDateString('en-US', options)
-                   .replace(/,/, '')
-                   .toLowerCase()
-                   .replace(/\s/g, '-');
+        let formattedDate = date.toLocaleDateString('en-US', options)
+                                .replace(/,/, '')
+                                .toLowerCase()
+                                .replace(/\s/g, '-');
+      
+        // Capitalize the first letter of the month
+        formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+        
+        return formattedDate;
       }
 
     const filteredEvents = allEvents.filter(event =>
@@ -117,10 +121,7 @@ const EventsManagement = () => {
 
     return (
         <>
-            {
-                loading ? (
-                    <PageLoader />
-                ) : (
+            
                     <Box>
                         <Box sx={{
                             display: "flex",
@@ -165,7 +166,7 @@ const EventsManagement = () => {
                                         name="search"
                                         id="search"
                                         className="search-input"
-                                        placeholder="Search Event..."
+                                        placeholder="Search"
                                         value={inputValue}
                                         onChange={handleSearchChange}
                                     />
@@ -197,7 +198,10 @@ const EventsManagement = () => {
                                 </Box>
                             </Box>
                         </Box>
-
+                        {
+                loading ? (
+                    <PageLoader />
+                ) : (
                         <Box sx={{ mt: "30px", padding: {md:"0px 20px" , xs:"0px"}}}>
                             <TableContainer component={Paper} className="MuiTableContainer-root" >
                                 <Table className="data-table">
@@ -242,7 +246,9 @@ const EventsManagement = () => {
                                                     xs: "16px"
                                                 },
                                                 textAlign: "start",
-                                                color: "white"
+                                                color: "white",
+                                                pl:"5px"
+
                                             }} className="MuiTableCell-root-head">Organized By</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -302,6 +308,8 @@ const EventsManagement = () => {
                                 </Table>
                             </TableContainer>
                         </Box>
+                        )
+                    }
 
                         {/* Pagination */}
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
@@ -330,9 +338,9 @@ const EventsManagement = () => {
                                 }}
                             />
                         </Box>
+                         
                     </Box>
-                )
-            }
+               
 
             {/* Lightbox component */}
             {isOpen && (

@@ -47,20 +47,20 @@ import StoreDetails from "./Pages/StoreDetails/StoreDetails";
 function App() {
   const vapi_key = "BCE44hN31r7lt-Hm50bFYkoVLvzb-KSEqMmXiHYqFC0ABFdqdKMCR1Zo6DG5dN2bW54V4-akw21gd3_xLX2xuI4"
 
-  // const requestNotificationPermission = async () => {
-  //   try {
-  //     const permission = await Notification.requestPermission();
-  //     if (permission === 'granted') {
-  //       const token = await getToken(messaging, { vapidKey: vapi_key }); // Correct usage
-  //       console.log('FCM Token:', token);
-  //       // Send this token to your server to send notifications
-  //     } else {
-  //       console.log('Permission denied');
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to get permission', error);
-  //   }
-  // };
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const token = await getToken(messaging, { vapidKey: vapi_key }); // Correct usage
+        console.log('FCM Token:', token);
+        // Send this token to your server to send notifications
+      } else {
+        console.log('Permission denied');
+      }
+    } catch (error) {
+      console.error('Failed to get permission', error);
+    }
+  };
 
   // if ('serviceWorker' in navigator) {
   //   navigator.serviceWorker
@@ -73,7 +73,7 @@ function App() {
   //     });
   // }
   useEffect(() => {
-    // requestNotificationPermission();
+    requestNotificationPermission();
   }, []);
   return (
     <BrowserRouter>

@@ -87,16 +87,19 @@ const UserInterestedEvents = () => {
   // const handlePageChange = (event, value) => {
   //     navigate(`${window.location.pathname}?page=${value}`);
   // };
-
   function formatDate(isoString) {
     const date = new Date(isoString);
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    return date.toLocaleDateString('en-US', options)
-               .replace(/,/, '')
-               .toLowerCase()
-               .replace(/\s/g, '-');
+    let formattedDate = date.toLocaleDateString('en-US', options)
+                            .replace(/,/, '')
+                            .toLowerCase()
+                            .replace(/\s/g, '-');
+  
+    // Capitalize the first letter of the month
+    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+    
+    return formattedDate;
   }
-
   const filteredEvents = allEvents.filter(
     (event) =>
       event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,9 +117,7 @@ const UserInterestedEvents = () => {
 
   return (
     <>
-      {loading ? (
-        <PageLoader />
-      ) : (
+     
         <Box>
           <Box
             sx={{
@@ -202,204 +203,223 @@ const UserInterestedEvents = () => {
               </Box>
             </Box>
           </Box>
-
-          <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
-            <TableContainer
-              component={Paper}
-              className="MuiTableContainer-root"
-            >
-              <Table className="data-table">
-                <TableHead className="MuiTableHead-root">
-                  <TableRow
-                    sx={{
-                      backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                      "&:hover": {
-                        backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                      },
-                      padding: "0px",
-                    }}
-                    className="header-row"
-                  >
-                    <TableCell
-                      className="MuiTableCell-root-head"
-                      sx={{
-                        fontWeight: "500",
-                        padding: "0px 20px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "start",
-                        borderRadius: "8px 0px 0px 8px",
-                        color: "white",
-                      }}
-                    >
-                      Image
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "start",
-                        color: "white",
-                        pl: "10px",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Events Name
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "start",
-                        color: "white",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Organized By
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "start",
-                        color: "white",
-                        pl: "5px",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Destination
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "center",
-                        color: "white",
-                        // paddingLeft:"1"
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Start Date
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontWeight: "500",
-                        padding: "12px 0px",
-                        fontSize: {
-                          sm: "21px",
-                          xs: "16px",
-                        },
-                        textAlign: "center",
-                        borderRadius: "0px 8px 8px 0px",
-                        color: "white",
-                      }}
-                      className="MuiTableCell-root-head"
-                    >
-                      Action
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody className="MuiTableBody-root">
-                  {filteredEvents.map((event, index) => (
+          
+          {loading ? (
+        <PageLoader />
+      ) :allEvents.length === 0 ? (
+        <Typography
+          sx={{
+            textAlign: "center",
+            fontWeight: "600",
+            mt: 4,
+            fontSize: "1.5rem",
+            color: "#FFA100",
+          }}
+        >
+          No Interested Events found
+        </Typography>
+      ) : (
+              <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
+              <TableContainer
+                component={Paper}
+                className="MuiTableContainer-root"
+              >
+                <Table className="data-table">
+                  <TableHead className="MuiTableHead-root">
                     <TableRow
-                      key={index}
                       sx={{
-                        border: "2px solid #FFA100",
+                        backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
+                        "&:hover": {
+                          backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                        },
+                        padding: "0px",
                       }}
-                      className="MuiTableRow-root"
+                      className="header-row"
                     >
+                      <TableCell
+                        className="MuiTableCell-root-head"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "0px 20px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "start",
+                          borderRadius: "8px 0px 0px 8px",
+                          color: "white",
+                        }}
+                      >
+                        Image
+                      </TableCell>
                       <TableCell
                         sx={{
-                          borderRadius: "8px 0px 0px 8px !important",
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "start",
                           color: "white",
-                          textAlign: "start !important",
+                          pl: "10px",
                         }}
-                        className="MuiTableCell-root"
+                        className="MuiTableCell-root-head"
                       >
-                        <img
-                          src={
-                            event.bannerImage ? event.bannerImage : logoAdmin
-                          }
-                          alt="Sauce"
-                          style={{
-                            width: "80px",
-                            height: "50px",
-                            borderRadius: "8px !important",
-                            objectFit: "contain",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => openLightbox(event.bannerImage)}
-                        />
+                        Events Name
                       </TableCell>
                       <TableCell
-                        sx={{ textAlign: "start !important" }}
-                        className="MuiTableCell-root"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "start",
+                          color: "white",
+                        }}
+                        className="MuiTableCell-root-head"
                       >
-                        {event.eventName}
+                        Organized By
                       </TableCell>
                       <TableCell
-                        sx={{ textAlign: "start !important" }}
-                        className="MuiTableCell-root"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "start",
+                          color: "white",
+                          pl: "5px",
+                        }}
+                        className="MuiTableCell-root-head"
                       >
-                        {/* {event.owner.name} */}
+                        Destination
                       </TableCell>
                       <TableCell
-                        sx={{ textAlign: "start !important" }}
-                        className="MuiTableCell-root"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "center",
+                          color: "white",
+                          // paddingLeft:"1"
+                        }}
+                        className="MuiTableCell-root-head"
                       >
-                        {event.venueName}
-                      </TableCell>
-                      <TableCell className="MuiTableCell-root">
-                        {formatDate(event.eventDate)}
+                        Event Date
                       </TableCell>
                       <TableCell
-                        sx={{ borderRadius: "0px 8px 8px 0px" }}
-                        className="MuiTableCell-root"
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: {
+                            sm: "21px",
+                            xs: "16px",
+                          },
+                          textAlign: "center",
+                          borderRadius: "0px 8px 8px 0px",
+                          color: "white",
+                        }}
+                        className="MuiTableCell-root-head"
                       >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            gap: "10px",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <CustomButton
-                            border="1px solid #FFA100"
-                            ButtonText="View Details"
-                            color="white"
-                            width={"128px"}
-                            borderRadius="6px"
-                            buttonStyle={{ height: "39px" }}
-                            onClick={() => handleNavigateToSeeEvents(event._id)}
-                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                          />
-                        </Box>
+                        Action
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+                  </TableHead>
+                  <TableBody className="MuiTableBody-root">
+                    {filteredEvents.map((event, index) => (
+                      <TableRow
+                        key={index}
+                        sx={{
+                          border: "2px solid #FFA100",
+                        }}
+                        className="MuiTableRow-root"
+                      >
+                        <TableCell
+                          sx={{
+                            borderRadius: "8px 0px 0px 8px !important",
+                            color: "white",
+                            textAlign: "start !important",
+                          }}
+                          className="MuiTableCell-root"
+                        >
+                          <img
+                            src={
+                              event.bannerImage ? event.bannerImage : logoAdmin
+                            }
+                            alt="Sauce"
+                            style={{
+                              width: "80px",
+                              height: "50px",
+                              borderRadius: "8px !important",
+                              objectFit: "contain",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => openLightbox(event.bannerImage)}
+                          />
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "start !important" }}
+                          className="MuiTableCell-root"
+                        >
+                          {event.eventName}
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "start !important" }}
+                          className="MuiTableCell-root"
+                        >
+                          {/* {event.owner.name} */}
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "start !important" }}
+                          className="MuiTableCell-root"
+                        >
+                          {event.venueName}
+                        </TableCell>
+                        <TableCell className="MuiTableCell-root">
+                          {formatDate(event.eventDate)}
+                        </TableCell>
+                        <TableCell
+                          sx={{ borderRadius: "0px 8px 8px 0px" }}
+                          className="MuiTableCell-root"
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "10px",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <CustomButton
+                              border="1px solid #FFA100"
+                              ButtonText="View Details"
+                              color="white"
+                              width={"128px"}
+                              borderRadius="6px"
+                              buttonStyle={{ height: "39px" }}
+                              onClick={() => handleNavigateToSeeEvents(event._id)}
+                              hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
+                            />
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+  
+            )
+          }
 
+        
           {/* Pagination */}
           {/* <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
                             <Pagination
@@ -428,7 +448,7 @@ const UserInterestedEvents = () => {
                             />
                         </Box> */}
         </Box>
-      )}
+
 
       {/* Lightbox component */}
       {isOpen && (

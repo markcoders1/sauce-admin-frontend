@@ -128,14 +128,19 @@ const UserManagement = () => {
   //   navigate(`${window.location.pathname}?page=${value}`);
   // };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
-
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    let formattedDate = date.toLocaleDateString('en-US', options)
+                            .replace(/,/, '')
+                            .toLowerCase()
+                            .replace(/\s/g, '-');
+  
+    // Capitalize the first letter of the month
+    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+    
+    return formattedDate;
+  }
   const navigateToEdit = (id) => {
     navigate(`/admin/edit-brand-user-details/${id}`);
   };

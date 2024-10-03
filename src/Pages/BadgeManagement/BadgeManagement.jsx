@@ -332,7 +332,7 @@ const BadgeManagement = () => {
                             fontSize: { sm: "21px", xs: "16px" },
                             textAlign: "start",
                             color: "white",
-                            pl: "10px",
+                            pl: "20px",
                             borderRadius: "0px 8px 8px 0px",
                           }}
                         >

@@ -505,7 +505,10 @@ const EditSauce = () => {
           value={formData?.details}
           onChange={handleChange}
           error={errors.details}
-          height="160px"
+          height="100%"
+          inputStyle={{
+
+          }}
         />
       </Box>
 
@@ -530,7 +533,8 @@ const EditSauce = () => {
           value={formData?.ingredients}
           onChange={handleChange}
           error={errors.ingredients}
-          height="160px"
+           height="100%"
+         
         />
       </Box>
 

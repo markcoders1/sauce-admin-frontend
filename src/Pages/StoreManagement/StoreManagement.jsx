@@ -320,9 +320,9 @@ const [allStores, setAllStores] = useState([]);
                         fontWeight: "500",
                         padding: "12px 0px",
                         fontSize: { sm: "21px", xs: "16px" },
-                        textAlign: "start",
+                        textAlign: "center",
                         color: "white",
-                        pl: "10px",
+                      
                         borderRadius: "0px 8px 8px 0px",
                       }}
                     >
@@ -360,7 +360,7 @@ const [allStores, setAllStores] = useState([]);
                         {review?.postedBy?.email}
                       </TableCell>
                       <TableCell sx={{ borderRadius: "0px 8px 8px 0px", color: "white", ml: { md: "20px", xs: "10px" } }} className="MuiTableCell-root">
-                        <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: "0.8rem"}}>
                           <Tooltip title="View Store">
                             <CustomButton
                               border="1px solid #FFA100"
