@@ -345,6 +345,7 @@ const ReviewsManagement = () => {
                                 href={review.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className="MuiTableCell-root"
                                 style={{
                                   color: "#FFA100",
                                   textDecoration: "none",

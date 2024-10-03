@@ -32,7 +32,7 @@ const   CustomButton = ({
                 border: border,
                 borderRadius,
                 padding,
-                fontSize,
+                fontSize: {xl:"18px", sm:"15px", xs:"16px"},
                 color,
                 background,
                 fontWeight,

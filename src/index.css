@@ -96,3 +96,17 @@ input[type="date"] {
   background-position: right;
   background-size: 20px;
   padding-right: 30px; /* Adjust padding to make space for the icon */
+
+
+  .image-inside-rows{
+    width: 90px;
+    height: 60px;
+  }
+
+
+  @media (max-width: 1500px) {
+    .image-inside-rows{
+      width: 60px;
+      height: 40px;
+    }
+  }

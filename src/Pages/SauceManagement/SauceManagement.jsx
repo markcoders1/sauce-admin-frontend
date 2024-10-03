@@ -292,8 +292,9 @@ const SauceManagement = () => {
                                                     <img
                                                         src={sauce.image ? sauce.image : logoAdmin}
                                                         alt="Sauce"
-                                                        style={{ width: '90px', height: '60px', borderRadius: '8px', objectFit: "contain", cursor: 'pointer' }}
+                                                        style={{ borderRadius: '8px', objectFit: "contain", cursor: 'pointer' }}
                                                         onClick={() => openLightbox(sauce.image)}
+                                                        className='image-inside-rows'
                                                     />
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.owner?.name}</TableCell>
