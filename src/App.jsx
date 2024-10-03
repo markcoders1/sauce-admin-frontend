@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 import PageLoader from "./Components/Loader/PageLoader";
 import DashboardLayout from './Layout/DashboardLayout';
 import UserManagement from './Pages/UserManagement/UserManagement';
@@ -33,12 +33,35 @@ import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 
 
+import { messaging } from "../firebase.config";
+
 
 
 import ProtectedRoute from './Protected/Protected';
 import StoreDetails from "./Pages/StoreDetails/StoreDetails";
+const vapid_key = import.meta.env.VAPID_KEY;
+
 
 function App() {
+
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const token = await messaging.getToken({ vapid_key });
+        console.log('FCM Token:', token);
+        // Send this token to your server to send notifications
+      } else {
+        console.log('Permission denied');
+      }
+    } catch (error) {
+      console.error('Failed to get permission', error);
+    }
+  };
+  
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
