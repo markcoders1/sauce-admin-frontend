@@ -15,6 +15,8 @@ import icon3 from '../../assets/icons-03.png';
 import icon4 from '../../assets/icons-04.png';
 import icon5 from '../../assets/reviewedMan.png';
 import icon6 from '../../assets/icon-05.png';
+import icon9 from '../../assets/requestedEventyellow.png';
+
 
 
 import icon71 from '../../assets/icon61.png';
@@ -62,7 +64,7 @@ const MobileSidebar = () => {
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',mt:"-30px" }}>
           <Box>
-            <img src={logoAdmin} alt="Logo" style={{ width: '120px' }} />
+            <img src={logoAdmin} alt="Logo" style={{ width: '90px' }} />
           </Box>
         </Box>
         
@@ -92,6 +94,12 @@ const MobileSidebar = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <img src={icon4} style={{ width: '25px' }} alt="Events Management" />
               <Typography>Events Management</Typography>
+            </Box>
+          </Box>
+          <Box onClick={() => handleNavigate('/admin/requested-events')} className="nav-link">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <img src={icon9} style={{ width: '40px' }} alt="Events Management" />
+              <Typography>Requested Events</Typography>
             </Box>
           </Box>
           <Box onClick={() => handleNavigate('/admin/reviews-management')} className="nav-link">
