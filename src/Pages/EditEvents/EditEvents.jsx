@@ -61,71 +61,89 @@ const EditEvents = () => {
           center: { lat, lng },
           zoom: 15,
         });
-
-                   // Add autocomplete search box
-                   const input = document.getElementById('autocomplete');
-                   const autocomplete = new google.maps.places.Autocomplete(input, {
-                     fields: ['place_id', 'geometry', 'formatted_address'],
-                   });
-                   autocompleteRef.current = autocomplete;
-        
-                   autocomplete.addListener('place_changed', () => {
-                    const place = autocomplete.getPlace();
-                    if (place.geometry) {
-                      const lat = place.geometry.location.lat();
-                      const lng = place.geometry.location.lng();
-        
-                      // Center map on the selected place
-                      map.setCenter({ lat, lng });
-                      map.setZoom(15);
-        
-                      setFormData((prev) => ({
-                        ...prev,
-                        coordinates: { lat, lng },
-                      }));
-        
-                      // Set marker
-                      setMapMarker(map, lat, lng);
-                    }
-                  });
-        
-        
-        
-
-       map.addListener('click', (event) => {
+  
+        // Add autocomplete search box
+        const input = document.getElementById('autocomplete');
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+          fields: ['place_id', 'geometry', 'formatted_address'],
+        });
+        autocompleteRef.current = autocomplete;
+  
+        // Listener for autocomplete place selection
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+  
+            // Center map on the selected place
+            map.setCenter({ lat, lng });
+            map.setZoom(15);
+  
+            setFormData((prev) => ({
+              ...prev,
+              coordinates: { lat, lng },
+            }));
+  
+            // Remove the existing marker if it exists
+            if (marker) {
+              marker.setMap(null);
+            }
+  
+            // Add a new marker for the selected place
+            marker = new google.maps.Marker({
+              position: { lat, lng },
+              map,
+            });
+  
+            setMarker(marker);
+          }
+        });
+  
+        // Listener for map click to add a new marker
+        map.addListener('click', (event) => {
           const newLat = event.latLng.lat();
           const newLng = event.latLng.lng();
+  
           setFormData((prev) => ({
             ...prev,
             coordinates: { lat: newLat, lng: newLng },
           }));
-
-  // Check if a marker exists and remove it
-  if (marker && marker.setMap) {
-    marker.setMap(null);
-  }
-
+  
+          // Remove the previous marker if it exists
+          if (marker) {
+            marker.setMap(null);
+          }
+  
           // Add the new marker
-           marker = new google.maps.Marker({
+          marker = new google.maps.Marker({
             position: { lat: newLat, lng: newLng },
             map,
           });
-
-          setMarker(marker);  
-          console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`); 
+  
+          setMarker(marker);
+          console.log(`Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`);
         });
-
-        const initialMarker = new google.maps.Marker({
-          position: { lat, lng },
-          map,
-        });
-        setMarker(initialMarker);
+  
+        // If lat/lng are provided, add an initial marker
+        if (lat && lng) {
+          if (marker) {
+            marker.setMap(null); // Remove the existing marker if present
+          }
+  
+          marker = new google.maps.Marker({
+            position: { lat, lng },
+            map,
+          });
+  
+          setMarker(marker);
+        }
       })
       .catch((e) => {
         console.error("Error loading Google Maps:", e);
       });
   };
-
+  
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -583,7 +601,7 @@ const EditEvents = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border='1px solid #FFA100'
-          ButtonText={loading ? "Saving": "Save"}
+          ButtonText={loading ? "Updating": "Update"}
           color='white'
           width={"178px"}
           borderRadius='8px'
