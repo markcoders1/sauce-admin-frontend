@@ -43,7 +43,7 @@ const EventsManagement = () => {
                 params: {
                     page: page, // Pass current page to backend
                     limit: 8 ,// Number of items per page
-                    searchTerm : searchTerm
+                    searchTerm : searchTerm,
                 },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`

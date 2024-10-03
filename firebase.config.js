@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbboJRjtV4skQ_oSQnaHVMwPdLcctg6Go",
@@ -11,6 +12,9 @@ const firebaseConfig = {
     measurementId: "G-M5KZ6NX1ZX"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const auth = getAuth(app);
+const messaging = getMessaging(app); 
+
+export { auth, messaging };

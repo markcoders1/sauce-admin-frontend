@@ -30,6 +30,7 @@ import AddStore from "./Pages/AddStore/AddStore";
 import EditStore from "./Pages/EditStore/EditStore";
 import TextReviewManagement from "./Pages/UserReview/TextReviewManagement";
 import UserCheckin from "./Pages/UserCheckin/UserCheckin";
+import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 
 
 
@@ -73,6 +74,8 @@ function App() {
 
           <Route path="reviews-management" element={<ReviewsManagement />} />
           <Route path="requested-sauce" element={<RequestedSauce />} />
+          <Route path="requested-events" element={<RequestedEvents />} />
+
 
 
           <Route path="badge-management" element={<BadgeManagement />} />

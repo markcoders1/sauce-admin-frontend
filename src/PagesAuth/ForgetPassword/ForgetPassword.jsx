@@ -119,6 +119,8 @@ const ForgotPassword = () => {
                             fontWeight='600'
                             type="submit"
                             fullWidth={true}
+                            buttonStyle={{height:"65px"}}
+
                         />
                     </Box>
                 </Box>

@@ -33,6 +33,7 @@ import icon81 from '../../assets/icon71.png';
 
 
 
+const vapi_key = import.meta.env.VAPID_KEY;
 
 
 

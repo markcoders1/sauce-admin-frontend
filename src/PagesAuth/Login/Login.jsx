@@ -9,6 +9,7 @@ import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import SnackAlert from '../../Components/SnackAlert/SnackAlert';
+import { Height } from '@mui/icons-material';
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -223,6 +224,7 @@ const Login = () => {
                             background={loading ? 'linear-gradient(90deg, #2E210A 0%, #5A3D0A 100%)' : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
                             padding='16px 0px'
                             fontSize='18px'
+                            buttonStyle={{height:"65px"}}
                             fontWeight='600'
                             type="submit"
                             fullWidth={true}
