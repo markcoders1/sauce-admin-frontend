@@ -18,10 +18,11 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import PageLoader from "../../Components/Loader/PageLoader";
 import "../TabooManagement/TabooManagement.css"; // Use the same CSS for consistent design
 import CustomButton from "../../Components/CustomButton/CustomButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { debounce } from "lodash"; // Import lodash debounce
 import DeleteIcon from "../../assets/deleteIcon.png";
 import ConfirmDeleteModalCheckin from "../../Components/DeleteUserCheckinModal/DeleteUserCheckinModal";
+import Lightbox from "yet-another-react-lightbox";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -38,6 +39,7 @@ const TextReviewManagement = () => {
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const {id} = useParams()
 
 
 
@@ -105,7 +107,7 @@ const TextReviewManagement = () => {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/get-reviews`, // Dummy API endpoint for now
+        url: `${appUrl}/admin/get-specific-user-checkins/${id}`, // Dummy API endpoint for now
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -118,14 +120,12 @@ const TextReviewManagement = () => {
         },
       });
 
-      // Check if response is valid, if not use dummy data
-      if (response?.data?.items?.length > 0) {
-        setAllReviews(response.data.items || []); // Set the reviews data
+        console.log(response)
+      
+        setAllReviews(response.data.checkins || []); // Set the reviews data
         setTotalPages(response.data.pagination.totalPages || 1); // Update total pages
-      } else {
-        setAllReviews(dummyData); // Show dummy data if API fails or no data received
-        setTotalPages(1); // Default pagination for dummy data
-      }
+        
+
 
       setLoading(false);
     } catch (error) {
@@ -177,6 +177,14 @@ const TextReviewManagement = () => {
         setIsOpen(true);
     };
 
+
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    };
   return (
     <>
       <Box>
@@ -341,7 +349,7 @@ const TextReviewManagement = () => {
                         className="MuiTableCell-root"
                       >
                         <img
-                        //   src={brand.image ? brand.image : logoAdmin}
+                          src={review?.owner?.image ? review?.owner?.image : logoAdmin}
                           alt="Brand"
                           style={{
                             width: "80px",
@@ -350,7 +358,7 @@ const TextReviewManagement = () => {
                             objectFit: "contain",
                             cursor: "pointer",
                           }}
-                          onClick={() => openLightbox(brand.image)}
+                          onClick={() => openLightbox(review.owner.image)}
                         />
                       </TableCell>
                       <TableCell
@@ -362,25 +370,25 @@ const TextReviewManagement = () => {
                         }}
                         className="MuiTableCell-root"
                       >
-                        {review.fullName || "John Doe"}
+                        {review.owner.name || "John Doe"}
                       </TableCell>
                       <TableCell
                         sx={{ color: "white", textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                        {review.email || "example@email.com"}
+                        {review.owner.email || "example@email.com"}
                       </TableCell>
                       <TableCell
                         sx={{ color: "white", textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                        {review.review || "This is a sample review."}
+                        {review.text || "This is a sample review."}
                       </TableCell>
                       <TableCell
                         sx={{ color: "white", textAlign: "center !important" }}
                         className="MuiTableCell-root"
                       >
-                        {review.joiningDate || "2023-10-01"}
+                        {formatDate(review.createdAt) || "2023-10-01"}
                       </TableCell>
 
                       <TableCell
@@ -396,16 +404,16 @@ const TextReviewManagement = () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            gap: "1rem",
+                            gap: ".7rem",
                           }}
                         >
                           <CustomButton
                             border="1px solid #FFA100"
                             ButtonText={"View Comments"}
                             color="white"
-                            width={"148px"}
+                            width= {{sm:"147px", xl:"170px"}}
                             borderRadius="6px"
-                            buttonStyle={{ height: "45px" }}
+                            
                             onClick={() => handleNavigate(brand._id)}
                             hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
                           />

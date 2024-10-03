@@ -32,12 +32,13 @@ const   CustomButton = ({
                 border: border,
                 borderRadius,
                 padding,
-                fontSize: {xl:"18px", sm:"15px", xs:"16px"},
+                fontSize: {xl:"18px", sm:"13px", xs:"16px"},
                 color,
                 background,
                 fontWeight,
                 type,
                 width,
+                height:"43px",
                 textTransform: "none",  // Ensures the text is displayed as provided
                 ...buttonStyle,
                 '&:hover': {

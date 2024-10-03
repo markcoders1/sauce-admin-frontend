@@ -544,6 +544,7 @@ const AddSauce = () => {
           value={formData.details}
           onChange={handleChange}
           error={errors.details}
+          placeholder={"Details"}
           height="160px"
         />
       </Box>
@@ -574,6 +575,8 @@ const AddSauce = () => {
           value={formData.ingredients}
           onChange={handleChange}
           error={errors.ingredients}
+          placeholder={"Ingredients"}
+
           height="160px"
         />
       </Box>
@@ -650,7 +653,7 @@ const AddSauce = () => {
             fontFamily: "Montserrat !important",
           }}
         >
-          Chilli
+          Chili
         </Typography>
         {formData.chilli.map((ingredient, index) => (
           <Box

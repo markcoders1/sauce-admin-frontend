@@ -288,7 +288,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
             transition: 'opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease',
             display: 'flex',
             flexDirection: 'column',
-            gap: '15px',
+            gap: '10px',
             alignItems:"center"
           }}
         >
@@ -313,8 +313,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon1' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -335,8 +335,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon3' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -356,8 +356,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon2' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -377,8 +377,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon4' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -398,8 +398,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon5' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -420,8 +420,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon6' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -445,8 +445,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon7' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -467,8 +467,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 sx={{
                   borderRadius: '50%',
                   backgroundColor: hoveredIcon === 'icon8' ? 'rgba(255, 0, 0, 0.6)' : 'white',
-                  width: {xl:'50px', xs:'30px'},
-                  height: {xl:'50px', xs:'30px'},
+                  width: {xl:'50px', xs:'40px'},
+                  height: {xl:'50px', xs:'40px'},
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',

@@ -96,18 +96,19 @@ table tr td:last-child {
 }
 
 table > tbody > tr {
-    height: 75px;
+    height: 75px !important;
 }
 
 /* Media Queries for Responsiveness */
 
-@media (max-width: 1200px) {
-    .MuiTableCell-root {
-        font-size: 18px;
-    }
+@media (max-width: 1500px) {
+   
 
+    table > tbody > tr {
+        height: 15px !important;
+    }
     .MuiTableBody-root .MuiTableCell-root {
-        font-size: 18px;
+        font-size: 16px;
     }
 
  

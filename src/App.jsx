@@ -84,7 +84,7 @@ function App() {
           <Route path="store-management/edit-store/:id" element={<EditStore />} />
           <Route path="store-management/view-store/:id" element={<StoreDetails />} />
           <Route path="user-reviews/:id" element={<TextReviewManagement />} />
-          <Route path="user-checkin" element={<UserCheckin />} />
+          <Route path="user-checkin/:id" element={<UserCheckin />} />
 
           
 

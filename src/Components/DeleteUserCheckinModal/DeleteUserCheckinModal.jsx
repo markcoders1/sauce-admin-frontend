@@ -30,7 +30,7 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
         try {
             setLoading(true);
             const response = await axios({
-                url: `${appUrl}/admin/delete-official-review/${reviewId}`,
+                url: `${appUrl}/admin/delete-specific-checkin/${reviewId}`,
                 method: "delete",  // Set method to DELETE
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,

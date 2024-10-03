@@ -447,7 +447,7 @@ const UserManagement = () => {
                     
                         <Tooltip title="See all Check-in">
                       <TableCell className="MuiTableCell-root"
-                       onClick={()=> navigate(`/admin/user-checkin`)}
+                       onClick={()=> navigate(`/admin/user-checkin/${user._id}`)}
                        sx={{
                       
                          cursor: "pointer",
