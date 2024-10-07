@@ -31,6 +31,7 @@ import EditStore from "./Pages/EditStore/EditStore";
 import TextReviewManagement from "./Pages/UserReview/TextReviewManagement";
 import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
+import Notification from "./Pages/Notification/Notification";
 
 
 import { getToken, onMessage } from 'firebase/messaging';
@@ -124,6 +125,8 @@ function App() {
           <Route path="store-management/view-store/:id" element={<StoreDetails />} />
           <Route path="user-reviews/:id" element={<TextReviewManagement />} />
           <Route path="user-checkin/:id" element={<UserCheckin />} />
+          <Route path="notification" element={<Notification />} />
+
 
           
 
