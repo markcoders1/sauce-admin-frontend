@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PageLoader from "./Components/Loader/PageLoader";
 import DashboardLayout from './Layout/DashboardLayout';
 import UserManagement from './Pages/UserManagement/UserManagement';
@@ -41,27 +41,135 @@ import { messaging } from '../firebase.config';
 
 import ProtectedRoute from './Protected/Protected';
 import StoreDetails from "./Pages/StoreDetails/StoreDetails";
+import axios from "axios";
+import { useSelector } from "react-redux";
 // const vapid_key = import.meta.env.VAPID_KEY;
+
+
+const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 
 
 function App() {
-  const vapi_key = "BCE44hN31r7lt-Hm50bFYkoVLvzb-KSEqMmXiHYqFC0ABFdqdKMCR1Zo6DG5dN2bW54V4-akw21gd3_xLX2xuI4"
+  // const vapi_key = "BCE44hN31r7lt-Hm50bFYkoVLvzb-KSEqMmXiHYqFC0ABFdqdKMCR1Zo6DG5dN2bW54V4-akw21gd3_xLX2xuI4"
+  const auth = useSelector((state) => state.auth);
 
-  const requestNotificationPermission = async () => {
+
+  const [token , setToken] = useState();
+
+  const requestForToken = () => {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('sw-cached-site.js', function() {
+        navigator.serviceWorker.register('firebase-messaging-sw.js', {
+          scope: '/',
+        });
+      });
+    }
+    return getToken(messaging, { vapidKey: 'BFr7tUCDpD9Qf6vVRQ0riZOSMPdcFQxqQ6pTkA1wqSxSx6D2V2l2awScLKYQ8aHpzIxCLKtL0BPFduhWE8vbqEQ' })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log(currentToken)
+          postToken(currentToken)
+          
+          return currentToken;
+        } else {
+          alert(
+            "No registration token available. Request permission to generate one."
+          );
+          return null;
+        }
+      })
+      .catch((err) => {
+        alert("An error occurred while retrieving token - " + err);
+        return null;
+      });
+  };
+
+  const postToken = async (token) => {
     try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const token = await getToken(messaging, { vapidKey: vapi_key }); // Correct usage
-        console.log('FCM Token:', token);
-        // Send this token to your server to send notifications
-      } else {
-        console.log('Permission denied');
-      }
+      const response = await axios({
+        url: `${appUrl}/update-token`,
+        method: "post",
+        data : {
+          notificationToken : token
+        },
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      });
+      console.log(response)
     } catch (error) {
-      console.error('Failed to get permission', error);
+      console.error("Error sending token:", error);
+      
     }
   };
+
+
+    
+  useEffect(()=>{
+    requestForToken();
+
+    const unsubscribeOnTokenRefresh = messaging.onTokenRefresh(async () => {
+      try {
+        const newToken = await getToken(messaging, { vapidKey: 'BFr7tUCDpD9Qf6vVRQ0riZOSMPdcFQxqQ6pTkA1wqSxSx6D2V2l2awScLKYQ8aHpzIxCLKtL0BPFduhWE8vbqEQ' });
+        console.log('FCM Token refreshed:', newToken);
+        await postToken(newToken);
+        setToken(newToken);
+      } catch (error) {
+        console.error("Failed to refresh token:", error);
+      }
+    });
+
+    return () => {
+      unsubscribeOnTokenRefresh();
+    };
+  })
+  onMessage(messaging, ({ notification }) => {
+    new Notification(notification.title, {
+      body: notification.body,
+      icon: notification.icon,
+    });
+  });
+
+
+  // const updateTokenOnServer = async (newFcmToken) => {
+  //   try {
+  //     const resposne = await axiosInstance.post("/update-token", { notificationToken: newFcmToken });
+  //     console.log('Token updated on the server successfully.', resposne.data);
+  //   } catch (error) {
+  //     console.error('Failed to update token on server:', error);
+  //   }
+  // };
+  // React.useEffect(() => {
+  //   // Get the initial token
+  //   const getInitialFcmToken = async () => {
+  //     const fcmToken = await messaging().getToken();
+  //     console.log('Initial FCM Token:', fcmToken);
+  //     await updateTokenOnServer(fcmToken); // Update token to your backend
+  //   };
+  //   getInitialFcmToken();
+  //   const unsubscribe = messaging().onTokenRefresh(async (newFcmToken) => {
+  //     console.log('FCM Token refreshed:', newFcmToken);
+  //     await updateTokenOnServer(newFcmToken); // Update new token to your backend
+  //   });
+
+  // }, []);
+
+
+  // const requestNotificationPermission = async () => {
+  //   try {
+  //     const permission = await Notification();
+  //     if (permission === 'granted') {
+  //       const token = await getToken(messaging, { vapidKey: vapi_key }); // Correct usage
+  //       console.log('FCM Token:', token);
+    
+  //     } else {
+  //       console.log('Permission denied');
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to get permission', error);
+  //   }
+  // };
 
   // if ('serviceWorker' in navigator) {
   //   navigator.serviceWorker
@@ -74,7 +182,7 @@ function App() {
   //     });
   // }
   useEffect(() => {
-    requestNotificationPermission();
+    // requestNotificationPermission();
   }, []);
   return (
     <BrowserRouter>
