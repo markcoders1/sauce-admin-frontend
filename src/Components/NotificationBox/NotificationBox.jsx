@@ -10,6 +10,7 @@ const NotificationBox = ({
   notificationLink,
   notificationisNew,
   notificationLinkType,
+  onClick=()=>{},
 }) => {
   return (
     <Box
@@ -27,6 +28,7 @@ const NotificationBox = ({
           ? "rgba(90, 61, 10, 1)"
           : "rgba(46, 33, 10, 1)",
       }}
+      onClick={onClick}
     >
       <Box
         sx={{

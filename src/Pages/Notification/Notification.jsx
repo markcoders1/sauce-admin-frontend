@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NotificationBox from "../../Components/NotificationBox/NotificationBox";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import { Box, Typography } from "@mui/material";
+import { useSelector , useDispatch} from "react-redux";
+import { clearNotifications } from "../../Redux/Slice/NotificationSlice/NotificationSlice";
+import { useNavigate } from "react-router-dom";
 const Notification = () => {
+
+  const notification = useSelector(state => state.notifications)
+  const dispatch = useDispatch();
+  const [allNotification , setAllNotification] = useState();
+  const navigate =  useNavigate();
+
+
+  useEffect(()=>{
+    console.log(notification)
+    setAllNotification(notification)
+  },[])
   const notifications = [
     {
       notificationText: "New message from Admin",
@@ -40,6 +54,17 @@ const Notification = () => {
       notificationLinkType: "welcome",
     },
   ];
+
+  const clearNotify = () => {
+    dispatch(clearNotifications())
+    console.log("notificationcleared")
+  }
+
+ const handleNavigate = (id , type) => {
+  if (type === "requestedEvents"){
+    navigate('')
+  }
+ }
 
   return (
     <Box
@@ -84,6 +109,12 @@ const Notification = () => {
         </Typography>
       </Box>
 
+      <button 
+      onClick={clearNotify}
+      >
+        clear
+      </button>
+
       <Box
       sx={{
         display:"flex",
@@ -91,14 +122,15 @@ const Notification = () => {
         gap:"1.4rem"
       }}
       >
-        {notifications.map((notif, index) => (
+        {notification.notifications.map((notif, index) => (
           <NotificationBox
             key={index}
-            notificationText={notif.notificationText}
-            notificationDate={notif.notificationDate}
-            notificationisNew={notif.notificationisNew}
-            notificationLink={notif.notificationLink}
-            notificationLinkType={notif.notificationLinkType}
+            notificationText={notif?.notification?.body}
+            notificationDate={notif?.data?.time}
+            notificationisNew={notif?.notificationisNew}
+            notificationLink={notif?.notificationLink}
+            notificationLinkType={notif?.notificationLinkType}
+            onClick={()=> handleNavigate(notif.data._id , notif.data.type)}
           />
         ))}
       </Box>

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React, { useState , useEffect} from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useSubmit } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import backgroundImg1 from '../assets/backgroundImg1-min.webp';
 import AppSidebar from '../Pages/AppSidebar/AppSidebar';
@@ -8,9 +8,12 @@ import LogoutButton from '../Components/Logout/Logout';
 import MobileSidebar from '../Pages/AppSidebar/MobileSidebar';
 import { messaging } from '../../firebase.config';
 import { onMessage } from 'firebase/messaging';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '../Redux/Slice/NotificationSlice/NotificationSlice';
 
 const DashboardLayout = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -20,7 +23,9 @@ const DashboardLayout = () => {
       const { title, body } = payload.notification;
      const notify = new Notification(title, { body });
      console.log(notify)
+     dispatch(addNotification(payload))
     });
+
 
     return unsubscribe;
   }, []);

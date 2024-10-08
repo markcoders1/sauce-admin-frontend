@@ -5,6 +5,7 @@ import UserReducer from "../Slice/UserSlice/UserSlice.js";
 import brandReducer from '../Slice/brandSlice/brandSlice.js';
 // import sidebarReducer from '../Slice/sidebarSlice/sidebarSlice.jsx' 
 import sidebarReducer from '../Slice/sidebarSlice/sidebarSlice.js'
+import notificationReducer from '../Slice/NotificationSlice/NotificationSlice.js';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -14,12 +15,13 @@ const rootReducer = combineReducers({
   snackAlert: SnackAlertReducer,
   brand: brandReducer,
   sidebar: sidebarReducer, // Include sidebar slice here
+  notifications : notificationReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // Only persist these slices
+  whitelist: ['auth', 'notifications'], // Only persist these slices
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

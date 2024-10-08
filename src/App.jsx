@@ -32,6 +32,7 @@ import TextReviewManagement from "./Pages/UserReview/TextReviewManagement";
 import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 import Notification from "./Pages/Notification/Notification";
+import ViewRequestedEvent from "./Pages/ViewRequestedEvent/ViewRequestedEvent";
 
 
 import { getToken, onMessage } from 'firebase/messaging';
@@ -57,14 +58,13 @@ function App() {
 
   const [token , setToken] = useState();
 
-  const requestForToken = () => {
+  const requestForToken =async () => {
     if ('serviceWorker' in navigator) {
-      window.addEventListener('sw-cached-site.js', function() {
-        navigator.serviceWorker.register('firebase-messaging-sw.js', {
-          scope: '/',
-        });
+      await navigator.serviceWorker.register('firebase-messaging-sw.js', {
+        scope: '/',
       });
     }
+
     return getToken(messaging, { vapidKey: 'BFr7tUCDpD9Qf6vVRQ0riZOSMPdcFQxqQ6pTkA1wqSxSx6D2V2l2awScLKYQ8aHpzIxCLKtL0BPFduhWE8vbqEQ' })
       .then((currentToken) => {
         if (currentToken) {
@@ -104,12 +104,10 @@ function App() {
     }
   };
 
-
-    
+  
   useEffect(()=>{
     requestForToken();
-
-    const unsubscribeOnTokenRefresh = messaging.onTokenRefresh(async () => {
+    const handleTokenRefresh = async () => {
       try {
         const newToken = await getToken(messaging, { vapidKey: 'BFr7tUCDpD9Qf6vVRQ0riZOSMPdcFQxqQ6pTkA1wqSxSx6D2V2l2awScLKYQ8aHpzIxCLKtL0BPFduhWE8vbqEQ' });
         console.log('FCM Token refreshed:', newToken);
@@ -118,11 +116,28 @@ function App() {
       } catch (error) {
         console.error("Failed to refresh token:", error);
       }
-    });
-
-    return () => {
-      unsubscribeOnTokenRefresh();
     };
+    
+    const intervalId = setInterval(handleTokenRefresh, 60 * 60 * 1000);
+
+  return () => {
+    clearInterval(intervalId);
+  };
+
+    // const unsubscribeOnTokenRefresh = messaging.onTokenRefresh(async () => {
+    //   try {
+    //     const newToken = await getToken(messaging, { vapidKey: 'BFr7tUCDpD9Qf6vVRQ0riZOSMPdcFQxqQ6pTkA1wqSxSx6D2V2l2awScLKYQ8aHpzIxCLKtL0BPFduhWE8vbqEQ' });
+    //     console.log('FCM Token refreshed:', newToken);
+    //     await postToken(newToken);
+    //     setToken(newToken);
+    //   } catch (error) {
+    //     console.error("Failed to refresh token:", error);
+    //   }
+    // });
+
+    // return () => {
+    //   unsubscribeOnTokenRefresh();
+    // };
   })
   onMessage(messaging, ({ notification }) => {
     new Notification(notification.title, {
@@ -234,6 +249,8 @@ function App() {
           <Route path="user-reviews/:id" element={<TextReviewManagement />} />
           <Route path="user-checkin/:id" element={<UserCheckin />} />
           <Route path="notification" element={<Notification />} />
+          <Route path="view-requested-event/:id" element={<ViewRequestedEvent />} />
+
 
 
           
