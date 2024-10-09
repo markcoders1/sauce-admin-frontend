@@ -345,7 +345,7 @@ const AddBadge = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Saving" : "Save"}
+          ButtonText={loading ? "Adding" : "Add"}
           color="white"
           width={"178px"}
           borderRadius="8px"

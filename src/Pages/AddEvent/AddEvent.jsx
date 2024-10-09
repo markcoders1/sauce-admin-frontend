@@ -31,23 +31,22 @@ const AddSEvent = () => {
   
 
   const [formData, setFormData] = useState({
-    eventName: state?.eventName ? state?.eventName : "",
-    organizedBy: state?.owner.name ? state?.owner.name : "",
-    ownerId: state?.owner._id ? state?.owner._id : "",
+    eventName: state?.eventName || "",
+    organizedBy: state?.owner?.name || "",
+    ownerId: state?.owner?._id || "",
     date: state?.eventDate
-      ? new Date(state?.eventDate).toISOString().split("T")[0]
+      ? new Date(state?.eventDate).toLocaleDateString("en-CA") // Local date format (YYYY-MM-DD)
       : "",
     time: state?.eventDate
-      ? new Date(state?.eventDate).toISOString().split("T")[1].substring(0, 5)
+      ? new Date(state?.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) // Local time format (HH:MM) for 24-hour input
       : "",
-    description: state?.venueDescription ? state?.venueDescription : "",
-    details: state?.eventDetails ? state?.eventDetails : [""],
+    description: state?.venueDescription || "",
+    details: state?.eventDetails || [""],
     destination: "",
     bannerImage: null,
-    latitude: state?.venueLocation?.latitude ? state?.venueLocation?.latitude : "",
-    longitude: state?.venueLocation?.longitude ? state?.venueLocation?.longitude : "",
+    latitude: state?.venueLocation?.latitude || "",
+    longitude: state?.venueLocation?.longitude || "",
   });
-
 
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
@@ -304,6 +303,9 @@ const AddSEvent = () => {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
+        params:{
+          limit:100
+        }
       });
       setAllBrands(response?.data?.users);
     } catch (error) {
@@ -755,7 +757,7 @@ const AddSEvent = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Saving" : "Save"}
+          ButtonText={loading ? "Adding" : "Add"}
           color="white"
           width={"178px"}
           borderRadius="8px"

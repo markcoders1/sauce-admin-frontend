@@ -221,9 +221,7 @@ const ViewRequestedEvents = () => {
     formDataToSend.append("owner", id);
 
 
-    formData.details.forEach((detail, index) => {
-      formDataToSend.append(`eventDetails[${index}]`, detail);
-    });
+    formDataToSend.append("eventDetails", JSON.stringify(formData?.details));
 
     try {
       setLoading(true);

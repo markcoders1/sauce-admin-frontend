@@ -267,14 +267,14 @@ const EditEvents = () => {
       console.log(response.data);
       const eventData = response?.data?.event;
       console.log(eventData.eventDate);
+      const utcDate = new Date(eventData?.eventDate);
+      const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
+
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner.name,
-        date: new Date(eventData?.eventDate).toISOString().split("T")[0],
-        time: new Date(eventData?.eventDate)
-          .toISOString()
-          .split("T")[1]
-          .substring(0, 5),
+        date: new Date(eventData?.eventDate).toLocaleDateString("en-CA"), // Local date format (YYYY-MM-DD)
+        time: new Date(eventData?.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), // 24-hour format for time input
         description: eventData?.venueDescription,
         details: eventData?.eventDetails || [""], // Ensure details is an array
         destination: eventData?.venueName,

@@ -14,18 +14,28 @@ const NotificationBox = ({
 }) => {
 
   function convertUnixToDate(unixTimestamp) {
-    const date = new Date(unixTimestamp); // No need to multiply by 1000, already in milliseconds
+    // Validate and adjust if needed (assuming timestamp is in seconds if too small)
+    if (unixTimestamp < 1000000000000) {
+      unixTimestamp *= 1000;
+    }
+    
+    const date = new Date(unixTimestamp);
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return "Invalid Date";
+    }
+  
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    const year = date.getFullYear();
-
+    const year = String(date.getFullYear()).slice(-2);
+  
     return `${month}-${day}-${year}`;
-}
-
+  }
   return (
     <Box
       sx={{
-        border: "1px solid rgba(255, 161, 0, 1)",
+        border: "1px solid #FFA100",
         borderRadius: "10px",
         p: "38px 48px 38px 28px",
         display: "flex",
@@ -37,7 +47,7 @@ const NotificationBox = ({
         backgroundColor: notificationisNew
           ? "rgba(90, 61, 10, 1)"
           : "rgba(46, 33, 10, 1)",
-          border:"10px solid red"
+         
       }}
       onClick={onClick}
     >

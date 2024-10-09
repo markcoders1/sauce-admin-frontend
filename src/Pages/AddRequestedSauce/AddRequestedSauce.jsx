@@ -11,12 +11,15 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import { isURL } from "../../../utils";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
+import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AddRequestedSauce = () => {
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
+  const [allBrands, setAllBrands] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -29,7 +32,7 @@ const AddRequestedSauce = () => {
     productLink: "",
     details: "",
     chilli: [""],
-    email: "",
+    ownerId: "",
     type: "",
     title: "",
     ingredients: "",
@@ -155,7 +158,7 @@ const AddRequestedSauce = () => {
   
     formDataToSend.append("type", formData.type);
     formDataToSend.append("title", formData.title);
-    formDataToSend.append("email", formData.email);
+    formDataToSend.append("userId", formData.ownerId);
     formDataToSend.append("ingredients", formData.ingredients);
     formDataToSend.append("isFeatured", formData.isFeatured);
     formDataToSend.append("isTopRated", formData.isTopRated);
@@ -221,7 +224,7 @@ const AddRequestedSauce = () => {
         productLink: sauceData.productLink,
         details: sauceData.description,
         chilli: sauceData.chilli,
-        email: sauceData.owner.email,
+       
         type: sauceData.type,
         title: sauceData.title,
         ingredients: sauceData.ingredients,
@@ -238,6 +241,36 @@ const AddRequestedSauce = () => {
   useEffect(() => {
     fetchSauce();
   }, [id]);
+
+  const fetchBrands = async () => {
+    try {
+      const response = await axios({
+        url: `${appUrl}/admin/get-all-users?type=brand`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+        params:{
+            limit: 100,
+        }
+      });
+      setAllBrands(response?.data?.users);
+      console.log(response)
+    } catch (error) {
+      console.error("Error fetching users:", error);    
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, []);
+
+  const handleBrandChange = (ownerId) => {
+    setFormData((prev) => ({ ...prev, ownerId }));
+
+    console.log(ownerId)
+  };
+
 
   return (
     <Box
@@ -596,6 +629,23 @@ const AddRequestedSauce = () => {
           valueField="value"
         />
       </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Brand
+          </Typography>
+
+          <CustomSelect data={allBrands} handleChange={handleBrandChange} />
+        </Box>
 
       <Box
         sx={{
@@ -623,7 +673,7 @@ const AddRequestedSauce = () => {
                   marginBottom: "0.4rem",
                 }}
               >
-                chilli {index + 1}
+                chili {index + 1}
               </Typography>
               <CustomInputShadow
                 name={`chilli-${index}`}
@@ -650,7 +700,7 @@ const AddRequestedSauce = () => {
         ))}
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Add Bullet"}
+          ButtonText={"Add Chili Bullet Points"}
           color="white"
           height="100px"
           width={"100%"}

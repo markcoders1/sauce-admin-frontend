@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import NotificationBox from "../../Components/NotificationBox/NotificationBox";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import { Box, Typography } from "@mui/material";
-import { useSelector , useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { clearNotifications } from "../../Redux/Slice/NotificationSlice/NotificationSlice";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../../Components/CustomButton/CustomButton";
 const Notification = () => {
-
-  const notification = useSelector(state => state.notifications)
+  const notification = useSelector((state) => state.notifications);
   const dispatch = useDispatch();
-  const [allNotification , setAllNotification] = useState();
-  const navigate =  useNavigate();
+  const [allNotification, setAllNotification] = useState();
+  const navigate = useNavigate();
 
-
-  useEffect(()=>{
-    console.log(notification)
-    setAllNotification(notification)
-  },[])
+  useEffect(() => {
+    console.log(notification);
+    setAllNotification(notification);
+  }, []);
   const notifications = [
     {
       notificationText: "New message from Admin",
@@ -56,31 +55,31 @@ const Notification = () => {
   ];
 
   const clearNotify = () => {
-    dispatch(clearNotifications())
-    console.log("notificationcleared")
-  }
+    dispatch(clearNotifications());
+    console.log("notificationcleared");
+  };
 
- const handleNavigate = (id , type) => {
-  console.log(type)
-  if (type === "requestedEvent"){
-    console.log(type)
-    navigate(`/admin/view-requested-event/${id}`)
-  } 
-  if (type === "requestedSauce"){
-    navigate(`/admin/view-requested-sauce/${id}`)
-  } 
- }
+  const handleNavigate = (id, type) => {
+    console.log(type);
+    if (type === "requestedEvent") {
+      console.log(type);
+      navigate(`/admin/view-requested-event/${id}`);
+    }
+    if (type === "requestedSauce") {
+      navigate(`/admin/view-requested-sauce/${id}`);
+    }
+  };
 
   return (
     <Box
       sx={{
         display: "flex",
-        
+
         p: {
           md: "0px 20px 0px 20px",
           xs: "0px 0px 0px 0px",
         },
-      
+
         flexDirection: {
           md: "column",
           xs: "column",
@@ -114,18 +113,44 @@ const Notification = () => {
         </Typography>
       </Box>
 
-      <button 
-      onClick={clearNotify}
+{
+  notification.length < 1 ? (
+    <Box>
+      No Notifications here
+    </Box>
+  ) : (
+    <>
+     <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
       >
-        clear
-      </button>
+        {notification.length > 1 ? (
+          <CustomButton
+            border="1px solid #FFA100"
+            ButtonText={"Clear All Notification"}
+            color="white"
+            width={"278px"}
+            borderRadius="8px"
+            background={"linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"}
+            padding="10px 0px"
+            fontSize="18px"
+            fontWeight="600"
+            onClick={clearNotify}
+            buttonTextStyle={{}}
+          />
+        ) : (
+          ""
+        )}
+      </Box>
 
       <Box
-      sx={{
-        display:"flex",
-        flexDirection:"column",
-        gap:"1.4rem"
-      }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.4rem",
+        }}
       >
         {notification.notifications.map((notif, index) => (
           <NotificationBox
@@ -135,10 +160,15 @@ const Notification = () => {
             notificationisNew={notif?.notificationisNew}
             notificationLink={notif?.notificationLink}
             notificationLinkType={notif?.notificationLinkType}
-            onClick={()=> handleNavigate(notif.data._id , notif.data.type)}
+            onClick={() => handleNavigate(notif.data._id, notif.data.type)}
           />
         ))}
       </Box>
+    </>
+  )
+}
+
+     
     </Box>
   );
 };
