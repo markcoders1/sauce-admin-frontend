@@ -3,79 +3,47 @@ import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import axios from "axios";
-import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 import Heading from "../../Components/Heading/Heading";
 import SnackAlert from "../../Components/SnackAlert/SnackAlert";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
-import { useNavigate } from "react-router-dom";
-import { Loader } from "@googlemaps/js-api-loader";
-import { useLocation } from "react-router-dom";
-
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { Loader } from "@googlemaps/js-api-loader";
 
-const ViewRequestedEvent = () => {
-    const [state , setState] = useState();
-
-    const fetchRequestedEvent = async () => {
-        try {
-            
-       
-        const response = await axios({
-            url: `${appUrl}/admin/get-event/${id}`,
-            method: "get",
-            headers: {
-              Authorization: `Bearer ${auth.accessToken}`,
-            },
-          });
-          setState(response.data);
-        } catch (error) {
-            console.log(error)
-        }
-      
-
-    }
+const ViewRequestedEvents = () => {
+  const auth = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  
-  const auth = useSelector((state) => state.auth);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  console.log("=================", state);
-
   const [formData, setFormData] = useState({
-    eventName: state?.eventName ? state?.eventName : "",
-    organizedBy: state?.owner.name ? state?.owner.name : "",
-    ownerId: state?.owner._id ? state?.owner._id : "",
-    date: state?.eventDate
-      ? new Date(state?.eventDate).toISOString().split("T")[0]
-      : "",
-    time: state?.eventDate
-      ? new Date(state?.eventDate).toISOString().split("T")[1].substring(0, 5)
-      : "",
-    description: state?.venueDescription ? state?.venueDescription : "",
-    details: state?.eventDetails ? state?.eventDetails : [""],
+    eventName: "",
+    organizedBy: "",
+    ownerId: "",
+    date: "",
+    time: "",
+    description: "",
+    details: [""],
     destination: "",
     bannerImage: null,
-    latitude: state?.venueLocation?.latitude ? state?.venueLocation?.latitude : "",
-    longitude: state?.venueLocation?.longitude ? state?.venueLocation?.longitude : "",
+    coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
+    id : "",
   });
   const [errors, setErrors] = useState({});
-  const [allBrands, setAllBrands] = useState([]);
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  let [marker, setMarker] = useState(null); // State to store marker
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
   const mapRef = useRef(null); // To store the map instance
   const autocompleteRef = useRef(null);
-
-  const [mapLoaded, setMapLoaded] = useState(false);
-  let [marker, setMarker] = useState(null); // State to store marker instance
-
   const loader = new Loader({
-    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your own API key
+    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your Google Maps API key
     version: "weekly",
     libraries: ["places"],
   });
@@ -85,107 +53,99 @@ const ViewRequestedEvent = () => {
     zoom: 4,
   };
 
-  const loadMap = async () => {
-    if (!mapLoaded) {
-      loader
-        .load()
-        .then((google) => {
-          const initialCenter =
-            state?.venueLocation?.latitude && state?.venueLocation?.longitude
-              ? {
-                  lat: parseFloat(state.venueLocation.latitude),
-                  lng: parseFloat(state.venueLocation.longitude),
-                }
-              : { lat: 0, lng: 0 };
+  const loadMapWithMarker = async (lat, lng) => {
+    loader
+      .load()
+      .then((google) => {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          ...mapOptions,
+          center: { lat, lng },
+          zoom: 15,
+        });
 
-          const map = new google.maps.Map(document.getElementById("map"), {
-            center: initialCenter,
-            zoom:
-              state?.venueLocation?.latitude && state?.venueLocation?.longitude
-                ? 15
-                : 4,
-          });
-          mapRef.current = map;
+        // Add autocomplete search box
+        const input = document.getElementById("autocomplete");
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+          fields: ["place_id", "geometry", "formatted_address"],
+        });
+        autocompleteRef.current = autocomplete;
 
-          // Add autocomplete search box
-          const input = document.getElementById("autocomplete");
-          const autocomplete = new google.maps.places.Autocomplete(input, {
-            fields: ["place_id", "geometry", "formatted_address"],
-          });
-          autocompleteRef.current = autocomplete;
+        // Listener for autocomplete place selection
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
 
-          // If latitude and longitude exist in the state, place a marker
-          if (
-            state?.venueLocation?.latitude &&
-            state?.venueLocation?.longitude
-          ) {
-            marker = new google.maps.Marker({
-              position: initialCenter,
-              map,
-            });
-            setMarker(marker);
-          }
+            // Center map on the selected place
+            map.setCenter({ lat, lng });
+            map.setZoom(15);
 
-          // Update coordinates on place change
-          autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            if (place.geometry) {
-              const lat = place.geometry.location.lat();
-              const lng = place.geometry.location.lng();
-
-              // Center map on the selected place
-              map.setCenter({ lat, lng });
-              map.setZoom(15);
-
-              setFormData((prev) => ({
-                ...prev,
-                latitude: lat.toString(),
-                longitude: lng.toString(),
-              }));
-
-              // Set marker
-              setMapMarker(map, lat, lng);
-            }
-          });
-          // Set latitude and longitude on map click
-
-          map.addListener("click", (event) => {
-            const lat = event.latLng.lat();
-            const lng = event.latLng.lng();
             setFormData((prev) => ({
               ...prev,
-              latitude: lat.toString(),
-              longitude: lng.toString(),
+              coordinates: { lat, lng },
             }));
 
-            // Check if a marker exists and remove it
-            if (marker && marker.setMap) {
+            // Remove the existing marker if it exists
+            if (marker) {
               marker.setMap(null);
             }
 
+            // Add a new marker for the selected place
             marker = new google.maps.Marker({
               position: { lat, lng },
               map,
             });
-            setMarker(marker);
 
-            console.log(
-              `Coordinates selected: Latitude: ${lat}, Longitude: ${lng}`
-            );
+            setMarker(marker);
+          }
+        });
+
+        // Listener for map click to add a new marker
+        map.addListener("click", (event) => {
+          const newLat = event.latLng.lat();
+          const newLng = event.latLng.lng();
+
+          setFormData((prev) => ({
+            ...prev,
+            coordinates: { lat: newLat, lng: newLng },
+          }));
+
+          // Remove the previous marker if it exists
+          if (marker) {
+            marker.setMap(null);
+          }
+
+          // Add the new marker
+          marker = new google.maps.Marker({
+            position: { lat: newLat, lng: newLng },
+            map,
           });
 
-          setMapLoaded(true); // Mark map as loaded
-        })
-        .catch((e) => {
-          console.error("Error loading Google Maps:", e);
+          setMarker(marker);
+          console.log(
+            `Coordinates selected: Latitude: ${newLat}, Longitude: ${newLng}`
+          );
         });
-    }
-  };
 
-  useEffect(() => {
-    loadMap();
-    fetchRequestedEvent()
-  }, []);
+        // If lat/lng are provided, add an initial marker
+        if (lat && lng) {
+          if (marker) {
+            marker.setMap(null); // Remove the existing marker if present
+          }
+
+          marker = new google.maps.Marker({
+            position: { lat, lng },
+            map,
+          });
+
+          setMarker(marker);
+        }
+      })
+      .catch((e) => {
+        console.error("Error loading Google Maps:", e);
+      });
+  };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -193,9 +153,9 @@ const ViewRequestedEvent = () => {
       const file = files[0];
       setFormData({
         ...formData,
-        [name]: file,
+        [name]: file, // Save the file
       });
-      setSelectedBannerFileName(file?.name || ""); // Update selected file name
+      setPreviewImage(URL.createObjectURL(file)); // Show the new selected image as a preview
     } else {
       setFormData({
         ...formData,
@@ -232,45 +192,41 @@ const ViewRequestedEvent = () => {
   };
 
   const handleSubmit = async () => {
-    let validationErrors = {};
+    console.log("Form data submitted:", formData);
 
-    // Check file size
+    // Check for file size
     if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
-      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
       setSnackAlertData({
         open: true,
-        message: `${Object.values(validationErrors).join(" ")}`,
+        message: "Selected banner image size exceeds 4MB.",
         severity: "error",
       });
       return;
     }
-
-    console.log(formData);
     const formattedDate = new Date(formData.date).toISOString();
-
     const eventDateTime = new Date(
       `${formData.date}T${formData.time}`
     ).toISOString();
 
+    const formDataToSend = new FormData();
+    formDataToSend.append("eventName", formData.eventName);
+    formDataToSend.append("organizedBy", formData.organizedBy);
+    formDataToSend.append("eventDate", eventDateTime);
+
+    formDataToSend.append("venueDescription", formData.description);
+    formDataToSend.append("venueName", formData.destination);
+    formDataToSend.append("bannerImage", formData.bannerImage);
+    formDataToSend.append("venueLocation.latitude", formData.coordinates.lat);
+    formDataToSend.append("venueLocation.longitude", formData.coordinates.lng);
+    formDataToSend.append("owner", id);
+
+
+    formData.details.forEach((detail, index) => {
+      formDataToSend.append(`eventDetails[${index}]`, detail);
+    });
+
     try {
       setLoading(true);
-      const data = new FormData();
-      data.append("eventName", formData?.eventName);
-      data.append("organizedBy", formData?.organizedBy);
-     
-      data.append("eventDate", eventDateTime);
-      data.append("venueDescription", formData?.description);
-      data.append("venueName", formData?.destination);
-      data.append("owner", formData?.ownerId);
-      data.append("bannerImage", formData?.bannerImage);
-      data.append("eventDetails", JSON.stringify(formData?.details));
-      data.append("venueLocation.longitude", formData?.longitude);
-      data.append("venueLocation.latitude", formData?.latitude);
-
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
         method: "post",
@@ -278,23 +234,9 @@ const ViewRequestedEvent = () => {
           Authorization: `Bearer ${auth.accessToken}`,
           "Content-Type": "multipart/form-data",
         },
-        data: data,
-      });
 
-      setFormData({
-        eventName: "",
-        organizedBy: "",
-        ownerId: "",
-        date: "",
-        time: "",
-        description: "",
-        details: [""], // Initialize with one bullet point
-        destination: "",
-        bannerImage: null,
-        latitude: "",
-        longitude: "",
+        data: formDataToSend,
       });
-      setLoading(false);
 
       setSelectedBannerFileName(""); // Reset file name
       setSnackAlertData({
@@ -302,6 +244,10 @@ const ViewRequestedEvent = () => {
         message: response?.data?.message,
         severity: "success",
       });
+      console.log(response.data);
+      setLoading(false);
+      // navigate(-1)
+      // fetchEvent();
     } catch (error) {
       console.error("Error submitting event:", error);
       setSnackAlertData({
@@ -313,28 +259,54 @@ const ViewRequestedEvent = () => {
     }
   };
 
-  const fetchBrands = async () => {
+  const fetchEvent = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users?type=brand`,
+        url: `${appUrl}/admin/get-event/${id}`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
       });
-      setAllBrands(response?.data?.users);
+      console.log(response.data);
+      const eventData = response?.data?.event;
+      console.log(eventData.eventDate);
+      setFormData({
+        eventName: eventData?.eventName,
+        organizedBy: eventData?.owner.name,
+        date: new Date(eventData?.eventDate).toISOString().split("T")[0],
+        time: new Date(eventData?.eventDate)
+          .toISOString()
+          .split("T")[1]
+          .substring(0, 5),
+        description: eventData?.venueDescription,
+        details: eventData?.eventDetails || ["",""], // Ensure details is an array
+        destination: eventData?.venueName,
+        bannerImage: eventData.bannerImage,
+        coordinates: {
+          lat: parseFloat(eventData?.venueLocation?.latitude),
+          lng: parseFloat(eventData?.venueLocation?.longitude),
+        },
+        id: eventData.owner._id,
+
+      });
+      // Set the preview image from the existing banner image URL
+      setPreviewImage(eventData.bannerImage);
+
+      // Load the map with the initial marker
+      loadMapWithMarker(
+        parseFloat(eventData?.venueLocation?.latitude),
+        parseFloat(eventData?.venueLocation?.longitude)
+      );
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching event:", error);
     }
   };
 
   useEffect(() => {
-    fetchBrands();
+    fetchEvent();
+    loadMapWithMarker();
   }, []);
-
-  const handleBrandChange = (ownerId) => {
-    setFormData((prev) => ({ ...prev, ownerId }));
-  };
 
   return (
     <Box
@@ -343,7 +315,7 @@ const ViewRequestedEvent = () => {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        padding: "0px 21px",
+        padding: "0px 10px 25px 30px",
       }}
     >
       <Box
@@ -360,7 +332,7 @@ const ViewRequestedEvent = () => {
             fontFamily: "Fira Sans !important",
           }}
         >
-          Add Event
+          Add Requested Event
         </Typography>
         <Typography
           sx={{ display: "flex", alignItems: "center", gap: ".3rem" }}
@@ -368,26 +340,58 @@ const ViewRequestedEvent = () => {
           <MenuBar /> <NavigateBack />
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { lg: "row", xs: "column" },
-          gap: "1.5rem",
-          height: { lg: "100%", xs: "170px" },
-        }}
-      >
+      {/* Image Preview and Upload Section */}
+      <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+        {/* Image Preview */}
+        <Box
+          sx={{
+            width: "100%",
+            height: "165px",
+            flexBasis: "50%",
+            display: "flex",
+            justifyContent: "center  ",
+          }}
+        >
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="Event Banner"
+              style={{
+                width: "200px",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "12px",
+              }}
+            />
+          ) : (
+            <Typography
+              sx={{
+                color: "white",
+                textAlign: "center",
+                fontSize: { sm: "22px", xs: "15px" },
+                fontWeight: "600",
+              }}
+            >
+              No Image
+            </Typography>
+          )}
+        </Box>
+
+        {/* File Input */}
         <label
           htmlFor="uploadBannerImage"
           style={{
-            flexBasis: "100%",
-            height: "165px",
-            backgroundColor: "#2E210A",
-            border: "2px dashed #FFA100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "12px",
             cursor: "pointer",
+            color: "#FFA100",
+            textAlign: "center",
+            border: "2px dashed #FFA100",
+            flexBasis: "50%",
+            height: "165px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#2E210A",
+            borderRadius: "8px",
           }}
         >
           <input
@@ -398,16 +402,11 @@ const ViewRequestedEvent = () => {
             onChange={handleChange}
           />
           <Typography
-            sx={{
-              color: "white",
-              textAlign: "center",
-              fontSize: "22px",
-              fontWeight: "600",
-            }}
+            sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}
           >
             {selectedBannerFileName
-              ? `Selected File: ${selectedBannerFileName}`
-              : "Upload Banner Image"}
+              ? `${selectedBannerFileName}`
+              : "Upload Image"}
           </Typography>
         </label>
       </Box>
@@ -480,7 +479,6 @@ const ViewRequestedEvent = () => {
           />
         </Box>
       </Box>
-
       <Box
         sx={{
           display: "flex",
@@ -506,67 +504,63 @@ const ViewRequestedEvent = () => {
               flexDirection: { md: "row", xs: "column" },
             }}
           >
-           <Box
-  sx={{
-    flexBasis: "50%",
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.3rem",
-  }}
->
-  <Typography
-    sx={{
-      color: "#FFA100",
-      fontWeight: "500",
-      fontSize: {
-        sm: "16px",
-        xs: "16px",
-      },
-      fontFamily: "Montserrat !important",
-    }}
-  >
-    Date
-  </Typography>
-  <CustomInputShadow
-    placeholder="Date"
-    name="date"
-    value={formData.date}
-    onChange={handleChange}
-    error={errors.date}
-    type={"date"}  // Date input
-  />
-</Box>
-
-<Box
-  sx={{
-    flexBasis: "50%",
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.3rem",
-  }}
->
-  <Typography
-    sx={{
-      color: "#FFA100",
-      fontWeight: "500",
-      fontSize: {
-        sm: "16px",
-        xs: "16px",
-      },
-      fontFamily: "Montserrat !important",
-    }}
-  >
-    Time
-  </Typography>
-  <CustomInputShadow
-    placeholder="Time"
-    name="time"
-    value={formData.time}
-    onChange={handleChange}
-    error={errors.time}
-    type={"time"}  // Time input
-  />
-</Box>
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Date
+              </Typography>
+              <CustomInputShadow
+                placeholder="Date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                error={errors.date}
+                type={"date"}
+              />
+            </Box>
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: { sm: "16px", xs: "16px" },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Time
+              </Typography>
+              <CustomInputShadow
+                placeholder="Time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                error={errors.time}
+                type={"time"} // Time input
+              />
+            </Box>
           </Box>
           <Box
             sx={{
@@ -595,6 +589,7 @@ const ViewRequestedEvent = () => {
               value={formData.description}
               onChange={handleChange}
               error={errors.description}
+              type={"text"}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
@@ -621,28 +616,6 @@ const ViewRequestedEvent = () => {
           </Box>
         </Box>
       </Box>
-      {state ? (
-        ""
-      ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Brand
-          </Typography>
-
-          <CustomSelect data={allBrands} handleChange={handleBrandChange} />
-        </Box>
-      )}
-
       <Box
         sx={{
           flexBasis: "100%",
@@ -684,11 +657,8 @@ const ViewRequestedEvent = () => {
                 color="white"
                 height="100px"
                 width={"98px"}
-                borderRadius="6px"
-                buttonStyle={{
-                  height: { sm: "75px", xs: "68px" },
-                  mt: "-16px",
-                }}
+                borderRadius="8px"
+                buttonStyle={{ height: "75px", mb: "18px" }}
                 onClick={() => removeBullet("details", index)}
               />
             )}
@@ -704,75 +674,60 @@ const ViewRequestedEvent = () => {
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet("details")}
           fontSize="20px"
+          fontWeight="600"
         />
-
-        <Box
+      </Box>
+      <Box
+        sx={{
+          flexBasis: "33%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.3rem",
+          mt: "30px",
+        }}
+      >
+        <Typography
           sx={{
-            flexBasis: "33%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-            mt: "30px",
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
           }}
         >
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Search Location
-          </Typography>
-          <input
-            id="autocomplete"
-            type="text"
-            placeholder="Search for a place"
-            style={{
-              width: "100%",
-              padding: "0px 20px",
-              borderRadius: "10px",
-              border: "1px solid #FFA100",
-              fontSize: "22px",
-              background: "#2e210a",
-
-              height: "75px",
-              color: "white",
-              fontFamily: "poppins",
-            }}
-            className="inputCustom"
-          />
-        </Box>
+          Search Location
+        </Typography>
+        <input
+          id="autocomplete"
+          type="text"
+          placeholder="Search for a place"
+          style={{
+            width: "100%",
+            padding: "0px 20px",
+            borderRadius: "10px",
+            border: "1px solid #FFA100",
+            fontSize: "22px",
+            background: "#2e210a",
+            height: "75px",
+            color: "white",
+            fontFamily: "poppins",
+          }}
+          className="inputCustom"
+        />
       </Box>
-
-      {/* Map for selecting location */}
-      {/* <CustomButton
-          border='1px solid #FFA100'
-          ButtonText={"Load Map"}
-          color='white'
-          width={"178px"}
-          borderRadius='8px'
-          background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
-          padding='10px 0px'
-          fontSize='18px'
-          fontWeight='600'
-          onClick={loadMap}
-        /> */}
+      {/* Map for showing and selecting location */}
       <Box sx={{ width: "100%", height: "500px" }}>
         <div
           style={{ width: "100%", height: "100%", borderRadius: "12px" }}
           id="map"
         ></div>
       </Box>
-
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Saving" : "Save"}
+          ButtonText={loading ? "Updating" : "Update"}
           color="white"
           width={"178px"}
           borderRadius="8px"
@@ -797,4 +752,4 @@ const ViewRequestedEvent = () => {
   );
 };
 
-export default ViewRequestedEvent;
+export default ViewRequestedEvents;

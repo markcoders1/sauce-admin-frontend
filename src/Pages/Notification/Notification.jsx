@@ -61,9 +61,14 @@ const Notification = () => {
   }
 
  const handleNavigate = (id , type) => {
-  if (type === "requestedEvents"){
-    navigate('')
-  }
+  console.log(type)
+  if (type === "requestedEvent"){
+    console.log(type)
+    navigate(`/admin/view-requested-event/${id}`)
+  } 
+  if (type === "requestedSauce"){
+    navigate(`/admin/view-requested-sauce/${id}`)
+  } 
  }
 
   return (

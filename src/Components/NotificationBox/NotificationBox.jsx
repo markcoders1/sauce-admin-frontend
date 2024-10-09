@@ -12,6 +12,16 @@ const NotificationBox = ({
   notificationLinkType,
   onClick=()=>{},
 }) => {
+
+  function convertUnixToDate(unixTimestamp) {
+    const date = new Date(unixTimestamp); // No need to multiply by 1000, already in milliseconds
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}-${day}-${year}`;
+}
+
   return (
     <Box
       sx={{
@@ -27,6 +37,7 @@ const NotificationBox = ({
         backgroundColor: notificationisNew
           ? "rgba(90, 61, 10, 1)"
           : "rgba(46, 33, 10, 1)",
+          border:"10px solid red"
       }}
       onClick={onClick}
     >
@@ -83,7 +94,7 @@ const NotificationBox = ({
               fontSize: "16px",
             }}
           >
-            {notificationDate}
+            {convertUnixToDate(notificationDate)}
           </Typography>
         </Box>
       </Box>

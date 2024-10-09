@@ -28,6 +28,8 @@ const AddSEvent = () => {
 
   console.log("=================", state);
 
+  
+
   const [formData, setFormData] = useState({
     eventName: state?.eventName ? state?.eventName : "",
     organizedBy: state?.owner.name ? state?.owner.name : "",
@@ -45,6 +47,8 @@ const AddSEvent = () => {
     latitude: state?.venueLocation?.latitude ? state?.venueLocation?.latitude : "",
     longitude: state?.venueLocation?.longitude ? state?.venueLocation?.longitude : "",
   });
+
+
   const [errors, setErrors] = useState({});
   const [allBrands, setAllBrands] = useState([]);
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
@@ -55,7 +59,7 @@ const AddSEvent = () => {
   let [marker, setMarker] = useState(null); // State to store marker instance
 
   const loader = new Loader({
-    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY", // Replace with your own API key
+    apiKey: "AIzaSyAkJ06-4A1fY1ekldJUZMldHa5QJioBTlY",  
     version: "weekly",
     libraries: ["places"],
   });

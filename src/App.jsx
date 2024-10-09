@@ -33,6 +33,7 @@ import UserCheckin from "./Pages/UserCheckin/UserCheckin";
 import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 import Notification from "./Pages/Notification/Notification";
 import ViewRequestedEvent from "./Pages/ViewRequestedEvent/ViewRequestedEvent";
+import AddRequestedSauce from "./Pages/AddRequestedSauce/AddRequestedSauce";
 
 
 import { getToken, onMessage } from 'firebase/messaging';
@@ -250,6 +251,8 @@ function App() {
           <Route path="user-checkin/:id" element={<UserCheckin />} />
           <Route path="notification" element={<Notification />} />
           <Route path="view-requested-event/:id" element={<ViewRequestedEvent />} />
+          <Route path="view-requested-sauce/:id" element={<AddRequestedSauce />} />
+
 
 
 
