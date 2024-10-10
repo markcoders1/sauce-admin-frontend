@@ -303,7 +303,7 @@ const SauceManagement = () => {
                                                     />
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.owner?.name}</TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.name}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.name.slice(0, 50)} {sauce?.name ? "..." : ""} </TableCell>
                                                 <TableCell sx={{ textAlign: "center !important" }} className="MuiTableCell-root">{formatDate(sauce?.createdAt)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>

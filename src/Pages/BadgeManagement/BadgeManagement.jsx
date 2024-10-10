@@ -356,7 +356,7 @@ const BadgeManagement = () => {
                             className="MuiTableCell-root"
                           >
                             <img
-                              src={review.icon ? review.icon : logoAdmin}
+                              src={review?.icon ? review?.icon : logoAdmin}
                               style={{
                                 width: "80px",
                                 height: "50px",
@@ -365,7 +365,7 @@ const BadgeManagement = () => {
                                 objectFit: "contain",
                               }}
                               onClick={() => openLightbox(review?.icon)}
-                              alt="Review"
+                              alt="Badge"
                             />
                           </TableCell>
                           <TableCell
