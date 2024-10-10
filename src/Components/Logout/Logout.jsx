@@ -43,6 +43,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
     return (
         <>
             <Box
+            
                 sx={{
                     display: "flex",
                     alignItems: "center",
@@ -69,8 +70,9 @@ const LogoutButton = ({ isSidebarOpen }) => {
                         outline: "none",
                         backgroundColor: "white",
                         marginTop: "5px",
-                        height: "50px", 
-                        width: "50px", 
+                        height: "35px", 
+                        width: { xl: "45px", xs: "35px" },
+                        height: { xl: "45px", xs: "35px" },
                         display: "flex", 
                         justifyContent: "center", 
                         alignItems: "center", 

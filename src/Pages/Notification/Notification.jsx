@@ -126,7 +126,7 @@ const Notification = () => {
           justifyContent: "flex-end",
         }}
       >
-        {notification.length > 1 ? (
+        {notification ? (
           <CustomButton
             border="1px solid #FFA100"
             ButtonText={"Clear All Notification"}

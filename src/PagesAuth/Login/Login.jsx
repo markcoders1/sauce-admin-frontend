@@ -31,6 +31,12 @@ const Login = () => {
     });
     console.log(authState.authenticated)
 
+    useEffect(()=>{
+        if (authState.type === "admin" && authState.accessToken) {
+            navigate("/admin");
+        }
+    },[])
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError({});

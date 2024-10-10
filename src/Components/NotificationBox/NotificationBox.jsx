@@ -13,25 +13,19 @@ const NotificationBox = ({
   onClick=()=>{},
 }) => {
 
-  function convertUnixToDate(unixTimestamp) {
-    // Validate and adjust if needed (assuming timestamp is in seconds if too small)
-    if (unixTimestamp < 1000000000000) {
-      unixTimestamp *= 1000;
-    }
-    
-    const date = new Date(unixTimestamp);
-    
-    // Check if the date is valid
-    if (isNaN(date.getTime())) {
-      return "Invalid Date";
-    }
+//   function convertUnixToTime(unixTimestamp) {
+//     const date =new Date(unixTimestamp);
   
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(-2);
+//     // Validate if the date is correct
+//  console.log(date)
   
-    return `${month}-${day}-${year}`;
-  }
+//     const hours = String(date.getHours()).padStart(2, '0');
+//     const minutes = String(date.getMinutes()).padStart(2, '0');
+//     const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+//     return `${hours}:${minutes}:${seconds}`;
+//   }
+  
   return (
     <Box
       sx={{
@@ -47,7 +41,10 @@ const NotificationBox = ({
         backgroundColor: notificationisNew
           ? "rgba(90, 61, 10, 1)"
           : "rgba(46, 33, 10, 1)",
-         
+         cursor:"pointer",
+         ":hover":{
+          backgroundColor:"rgba(90, 61, 10, 1)"
+         }
       }}
       onClick={onClick}
     >
@@ -104,7 +101,8 @@ const NotificationBox = ({
               fontSize: "16px",
             }}
           >
-            {convertUnixToDate(notificationDate)}
+            {/* {convertUnixToTime(notificationDate)}
+            {console.log(notificationDate)} */}
           </Typography>
         </Box>
       </Box>
