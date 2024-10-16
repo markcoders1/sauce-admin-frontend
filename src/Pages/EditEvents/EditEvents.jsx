@@ -288,7 +288,7 @@ const EditEvents = () => {
 
       setFormData({
         eventName: eventData?.eventName,
-        organizedBy: eventData?.owner.name,
+        organizedBy: eventData?.owner?.name,
         venueAddress: eventData?.venueAddress,
         websiteLink: eventData?.websiteLink,
         facebookLink: eventData?.facebookLink,

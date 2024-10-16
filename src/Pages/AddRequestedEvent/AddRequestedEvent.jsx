@@ -12,6 +12,8 @@ import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useLocation } from "react-router-dom";
+import { Command, CommandInput, CommandList, CommandItem } from 'cmdk';
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -23,6 +25,7 @@ const AddRequestedEvent = () => {
   });
   const { state } = useLocation();
   const auth = useSelector((state) => state.auth);
+  const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -31,6 +34,10 @@ const AddRequestedEvent = () => {
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
     organizedBy: state?.owner?.name || "",
+    venueAddress: state?.venueAddress || "",
+    websiteLink: state?.websiteLink|| "",
+    facebookLink: state?.facebookLink || "",
+    requestedBy:state?.requestedBy?._id || "",
     ownerId: state?.owner?._id || "",
     date: state?.eventDate
       ? new Date(state?.eventDate).toLocaleDateString("en-CA") // Local date format (YYYY-MM-DD)
@@ -266,11 +273,17 @@ const AddRequestedEvent = () => {
 
       data.append("venueDescription", formData?.description);
       data.append("venueName", formData?.destination);
-      // data.append("owner", formData?.ownerId);
+      data.append("owner", formData?.ownerId);
       data.append("bannerImage", formData?.bannerImage);
       data.append("eventDetails", formData?.details);
       data.append("venueLocation.longitude", formData?.longitude);
       data.append("venueLocation.latitude", formData?.latitude);
+
+      data.append("facebookLink", formData?.facebookLink);
+      data.append("websiteLink", formData?.websiteLink);
+      data.append("venueAddress", formData?.venueAddress);
+      data.append("requestedBy", formData.requestedBy)
+      
 
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
@@ -317,15 +330,17 @@ const AddRequestedEvent = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users?type=brand`,
+        url: `${appUrl}/admin/get-all-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
         params: {
-          limit: 100,
+          limit: 10,
+          searchTerm : searchTerm
         },
       });
+      console.log(response.data)
       setAllBrands(response?.data?.users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -334,10 +349,12 @@ const AddRequestedEvent = () => {
 
   useEffect(() => {
     fetchBrands();
-  }, []);
+  }, [searchTerm]);
 
   const handleBrandChange = (ownerId) => {
     setFormData((prev) => ({ ...prev, ownerId }));
+
+    console.log(ownerId)
   };
 
   return (
@@ -573,6 +590,8 @@ const AddRequestedEvent = () => {
             </Box>
           </Box>
 
+          
+
           <Box
             sx={{
               display: "flex",
@@ -610,6 +629,7 @@ const AddRequestedEvent = () => {
                 type={"date"} // Date input
               />
             </Box>
+            
 
             <Box
               sx={{
@@ -642,6 +662,139 @@ const AddRequestedEvent = () => {
               />
             </Box>
           </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1.5rem",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Facebook Link
+              </Typography>
+              <CustomInputShadow
+                placeholder="Facebook Link"
+                name="facebookLink"
+                value={formData.facebookLink}
+                onChange={handleChange}
+                error={errors.facebookLink}
+                
+              />
+            </Box>
+
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+               Website Link
+              </Typography>
+              <CustomInputShadow
+                placeholder="Website Link"
+                name="websiteLink"
+                value={formData.websiteLink}
+                onChange={handleChange}
+                error={errors.websiteLink}
+                
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1.5rem",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
+             <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+               Venue Address
+              </Typography>
+              <CustomInputShadow
+                placeholder="Venue Address"
+                name="venueAddress"
+                value={formData.venueAddress}
+                onChange={handleChange}
+                error={errors.venueAddress}
+                
+              />
+            </Box>
+            <Box sx={{ flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem", }}>
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                  sm: "16px",
+                  xs: "16px",
+                },
+                fontFamily: "Montserrat !important",
+              }}
+            >
+              Destination
+            </Typography>
+            <CustomInputShadow
+              placeholder="Destination"
+              name="destination"
+              value={formData.destination}
+              onChange={handleChange}
+              error={errors.destination}
+            />
+          </Box>
+          </Box>
           <Box
             sx={{
               flexBasis: "50%",
@@ -671,7 +824,18 @@ const AddRequestedEvent = () => {
               error={errors.description}
             />
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+         
+        </Box>
+      </Box>
+
+      <Box
+            sx={{
+              flexBasis: "50%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.3rem",
+            }}
+          >
             <Typography
               sx={{
                 color: "#FFA100",
@@ -683,21 +847,17 @@ const AddRequestedEvent = () => {
                 fontFamily: "Montserrat !important",
               }}
             >
-              Destination
+              Search Brand
             </Typography>
             <CustomInputShadow
-              placeholder="Destination"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              error={errors.destination}
+              placeholder="Search Brand"
+              name="search"
+              value={searchTerm}
+              onChange={(e)=> setSearchTerm(e.target.value)}
+              
             />
           </Box>
-        </Box>
-      </Box>
-      {/* {state ? (
-        ""
-      ) : (
+    
         <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
@@ -715,7 +875,7 @@ const AddRequestedEvent = () => {
 
           <CustomSelect data={allBrands} handleChange={handleBrandChange} />
         </Box>
-      )} */}
+    
 
       <Box
         sx={{
