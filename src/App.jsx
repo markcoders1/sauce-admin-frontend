@@ -34,6 +34,7 @@ import RequestedEvents from "./Pages/RequestedEvents/RequestedEvents";
 import Notification from "./Pages/Notification/Notification";
 import ViewRequestedEvent from "./Pages/ViewRequestedEvent/ViewRequestedEvent";
 import AddRequestedSauce from "./Pages/AddRequestedSauce/AddRequestedSauce";
+import AddRequestedEvent from "./Pages/AddRequestedEvent/AddRequestedEvent";
 
 
 import { getToken, onMessage } from 'firebase/messaging';
@@ -225,6 +226,8 @@ function App() {
           <Route path="add-brand-sauce" element={<AddBrandSauce />} />
           <Route path="events-management" element={<EventsManagement />} />
           <Route path="add-event" element={<AddEvent />} />
+          <Route path="add-requested-event" element={<AddRequestedEvent />} />
+
           <Route path="add-brand" element={<AddBrand />} />
           <Route path="add-specific-sauce/:id" element={<AddSpecificSauce />} />
           <Route path="edit-brand-user-details/:id" element={<EditBrandDetails />} />

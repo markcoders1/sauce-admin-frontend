@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const AddSEvent = () => {
+const AddRequestedEvent = () => {
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -31,7 +31,7 @@ const AddSEvent = () => {
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
     organizedBy: state?.owner?.name || "",
-    // ownerId: state?.owner?._id || "",
+    ownerId: state?.owner?._id || "",
     date: state?.eventDate
       ? new Date(state?.eventDate).toLocaleDateString("en-CA") // Local date format (YYYY-MM-DD)
       : "",
@@ -59,10 +59,6 @@ const AddSEvent = () => {
     bannerImage: null,
     latitude: state?.venueLocation?.latitude || "",
     longitude: state?.venueLocation?.longitude || "",
-    venueAddress : state?.venueAddress || "",
-    websiteLink : state?.websiteLink || "",
-    facebookLink : state?.facebookLink || "",
-
   });
 
   const [errors, setErrors] = useState({});
@@ -273,9 +269,6 @@ const AddSEvent = () => {
       // data.append("owner", formData?.ownerId);
       data.append("bannerImage", formData?.bannerImage);
       data.append("eventDetails", formData?.details);
-      data.append("websiteLink", formData?.websiteLink);
-      data.append("facebookLink", formData?.facebookLink);
-      data.append("venueAddress", formData?.venueAddress);
       data.append("venueLocation.longitude", formData?.longitude);
       data.append("venueLocation.latitude", formData?.latitude);
 
@@ -301,9 +294,6 @@ const AddSEvent = () => {
         bannerImage: null,
         latitude: "",
         longitude: "",
-        venueAddress:"",
-        facebookLink: "",
-        websiteLink:""
       });
       setLoading(false);
 
@@ -652,146 +642,6 @@ const AddSEvent = () => {
               />
             </Box>
           </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1.5rem",
-              flexDirection: { md: "row", xs: "column" },
-            }}
-          >
-            <Box
-              sx={{
-                flexBasis: "50%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.3rem",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#FFA100",
-                  fontWeight: "500",
-                  fontSize: {
-                    sm: "16px",
-                    xs: "16px",
-                  },
-                  fontFamily: "Montserrat !important",
-                }}
-              >
-                Website Link
-              </Typography>
-              <CustomInputShadow
-                placeholder="Website Link"
-                name="websiteLink"
-                value={formData.websiteLink}
-                onChange={handleChange}
-                error={errors.websiteLink}
-              
-              />
-            </Box>
-
-            <Box
-              sx={{
-                flexBasis: "50%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.3rem",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#FFA100",
-                  fontWeight: "500",
-                  fontSize: {
-                    sm: "16px",
-                    xs: "16px",
-                  },
-                  fontFamily: "Montserrat !important",
-                }}
-              >
-                Facebook Link
-              </Typography>
-              <CustomInputShadow
-                placeholder="Facebook Link"
-                name="facebookLink"
-                value={formData.facebookLink}
-                onChange={handleChange}
-                error={errors.facebookLink}
-                
-              />
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1.5rem",
-              flexDirection: { md: "row", xs: "column" },
-            }}
-          >
-            <Box
-              sx={{
-                flexBasis: "50%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.3rem",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#FFA100",
-                  fontWeight: "500",
-                  fontSize: {
-                    sm: "16px",
-                    xs: "16px",
-                  },
-                  fontFamily: "Montserrat !important",
-                }}
-              >
-                venue Address
-              </Typography>
-              <CustomInputShadow
-                placeholder="Venue Address"
-                name="venueAddress"
-                value={formData.venueAddress}
-                onChange={handleChange}
-                error={errors.venueAddress}
-              
-              />
-            </Box>
-
-            <Box
-              sx={{
-                flexBasis: "50%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.3rem",
-              }}
-            >
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              Destination
-            </Typography>
-            <CustomInputShadow
-              placeholder="Destination"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              error={errors.destination}
-            />
-            </Box>
-          </Box>
-
           <Box
             sx={{
               flexBasis: "50%",
@@ -821,7 +671,28 @@ const AddSEvent = () => {
               error={errors.description}
             />
           </Box>
-         
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                  sm: "16px",
+                  xs: "16px",
+                },
+                fontFamily: "Montserrat !important",
+              }}
+            >
+              Destination
+            </Typography>
+            <CustomInputShadow
+              placeholder="Destination"
+              name="destination"
+              value={formData.destination}
+              onChange={handleChange}
+              error={errors.destination}
+            />
+          </Box>
         </Box>
       </Box>
       {/* {state ? (
@@ -1010,4 +881,4 @@ const AddSEvent = () => {
   );
 };
 
-export default AddSEvent;
+export default AddRequestedEvent;

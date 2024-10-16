@@ -28,11 +28,16 @@ const EditEvents = () => {
     ownerId: "",
     date: "",
     time: "",
+    endDate: "",
+    endTime: "",
     description: "",
-    details: [""],
+    details: "",
     destination: "",
     bannerImage: null,
     coordinates: { lat: null, lng: null }, // Coordinates for latitude and longitude
+    venueAddress:"",
+    facebookLink: "",
+    websiteLink:""
   });
   const [errors, setErrors] = useState({});
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
@@ -207,19 +212,30 @@ const EditEvents = () => {
       `${formData.date}T${formData.time}`
     ).toISOString();
 
+    const eventDateEndTime = new Date(
+      `${formData.endDate}T${formData.endTime}`
+    ).toISOString();
+
     const formDataToSend = new FormData();
     formDataToSend.append("eventName", formData.eventName);
     formDataToSend.append("organizedBy", formData.organizedBy);
     formDataToSend.append("eventDate", eventDateTime);
+    formDataToSend.append("eventEndDate", eventDateEndTime);
+
 
     formDataToSend.append("venueDescription", formData.description);
     formDataToSend.append("venueName", formData.destination);
     formDataToSend.append("bannerImage", formData.bannerImage);
     formDataToSend.append("venueLocation.latitude", formData.coordinates.lat);
     formDataToSend.append("venueLocation.longitude", formData.coordinates.lng);
-    formData.details.forEach((detail, index) => {
-      formDataToSend.append(`eventDetails[${index}]`, detail);
-    });
+    formDataToSend.append("details", formData.details);
+
+
+
+    formDataToSend.append("venueAddress", formData.venueAddress);
+    formDataToSend.append("websiteLink", formData.websiteLink);
+    formDataToSend.append("facebookLink", formData.facebookLink);
+
 
     try {
       setLoading(true);
@@ -273,10 +289,15 @@ const EditEvents = () => {
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner.name,
+        venueAddress: eventData?.venueAddress,
+        websiteLink: eventData?.websiteLink,
+        facebookLink: eventData?.facebookLink,
         date: new Date(eventData?.eventDate).toLocaleDateString("en-CA"), // Local date format (YYYY-MM-DD)
-        time: new Date(eventData?.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), // 24-hour format for time input
+        time: new Date(eventData?.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), 
+        endDate: new Date(eventData?.eventEndDate).toLocaleDateString("en-CA"), // Local date format (YYYY-MM-DD)
+        endTime: new Date(eventData?.eventEndDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), 
         description: eventData?.venueDescription,
-        details: eventData?.eventDetails || [""], // Ensure details is an array
+        details: eventData?.eventDetails || "", 
         destination: eventData?.venueName,
         bannerImage: eventData.bannerImage,
         coordinates: {
@@ -285,6 +306,8 @@ const EditEvents = () => {
         },
       });
       // Set the preview image from the existing banner image URL
+     
+      
       setPreviewImage(eventData.bannerImage);
 
       // Load the map with the initial marker
@@ -517,7 +540,7 @@ const EditEvents = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                Date
+               Start  Date
               </Typography>
               <CustomInputShadow
                 placeholder="Date"
@@ -544,7 +567,7 @@ const EditEvents = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                Time
+               Start Time
               </Typography>
               <CustomInputShadow
                 placeholder="Time"
@@ -553,6 +576,211 @@ const EditEvents = () => {
                 onChange={handleChange}
                 error={errors.time}
                 type={"time"} // Time input
+              />
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1.5rem",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+               End Date
+              </Typography>
+              <CustomInputShadow
+                placeholder="Date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+                error={errors.endDate}
+                type={"date"}
+              />
+            </Box>
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: { sm: "16px", xs: "16px" },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+               End Time
+              </Typography>
+              <CustomInputShadow
+                placeholder="Time"
+                name="endTime"
+                value={formData.endTime}
+                onChange={handleChange}
+                error={errors.endTime}
+                type={"time"} 
+              />
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1.5rem",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Website Link
+              </Typography>
+              <CustomInputShadow
+                placeholder="Website Link"
+                name="websiteLink"
+                value={formData.websiteLink}
+                onChange={handleChange}
+                error={errors.websiteLink}
+              
+              />
+            </Box>
+
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Facebook Link
+              </Typography>
+              <CustomInputShadow
+                placeholder="Facebook Link"
+                name="facebookLink"
+                value={formData.facebookLink}
+                onChange={handleChange}
+                error={errors.facebookLink}
+                
+              />
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1.5rem",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+             <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                  sm: "16px",
+                  xs: "16px",
+                },
+                fontFamily: "Montserrat !important",
+              }}
+            >
+              Destination
+            </Typography>
+            <CustomInputShadow
+              placeholder="Destination"
+              name="destination"
+              value={formData.destination}
+              onChange={handleChange}
+              error={errors.destination}
+            />
+            </Box>
+
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Venue Address
+              </Typography>
+              <CustomInputShadow
+                placeholder="Venue Address"
+                name="venueAddress"
+                value={formData.venueAddress}
+                onChange={handleChange}
+                error={errors.venueAddress}
+                
               />
             </Box>
           </Box>
@@ -587,26 +815,7 @@ const EditEvents = () => {
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              Destination
-            </Typography>
-            <CustomInputShadow
-              placeholder="Destination"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              error={errors.destination}
-            />
+            
           </Box>
         </Box>
       </Box>
@@ -631,45 +840,13 @@ const EditEvents = () => {
         >
           Details
         </Typography>
-        {formData.details.map((detail, index) => (
-          <Box
-            key={index}
-            sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <CustomInputShadow
-                name={`details-${index}`}
-                value={detail}
-                onChange={(e) => handleDetailChange(index, e.target.value)}
-                error={errors.details}
-              />
-            </Box>
-            {formData.details.length > 1 && (
-              <CustomButton
-                border="1px solid #FFA100"
-                ButtonText={"Remove"}
-                color="white"
-                height="100px"
-                width={"98px"}
-                borderRadius="8px"
-                buttonStyle={{ height: "75px", mb: "18px" }}
-                onClick={() => removeBullet("details", index)}
-              />
-            )}
-          </Box>
-        ))}
-        <CustomButton
-          border="1px solid #FFA100"
-          ButtonText={"Add Bullet"}
-          color="white"
-          height="100px"
-          width={"100%"}
-          borderRadius="6px"
-          buttonStyle={{ height: "75px" }}
-          onClick={() => addBullet("details")}
-          fontSize="20px"
-          fontWeight="600"
-        />
+        <CustomInputShadow
+              placeholder="Event Details"
+              name="details"
+              value={formData.details}
+              onChange={handleChange}
+              error={errors.details}
+            />
       </Box>
       <Box
         sx={{
@@ -677,7 +854,7 @@ const EditEvents = () => {
           display: "flex",
           flexDirection: "column",
           gap: "0.3rem",
-          mt: "30px",
+          mt: "0px",
         }}
       >
         <Typography

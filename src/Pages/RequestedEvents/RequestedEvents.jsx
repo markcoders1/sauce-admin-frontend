@@ -146,7 +146,7 @@ const RequestedEvents = () => {
 
 
    const handleNavigateToAddEvent = (state) => {
-    navigate("/admin/add-event", { state: state });
+    navigate("/admin/add-requested-event", { state: state });
   };
   return (
     <>
