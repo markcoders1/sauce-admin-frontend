@@ -119,11 +119,11 @@ const RequestedEvents = () => {
     return formattedDate;
   }
 
-  const filteredEvents = allEvents.filter(
-    (event) =>
-      event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredEvents = allEvents.filter(
+  //   (event) =>
+  //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const handleNavigateToEdit = (id) => {
     navigate(`/admin/edit-event-details/${id}`);
@@ -345,7 +345,7 @@ const RequestedEvents = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
-                  {filteredEvents.map((event, index) => (
+                  {allEvents.map((event, index) => (
                     <TableRow
                       key={index}
                       sx={{

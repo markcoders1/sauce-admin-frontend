@@ -50,7 +50,7 @@ const CustomSelectForType = ({ label, options, handleChange, value, error, boxSh
             lineHeight: "30px",
             fontWeight: "500",
             color: "grey",
-            display: selectedValue ? 'none' : 'flex',
+            display: selectedValue ? 'none' : 'none',
           }}
           id={`select-${label}-label`}
         >

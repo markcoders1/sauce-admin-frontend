@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -11,12 +11,21 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { Loader } from "@googlemaps/js-api-loader";
+import CustomSelect from "../../Components/CustomSelect/CustomSelect";
+import debounce from "lodash";
+
+
 
 const EditEvents = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [allBrands, setAllBrands] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState("")
+  
+
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -221,6 +230,8 @@ const EditEvents = () => {
     formDataToSend.append("organizedBy", formData.organizedBy);
     formDataToSend.append("eventDate", eventDateTime);
     formDataToSend.append("eventEndDate", eventDateEndTime);
+    formDataToSend.append("ownerId", formData.ownerId);
+
 
 
     formDataToSend.append("venueDescription", formData.description);
@@ -289,6 +300,8 @@ const EditEvents = () => {
       setFormData({
         eventName: eventData?.eventName,
         organizedBy: eventData?.owner?.name,
+        ownerId: eventData?.owner?._id,
+
         venueAddress: eventData?.venueAddress,
         websiteLink: eventData?.websiteLink,
         facebookLink: eventData?.facebookLink,
@@ -324,6 +337,40 @@ const EditEvents = () => {
     fetchEvent();
     loadMapWithMarker();
   }, []);
+
+  const fetchBrands = async () => {
+    try {
+      const response = await axios({
+        url: `${appUrl}/admin/get-all-users`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+        params: {
+          limit: 10,
+          searchTerm: searchTerm
+        },
+      });
+      setAllBrands(response?.data?.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchBrands();
+    }, 1000); // Set the debounce delay (300ms in this example)
+  
+    // Cleanup function to cancel the timeout if searchTerm changes or component unmounts
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]); 
+  const handleBrandChange = (ownerId) => {
+    setFormData((prev) => ({ ...prev, ownerId }));
+
+    console.log(ownerId)
+  };
 
   return (
     <Box
@@ -814,9 +861,7 @@ const EditEvents = () => {
               type={"text"}
             />
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-            
-          </Box>
+        
         </Box>
       </Box>
       <Box
@@ -848,6 +893,51 @@ const EditEvents = () => {
               error={errors.details}
             />
       </Box>
+      <Box
+        sx={{
+          flexBasis: "50%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.3rem",
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Search Brand
+        </Typography>
+        <CustomInputShadow
+          placeholder="Search Brand"
+          name="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Brand
+          </Typography>
+
+          <CustomSelect data={allBrands} handleChange={handleBrandChange} />
+        </Box>
       <Box
         sx={{
           flexBasis: "33%",

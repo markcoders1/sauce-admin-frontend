@@ -251,6 +251,7 @@ const AddBrand = () => {
           { label: "None", value: false },
           { label: "Top Rated", value: true },
         ]}
+        
         handleChange={(selectedValue) =>
           setFormData({ ...formData, isTopRated: selectedValue })
         }

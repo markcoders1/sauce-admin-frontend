@@ -24,6 +24,8 @@ const AddSEvent = () => {
   const { state } = useLocation();
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("")
+
   const navigate = useNavigate();
 
   console.log("=================", state);
@@ -31,7 +33,7 @@ const AddSEvent = () => {
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
     organizedBy: state?.owner?.name || "",
-    // ownerId: state?.owner?._id || "",
+    ownerId: state?.owner?._id || "",
     date: state?.eventDate
       ? new Date(state?.eventDate).toLocaleDateString("en-CA") // Local date format (YYYY-MM-DD)
       : "",
@@ -59,10 +61,9 @@ const AddSEvent = () => {
     bannerImage: null,
     latitude: state?.venueLocation?.latitude || "",
     longitude: state?.venueLocation?.longitude || "",
-    venueAddress : state?.venueAddress || "",
-    websiteLink : state?.websiteLink || "",
-    facebookLink : state?.facebookLink || "",
-
+    venueAddress: state?.venueAddress || "",
+    websiteLink: state?.websiteLink || "",
+    facebookLink: state?.facebookLink || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -270,7 +271,7 @@ const AddSEvent = () => {
 
       data.append("venueDescription", formData?.description);
       data.append("venueName", formData?.destination);
-      // data.append("owner", formData?.ownerId);
+      data.append("owner", formData?.ownerId);
       data.append("bannerImage", formData?.bannerImage);
       data.append("eventDetails", formData?.details);
       data.append("websiteLink", formData?.websiteLink);
@@ -292,7 +293,7 @@ const AddSEvent = () => {
       setFormData({
         eventName: "",
         organizedBy: "",
-        // ownerId: "",
+        ownerId: "",
         date: "",
         time: "",
         description: "",
@@ -301,9 +302,9 @@ const AddSEvent = () => {
         bannerImage: null,
         latitude: "",
         longitude: "",
-        venueAddress:"",
+        venueAddress: "",
         facebookLink: "",
-        websiteLink:""
+        websiteLink: "",
       });
       setLoading(false);
 
@@ -333,7 +334,8 @@ const AddSEvent = () => {
           Authorization: `Bearer ${auth.accessToken}`,
         },
         params: {
-          limit: 100,
+          limit: 10,
+          searchTerm: searchTerm
         },
       });
       setAllBrands(response?.data?.users);
@@ -344,7 +346,7 @@ const AddSEvent = () => {
 
   useEffect(() => {
     fetchBrands();
-  }, []);
+  }, [searchTerm]);
 
   const handleBrandChange = (ownerId) => {
     setFormData((prev) => ({ ...prev, ownerId }));
@@ -687,7 +689,6 @@ const AddSEvent = () => {
                 value={formData.websiteLink}
                 onChange={handleChange}
                 error={errors.websiteLink}
-              
               />
             </Box>
 
@@ -718,7 +719,6 @@ const AddSEvent = () => {
                 value={formData.facebookLink}
                 onChange={handleChange}
                 error={errors.facebookLink}
-                
               />
             </Box>
           </Box>
@@ -757,7 +757,6 @@ const AddSEvent = () => {
                 value={formData.venueAddress}
                 onChange={handleChange}
                 error={errors.venueAddress}
-              
               />
             </Box>
 
@@ -769,26 +768,26 @@ const AddSEvent = () => {
                 gap: "0.3rem",
               }}
             >
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              Destination
-            </Typography>
-            <CustomInputShadow
-              placeholder="Destination"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              error={errors.destination}
-            />
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Destination
+              </Typography>
+              <CustomInputShadow
+                placeholder="Destination"
+                name="destination"
+                value={formData.destination}
+                onChange={handleChange}
+                error={errors.destination}
+              />
             </Box>
           </Box>
 
@@ -821,10 +820,37 @@ const AddSEvent = () => {
               error={errors.description}
             />
           </Box>
-         
         </Box>
       </Box>
-      {/* {state ? (
+      <Box
+        sx={{
+          flexBasis: "50%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.3rem",
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Search Brand
+        </Typography>
+        <CustomInputShadow
+          placeholder="Search Brand"
+          name="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
+      {state ? (
         ""
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
@@ -844,7 +870,7 @@ const AddSEvent = () => {
 
           <CustomSelect data={allBrands} handleChange={handleBrandChange} />
         </Box>
-      )} */}
+      )}
 
       <Box
         sx={{
@@ -869,13 +895,12 @@ const AddSEvent = () => {
         </Typography>
 
         <CustomInputShadow
-              placeholder="Event Details"
-              name="details"
-              value={formData.details}
-              onChange={handleChange}
-              error={errors.details}
-            />
-
+          placeholder="Event Details"
+          name="details"
+          value={formData.details}
+          onChange={handleChange}
+          error={errors.details}
+        />
 
         {/* {formData.details.map((detail, index) => (
           <Box
