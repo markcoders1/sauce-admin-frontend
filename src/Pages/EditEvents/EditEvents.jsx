@@ -230,7 +230,7 @@ const EditEvents = () => {
     formDataToSend.append("organizedBy", formData.organizedBy);
     formDataToSend.append("eventDate", eventDateTime);
     formDataToSend.append("eventEndDate", eventDateEndTime);
-    formDataToSend.append("ownerId", formData.ownerId);
+    formDataToSend.append("owner", formData.ownerId);
 
 
 

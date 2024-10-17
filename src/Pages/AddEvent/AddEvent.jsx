@@ -328,7 +328,7 @@ const AddSEvent = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users?type=brand`,
+        url: `${appUrl}/admin/get-all-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
