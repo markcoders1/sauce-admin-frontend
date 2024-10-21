@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography , Tooltip} from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./AppSidebar.css";
 import hambergImg from "../../assets/hamberger.png";
@@ -598,6 +598,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={hambergImg} alt="Toggle Sidebar" />
               </Box>
+              <Tooltip title="User Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -629,6 +630,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="User Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Sauce Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -659,6 +662,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Sauce Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Brand Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -689,6 +694,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Brand Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Events Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -719,6 +726,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Events Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title=" Requested Events Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -749,6 +758,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Requested Events Mana"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Reviews Management">
 
               <Box
                 sx={{
@@ -780,6 +791,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Reviews Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Requested Sauce Management">
 
               <Box
                 sx={{
@@ -811,10 +824,11 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Reviews Management"
                 />
               </Box>
+              </Tooltip>
 
               {/* badge and store management
                */}
-
+              <Tooltip title="Badge Management">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -845,6 +859,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Reviews Management"
                 />
               </Box>
+              </Tooltip>
+              <Tooltip title="Store Management">
 
               <Box
                 sx={{
@@ -876,9 +892,10 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   alt="Reviews Management"
                 />
               </Box>
+              </Tooltip>
 
               {/* new management pages */}
-
+              <Tooltip title="Notification">
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -913,6 +930,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   />
                 )}
               </Box>
+              </Tooltip>
             </>
           )}
         </Box>

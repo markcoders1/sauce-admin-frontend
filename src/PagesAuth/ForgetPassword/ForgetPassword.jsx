@@ -35,7 +35,7 @@ const ForgotPassword = () => {
                 message: "Password reset email sent! Please check your inbox.",
                 severity: "success"
             });
-            setResetSuccess(true); // Set reset success to true
+            setResetSuccess(true); 
 
         } catch (error) {
             console.error('Error sending password reset email:', error);
@@ -81,7 +81,7 @@ const ForgotPassword = () => {
             </Box>
 
             <form onSubmit={resetSuccess ? handleBackToLogin : handlePasswordReset}>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: { sm: "30px", xs: "20px" }, marginTop: "20px" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: { sm: "30px", xs: "20px" }, marginTop: "40px" }}>
                     {!resetSuccess && (
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                             <Typography sx={{

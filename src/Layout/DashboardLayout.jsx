@@ -126,13 +126,13 @@ const DashboardLayout = () => {
         <Box
           sx={{
             marginLeft: {
-              md: isSidebarOpen ? '300px' : '20px', // Adjust margin based on sidebar state
+              md: isSidebarOpen ? '300px' : '50px', // Adjust margin based on sidebar state
               xs: '0px',
             },
             width: '100%',
             maxWidth: '100%',
             padding: {
-              md: '20px',
+              // md: '20px',
               xs: '0px 0px',
             },
             boxSizing: 'border-box',

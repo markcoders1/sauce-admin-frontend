@@ -118,7 +118,14 @@ const Login = () => {
 
     return (
         <div>
-            <Box>
+            <Box
+            sx={{
+               
+                display:"flex",
+                flexDirection:"column",
+                gap:"0px"
+            }}
+            >
                 <Typography sx={{
                     color: "#FFA100",
                     fontWeight: "600",
@@ -127,6 +134,9 @@ const Login = () => {
                         xs: "46px"
                     },
                     fontFamily: "Fira Sans !important",
+                    // border:"2px solid yellow",
+                    p:"0px",
+                    lineHeight:"65px"
                 }}>
                     Sign in
                 </Typography>
@@ -145,7 +155,7 @@ const Login = () => {
             </Box>
 
             <form onSubmit={handleSubmit}>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: { md: "10px", xs: "10px" }, marginTop: "10px" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: { md: "0px", xs: "10px" }, marginTop: {xl:"35px", xs:"10px"}}}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                         <Typography sx={{
                             color: "#FFA100",
@@ -169,7 +179,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginTop:"15px" }}>
                         <Typography sx={{
                             color: "#FFA100",
                             fontWeight: "500",
@@ -200,7 +210,7 @@ const Login = () => {
                             },
                             textAlign: "end",
                             fontFamily: "Montserrat !important",
-                            mt: "20px",
+                            
                             cursor: "pointer",
                             transition: "color 0.4s ease",
                             '&:hover': {
