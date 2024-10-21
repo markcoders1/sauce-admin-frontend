@@ -32,7 +32,7 @@ import icon81 from "../../assets/icon71.png";
 import icon91 from "../../assets/requestedEvent.png";
 
 const vapid_key = import.meta.env.VAPID_KEY;
-
+import Zoom from '@mui/material/Zoom';
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const [hoveredIcon, setHoveredIcon] = useState(null);
@@ -598,7 +598,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <img src={hambergImg} alt="Toggle Sidebar" />
               </Box>
-              <Tooltip title="User Management">
+              <Tooltip title="User Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -631,7 +631,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Sauce Management">
+              <Tooltip title="Sauce Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -663,7 +663,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Brand Management">
+              <Tooltip title="Brand Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -695,7 +695,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Events Management">
+              <Tooltip title="Events Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -727,7 +727,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title=" Requested Events Management">
+              <Tooltip title=" Requested Events Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -759,7 +759,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Reviews Management">
+              <Tooltip title="Reviews Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
 
               <Box
                 sx={{
@@ -792,7 +792,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Requested Sauce Management">
+              <Tooltip title="Requested Sauce Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
 
               <Box
                 sx={{
@@ -828,7 +828,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
 
               {/* badge and store management
                */}
-              <Tooltip title="Badge Management">
+              <Tooltip title="Badge Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
               <Box
                 sx={{
                   borderRadius: "50%",
@@ -860,7 +860,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Store Management">
+              <Tooltip title="Store Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
 
               <Box
                 sx={{
@@ -895,7 +895,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               </Tooltip>
 
               {/* new management pages */}
-              <Tooltip title="Notification">
+              <Tooltip title="Notification" placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} > 
               <Box
                 sx={{
                   borderRadius: "50%",
