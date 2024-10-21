@@ -10,6 +10,7 @@ import {
   TableRow,
   Paper,
   Pagination,
+  Tooltip,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import SearchIcon from "../../assets/SearchIcon.png";
@@ -27,6 +28,8 @@ import "yet-another-react-lightbox/styles.css";
 import queryString from "query-string"; // Import query-string library
 import { debounce } from "lodash";
 import DeleteIcon from "../../assets/deleteIcon.png";
+import eyeIcon from "../../assets/eyeopen.png";
+
 import DeleteRequestedEvent from "../../Components/DeleteRequestedEvent/DeleteRequestedEvent";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -406,21 +409,32 @@ const RequestedEvents = () => {
                             display: "flex",
                             gap: "10px",
                             justifyContent: "center",
+                            alignItems:"center"
                           }}
                         >
-                          <CustomButton
-                            border="1px solid #FFA100"
-                            ButtonText={"View Event"}
-                            color="white"
-                            width={{xs:"120px", xl:"135px"}}
-                            borderRadius="6px"
-                            buttonStyle={{ height: "45px" }}
-                           
-                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
+                        <Tooltip title="View Requested Events" >
+                            <img
+                            className="delete-icon edit-icon" 
+                             
+                            src={eyeIcon}
+                            alt="Delete"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              cursor: "pointer",
+                              border: "0 px solid red",
+                              borderRadius: "10px",
+                              padding: "8px",
+                              objectFit:"contain"
+                            }}
                             onClick={() => handleNavigateToAddEvent(event)}
                           />
+                          </Tooltip>
+                        <Tooltip title="Delete Requested Events" >
+
                           <img
-                            className="delete-icon"
+                            className="delete-icon edit-icon" 
+                             
                             src={DeleteIcon}
                             alt="Delete"
                             style={{
@@ -433,6 +447,8 @@ const RequestedEvents = () => {
                             }}
                             onClick={() => handleOpenDeleteModal(event._id)}
                           />
+                          </Tooltip>
+
                         </Box>
                       </TableCell>
                     </TableRow>

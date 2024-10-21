@@ -519,7 +519,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               </NavLink>
 
               <NavLink
-                to="/admin/notifications"
+                to="/admin/notification"
                 className={({ isActive }) =>
                   isActive ? "active-nav-link" : "nav-link"
                 }

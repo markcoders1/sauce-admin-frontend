@@ -23,6 +23,7 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import SearchIcon from "../../assets/SearchIcon.png";
 import { debounce } from "lodash"; // Import lodash debounce
 import MenuBar from "../../Components/MenuBar/MenuBar";
+import eyeIcon from "../../assets/eyeopen.png";
 
 import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the design consistent
 // delete requested sauce modal
@@ -297,7 +298,7 @@ const RequestedSauce = () => {
                             }}
                             className="MuiTableCell-root"
                           >
-                            <CustomButton
+                            {/* <CustomButton
                               border="1px solid #FFA100"
                               ButtonText="View Request"
                               color="white"
@@ -306,7 +307,27 @@ const RequestedSauce = () => {
                               buttonStyle={{ height: "39px" }}
                               onClick={() => handleNavigate(sauce)}
                               hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                            />
+                            /> */}
+                        <Tooltip title="View Requested Sauce" >
+
+
+                                  <img
+                            className="delete-icon edit-icon" 
+                             
+                            src={eyeIcon}
+                            alt="Delete"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              cursor: "pointer",
+                              border: "0 px solid red",
+                              borderRadius: "10px",
+                              padding: "8px",
+                              objectFit:"contain"
+                            }}
+                            onClick={() => handleNavigate(sauce)}
+                          />
+                          </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}

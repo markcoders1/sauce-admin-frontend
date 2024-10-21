@@ -26,6 +26,8 @@ import Tooltip from "@mui/material/Tooltip";
 import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
+import eyeIcon from "../../assets/eyeopen.png";
+
 
 // import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal";
 import ConfirmDeleteModalForStore from "../../DeleteStoreModal/DeleteStoreModal.jsx";
@@ -361,18 +363,26 @@ const [allStores, setAllStores] = useState([]);
                       </TableCell>
                       <TableCell sx={{ borderRadius: "0px 8px 8px 0px", color: "white", ml: { md: "20px", xs: "10px" } }} className="MuiTableCell-root">
                         <Box sx={{ display: "flex", alignItems: "center", gap: "0.8rem"}}>
-                          <Tooltip title="View Store">
-                            <CustomButton
-                              border="1px solid #FFA100"
-                              ButtonText="View Store"
-                              color="white"
-                              width={"100px"}
-                              borderRadius="8px"
-                              padding="8px 0px"
-                              fontSize="12px"
-                              fontWeight="400"
-                              onClick={() => handleNavigateToView(review._id)}
-                            />
+                         
+
+                        <Tooltip title="View Store" >
+                            <img
+                            className="delete-icon edit-icon" 
+                             
+                            src={eyeIcon}
+                            alt="Delete"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              cursor: "pointer",
+                              border: "0 px solid red",
+                              borderRadius: "10px",
+                              padding: "8px",
+                              objectFit:"contain"
+                            }}
+                            onClick={() => handleNavigateToView(review._id)}
+
+                          />
                           </Tooltip>
                           <Tooltip title="Edit Store">
                             <img

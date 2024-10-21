@@ -398,10 +398,16 @@ const BadgeManagement = () => {
                               <Tooltip title="Edit Badge">
                                 <img
                                   src={EditIcon}
+                                  className="edit-icon"
+
                                   style={{
-                                    width: "25px",
-                                    height: "24px",
+                                    width: "40px",
+                                    height: "40px",
                                     cursor: "pointer",
+                                    objectFit: "contain",
+                                    padding:"8px",
+                                    borderRadius:"8px"
+
                                   }}
                                   onClick={() => handleNavigateToEdit(review)}
                                   alt="Edit"
@@ -410,11 +416,14 @@ const BadgeManagement = () => {
                               <Tooltip title="Delete Badge">
                                 <img
                                   src={DeleteIcon}
+                                  className="edit-icon"
                                   style={{
                                     width: "37px",
                                     height: "37px",
                                     cursor: "pointer",
                                     objectFit: "contain",
+                                    borderRadius:"8px"
+
                                   }}
                                   onClick={() =>
                                     handleOpenDeleteModal(review?._id)
