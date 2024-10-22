@@ -70,7 +70,10 @@ const EventsManagement = () => {
         debounce((value) => {
             navigate(`${location.pathname}?page=1`);  // Reset to page 1 for new search
             setSearchTerm(value);
-            
+              // const filteredEvents = allEvents.filter(event =>
+    //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
         }, 2000), 
         []
     );
@@ -105,10 +108,10 @@ const EventsManagement = () => {
         return formattedDate;
       }
 
-    const filteredEvents = allEvents.filter(event =>
-        event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // const filteredEvents = allEvents.filter(event =>
+    //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     const handleNavigateToEdit = (id) => {
         navigate(`/admin/edit-event-details/${id}`);
@@ -286,7 +289,7 @@ const EventsManagement = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody className="MuiTableBody-root">
-                                        {filteredEvents.map((event, index) => (
+                                        {allEvents.map((event, index) => (
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">

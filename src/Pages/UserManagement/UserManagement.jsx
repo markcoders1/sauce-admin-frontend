@@ -22,10 +22,14 @@ import { useSelector } from "react-redux";
 import SnackAlert from "../../Components/SnackAlert/SnackAlert";
 import ConfirmActionModal from "../../Components/ConfirmActionModal/ConfirmActionModal";
 import EditIcon from "../../assets/EditIcon.png";
+import lockIcon from "../../assets/lock.png";
+import unlockIcon from "../../assets/unlock.png";
+
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import queryString from "query-string";
 import IconButton from "@mui/material/IconButton";
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -486,9 +490,10 @@ const UserManagement = () => {
                             display: "flex",
                             gap: "30px",
                             justifyContent: "center",
+                            alignItems:"center"
                           }}
                         >
-                          <CustomButton
+                          {/* <CustomButton
                             border="1px solid #FFA100"
                             ButtonText={
                               user.status === "active" ? "Block" : "Unblock"
@@ -497,9 +502,27 @@ const UserManagement = () => {
                             width={"98px"}
                             borderRadius="6px"
                             buttonStyle={{ height: "39px" }}
-                            onClick={() => toggleBlock(user._id, user.status)}
+                            
                             hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
+                          /> */}
+                          <Tooltip title={user.status === "active" ? "Unblock User" : "Block User"}>
+
+                           <img
+                            className="edit-icon"
+                            src= {user.status === "active" ? lockIcon : unlockIcon}
+                            alt="Edit"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              border: "0 px solid red",
+                              borderRadius: "10px",
+                              padding: "0px !important",
+                            }}
+                            onClick={() => toggleBlock(user._id, user.status)}
                           />
+                          </Tooltip>
+
                           <img
                             className="edit-icon"
                             src={EditIcon}

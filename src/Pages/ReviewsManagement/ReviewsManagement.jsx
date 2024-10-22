@@ -358,10 +358,13 @@ const ReviewsManagement = () => {
                           <Tooltip title="Copy Video URL">
                             <img
                               src={copyIcon}
+                              className="edit-icon"
+
                               style={{
-                                width: "38px",
-                                height: "38px",
+                                width: "40px",
+                                height: "40px",
                                 cursor: "pointer",
+                                borderRadius:"8px"
                               }}
                               onClick={() => handleCopyUrl(review.url)}
                               alt="Copy"
@@ -370,11 +373,14 @@ const ReviewsManagement = () => {
                           <Tooltip title="Delete Review">
                             <img
                               src={DeleteIcon}
+                              className="edit-icon"
                               style={{
                                 width: "35px",
                                 height: "35px",
                                 cursor: "pointer",
                                 objectFit: "contain",
+                                borderRadius:"8px"
+
                               }}
                               onClick={() => handleOpenDeleteModal(review._id)}
                               alt="Delete"
