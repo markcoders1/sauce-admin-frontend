@@ -141,7 +141,7 @@ const DashboardLayout = () => {
             transition: 'margin-left 0.3s ease-in-out', // Smooth transition for margin change
           }}
         >
-          <Box sx={{ mt: "20px" }}>
+          <Box sx={{ mt: "20px", pb:"30px" }}>
             <Outlet />
           </Box>
         </Box>

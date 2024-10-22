@@ -308,26 +308,31 @@ const RequestedSauce = () => {
                               onClick={() => handleNavigate(sauce)}
                               hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
                             /> */}
-                        <Tooltip title="View Requested Sauce" >
-
-
-                                  <img
-                            className="delete-icon edit-icon" 
-                             
-                            src={eyeIcon}
-                            alt="Delete"
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              cursor: "pointer",
-                              border: "0 px solid red",
-                              borderRadius: "10px",
-                              padding: "8px",
-                              objectFit:"contain"
+                            <Box
+                            sx={{
+                              display:"flex", justifyContent:"center", alignItems:"center"
                             }}
-                            onClick={() => handleNavigate(sauce)}
-                          />
-                          </Tooltip>
+                            >
+
+                            <Tooltip title="View Requested Sauce">
+                              <img
+                                className="delete-icon edit-icon"
+                                src={eyeIcon}
+                                alt="Delete"
+                                style={{
+                                  width: "40px",
+                                  height: "40px",
+                                  cursor: "pointer",
+                                  border: "0 px solid red",
+                                  borderRadius: "10px",
+                                  padding: "8px",
+                                  objectFit: "contain",
+                                }}
+                                onClick={() => handleNavigate(sauce)}
+                              />
+                            </Tooltip>
+                            </Box>
+
                           </TableCell>
                         </TableRow>
                       ))}

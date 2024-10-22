@@ -290,9 +290,10 @@ const BadgeManagement = () => {
                           sx={{
                             fontWeight: "500",
                             fontSize: { sm: "21px", xs: "16px" },
-                            textAlign: "center",
+                            textAlign: "start",
                             borderRadius: "8px 0px 0px 8px",
                             color: "white",
+                            pl:"40px"
                           }}
                         >
                           Image
@@ -355,6 +356,12 @@ const BadgeManagement = () => {
                             }}
                             className="MuiTableCell-root"
                           >
+                            <Box
+                             sx={{
+                              display:"flex", justifyContent:"start", alignItems:"center", pl:"15px"
+                            }}
+                            >
+
                             <img
                               src={review?.icon ? review?.icon : logoAdmin}
                               style={{
@@ -367,6 +374,8 @@ const BadgeManagement = () => {
                               onClick={() => openLightbox(review?.icon)}
                               alt="Badge"
                             />
+                            </Box>
+
                           </TableCell>
                           <TableCell
                             sx={{ textAlign: "start !important" }}
@@ -452,8 +461,8 @@ const BadgeManagement = () => {
                         border: "2px solid #FFA100", // Border color matching the theme
                       },
                       "& .Mui-selected": {
-                        color: "black", // Text color for selected page
-                        backgroundColor: "#FFA100", // Background color for selected page
+                        color: "#FFA100", // Text color for selected page
+                        backgroundColor: "", // Background color for selected page
                         fontWeight: "bold", // Bold text for selected page
                       },
                       "& .MuiPaginationItem-ellipsis": {

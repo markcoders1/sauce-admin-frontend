@@ -386,10 +386,10 @@ const EditBrandDetails = () => {
           border='1px solid #FFA100'
           ButtonText={loading ? "Saving" : "Save"}
           color='white'
-          width={"178px"}
+          width={"208px"}
           borderRadius='8px'
           background={loading ? "" : 'linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'}
-          padding='10px 0px'
+          padding='25px 0px'
           fontSize='18px'
           fontWeight='600'
           onClick={handleSubmit}

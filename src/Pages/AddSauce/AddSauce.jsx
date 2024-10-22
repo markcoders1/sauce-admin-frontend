@@ -701,6 +701,10 @@ const AddSauce = () => {
           height="100px"
           width={"100%"}
           borderRadius="6px"
+          background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
+          hoverBg="linear-gradient(90deg, #F3C623 0%, #F3C623 100%)"
+
+
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet("chilli")}
           fontSize="18px"
@@ -715,12 +719,13 @@ const AddSauce = () => {
             border="1px solid #FFA100"
             ButtonText={loading ? "Delete" : "Delete Request"}
             color="white"
-            width={"188px"}
+            width={"208px"}
+          padding='25px 0px'
             borderRadius="8px"
             // background={
             //   loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
             // }
-            padding="10px 0px"
+           
             fontSize="18px"
             fontWeight="600"
             
@@ -733,12 +738,13 @@ const AddSauce = () => {
           border="1px solid #FFA100"
           ButtonText={loading ? "Adding" : "Add "}
           color="white"
-          width={"178px"}
           borderRadius="8px"
           background={
             loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           }
-          padding="10px 0px"
+          width={"208px"}
+          padding='25px 0px'
+
           fontSize="18px"
           fontWeight="600"
           onClick={handleSubmit}

@@ -15,7 +15,8 @@ const   CustomButton = ({
     padding = "",
     onClick = () => {},
     background = "",
-    hoverBg = "",
+    hoverBg="linear-gradient(90deg, #F3C623 0%, #F3C623 100%)",
+
     hovercolor = "",
     hoverBorder = "",
     type,
@@ -43,7 +44,9 @@ const   CustomButton = ({
                 ...buttonStyle,
                 '&:hover': {
                     background: hoverBg,
-                    border : "1.5px solid red"
+                    border : "1.5px solid #FFA100",
+                transition:".3s ease-in all"
+
                 },
                 // transition:" all ease-in .2s"
                 transition:".3s ease-in all"
