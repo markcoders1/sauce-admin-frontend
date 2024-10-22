@@ -19,7 +19,7 @@ const LogoutButton = ({ isSidebarOpen }) => {
     console.log("mobilesidebr",isOpen);
 
 
-    const handleLogout = () => {
+     const handleLogout = () => {
         dispatch(logout({
             accessToken: null,
             refreshToken: null,
@@ -55,8 +55,12 @@ const LogoutButton = ({ isSidebarOpen }) => {
                    
                     width:"98%",
                     borderRadius:"8px",
-
-
+                    border:"2px solid blue",
+                    ":hover":{
+                        backgroundColor: "rgba(255, 255, 255, 0.244)",
+                        color:"white"
+                        
+                    }
             
                 }}
                 onClick={handleOpenModal}

@@ -100,11 +100,12 @@ const DashboardLayout = () => {
               xs: 'none',
               md: 'block',
             },
+           
             alignItems:"start",
             justifyContent:"center",
             borderRadius: "15px",
             background: 'linear-gradient(90deg, #FFA100 100%, #FF7B00 100%)',
-            transition: 'width 0.3s ease-in-out', // Smooth transition for width change
+            transition: 'width 0.3s ease-in-out', 
             gap:"10rem" }}
         >
           <Box>
@@ -117,7 +118,7 @@ const DashboardLayout = () => {
             alignItems: "center",
             
           }} >
-            <LogoutButton isSidebarOpen={isSidebarOpen} /> 
+            {/* <LogoutButton isSidebarOpen={isSidebarOpen} />  */}
           </Box>
         </Box>
         <Box>

@@ -33,9 +33,25 @@ import icon91 from "../../assets/requestedEvent.png";
 
 const vapid_key = import.meta.env.VAPID_KEY;
 import Zoom from '@mui/material/Zoom';
+import { logout } from "../../Redux/Slice/UserSlice/UserSlice";
+
+import { toggleSidebar, closeSidebar, openSidebar } from '../../Redux/Slice/sidebarSlice/sidebarSlice';
+import logoutpng from '../../assets/logout.png';
+
+
+import { useDispatch } from 'react-redux';
+import LogoutConfirmationModal from "../../Components/LogoutConfirmationModal/LogoutConfirmationModal";
+
+
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
-  const navigate = useNavigate();
+ 
   const [hoveredIcon, setHoveredIcon] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
+  // const isOpen = useSelector((state) => state.sidebar.isOpen)
+
+
 
   const handleNavigate = (nav) => {
     navigate(nav);
@@ -52,6 +68,27 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
       setHoveredIcon(null);
     }
   };
+
+  const handleLogout = () => {
+    dispatch(logout({
+        accessToken: null,
+        refreshToken: null,
+        _id: null,
+        username: null,
+        email: null,
+        createdAt: null,
+        updatedAt: null,
+        authenticated: false,
+        type: null
+    }));
+    navigate("/");
+    localStorage.removeItem("accessToken");
+    dispatch(toggleSidebar())
+    dispatch(closeSidebar()); 
+};
+
+const handleOpenModal = () => setModalOpen(true);
+const handleCloseModal = () => setModalOpen(false);
 
   return (
     <Box
@@ -95,7 +132,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   color: "red !important",
                   position: "absolute",
                   top: "-10px",
-                  right: "-10px",
+                  right: {xs:"-35px" , xl:"-0px"},
                   width: { xl: "30px", xs: "25px" },
                   height: { xl: "30px", xs: "25px" },
                   backgroundColor: "white",
@@ -103,13 +140,15 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: "5px",
+                  cursor:"pointer"
+                  
                 }}
+                onClick={toggleSidebar}
               >
                 <img
                   src={crossIcon}
                   alt=""
                   style={{ color: "white", width: "15px", cursor: "pointer" }}
-                  onClick={toggleSidebar}
                 />
               </Typography>
               <Box
@@ -519,7 +558,7 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
               </NavLink>
 
               <NavLink
-                to="/admin/notifications"
+                to="/admin/notification"
                 className={({ isActive }) =>
                   isActive ? "active-nav-link" : "nav-link"
                 }
@@ -561,6 +600,53 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                     }}
                   >
                    Notifications
+                  </Typography>
+                </Box>
+              </NavLink>
+              <NavLink
+                onClick={handleOpenModal}
+                
+                className={({ isActive }) =>
+                  isActive ? "nav-link" : " active-nav-link"
+                }
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    p: "5px 5px",
+                    borderRadius: "12px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      borderRadius: "50%",
+                      backgroundColor: "white",
+                      width: { xl: "40px", xs: "35px" },
+                      height: { xl: "40px", xs: "35px" },
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={logoutpng}
+                      className="navlink-image3"
+                      alt="Events Management"
+                      style={{
+                        width:"50%",
+                      }}
+                    />
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "14px", xl: "16px" },
+                      fontWeight: "600",
+                      fontFamily: "Montserrat !important",
+                    }}
+                  >
+                   Logout
                   </Typography>
                 </Box>
               </NavLink>
@@ -931,10 +1017,56 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
                 )}
               </Box>
               </Tooltip>
+
+              <Tooltip title="Logout" placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} > 
+              <Box
+                sx={{
+                  borderRadius: "50%",
+                  backgroundColor:
+                    hoveredIcon === "logoutpng" ? "rgba(255, 0, 0, 0.6)" : "white",
+                  width: { xl: "45px", xs: "35px" },
+                  height: { xl: "45px", xs: "35px" },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  color: "black",
+                  fontWeight: "600",
+                  boxShadow:
+                    hoveredIcon === "logoutpng"
+                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                      : "none",
+                  transition:
+                    "background-color 0.3s ease, box-shadow 0.3s ease",
+                }}
+                onClick={handleOpenModal}
+                onMouseEnter={() => handleMouseEnter("logoutpng")}
+                onMouseLeave={handleMouseLeave}
+              >
+                {hoveredIcon === "logoutpng" ? (
+                  <img
+                  src={logoutpng}
+                  style={{ width: "50%", zIndex: "100" }}
+                  alt="Bell Icon"
+                />
+                ) : (
+                  <img
+                    src={logoutpng}
+                    style={{ width: "50%", zIndex: "100" }}
+                    alt="Bell Icon"
+                  />
+                )}
+              </Box>
+              </Tooltip>
             </>
           )}
         </Box>
       </Box>
+      <LogoutConfirmationModal
+                open={modalOpen} 
+                handleClose={handleCloseModal} 
+                onLogoutConfirm={handleLogout} 
+            />
     </Box>
   );
 };
