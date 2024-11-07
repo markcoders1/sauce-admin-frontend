@@ -337,10 +337,11 @@ const AddSEvent = () => {
           Authorization: `Bearer ${auth.accessToken}`,
         },
         params: {
-          limit: 7,
+          limit: 8,
           searchTerm: searchQuery,
         },
       });
+      console.log(response)
       setAllBrands(response?.data?.users);
     } catch (error) {
       console.error("Error fetching users:", error);

@@ -110,3 +110,25 @@ input[type="date"] {
       height: 40px;
     }
   }
+
+  /* Override the default styles of Google Places Autocomplete suggestions */
+.pac-container {
+  /* Adjust the background color of the suggestions dropdown if needed */
+  background-color: #fff !important;
+}
+
+.pac-item {
+  /* Set the text color of the suggestions to black */
+  color: black !important;
+}
+
+.pac-item .pac-icon {
+  /* Adjust the icon color if needed */
+  color: black !important;
+}
+
+.pac-item .pac-matched {
+  /* Ensure the matched text (user input) is also black */
+  color: black !important;
+  font-weight: normal !important; /* Optional: Remove bold styling */
+}
