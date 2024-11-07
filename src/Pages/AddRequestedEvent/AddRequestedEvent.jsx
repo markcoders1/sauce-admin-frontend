@@ -12,6 +12,7 @@ import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useLocation } from "react-router-dom";
+import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
 
 
 
@@ -27,6 +28,8 @@ const AddRequestedEvent = () => {
   const auth = useSelector((state) => state.auth);
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const navigate = useNavigate();
 
   console.log("=================", state);
@@ -337,7 +340,7 @@ const AddRequestedEvent = () => {
         },
         params: {
           limit: 10,
-          searchTerm : searchTerm
+          searchTerm : searchQuery
         },
       });
       console.log(response.data)
@@ -349,7 +352,7 @@ const AddRequestedEvent = () => {
 
   useEffect(() => {
     fetchBrands();
-  }, [searchTerm]);
+  }, [searchQuery]);
 
   const handleBrandChange = (ownerId) => {
     setFormData((prev) => ({ ...prev, ownerId }));
@@ -828,35 +831,6 @@ const AddRequestedEvent = () => {
         </Box>
       </Box>
 
-      <Box
-            sx={{
-              flexBasis: "50%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.3rem",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              Search Brand
-            </Typography>
-            <CustomInputShadow
-              placeholder="Search Brand"
-              name="search"
-              value={searchTerm}
-              onChange={(e)=> setSearchTerm(e.target.value)}
-              
-            />
-          </Box>
     
         <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
@@ -870,10 +844,17 @@ const AddRequestedEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Brand
+          Event Owner
           </Typography>
 
-          <CustomSelect data={allBrands} handleChange={handleBrandChange} />
+          <VirtualizedCustomSelect 
+            data={allBrands} 
+            handleChange={handleBrandChange} 
+            label="Select Brand"
+            isMultiSelect={false} // Set to true if you need multi-select
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+        />
         </Box>
     
 

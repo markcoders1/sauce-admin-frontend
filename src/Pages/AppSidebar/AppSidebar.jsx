@@ -379,7 +379,7 @@ const handleCloseModal = () => setModalOpen(false);
                       fontFamily: "Montserrat !important",
                     }}
                   >
-                    Events Management
+                   Requested Events 
                   </Typography>
                 </Box>
               </NavLink>

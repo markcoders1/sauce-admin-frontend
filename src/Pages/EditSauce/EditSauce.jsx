@@ -591,7 +591,7 @@ const EditSauce = () => {
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isTopRated: selectedValue })
           }
-          value={formData.isFeatured}
+          value={formData.isTopRated}
           labelField="label"
           valueField="value"
         />

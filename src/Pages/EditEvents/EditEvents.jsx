@@ -13,7 +13,7 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { Loader } from "@googlemaps/js-api-loader";
 import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 import debounce from "lodash";
-
+import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
 
 
 const EditEvents = () => {
@@ -24,6 +24,9 @@ const EditEvents = () => {
   const [allBrands, setAllBrands] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
+
+  
   
 
   const [snackAlertData, setSnackAlertData] = useState({
@@ -348,10 +351,11 @@ const EditEvents = () => {
         },
         params: {
           limit: 10,
-          searchTerm: searchTerm
+          searchTerm: searchQuery
         },
       });
       setAllBrands(response?.data?.users);
+      console.log(response)
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -365,7 +369,7 @@ const EditEvents = () => {
     return () => {
       clearTimeout(handler);
     };
-  }, [searchTerm]); 
+  }, [searchQuery]); 
   const handleBrandChange = (ownerId) => {
     setFormData((prev) => ({ ...prev, ownerId }));
 
@@ -864,63 +868,8 @@ const EditEvents = () => {
         
         </Box>
       </Box>
-      <Box
-        sx={{
-          flexBasis: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.3rem",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px",
-            },
-            fontFamily: "Montserrat !important",
-          }}
-        >
-          Details
-        </Typography>
-        <CustomInputShadow
-              placeholder="Event Details"
-              name="details"
-              value={formData.details}
-              onChange={handleChange}
-              error={errors.details}
-            />
-      </Box>
-      <Box
-        sx={{
-          flexBasis: "50%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.3rem",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px",
-            },
-            fontFamily: "Montserrat !important",
-          }}
-        >
-          Search Brand
-        </Typography>
-        <CustomInputShadow
-          placeholder="Search Brand"
-          name="search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Box>
+    
+   
       <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
@@ -929,14 +878,24 @@ const EditEvents = () => {
               fontSize: {
                 sm: "16px",
                 xs: "16px",
+                
               },
+        
               fontFamily: "Montserrat !important",
             }}
           >
-            Brand
+            Event Owner
           </Typography>
 
-          <CustomSelect data={allBrands} handleChange={handleBrandChange} />
+          <VirtualizedCustomSelect 
+                data={allBrands} 
+                handleChange={handleBrandChange} 
+                label="Select Brand"
+                isMultiSelect={false} 
+                value={formData.ownerId}
+                setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
+            />
         </Box>
       <Box
         sx={{
