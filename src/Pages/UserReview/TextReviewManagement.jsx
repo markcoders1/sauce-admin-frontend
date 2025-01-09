@@ -25,7 +25,6 @@ import SearchIcon from "../../assets/SearchIcon.png";
 
 import ConfirmDeleteModalTextReview from "../../Components/DeleteTextReviewModal/DeleteTextReviewModal";
 
-
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const TextReviewManagement = () => {
@@ -39,8 +38,7 @@ const TextReviewManagement = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [reviewToDelete, setReviewToDelete] = useState(null);
-  const {id} = useParams()
-
+  const { id } = useParams();
 
   // Dummy Data
   const dummyData = [
@@ -113,26 +111,22 @@ const TextReviewManagement = () => {
           "Content-Type": "application/json",
         },
         params: {
-          page: currentPage, 
-          limit: 8, 
+          page: currentPage,
+          limit: 8,
           searchTerm: searchTerm,
         },
       });
 
-      console.log(response)
+      console.log(response);
       // Check if response is valid, if not use dummy data
-      if (response?.data?.reviews?.length > 0) {
-        setAllReviews(response.data.reviews || []); // Set the reviews data
-        setTotalPages(response.data.pagination.totalPages || 1); // Update total pages
-      } else {
-        setAllReviews(dummyData); // Show dummy data if API fails or no data received
-        setTotalPages(1); // Default pagination for dummy data
-      }
+      setAllReviews(response.data.reviews || []); // Set the reviews data
+      setTotalPages(response.data.pagination.totalPages || 1); // Update total pages
+     
 
       setLoading(false);
     } catch (error) {
       console.error("Error fetching reviews:", error);
-      setAllReviews(dummyData); // Fallback to dummy data on error
+      
       setTotalPages(1); // Default pagination for dummy data
       setLoading(false);
     }
@@ -173,18 +167,19 @@ const TextReviewManagement = () => {
     setReviewToDelete(null);
   };
 
-
   function formatDate(isoString) {
     const date = new Date(isoString);
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    let formattedDate = date.toLocaleDateString('en-US', options)
-                            .replace(/,/, '')
-                            .toLowerCase()
-                            .replace(/\s/g, '-');
-  
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    let formattedDate = date
+      .toLocaleDateString("en-US", options)
+      .replace(/,/, "")
+      .toLowerCase()
+      .replace(/\s/g, "-");
+
     // Capitalize the first letter of the month
-    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-    
+    formattedDate =
+      formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
     return formattedDate;
   }
 
@@ -256,11 +251,11 @@ const TextReviewManagement = () => {
               />
             </Box>
           </Box>
-                  </Box>
+        </Box>
 
         {loading ? (
           <PageLoader />
-        ) : allReviews?.length === 0 ? (
+        ) : allReviews?.length == 0 ? (
           <Typography
             sx={{
               textAlign: "center",
@@ -274,14 +269,19 @@ const TextReviewManagement = () => {
           </Typography>
         ) : (
           <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
-            <TableContainer component={Paper} className="MuiTableContainer-root">
+            <TableContainer
+              component={Paper}
+              className="MuiTableContainer-root"
+            >
               <Table className="data-table">
                 <TableHead className="MuiTableHead-root">
                   <TableRow
                     sx={{
-                      backgroundImage: "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
+                      backgroundImage:
+                        "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
                       "&:hover": {
-                        backgroundImage: "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
+                        backgroundImage:
+                          "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
                       },
                       padding: "0px",
                     }}
@@ -353,41 +353,65 @@ const TextReviewManagement = () => {
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
                   {allReviews.map((review, index) => (
-                        
-                    <TableRow key={index} sx={{ border: "2px solid #FFA100",  }} className="MuiTableRow-root">
-                      
-                        <TableCell sx={{ color: "white", borderRadius: "8px 0px 0px 8px",      textAlign: "start !important",
-                              pl: "40px !important", }} className="MuiTableCell-root">
-                        {review.owner.name || "John Doe"}
+                    <TableRow
+                      key={index}
+                      sx={{ border: "2px solid #FFA100" }}
+                      className="MuiTableRow-root"
+                    >
+                      <TableCell
+                        sx={{
+                          color: "white",
+                          borderRadius: "8px 0px 0px 8px",
+                          textAlign: "start !important",
+                          pl: "40px !important",
+                        }}
+                        className="MuiTableCell-root"
+                      >
+                        {review?.owner?.name}
                       </TableCell>
-                      <TableCell sx={{ color: "white",   textAlign: "start !important", }} className="MuiTableCell-root">
-                        {review.owner.email  || "example@email.com"}
+                      <TableCell
+                        sx={{ color: "white", textAlign: "start !important" }}
+                        className="MuiTableCell-root"
+                      >
+                        {review?.owner?.email}
                       </TableCell>
-                      <TableCell sx={{ color: "white",    textAlign: "start !important",  }} className="MuiTableCell-root">
-                        {review.text || "This is a sample review."}
+                      <TableCell
+                        sx={{ color: "white", textAlign: "start !important" }}
+                        className="MuiTableCell-root"
+                      >
+                        {review?.text}
                       </TableCell>
-                      <TableCell sx={{ color: "white",    textAlign: "center !important",  }} className="MuiTableCell-root">
-                        {formatDate(review.createdAt) || "2023-10-01"}
+                      <TableCell
+                        sx={{ color: "white", textAlign: "center !important" }}
+                        className="MuiTableCell-root"
+                      >
+                        {formatDate(review?.createdAt)}
                       </TableCell>
-                        
-                        <TableCell sx={{ color: "white", textAlign: "center", borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
+
+                      <TableCell
+                        sx={{
+                          color: "white",
+                          textAlign: "center",
+                          borderRadius: "0px 8px 8px 0px",
+                        }}
+                        className="MuiTableCell-root"
+                      >
                         <Tooltip title="Delete Review">
-                              <img
-                                src={DeleteIcon}
-                                style={{
-                                  width: "35px",
-                                  height: "35px",
-                                  cursor: "pointer",
-                                  objectFit: "contain",
-                                }}
-                                onClick={() =>{
-                                  handleOpenDeleteModal(review._id)
-                                  console.log(review._id)
-                                }
-                                }
-                                alt="Delete"
-                              />
-                            </Tooltip>
+                          <img
+                            src={DeleteIcon}
+                            style={{
+                              width: "35px",
+                              height: "35px",
+                              cursor: "pointer",
+                              objectFit: "contain",
+                            }}
+                            onClick={() => {
+                              handleOpenDeleteModal(review._id);
+                              console.log(review._id);
+                            }}
+                            alt="Delete"
+                          />
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -425,13 +449,13 @@ const TextReviewManagement = () => {
         )}
       </Box>
       {deleteModalOpen && (
-            <ConfirmDeleteModalTextReview 
-              open={deleteModalOpen}
-              handleClose={handleCloseDeleteModal}
-              reviewId={reviewToDelete} // Pass the review ID here
-              onSuccess={() => fetchReviews(page)} // Refresh reviews list after deletion
-            />
-          )}
+        <ConfirmDeleteModalTextReview
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          reviewId={reviewToDelete} // Pass the review ID here
+          onSuccess={() => fetchReviews(page)} // Refresh reviews list after deletion
+        />
+      )}
     </>
   );
 };
