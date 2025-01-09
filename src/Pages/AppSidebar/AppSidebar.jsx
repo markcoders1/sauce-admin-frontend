@@ -202,7 +202,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "12px", xl: "16px" },
+                      fontSize: { xs: "12px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -245,7 +245,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -288,7 +288,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -331,7 +331,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -374,7 +374,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -417,12 +417,12 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
                   >
-                    Video Reviews Management
+                    Official Reviews Management
                   </Typography>
                 </Box>
               </NavLink>
@@ -461,7 +461,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -504,7 +504,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -547,7 +547,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -594,7 +594,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -641,7 +641,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: { xs: "14px", xl: "16px" },
+                      fontSize: { xs: "14px", xl: "15px" },
                       fontWeight: "600",
                       fontFamily: "Montserrat !important",
                     }}
@@ -845,7 +845,7 @@ const handleCloseModal = () => setModalOpen(false);
                 />
               </Box>
               </Tooltip>
-              <Tooltip title="Reviews Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
+              <Tooltip title="Official Reviews Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
 
               <Box
                 sx={{

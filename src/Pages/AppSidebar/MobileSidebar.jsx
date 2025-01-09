@@ -105,7 +105,7 @@ const MobileSidebar = () => {
           <Box onClick={() => handleNavigate('/admin/reviews-management')} className="nav-link">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <img src={icon5} style={{ width: '33px' }} alt="User Management" />
-              <Typography>Reviews Management</Typography>
+              <Typography>Official Reviews Management</Typography>
             </Box>
           </Box>
           

@@ -153,7 +153,7 @@ const ReviewsManagement = () => {
                 fontFamily: "Fira Sans !important",
               }}
             >
-              Reviews Management
+             Official Reviews Management
             </Typography>
             <MenuBar />
           </Box>
