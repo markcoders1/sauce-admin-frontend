@@ -468,6 +468,7 @@ const EditEvents = () => {
             name="bannerImage"
             style={{ display: "none" }}
             onChange={handleChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}

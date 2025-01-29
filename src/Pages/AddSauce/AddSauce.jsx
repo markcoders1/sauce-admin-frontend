@@ -267,6 +267,7 @@ const AddSauce = () => {
             id="uploadSauceImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{

@@ -227,13 +227,13 @@ Edit Sauce
 </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} />
+          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp"  />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedSauceFileName ? `Selected File: ${selectedSauceFileName}` : "Upload Sauce Image"}
           </Typography>
         </label>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} />
+          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp"  />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
           </Typography>

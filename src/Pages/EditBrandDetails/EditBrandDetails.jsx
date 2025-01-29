@@ -221,7 +221,7 @@ const EditBrandDetails = () => {
 
         {/* File Input */}
         <label htmlFor="uploadimage" style={{ cursor: "pointer", color: "#FFA100", textAlign: "center", border: "2px dashed #FFA100", flexBasis: "50%", height: "165px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#2E210A", borderRadius: "8px" }}>
-          <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange} />
+          <input type="file" id="uploadimage" name="image" style={{ display: 'none' }} onChange={handleChange}     accept="image/png, image/jpg, image/jpeg, image/webp"     />
           <Typography sx={{ fontSize: { sm: "22px", xs: "15px" }, fontWeight: "600" }}>
             {selectedFileName ? `${selectedFileName}` : "Upload Image"}
           </Typography>

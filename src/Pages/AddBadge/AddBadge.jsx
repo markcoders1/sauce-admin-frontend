@@ -184,6 +184,7 @@ const AddBadge = () => {
             type="file"
             id="uploadBannerImage"
             name="icon"
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
             style={{ display: "none" }}
             onChange={handleChange}
           />

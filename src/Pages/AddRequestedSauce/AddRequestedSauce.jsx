@@ -334,6 +334,7 @@ const AddRequestedSauce = () => {
             id="uploadSauceImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{
@@ -368,6 +369,7 @@ const AddRequestedSauce = () => {
             id="uploadBannerImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{

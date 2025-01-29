@@ -242,6 +242,7 @@ const EditBadge = () => {
             name="icon"
             style={{ display: "none" }}
             onChange={handleChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{

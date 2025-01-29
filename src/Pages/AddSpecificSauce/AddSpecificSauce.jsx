@@ -231,6 +231,7 @@ const AddSpecificSauce = () => {
             id="uploadSauceImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{
@@ -264,6 +265,7 @@ const AddSpecificSauce = () => {
             id="uploadBannerImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp" 
           />
           <Typography
             sx={{
