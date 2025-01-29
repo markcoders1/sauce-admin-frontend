@@ -236,29 +236,34 @@ const EditBrandDetails = () => {
         },
         gap: "1.5rem",
       }}>
-         <Box sx={{ flexBasis: "33%" }}>
-          <Typography sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px"
-            },
-            fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem"
-          }}>
-            Email
-          </Typography>
-          <CustomInputShadow
-            placeholder='Enter Name'
-            name="name"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.name}
-            disabled={true}
-            
-          />
-        </Box>
+        {
+          formData.type == "brand" ? "" : (
+            <Box sx={{ flexBasis: "33%" }}>
+            <Typography sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px"
+              },
+              fontFamily: "Montserrat !important",
+              marginBottom: "0.4rem"
+            }}>
+              Email
+            </Typography>
+            <CustomInputShadow
+              placeholder='Enter Name'
+              name="name"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.name}
+              disabled={true}
+              
+            />
+          </Box>
+          )
+        }
+       
         <Box sx={{ flexBasis: "33%" }}>
           <Typography sx={{
             color: "#FFA100",
@@ -332,28 +337,7 @@ const EditBrandDetails = () => {
             error={errors.status}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
-          <Typography sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px"
-            },
-            fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem"
-          }}>
-            Points
-          </Typography>
-          <CustomInputShadow
-            placeholder='Enter Points'
-            name="points"
-            type="number"
-            value={formData.points}
-            onChange={handleChange}
-            error={errors.points}
-          />
-        </Box>
+     
       </Box>
       {formData.type === 'brand' && (
       <Box sx={{  }}>

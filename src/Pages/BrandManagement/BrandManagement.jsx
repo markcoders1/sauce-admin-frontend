@@ -296,6 +296,20 @@ const BrandManagement = () => {
                           padding: "12px 0px",
                           fontSize: "21px",
                           textAlign: "center",
+                          
+                          color: "white",
+                          paddingLeft: "10px",
+                        }}
+                        className="MuiTableCell-root-head"
+                      >
+                        View Sauces
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          fontWeight: "500",
+                          padding: "12px 0px",
+                          fontSize: "21px",
+                          textAlign: "center",
                           borderRadius: "0px 8px 8px 0px",
                           color: "white",
                           paddingLeft: "10px",
@@ -351,7 +365,7 @@ const BrandManagement = () => {
                         </TableCell>
                         <TableCell
                           sx={{
-                            borderRadius: "0px 8px 8px 0px",
+                            
                             textAlign: "start !important",
                           }}
                           className="MuiTableCell-root"
@@ -381,6 +395,25 @@ const BrandManagement = () => {
                                 onClick={() => handleNavigate(brand._id)}
                               />
                             </Tooltip>
+                          
+                          </Box>
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            borderRadius: "0px 8px 8px 0px",
+                            textAlign: "start !important",
+                          }}
+                          className="MuiTableCell-root"
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "30px",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                           
                             <Tooltip title="Edit Brand">
                             <img
                               className="edit-icon"
