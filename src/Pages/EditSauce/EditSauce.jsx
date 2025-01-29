@@ -242,7 +242,7 @@ const EditSauce = () => {
         ingredients: sauceData.ingredients || "",
         isFeatured: sauceData.isFeatured || false,
         ownerId: sauceData.owner._id,
-        ownerName: sauceData.owner.name,
+        ownerName: sauceData.owner.name ||sauceData.name,
       });
       setPreviewImage(sauceData?.image);
 
@@ -423,12 +423,14 @@ const EditSauce = () => {
         >
           Sauce Owner
         </Typography>
-
+{
+  console.log(formData.ownerName)
+}
         <VirtualizedCustomSelect
           data={allBrands}
           handleChange={handleBrandChange}
           label={formData.ownerName}
-          isMultiSelect={false} // Set to true if you need multi-select
+          isMultiSelect={false}
           setSearchQuery={setSearchQuery}
           searchQuery={searchQuery}
           value={formData?.ownerId}

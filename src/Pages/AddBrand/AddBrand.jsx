@@ -23,7 +23,7 @@ const AddBrand = () => {
   });
   const [formData, setFormData] = useState({
     name: "",
-    password: "",
+    
     websiteLink: "",
     amazonLink: "",
     bannerImage: null,
@@ -89,7 +89,7 @@ const AddBrand = () => {
     data.append("websiteLink", formData?.websiteLink);
     data.append("amazonLink", formData?.amazonLink);
 
-    data.append("password", formData?.password);
+    
     data.append("image", formData?.bannerImage); // Append the file
     data.append("about", formData?.about); // Serialize the array to JSON
 
@@ -109,7 +109,7 @@ const AddBrand = () => {
       setFormData({
         name: "",
         amazonLink: "",
-        password: "",
+        
         websiteLink: "",
         bannerImage: null,
         about: "", // Reset about
@@ -378,36 +378,7 @@ const AddBrand = () => {
           />
           {console.log(formData.isTopRated)}
         </Box>
-        <Box
-          sx={{
-            flexBasis: "33%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Brand Password
-          </Typography>
-          <CustomInputShadow
-            placeholder="Brand Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            type={"password"}
-          />
-        </Box>
+        
       </Box>
 
       {/* <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>

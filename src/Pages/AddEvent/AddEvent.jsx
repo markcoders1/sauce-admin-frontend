@@ -28,7 +28,6 @@ const AddSEvent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-
   const navigate = useNavigate();
 
   console.log("=================", state);
@@ -267,7 +266,7 @@ const AddSEvent = () => {
       setLoading(true);
       const data = new FormData();
       data.append("eventName", formData?.eventName);
-      data.append("organizedBy", formData?.organizedBy);
+      
 
       data.append("eventDate", eventDateTime);
       data.append("eventEndDate", eventDateEndTime);
@@ -341,7 +340,7 @@ const AddSEvent = () => {
           searchTerm: searchQuery,
         },
       });
-      console.log(response)
+      console.log(response);
       setAllBrands(response?.data?.users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -416,7 +415,7 @@ const AddSEvent = () => {
             name="bannerImage"
             style={{ display: "none" }}
             onChange={handleChange}
-            accept="image/png, image/jpg, image/jpeg, image/webp" 
+            accept="image/png, image/jpg, image/jpeg, image/webp"
           />
           <Typography
             sx={{
@@ -444,7 +443,7 @@ const AddSEvent = () => {
       >
         <Box
           sx={{
-            flexBasis: "50%",
+            flexBasis: "100%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -471,14 +470,13 @@ const AddSEvent = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box
-          sx={{
-            flexBasis: "50%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-          }}
-        >
+     
+      </Box>
+
+      {state ? (
+        ""
+      ) : (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -490,17 +488,20 @@ const AddSEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Organized By
+            Event Owner
           </Typography>
-          <CustomInputShadow
-            placeholder="Organized By"
-            name="organizedBy"
-            value={formData.organizedBy}
-            onChange={handleChange}
-            error={errors.organizedBy}
+
+          <VirtualizedCustomSelect
+            data={allBrands}
+            handleChange={handleBrandChange}
+            label="Select Brand"
+            isMultiSelect={false} // Set to true if you need multi-select
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
           />
         </Box>
-      </Box>
+      )}
+
 
       <Box
         sx={{
@@ -827,36 +828,8 @@ const AddSEvent = () => {
           </Box>
         </Box>
       </Box>
-     
-      {state ? (
-        ""
-      ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-        <Typography
-            sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                    sm: "16px",
-                    xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-            }}
-        >
-            Event Owner
-        </Typography>
-    
-        <VirtualizedCustomSelect 
-            data={allBrands} 
-            handleChange={handleBrandChange} 
-            label="Select Brand"
-            isMultiSelect={false} // Set to true if you need multi-select
-            setSearchQuery={setSearchQuery}
-            searchQuery={searchQuery}
-        />
-    </Box>
-      )}
 
+  
       <Box
         sx={{
           flexBasis: "100%",
@@ -997,17 +970,15 @@ const AddSEvent = () => {
           border="1px solid #FFA100"
           ButtonText={loading ? "Adding" : "Add"}
           color="white"
-          
           borderRadius="8px"
           background={
             loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           }
-          
           fontSize="18px"
           fontWeight="600"
           onClick={handleSubmit}
-           width={"208px"}
-          padding='25px 0px'
+          width={"208px"}
+          padding="25px 0px"
         />
       </Box>
       <SnackAlert

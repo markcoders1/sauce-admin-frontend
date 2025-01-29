@@ -230,7 +230,7 @@ const EditEvents = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append("eventName", formData.eventName);
-    formDataToSend.append("organizedBy", formData.organizedBy);
+    
     formDataToSend.append("eventDate", eventDateTime);
     formDataToSend.append("eventEndDate", eventDateEndTime);
     formDataToSend.append("owner", formData.ownerId);
@@ -491,7 +491,7 @@ const EditEvents = () => {
       >
         <Box
           sx={{
-            flexBasis: "50%",
+            flexBasis: "100%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -518,14 +518,12 @@ const EditEvents = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box
-          sx={{
-            flexBasis: "50%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-          }}
-        >
+
+         
+ 
+      
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -533,21 +531,25 @@ const EditEvents = () => {
               fontSize: {
                 sm: "16px",
                 xs: "16px",
+                
               },
+        
               fontFamily: "Montserrat !important",
             }}
           >
-            Organized By
+            Event Owner
           </Typography>
-          <CustomInputShadow
-            placeholder="Organized By"
-            name="organizedBy"
-            value={formData.organizedBy}
-            onChange={handleChange}
-            error={errors.organizedBy}
-          />
+
+          <VirtualizedCustomSelect 
+                data={allBrands} 
+                handleChange={handleBrandChange} 
+                label={formData?.organizedBy}
+                isMultiSelect={false} 
+                value={formData.organizedBy}
+                setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
+            />
         </Box>
-      </Box>
       <Box
         sx={{
           display: "flex",
@@ -870,34 +872,7 @@ const EditEvents = () => {
         </Box>
       </Box>
     
-   
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-                
-              },
-        
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Event Owner
-          </Typography>
-
-          <VirtualizedCustomSelect 
-                data={allBrands} 
-                handleChange={handleBrandChange} 
-                label="Select Brand"
-                isMultiSelect={false} 
-                value={formData.ownerId}
-                setSearchQuery={setSearchQuery}
-                searchQuery={searchQuery}
-            />
-        </Box>
+  
       <Box
         sx={{
           flexBasis: "33%",
