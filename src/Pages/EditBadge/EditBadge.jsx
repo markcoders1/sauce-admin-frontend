@@ -251,9 +251,7 @@ const EditBadge = () => {
               fontWeight: "600",
             }}
           >
-            {selectedFileName
-              ? `Selected File: ${selectedFileName}`
-              : "Click Here to Change Image"}
+            {"Click Here to Change Image"}
           </Typography>
         </Box>
       </Box>
@@ -344,6 +342,8 @@ const EditBadge = () => {
               onChange={handleChange}
               error={errors.pointsRequired}
               type="number"
+              
+
             />
           </Box>
         )}

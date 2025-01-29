@@ -24,17 +24,19 @@ import ConfirmActionModal from "../../Components/ConfirmActionModal/ConfirmActio
 import EditIcon from "../../assets/EditIcon.png";
 import lockIcon from "../../assets/lock.png";
 import unlockIcon from "../../assets/unlock.png";
-
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import queryString from "query-string";
 import IconButton from "@mui/material/IconButton";
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const UserManagement = () => {
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -73,6 +75,18 @@ const UserManagement = () => {
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
+      if(error.response.status == 480 || error.response.data.message == "Invalid Token") {
+        dispatch(handleAuth({
+          accessToken: '',
+          refreshToken: '',
+          _id: '',
+          username: '',
+          email: '',
+          authenticated: '',
+          type: ''
+        }))
+        navigate("/")
+      }
     }
   };
 

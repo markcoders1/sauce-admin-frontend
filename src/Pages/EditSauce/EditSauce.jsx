@@ -372,9 +372,17 @@ const EditSauce = () => {
                 textAlign: "center",
                 fontSize: { sm: "22px", xs: "15px" },
                 fontWeight: "600",
+                display: 'flex',
+justifyContent: 'center',
+alignItems: 'center',
+height: '170px',
+width: '190px',
+borderRadius: '10px',
+background: '#ffa100',
+
               }}
             >
-              No Image
+              Preview Image
             </Typography>
           )}
         </Box>

@@ -54,6 +54,7 @@ const CustomInputShadow = forwardRef(({
           type={showPassword ? "text" : type}
           ref={ref}
           disabled={disabled}
+          
           sx={{
             '&::placeholder': {
               fontSize: "22px",
@@ -96,6 +97,8 @@ const CustomInputShadow = forwardRef(({
           }}
           multiline={multiline}
           rows={rows}
+          
+          
         />
         {type === "password" && (
           <IconButton

@@ -27,7 +27,7 @@ import "yet-another-react-lightbox/styles.css";
 import ConfirmDeleteModalSauce from "../../Components/DeleteSaucModal/DeleteSauceModal";
 
 import DeleteIcon from "../../assets/deleteIcon.png";
-
+import { useDispatch } from "react-redux";
 import queryString from "query-string"; // Import query-string library
 import { debounce } from "lodash";
 
@@ -46,6 +46,7 @@ const SauceManagement = () => {
   const [inputValue, setInputValue] = useState("");
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const dispatch = useDispatch()
 
 
   // State for lightbox
@@ -83,6 +84,18 @@ const SauceManagement = () => {
     } catch (error) {
       console.error("Error fetching sauces:", error);
       setLoading(false);
+       if(error.response.status == 480 || error.response.data.message == "Invalid Token") {
+              dispatch(handleAuth({
+                accessToken: '',
+                refreshToken: '',
+                _id: '',
+                username: '',
+                email: '',
+                authenticated: '',
+                type: ''
+              }))
+              navigate("/")
+            }
     }
   };
 
@@ -428,30 +441,30 @@ const SauceManagement = () => {
                       >
                         {sauce?.owner?.name}
                       </TableCell>
-                      <Tooltip title="See Check-ins">
+                   
                       <TableCell
                         sx={{
-                            textDecoration:"underline !important",
-                               color:"#FFA100 !important",
-                              cursor: "pointer",
+                            // textDecoration:"underline !important",
+                            //    color:"#FFA100 !important",
+                            //   cursor: "pointer",
                             }}
                         className="MuiTableCell-root"
                       >
                        {sauce.checkIn}
                       </TableCell>
-                      </Tooltip>
-                      <Tooltip title="See Reviews">
+                
+                      
                       <TableCell
                         sx={{
-                            textDecoration:"underline !important",
-                               color:"#FFA100 !important",
-                              cursor: "pointer",
+                            // textDecoration:"underline !important",
+                            //    color:"#FFA100 !important",
+                            //   cursor: "pointer",
                             }}
                         className="MuiTableCell-root"
                       >
                        {sauce.reviewCount}
                       </TableCell>
-                      </Tooltip>
+                      
                       <TableCell
                         sx={{
                           textAlign: "start !important",

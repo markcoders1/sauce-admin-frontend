@@ -342,11 +342,11 @@ display: 'flex',
 justifyContent: 'center',
 alignItems: 'center',
 height: '170px',
-width: '170px',
+width: '190px',
 borderRadius: '10px'
                       }}
                     >
-                       Select Image
+                       Preview Image
                     </Typography>
                   )}
                 </Box>
