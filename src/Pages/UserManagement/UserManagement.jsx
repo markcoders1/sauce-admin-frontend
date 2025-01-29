@@ -108,8 +108,8 @@ const UserManagement = () => {
 
   const debouncedSearch = useCallback(
     debounce((value) => {
-      setSearchTerm(value);
-    }, 2000),
+      setSearchTerm(value.trim());
+    }, 1500),
     []
   );
 
@@ -371,11 +371,13 @@ const UserManagement = () => {
                         },
                         textAlign: "center",
                         color: "white",
+                        minWidth: "150px",
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Joining Date
+                      Status
                     </TableCell>
+
                     <TableCell
                       sx={{
                         fontWeight: "500",
@@ -439,12 +441,14 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip> */}
 
-                      <Tooltip title="see all events">
+                      <Tooltip title="See All Events">
                       <TableCell
                       onClick={()=> handleNavigate(user._id)}
                         sx={{
                         //   border: "1px solid red !important",
                           cursor: "pointer",
+                          textDecoration:"underline !important",
+                          color:"#FFA100 !important"
                         }}
                         className="MuiTableCell-root"
                       >
@@ -454,33 +458,47 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip>
                     
-                        <Tooltip title="See all Check-in">
+                        <Tooltip title="See All Check-in">
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> navigate(`/admin/user-checkin/${user._id}`)}
                        sx={{
-                      
+                        textDecoration:"underline !important",
+                          color:"#FFA100 !important",
                          cursor: "pointer",
                        }}
                       >
                         {user?.checkins}
                       </TableCell>
                       </Tooltip>
-                      <Tooltip title="see all Reviews">
+                      <Tooltip title="See All Reviews"> 
 
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> handleNavigateToReview(user._id)}
                        sx={{
-                     
+                       textDecoration:"underline !important",
+                          color:"#FFA100 !important",
                          cursor: "pointer",
                        }}
                       >
                         {user?.reviews}
                       </TableCell>
                       </Tooltip>
-
-                      <TableCell className="MuiTableCell-root">
-                        {formatDate(user?.date)}
-                      </TableCell>
+                       <TableCell>
+                       <CustomButton
+                            border="1px solid #FFA100"
+                            ButtonText={
+                              user.status === "active" ? "Active" : "Inactive"
+                            }
+                            color="white"
+                            width={"98px"}
+                            borderRadius="6px"
+                            buttonStyle={{ height: "39px" }}
+                            onClick={() => toggleBlock(user._id, user.status)}
+                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
+                          />
+                        
+                       </TableCell>
+                    
                       <TableCell
                         sx={{ borderRadius: "0px 8px 8px 0px" }}
                         className="MuiTableCell-root"
@@ -495,19 +513,7 @@ const UserManagement = () => {
                         >
                         
                           
-                          <CustomButton
-                            border="1px solid #FFA100"
-                            ButtonText={
-                              user.status === "active" ? "Block" : "Unblock"
-                            }
-                            color="white"
-                            width={"98px"}
-                            borderRadius="6px"
-                            buttonStyle={{ height: "39px" }}
-                            onClick={() => toggleBlock(user._id, user.status)}
-                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                          />
-                        
+                         
 
                           <img
                             className="edit-icon"

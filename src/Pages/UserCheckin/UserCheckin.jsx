@@ -324,7 +324,7 @@ const TextReviewManagement = () => {
                         pl: "10px",
                       }}
                     >
-                      Check-Ins Date
+                      Sauce Name
                     </TableCell>
                     <TableCell
                       className="MuiTableCell-root-head"
@@ -392,12 +392,15 @@ const TextReviewManagement = () => {
                       >
                         {review.text || "This is a sample review."}
                       </TableCell>
+                       <Tooltip title="Edit Sauce">
                       <TableCell
-                        sx={{ color: "white", textAlign: "center !important" }}
+                        sx={{ color: "white", textAlign: "center !important", cursor:"pointer",textDecoration:"underline", color:" #FFA100 !important"   }}
                         className="MuiTableCell-root"
+                        onClick={() => navigate(`/admin/edit-sauce-details/${review.sauceId._id}`)}
                       >
-                        {formatDate(review.createdAt) || "2023-10-01"}
+                        {review?.sauceId?.name}
                       </TableCell>
+                      </Tooltip>
 
                       <TableCell
                         sx={{

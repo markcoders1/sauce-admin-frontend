@@ -194,6 +194,7 @@ const AddBadge = () => {
               textAlign: "center",
               fontSize: "22px",
               fontWeight: "600",
+              
             }}
           >
             {selectedFileName

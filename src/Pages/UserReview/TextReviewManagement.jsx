@@ -20,7 +20,7 @@ import "../TabooManagement/TabooManagement.css"; // Use the same CSS for consist
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate, useParams } from "react-router-dom";
 import { debounce } from "lodash"; // Import lodash debounce
-import DeleteIcon from "../../assets/deleteIcon.png";
+import DeleteIcon from "../../assets/deleteIcon.png"; 
 import SearchIcon from "../../assets/SearchIcon.png";
 
 import ConfirmDeleteModalTextReview from "../../Components/DeleteTextReviewModal/DeleteTextReviewModal";
@@ -335,7 +335,7 @@ const TextReviewManagement = () => {
                         pl: "10px",
                       }}
                     >
-                      Review Date
+                      Sauce Name
                     </TableCell>
                     <TableCell
                       className="MuiTableCell-root-head"
@@ -381,12 +381,17 @@ const TextReviewManagement = () => {
                       >
                         {review?.text}
                       </TableCell>
+                      <Tooltip title="Edit Sauce">
+
                       <TableCell
-                        sx={{ color: "white", textAlign: "center !important" }}
+                        sx={{ color: "white", textAlign: "center !important", cursor:"pointer", textDecoration:"underline", color:" #FFA100 !important" }}
                         className="MuiTableCell-root"
+                        onClick={() => navigate(`/admin/edit-sauce-details/${review.sauceId._id}`)}
                       >
-                        {formatDate(review?.createdAt)}
+                        {/* {formatDate(review?.createdAt)} */}
+                        {review.sauceId.name}
                       </TableCell>
+                      </Tooltip>
 
                       <TableCell
                         sx={{

@@ -12,12 +12,17 @@ import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import { isURL } from "../../../utils";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
 import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
+import DeleteIcon from "../../assets/deleteIcon.png";
+import ConfirmDeleteModalSauce from "../../Components/DeleteSaucModal/DeleteSauceModal";
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const EditSauce = () => {
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
+    const [reviewToDelete, setReviewToDelete] = useState(null);
+  
   const [loading, setLoading] = useState(false);
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -45,8 +50,20 @@ const EditSauce = () => {
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const [allBrands, setAllBrands] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleOpenDeleteModal = (id) => {
+    setReviewToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setReviewToDelete(null);
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -182,7 +199,7 @@ const EditSauce = () => {
     formDataToSend.append("ingredients", formData.ingredients);
     formDataToSend.append("isFeatured", formData.isFeatured);
     formDataToSend.append("amazonLink", formData.amazonLink);
-    formDataToSend.append("userId", formData.userId);
+    formDataToSend.append("userId", formData?.userId);
 
 
     // Check and append the sauce image file if it exists
@@ -241,11 +258,10 @@ const EditSauce = () => {
         chilli: sauceData.chilli || [""],
         ingredients: sauceData.ingredients || "",
         isFeatured: sauceData.isFeatured || false,
-        ownerId: sauceData.owner._id,
+        userId: sauceData.owner._id,
         ownerName: sauceData.owner.name ||sauceData.name,
       });
       setPreviewImage(sauceData?.image);
-
       setSauceImage(sauceData.image);
     } catch (error) {
       console.error("Error fetching sauce data:", error);
@@ -433,7 +449,7 @@ const EditSauce = () => {
           isMultiSelect={false}
           setSearchQuery={setSearchQuery}
           searchQuery={searchQuery}
-          value={formData?.ownerId}
+          value={formData?.userId}
         />
       </Box>
       <Box
@@ -485,7 +501,7 @@ const EditSauce = () => {
             Amazon Link
           </Typography>
           <CustomInputShadow
-            placeholder="Amazon Link"
+            placeholder="https://example.com"
             name="amazonLink"
             value={formData?.amazonLink}
             onChange={handleChange}
@@ -517,7 +533,7 @@ const EditSauce = () => {
             Website Link
           </Typography>
           <CustomInputShadow
-            placeholder="Website Link"
+            placeholder="https://example.com"
             name="websiteLink"
             value={formData?.websiteLink}
             onChange={handleChange}
@@ -540,7 +556,7 @@ const EditSauce = () => {
             Product Link
           </Typography>
           <CustomInputShadow
-            placeholder="Product Link"
+            placeholder="https://example.com"
             name="productLink"
             value={formData?.productLink}
             onChange={handleChange}
@@ -639,13 +655,7 @@ const EditSauce = () => {
           gap: "0.3rem",
         }}
       >
-        {formData.chilli.map((ingredient, index) => (
-          <Box
-            key={index}
-            sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <Typography
+         <Typography
                 sx={{
                   color: "#FFA100",
                   fontWeight: "500",
@@ -657,8 +667,15 @@ const EditSauce = () => {
                   marginBottom: "0.4rem",
                 }}
               >
-                chilli {index + 1}
+                Chili
               </Typography>
+        {formData.chilli.map((ingredient, index) => (
+          <Box
+            key={index}
+            sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          >
+            <Box sx={{ width: "100%" }}>
+       
               <CustomInputShadow
                 name={`chilli-${index}`}
                 value={ingredient}
@@ -676,7 +693,7 @@ const EditSauce = () => {
                 height="100px"
                 width={"98px"}
                 borderRadius="8px"
-                buttonStyle={{ height: { sm: "75px", xs: "68px" }, mt: "13px" }}
+                buttonStyle={{ height: { sm: "75px", xs: "68px" }, mt: "-15px" }}
                 onClick={() => removeBullet("chilli", index)}
               />
             )}
@@ -684,7 +701,7 @@ const EditSauce = () => {
         ))}
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Add Chilli"}
+          ButtonText={"Add Chili"}
           background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           color="white"
           height="100px"
@@ -695,7 +712,22 @@ const EditSauce = () => {
           fontSize="20px"
         />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap:"20px" }}>
+      <CustomButton
+          border="1px solid #FFA100"
+          ButtonText={loading ? "Deleting" : "Delete"}
+          color="white"
+          width={"178px"}
+          borderRadius="8px"
+        
+          padding="10px 0px"
+          fontSize="18px"
+          fontWeight="600"
+          onClick={() => {
+            handleOpenDeleteModal(id);
+           
+          }}
+        />
         <CustomButton
           border="1px solid #FFA100"
           ButtonText={loading ? "Saving" : "Save"}
@@ -719,6 +751,14 @@ const EditSauce = () => {
           setSnackAlertData((prev) => ({ ...prev, open: false }));
         }}
       />
+         {deleteModalOpen && (
+        <ConfirmDeleteModalSauce
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          reviewId={reviewToDelete} 
+          onSuccess={() => navigate(-1)}
+        />
+      )}
     </Box>
   );
 };

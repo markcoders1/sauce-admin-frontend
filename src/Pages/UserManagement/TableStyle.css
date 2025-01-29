@@ -45,14 +45,14 @@
     font-size: 21px;
 }
 
-.MuiTableRow-root:not(:first-child):hover {
+/* .MuiTableRow-root:not(:first-child):hover {
     background: #5A3D0A;
   
 }
 
 .header-row > .MuiTableCell-root-head:hover {
     background: #5A3D0A !important;
-}
+} */
 
 
 .search-input1 {

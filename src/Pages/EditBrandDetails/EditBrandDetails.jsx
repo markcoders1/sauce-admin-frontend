@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
+import CustomTextAreaShadow from "../../Components/CustomTextAreaShadow/CustomTextAreaShadow";
+import PageLoader from "../../Components/Loader/PageLoader";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -33,7 +35,7 @@ const EditBrandDetails = () => {
   const [selectedFileName, setSelectedFileName] = useState("");
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState("");
 
   const handleChange = (e) => {
@@ -86,7 +88,9 @@ const EditBrandDetails = () => {
   };
 
   const fetchUser = async () => {
+    setLoading(true)
     try {
+      
       const response = await axios({
         url: `${appUrl}/admin/get-user/${id}`,
         method: "get",
@@ -109,6 +113,9 @@ const EditBrandDetails = () => {
       setPreviewImage(userData?.image);
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+    setLoading(false)
+
     }
   };
 
@@ -139,7 +146,7 @@ const EditBrandDetails = () => {
     formDataToSend.append("email", formData.email);
 
     // Handle about array
-    formDataToSend.append("about", JSON.stringify(formData.about));
+    formDataToSend.append("about", formData.about);
 
     try {
       setLoading(true);
@@ -173,6 +180,11 @@ const EditBrandDetails = () => {
     }
   };
 
+  if (loading){
+    return (
+      <PageLoader/>
+    )
+  }
   return (
     <Box
       sx={{
@@ -368,32 +380,37 @@ const EditBrandDetails = () => {
             error={errors.type}
           />
         </Box> */}
-        <Box sx={{ flexBasis: "33%" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-              marginBottom: "0.4rem",
-            }}
-          >
-            Status
-          </Typography>
-          <CustomSelectForType
-            label="Select Status"
-            options={[
-              { label: "Unblocked", value: "active" },
-              { label: "Blocked", value: "inactive" },
-            ]}
-            value={formData.status}
-            handleChange={(value) => handleSelectChange("status", value)}
-            error={errors.status}
-          />
-        </Box>
+        {
+          formData.type == "brand" ? "" : (
+            <Box sx={{ flexBasis: "33%" }}>
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                  sm: "16px",
+                  xs: "16px",
+                },
+                fontFamily: "Montserrat !important",
+                marginBottom: "0.4rem",
+              }}
+            >
+              Status
+            </Typography>
+            <CustomSelectForType
+              label="Select Status"
+              options={[
+                { label: "Active", value: "active" },
+                { label: "Inactive", value: "inactive" },
+              ]}
+              value={formData.status}
+              handleChange={(value) => handleSelectChange("status", value)}
+              error={errors.status}
+            />
+          </Box>
+          )
+        }
+       
       </Box>
       {formData.type === "brand" && (
         <Box sx={{}}>
@@ -430,28 +447,31 @@ const EditBrandDetails = () => {
       {/* Conditionally show 'About' section if the type is 'brand' */}
       {formData.type === "brand" && (
         <>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              About
-            </Typography>
-            <CustomInputShadow
-              placeholder="About"
-              name="about"
-              value={formData.about}
-              onChange={handleChange}
-              error={errors.about}
-            />
-          </Box>
+          
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          About
+        </Typography>
+
+        <CustomTextAreaShadow
+          placeholder="Enter brand details..."
+          name="about"
+          value={formData.about}
+          onChange={handleChange}
+          error={errors.about}
+          rows={6} // You can adjust the number of rows as needed
+        />
+      </Box>
         </>
       )}
 

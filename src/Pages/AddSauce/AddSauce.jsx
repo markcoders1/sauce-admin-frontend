@@ -228,7 +228,7 @@ const AddSauce = () => {
         isFeatured: false,
       });
       setLoading(false);
-      // navigate(-1);
+      navigate(-1);
     } catch (error) {
       console.error("Error submitting sauce:", error);
       setSnackAlertData({
@@ -462,7 +462,7 @@ const AddSauce = () => {
             Amazon Link
           </Typography>
           <CustomInputShadow
-            placeholder="Amazon Link"
+            placeholder="https://example.com"
             name="amazonLink"
             value={formData.amazonLink}
             onChange={handleChange}
@@ -500,7 +500,7 @@ const AddSauce = () => {
             Product Link
           </Typography>
           <CustomInputShadow
-            placeholder="Product Link"
+            placeholder="https://example.com"
             name="productLink"
             value={formData.productLink}
             onChange={handleChange}
@@ -529,7 +529,7 @@ const AddSauce = () => {
             Website Link
           </Typography>
           <CustomInputShadow
-            placeholder="Website Link"
+            placeholder="https://example.com"
             name="websiteLink"
             value={formData.websiteLink}
             onChange={handleChange}
@@ -690,7 +690,7 @@ const AddSauce = () => {
         ))}
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Add Chilli"}
+          ButtonText={"Add Chili"}
           color="white"
           height="100px"
           width={"100%"}
