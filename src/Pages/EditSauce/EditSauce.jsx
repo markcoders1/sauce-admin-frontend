@@ -11,6 +11,7 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import { isURL } from "../../../utils";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
+import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -27,15 +28,14 @@ const EditSauce = () => {
     sauceName: "",
     websiteLink: "",
     productLink: "",
-    amazonLink:"",
+    amazonLink: "",
     details: "",
     chilli: [""],
-    
-    
-    
+    userId: "",
+    ownerName: "",
+
     ingredients: "",
     isFeatured: false,
-    
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -43,6 +43,10 @@ const EditSauce = () => {
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
   const navigate = useNavigate();
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
+  const [allBrands, setAllBrands] = useState([]);
+  const [previewImage, setPreviewImage] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -50,6 +54,24 @@ const EditSauce = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  // const handleChange = (e) => {
+  //   const { name, value, type, files } = e.target;
+  //   if (type === "file") {
+  //     const file = files[0];
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: file,
+  //     }));
+  //     setSelectedFileName(file?.name || ""); // Update selected file name
+  //     setPreviewImage(URL.createObjectURL(file));
+  //   } else {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
 
   const handleDetailChange = (field, index, value) => {
     const updatedField = formData[field].map((item, i) =>
@@ -72,32 +94,27 @@ const EditSauce = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+  
     const { name } = e.target;
-    if (name == "sauceImage") {
+    
+    if (name === "sauceImage") {
       setSauceImage(file);
-    } 
-    if (file && file.size > 4 * 1024 * 1024) {
+    }
+  
+    if (file.size > 4 * 1024 * 1024) {
       setSnackAlertData({
         open: true,
-        message: `Selected ${
-          e.target.id === "uploadSauceImage" ? "sauce" : "banner"
-        } image size exceeds 4MB.`,
+        message: `Selected image size exceeds 4MB.`,
         severity: "error",
       });
       return;
     }
-
-    // if (file) {
-    //   console.log(file)
-    //   const base64 = await convertToBase64(file);
-    //   if (e.target.id === "uploadSauceImage") {
-    //     setSauceImage(base64);
-    //     setSelectedSauceFileName(file.name);
-    //   } else if (e.target.id === "uploadBannerImage") {
-    //     setBannerImage(base64);
-    //     setSelectedBannerFileName(file.name);
-    //   }
-    // }
+  
+    // Create a preview URL for the image
+    const previewURL = URL.createObjectURL(file);
+    setPreviewImage(previewURL);
+    setSelectedSauceFileName(file.name); // Update the file name display
   };
 
   const addBullet = (field) => {
@@ -156,7 +173,7 @@ const EditSauce = () => {
     console.log(formData.isFeatured);
 
     // Append all the form fields
-    formDataToSend.append("name", formData.sauceName );
+    formDataToSend.append("name", formData.sauceName);
     formDataToSend.append("description", formData.details);
     formDataToSend.append("chilli", JSON.stringify(formData.chilli));
     formDataToSend.append("productLink", formData.productLink);
@@ -165,6 +182,7 @@ const EditSauce = () => {
     formDataToSend.append("ingredients", formData.ingredients);
     formDataToSend.append("isFeatured", formData.isFeatured);
     formDataToSend.append("amazonLink", formData.amazonLink);
+    formDataToSend.append("userId", formData.userId);
 
 
     // Check and append the sauce image file if it exists
@@ -220,14 +238,15 @@ const EditSauce = () => {
         productLink: sauceData.productLink || "",
         amazonLink: sauceData.amazonLink || "",
         details: sauceData.description || "",
-        chilli: sauceData.chilli || [''],
+        chilli: sauceData.chilli || [""],
         ingredients: sauceData.ingredients || "",
         isFeatured: sauceData.isFeatured || false,
-
-
+        ownerId: sauceData.owner._id,
+        ownerName: sauceData.owner.name,
       });
+      setPreviewImage(sauceData?.image);
+
       setSauceImage(sauceData.image);
-      
     } catch (error) {
       console.error("Error fetching sauce data:", error);
     }
@@ -236,6 +255,39 @@ const EditSauce = () => {
   useEffect(() => {
     fetchSauce();
   }, [id]);
+
+  const fetchBrands = async () => {
+    try {
+      const response = await axios({
+        url: `${appUrl}/admin/get-all-users`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+        params: {
+          limit: 8,
+          searchTerm: searchQuery,
+          type: "brand",
+        },
+      });
+      console.log(response);
+      setAllBrands(response?.data?.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, [searchQuery]);
+
+  // const handleBrandChange = (ownerId) => {
+  //   setFormData((prev) => ({ ...prev, ownerId }));
+  // };
+  const handleBrandChange = (selectedId) => {
+    console.log(selectedId)
+    setFormData((prev) => ({ ...prev, userId: selectedId }));
+  };
 
   return (
     <Box
@@ -275,47 +327,112 @@ const EditSauce = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { md: "row", xs: "column" },
-          gap: "1.5rem",
-          height: { md: "100%", xs: "370px" },
         }}
       >
-        <label
-          htmlFor="uploadSauceImage"
-          style={{
-            flexBasis: "100%",
+        <Box
+          sx={{
+            width: "100%",
             height: "165px",
-            backgroundColor: "#2E210A",
-            border: "2px dashed #FFA100",
+            flexBasis: "50%",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "12px",
-            cursor: "pointer",
           }}
         >
-          <input
-            type="file"
-            name="sauceImage"
-            id="uploadSauceImage"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-            accept="image/png, image/jpg, image/jpeg, image/webp" 
-          />
-          <Typography
-            sx={{
-              color: "white",
-              textAlign: "center",
-              fontSize: "22px",
-              fontWeight: "600",
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="Brand Banner"
+              style={{
+                width: "200px",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "12px",
+              }}
+            />
+          ) : (
+            <Typography
+              sx={{
+                color: "white",
+                textAlign: "center",
+                fontSize: { sm: "22px", xs: "15px" },
+                fontWeight: "600",
+              }}
+            >
+              No Image
+            </Typography>
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { md: "row", xs: "column" },
+            gap: "1.5rem",
+            height: { md: "100%", xs: "370px" },
+            flexBasis: "50%",
+          }}
+        >
+          <label
+            htmlFor="uploadSauceImage"
+            style={{
+              flexBasis: "100%",
+              height: "165px",
+              backgroundColor: "#2E210A",
+              border: "2px dashed #FFA100",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "12px",
+              cursor: "pointer",
             }}
           >
-            {selectedSauceFileName
-              ? `Selected File: ${selectedSauceFileName}`
-              : "Upload Sauce Image"}
-          </Typography>
-        </label>
-       
+            <input
+              type="file"
+              name="sauceImage"
+              id="uploadSauceImage"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+              accept="image/png, image/jpg, image/jpeg, image/webp"
+            />
+            <Typography
+              sx={{
+                color: "white",
+                textAlign: "center",
+                fontSize: "22px",
+                fontWeight: "600",
+              }}
+            >
+              {selectedSauceFileName
+                ? `Selected File: ${selectedSauceFileName}`
+                : "Upload Sauce Image"}
+            </Typography>
+          </label>
+        </Box>
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Sauce Owner
+        </Typography>
+
+        <VirtualizedCustomSelect
+          data={allBrands}
+          handleChange={handleBrandChange}
+          label={formData.ownerName}
+          isMultiSelect={false} // Set to true if you need multi-select
+          setSearchQuery={setSearchQuery}
+          searchQuery={searchQuery}
+          value={formData?.ownerId}
+        />
       </Box>
       <Box
         sx={{
@@ -373,7 +490,6 @@ const EditSauce = () => {
             error={errors.amazonLink}
           />
         </Box>
-       
       </Box>
 
       <Box
@@ -383,7 +499,7 @@ const EditSauce = () => {
           gap: "1.5rem",
         }}
       >
- <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -430,7 +546,7 @@ const EditSauce = () => {
           />
         </Box>
       </Box>
-   
+
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column" }}>
         <Typography
           sx={{
@@ -454,9 +570,7 @@ const EditSauce = () => {
           error={errors.details}
           placeholder={"Description"}
           height="100%"
-          inputStyle={{
-
-          }}
+          inputStyle={{}}
         />
       </Box>
 
@@ -481,8 +595,7 @@ const EditSauce = () => {
           value={formData?.ingredients}
           onChange={handleChange}
           error={errors.ingredients}
-           height="100%"
-         
+          height="100%"
         />
       </Box>
 
@@ -500,7 +613,7 @@ const EditSauce = () => {
             marginBottom: "0.4rem",
           }}
         >
-         Make Featured
+          Make Featured
         </Typography>
         <CustomSelectForType
           options={[
@@ -515,8 +628,6 @@ const EditSauce = () => {
           valueField="value"
         />
       </Box>
-
-    
 
       <Box
         sx={{

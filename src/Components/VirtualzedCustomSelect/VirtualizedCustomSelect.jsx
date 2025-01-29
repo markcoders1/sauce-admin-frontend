@@ -106,7 +106,7 @@ const VirtualizedCustomSelect = ({
                     sx={{
                         position: 'absolute',
                         top: '50%',
-                        left: "10px",
+                        left: "20px",
                         transform: 'translateY(-50%)',
                         width: "100%",
                         fontSize: "22px",

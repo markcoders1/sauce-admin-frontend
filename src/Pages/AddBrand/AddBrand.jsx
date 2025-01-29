@@ -25,7 +25,7 @@ const AddBrand = () => {
     name: "",
     password: "",
     websiteLink: "",
-    amazonLink:"",
+    amazonLink: "",
     bannerImage: null,
     about: "", // Initialize an array of 6 empty strings
     isTopRated: false,
@@ -33,6 +33,7 @@ const AddBrand = () => {
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null); // State for image preview
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -42,6 +43,10 @@ const AddBrand = () => {
         [name]: files[0],
       });
       setSelectedFileName(files[0]?.name || ""); // Update selected file name
+
+      // Create an object URL for the selected image to display a preview
+      const previewUrl = URL.createObjectURL(files[0]);
+      setImagePreview(previewUrl);
     } else {
       setFormData({
         ...formData,
@@ -103,7 +108,7 @@ const AddBrand = () => {
 
       setFormData({
         name: "",
-        amazonLink:"",
+        amazonLink: "",
         password: "",
         websiteLink: "",
         bannerImage: null,
@@ -113,6 +118,7 @@ const AddBrand = () => {
       // navigate(-1)
 
       setSelectedFileName(""); // Reset file name
+      setImagePreview(null); // Reset image preview
       setLoading(false);
 
       setSnackAlertData({
@@ -175,10 +181,43 @@ const AddBrand = () => {
           height: { lg: "100%", xs: "370px" },
         }}
       >
+        <Box
+          sx={{
+            width: "100%",
+            height: "165px",
+            flexBasis: "50%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {imagePreview ? (
+            <img
+              src={imagePreview}
+              alt="Brand image"
+              style={{
+                width: "200px",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "12px",
+              }}
+            />
+          ) : (
+            <Typography
+              sx={{
+                color: "white",
+                textAlign: "center",
+                fontSize: { sm: "22px", xs: "15px" },
+                fontWeight: "600",
+              }}
+            >
+              Select Image
+            </Typography>
+          )}
+        </Box>
         <label
           htmlFor="uploadBannerImage"
           style={{
-            flexBasis: "100%",
+            flexBasis: "50%",
             height: "165px",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
@@ -195,7 +234,7 @@ const AddBrand = () => {
             name="bannerImage"
             style={{ display: "none" }}
             onChange={handleChange}
-            accept="image/png, image/jpg, image/jpeg, image/webp" 
+            accept="image/png, image/jpg, image/jpeg, image/webp"
           />
           <Typography
             sx={{
@@ -330,7 +369,7 @@ const AddBrand = () => {
               { label: "No", value: false },
               { label: "Yes", value: true },
             ]}
-            value={formData?.isTopRated} 
+            value={formData?.isTopRated}
             handleChange={(selectedValue) =>
               setFormData({ ...formData, isTopRated: selectedValue })
             }
@@ -397,30 +436,30 @@ const AddBrand = () => {
         />
       </Box> */}
 
-<Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-  <Typography
-    sx={{
-      color: "#FFA100",
-      fontWeight: "500",
-      fontSize: {
-        sm: "16px",
-        xs: "16px",
-      },
-      fontFamily: "Montserrat !important",
-    }}
-  >
-    About
-  </Typography>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          About
+        </Typography>
 
-  <CustomTextAreaShadow
-    placeholder="Enter brand details..."
-    name="about"
-    value={formData.about}
-    onChange={handleChange}
-    error={errors.about}
-    rows={6} // You can adjust the number of rows as needed
-  />
-</Box>
+        <CustomTextAreaShadow
+          placeholder="Enter brand details..."
+          name="about"
+          value={formData.about}
+          onChange={handleChange}
+          error={errors.about}
+          rows={6} // You can adjust the number of rows as needed
+        />
+      </Box>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
         <CustomButton

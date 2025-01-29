@@ -15,6 +15,7 @@ import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 import CustomSelectForType from "../../Components/CustomSelectForType/CustomSelectForType";
 
 import ConfirmDeleteModalRequestedSauce from "../../Components/DeleteRequestedSauce/DeleteRequestedSauce";
+import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
 
 const AddSauce = () => {
   const [snackAlertData, setSnackAlertData] = useState({
@@ -32,11 +33,13 @@ const AddSauce = () => {
     details: "",
     chilli: [""],
     ingredients: "",
-    isFeatured: 'false',
+    isFeatured: false,
+    userId:""
   });
-  
 
   const [sauceImage, setSauceImage] = useState(null);
+  const [allBrands, setAllBrands] = useState([]);
+
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [selectedSauceFileName, setSelectedSauceFileName] = useState("");
@@ -44,6 +47,10 @@ const AddSauce = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+    const [previewImage, setPreviewImage] = useState("");
+  
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
@@ -70,6 +77,25 @@ const AddSauce = () => {
     });
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value, type, files } = e.target;
+  //   if (type === "file") {
+  //     const file = files[0];
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: file,
+  //     }));
+  //     setSelectedSauceFileName(file?.name || ""); // Update selected file name
+  //     setPreviewImage(URL.createObjectURL(file));
+      
+  //   } else {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
+
   const handleDetailChange = (field, index, value) => {
     const updatedField = formData[field].map((item, i) =>
       i === index ? value : item
@@ -82,9 +108,13 @@ const AddSauce = () => {
 
   const handleImageChange = (e) => {
     if (e.target.id === "uploadSauceImage") {
-      setSauceImage(e.target.files[0]);
-      setSelectedSauceFileName(e.target.files[0]?.name || ""); // Update selected file name
-    } 
+      const file = e.target.files[0];
+      if (file) {
+        setSauceImage(file);
+        setSelectedSauceFileName(file.name || "");
+        setPreviewImage(URL.createObjectURL(file)); // Update previewImage
+      }
+    }
   };
 
   const addBullet = (field) => {
@@ -165,7 +195,10 @@ const AddSauce = () => {
     data.append("description", formData.details);
     data.append("chilli", formData.chilli);
     data.append("ingredients", formData.ingredients);
+    data.append("userId", formData.userId);
 
+
+    console.log(data);
     try {
       setLoading(true);
       console.log(formData);
@@ -193,7 +226,6 @@ const AddSauce = () => {
         chilli: [""],
         ingredients: "",
         isFeatured: false,
-        
       });
       setLoading(false);
       // navigate(-1);
@@ -208,6 +240,34 @@ const AddSauce = () => {
     }
   };
 
+  const fetchBrands = async () => {
+    try {
+      const response = await axios({
+        url: `${appUrl}/admin/get-all-users`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+        params: {
+          limit: 8,
+          searchTerm: searchQuery,
+           type:"brand"
+        },
+      });
+      console.log(response);
+      setAllBrands(response?.data?.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, [searchQuery]);
+
+  const handleBrandChange = (userId) => {
+    setFormData((prev) => ({ ...prev, userId }));
+  };
   return (
     <Box
       sx={{
@@ -248,10 +308,43 @@ const AddSauce = () => {
           height: { md: "100%", xs: "370px" },
         }}
       >
+         <Box
+                  sx={{
+                    width: "100%",
+                    height: "165px",
+                    flexBasis: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Sauce image"
+                      style={{
+                        width: "200px",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "12px",
+                      }}
+                    />
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "white",
+                        textAlign: "center",
+                        fontSize: { sm: "22px", xs: "15px" },
+                        fontWeight: "600",
+                      }}
+                    >
+                       Select Image
+                    </Typography>
+                  )}
+                </Box>
         <label
           htmlFor="uploadSauceImage"
           style={{
-            flexBasis: "100%",
+            flexBasis: "50%",
             height: "165px",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
@@ -267,7 +360,7 @@ const AddSauce = () => {
             id="uploadSauceImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
-            accept="image/png, image/jpg, image/jpeg, image/webp" 
+            accept="image/png, image/jpg, image/jpeg, image/webp"
           />
           <Typography
             sx={{
@@ -283,6 +376,30 @@ const AddSauce = () => {
           </Typography>
         </label>
       </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+            Sauce Owner
+          </Typography>
+
+          <VirtualizedCustomSelect
+            data={allBrands}
+            handleChange={handleBrandChange}
+            label="Select Brand"
+            isMultiSelect={false} // Set to true if you need multi-select
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+          />
+        </Box>
       <Box
         sx={{
           display: "flex",
@@ -293,6 +410,7 @@ const AddSauce = () => {
           gap: "1.5rem",
         }}
       >
+      
         <Box
           sx={{
             flexBasis: "50%",
@@ -328,7 +446,6 @@ const AddSauce = () => {
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
-            
           }}
         >
           <Typography
@@ -499,9 +616,10 @@ const AddSauce = () => {
         <CustomSelectForType
           label={"Featured Sauce"}
           options={[
-            { label: "No", value: "false" },
-            { label: "Yes", value: "true" },
+            { label: "No", value: false },
+            { label: "Yes", value: true },
           ]}
+          value={formData?.isFeatured}
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isFeatured: selectedValue })
           }
@@ -509,7 +627,7 @@ const AddSauce = () => {
           valueField="value"
         />
       </Box>
-      
+
       <Box
         sx={{
           flexBasis: "100%",

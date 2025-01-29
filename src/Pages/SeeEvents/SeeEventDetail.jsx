@@ -7,6 +7,7 @@ import MenuBar from '../../Components/MenuBar/MenuBar';
 import NavigateBack from '../../Components/NavigateBackButton/NavigateBack';
 import CustomInputShadow from '../../Components/CustomInput/CustomInput';
 import Heading from '../../Components/Heading/Heading';
+import CustomTextAreaShadow from '../../Components/CustomTextAreaShadow/CustomTextAreaShadow';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -19,7 +20,7 @@ const SeeEventDetail = () => {
     organizedBy: '',
     date: '',
     description: '',
-    details: [''],
+    details: '',
     destination: '',
     bannerImage: null,
   });
@@ -42,7 +43,7 @@ const SeeEventDetail = () => {
         date: new Date(eventData?.eventDate).toISOString().split('T')[0],
 
         description: eventData?.venueDescription,
-        details: eventData?.eventDetails || [''],
+        details: eventData?.eventDetails,
         destination: eventData?.venueName,
         bannerImage: eventData?.bannerImage,
       });
@@ -146,7 +147,7 @@ const SeeEventDetail = () => {
         },
         gap: "1.5rem",
       }}>
-        <Box sx={{ flexBasis: "50%" }}>
+        <Box sx={{ flexBasis: "100%" }}>
         <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -167,27 +168,7 @@ const SeeEventDetail = () => {
             readOnly
           />
         </Box>
-        <Box sx={{ flexBasis: "50%" }}>
-        <Typography sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-                sm: "16px",
-                xs: "16px"
-            },
-            fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem"
-          }}>
-            Event Description
-          </Typography>
-          <CustomInputShadow
-            placeholder="Description"
-            name="description"
-            value={formData.description}
-            type="text"
-            readOnly
-          />
-        </Box>
+        
       </Box>
       <Box>
       <Typography sx={{
@@ -220,20 +201,18 @@ const SeeEventDetail = () => {
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
           }}>
-          Event Details
+          Event Description
           </Typography>
-        {formData.details.map((detail, index) => (
-          <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Box sx={{ width: "100%" }}>
-              <CustomInputShadow
-                name={`details-${index}`}
-                value={detail}
-                readOnly
-              />
-            </Box>
-          </Box>
-        ))}
+          <CustomTextAreaShadow
+          placeholder="Enter brand details..."
+          name="about"
+          value={formData.details}
+          
+          
+          rows={6} // You can adjust the number of rows as needed
+        />
       </Box>
+   
     </Box>
   );
 };
