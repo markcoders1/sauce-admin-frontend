@@ -27,6 +27,7 @@ const EditBrandDetails = () => {
     points: '',
     about: '',
     isTopRated: false,
+    email:''
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -103,6 +104,7 @@ const EditBrandDetails = () => {
         points: userData?.points || 0,
         about: userData?.about || '', // Fetch about if available, else set to one empty string
         isTopRated: userData?.isTopRated || false,
+        email : userData?.email || ''
       });
       setPreviewImage(userData?.image);
     } catch (error) {
@@ -134,6 +136,8 @@ const EditBrandDetails = () => {
     formDataToSend.append('points', formData.points);
     formDataToSend.append('userId', id);
     formDataToSend.append('isTopRated', formData.isTopRated);
+    formDataToSend.append('email', formData.email);
+
 
     // Handle about array
     formDataToSend.append('about', JSON.stringify(formData.about));
@@ -188,7 +192,10 @@ const EditBrandDetails = () => {
           },
           fontFamily: "Fira Sans !important",
         }}>
-          Edit Brand / User
+          {
+           !formData.type ? "" : formData?.type == 'user' ? "Edit User" : "Edit Brand"
+          }
+          
         </Typography>
         <Typography sx={{display:"flex", alignItems:"center", gap:".3rem"}}>
           <MenuBar/>  <NavigateBack /> 
@@ -229,6 +236,29 @@ const EditBrandDetails = () => {
         },
         gap: "1.5rem",
       }}>
+         <Box sx={{ flexBasis: "33%" }}>
+          <Typography sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px"
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem"
+          }}>
+            Email
+          </Typography>
+          <CustomInputShadow
+            placeholder='Enter Name'
+            name="name"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.name}
+            disabled={true}
+            
+          />
+        </Box>
         <Box sx={{ flexBasis: "33%" }}>
           <Typography sx={{
             color: "#FFA100",
@@ -250,7 +280,10 @@ const EditBrandDetails = () => {
             error={errors.name}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+
+       
+
+        {/* <Box sx={{ flexBasis: "33%" }}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -274,7 +307,7 @@ const EditBrandDetails = () => {
             handleChange={(value) => handleSelectChange('type', value)}
             error={errors.type}
           />
-        </Box>
+        </Box> */}
         <Box sx={{ flexBasis: "33%" }}>
           <Typography sx={{
             color: "#FFA100",
@@ -291,8 +324,8 @@ const EditBrandDetails = () => {
           <CustomSelectForType
             label="Select Status"
             options={[
-              { label: 'Active', value: 'active' },
-              { label: 'Inactive', value: 'inactive' }
+              { label: 'Unblocked', value: 'active' },
+              { label: 'Blocked', value: 'inactive' }
             ]}
             value={formData.status}
             handleChange={(value) => handleSelectChange('status', value)}

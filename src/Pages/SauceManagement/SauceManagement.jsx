@@ -232,17 +232,7 @@ const SauceManagement = () => {
                                                     xs: "30px"
                                                 }
                                             }}>Image</TableCell>
-                                            <TableCell sx={{
-                                                fontWeight: "500",
-                                                padding: "12px 0px",
-                                                fontSize: {
-                                                    sm: "21px",
-                                                    xs: "16px"
-                                                },
-                                                textAlign: "start",
-                                                color: "white",
-                                                paddingLeft: "8px"
-                                            }} className="MuiTableCell-root-head">Brand Name</TableCell>
+                                         
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -254,6 +244,17 @@ const SauceManagement = () => {
                                                 color: "white",
                                                 paddingLeft: "8px"
                                             }} className="MuiTableCell-root-head">Sauce Name</TableCell>
+                                               <TableCell sx={{
+                                                fontWeight: "500",
+                                                padding: "12px 0px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
+                                                textAlign: "start",
+                                                color: "white",
+                                                paddingLeft: "8px"
+                                            }} className="MuiTableCell-root-head">Brand Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -302,8 +303,8 @@ const SauceManagement = () => {
                                                         className='image-inside-rows'
                                                     />
                                                 </TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.owner?.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.name.slice(0, 50)} {sauce?.name ? "..." : ""} </TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce?.owner?.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "center !important" }} className="MuiTableCell-root">{formatDate(sauce?.createdAt)}</TableCell>
                                                 <TableCell sx={{ textAlign: "start !important", borderRadius: "0px 8px 8px 0px" }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>

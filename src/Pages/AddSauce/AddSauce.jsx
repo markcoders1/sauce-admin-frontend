@@ -28,16 +28,14 @@ const AddSauce = () => {
     sauceName: state?.name ? state?.name : "",
     websiteLink: state?.websiteLink ? state?.websiteLink : "",
     productLink: "",
+    amazonLink: "",
     details: "",
     chilli: [""],
-    email: state?.owner?.email ? state?.owner?.email : "",
-    type: "",
-    title: "",
     ingredients: "",
-    isFeatured: false,
-    isTopRated: false,
+    isFeatured: 'false',
   });
-  // console.log(state);
+  
+
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
   const [errors, setErrors] = useState({});
@@ -46,17 +44,14 @@ const AddSauce = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false); 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  useEffect(()=>{
-    console.log(state)  
-  },[])
-
+  useEffect(() => {
+    console.log(state);
+  }, []);
 
   const handleOpenDeleteModal = () => {
-  
     setDeleteModalOpen(true);
-
   };
 
   const handleCloseDeleteModal = () => {
@@ -89,10 +84,7 @@ const AddSauce = () => {
     if (e.target.id === "uploadSauceImage") {
       setSauceImage(e.target.files[0]);
       setSelectedSauceFileName(e.target.files[0]?.name || ""); // Update selected file name
-    } else if (e.target.id === "uploadBannerImage") {
-      setBannerImage(e.target.files[0]);
-      setSelectedBannerFileName(e.target.files[0]?.name || ""); // Update selected file name
-    }
+    } 
   };
 
   const addBullet = (field) => {
@@ -118,9 +110,6 @@ const AddSauce = () => {
     // Check file sizes
     if (sauceImage && sauceImage.size > 4 * 1024 * 1024) {
       validationErrors.sauceImage = "Sauce image size exceeds 4MB.";
-    }
-    if (bannerImage && bannerImage.size > 4 * 1024 * 1024) {
-      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -158,17 +147,23 @@ const AddSauce = () => {
         data.append("websiteLink", formData.websiteLink);
       }
     }
-    data.append("isFeatured", formData.isFeatured);
-    data.append("isTopRated", formData.isTopRated);
-
+    if (formData.amazonLink) {
+      if (!isURL(formData.amazonLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Amazon link must be a valid url",
+          severity: "error",
+        });
+        return;
+      } else {
+        data.append("amazonLink", formData.amazonLink);
+      }
+    }
+    data.append("isFeatured", formData.isFeatured || false);
     data.append("image", sauceImage);
-    data.append("bannerImage", bannerImage);
     data.append("name", formData.sauceName);
     data.append("description", formData.details);
     data.append("chilli", formData.chilli);
-    data.append("email", formData.email);
-    data.append("type", formData.type);
-    data.append("title", formData.title);
     data.append("ingredients", formData.ingredients);
 
     try {
@@ -192,16 +187,13 @@ const AddSauce = () => {
 
       setFormData({
         sauceName: "",
-        websiteLink:  "",
+        websiteLink: "",
         productLink: "",
         details: "",
         chilli: [""],
-        email: "",
-        type: "",
-        title: "",
         ingredients: "",
-        isFeatured: null,
-        isTopRated: null,
+        isFeatured: false,
+        
       });
       setLoading(false);
       // navigate(-1);
@@ -259,7 +251,7 @@ const AddSauce = () => {
         <label
           htmlFor="uploadSauceImage"
           style={{
-            flexBasis: "50%",
+            flexBasis: "100%",
             height: "165px",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
@@ -289,40 +281,6 @@ const AddSauce = () => {
               : "Upload Sauce Image"}
           </Typography>
         </label>
-
-        <label
-          htmlFor="uploadBannerImage"
-          style={{
-            flexBasis: "50%",
-            height: "165px",
-            backgroundColor: "#2E210A",
-            border: "2px dashed #FFA100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "12px",
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="file"
-            id="uploadBannerImage"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
-          <Typography
-            sx={{
-              color: "white",
-              textAlign: "center",
-              fontSize: "22px",
-              fontWeight: "600",
-            }}
-          >
-            {selectedBannerFileName
-              ? `Selected File: ${selectedBannerFileName}`
-              : "Upload Banner Image"}
-          </Typography>
-        </label>
       </Box>
       <Box
         sx={{
@@ -336,7 +294,7 @@ const AddSauce = () => {
       >
         <Box
           sx={{
-            flexBasis: "33%",
+            flexBasis: "50%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -365,10 +323,11 @@ const AddSauce = () => {
         </Box>
         <Box
           sx={{
-            flexBasis: "33%",
+            flexBasis: "50%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
+            
           }}
         >
           <Typography
@@ -382,19 +341,28 @@ const AddSauce = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Website Link
+            Amazon Link
           </Typography>
           <CustomInputShadow
-            placeholder="Website Link"
-            name="websiteLink"
-            value={formData.websiteLink}
+            placeholder="Amazon Link"
+            name="amazonLink"
+            value={formData.amazonLink}
             onChange={handleChange}
-            error={errors.websiteLink}
+            error={errors.amazonLink}
           />
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { md: "row", xs: "column" },
+          gap: "1.5rem",
+        }}
+      >
         <Box
           sx={{
-            flexBasis: "33%",
+            flexBasis: "50%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -421,17 +389,9 @@ const AddSauce = () => {
             error={errors.productLink}
           />
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { md: "row", xs: "column" },
-          gap: "1.5rem",
-        }}
-      >
         <Box
           sx={{
-            flexBasis: "33%",
+            flexBasis: "50%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -448,72 +408,14 @@ const AddSauce = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Email
+            Website Link
           </Typography>
           <CustomInputShadow
-            placeholder="Email"
-            name="email"
-            value={formData.email}
+            placeholder="Website Link"
+            name="websiteLink"
+            value={formData.websiteLink}
             onChange={handleChange}
-            error={errors.email}
-          />
-        </Box>
-        <Box
-          sx={{
-            flexBasis: "33%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Type
-          </Typography>
-          <CustomInputShadow
-            placeholder="Type"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            error={errors.type}
-          />
-        </Box>
-        <Box
-          sx={{
-            flexBasis: "33%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-            Title
-          </Typography>
-          <CustomInputShadow
-            placeholder="Title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            error={errors.title}
+            error={errors.websiteLink}
           />
         </Box>
       </Box>
@@ -536,7 +438,7 @@ const AddSauce = () => {
             fontFamily: "Montserrat !important",
           }}
         >
-          Details
+          Description
         </Typography>
         <CustomInputShadow
           name="details"
@@ -544,7 +446,7 @@ const AddSauce = () => {
           value={formData.details}
           onChange={handleChange}
           error={errors.details}
-          placeholder={"Details"}
+          placeholder={"Description"}
           height="160px"
         />
       </Box>
@@ -576,7 +478,6 @@ const AddSauce = () => {
           onChange={handleChange}
           error={errors.ingredients}
           placeholder={"Ingredients"}
-
           height="160px"
         />
       </Box>
@@ -597,8 +498,8 @@ const AddSauce = () => {
         <CustomSelectForType
           label={"Featured Sauce"}
           options={[
-            { label: "None", value: "false" },
-            { label: "Featured", value: "true" },
+            { label: "No", value: "false" },
+            { label: "Yes", value: "true" },
           ]}
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isFeatured: selectedValue })
@@ -607,33 +508,7 @@ const AddSauce = () => {
           valueField="value"
         />
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-        <Typography
-          sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px",
-            },
-            fontFamily: "Montserrat !important",
-          }}
-        >
-          Make Top Rated
-        </Typography>
-        <CustomSelectForType
-          label={"Top Rated Sauce"}
-          options={[
-            { label: "None", value: "false" },
-            { label: "Top Rated", value: "true" },
-          ]}
-          handleChange={(selectedValue) =>
-            setFormData({ ...formData, isTopRated: selectedValue })
-          }
-          labelField="label"
-          valueField="value"
-        />
-      </Box>
+      
       <Box
         sx={{
           flexBasis: "100%",
@@ -696,15 +571,13 @@ const AddSauce = () => {
         ))}
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Add Bullet"}
+          ButtonText={"Add Chilli"}
           color="white"
           height="100px"
           width={"100%"}
           borderRadius="6px"
           background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           hoverBg="linear-gradient(90deg, #F3C623 0%, #F3C623 100%)"
-
-
           buttonStyle={{ height: "75px" }}
           onClick={() => addBullet("chilli")}
           fontSize="18px"
@@ -712,28 +585,29 @@ const AddSauce = () => {
         />
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 , gap:"2rem"}}>
-        {
-          state ? (
-            <CustomButton
+      <Box
+        sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap: "2rem" }}
+      >
+        {state ? (
+          <CustomButton
             border="1px solid #FFA100"
             ButtonText={loading ? "Delete" : "Delete Request"}
             color="white"
             width={"208px"}
-          padding='25px 0px'
+            padding="25px 0px"
             borderRadius="8px"
             // background={
             //   loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
             // }
-           
+
             fontSize="18px"
             fontWeight="600"
-            
-            onClick={handleOpenDeleteModal} 
+            onClick={handleOpenDeleteModal}
           />
-          ) : ""
-        }
-     
+        ) : (
+          ""
+        )}
+
         <CustomButton
           border="1px solid #FFA100"
           ButtonText={loading ? "Adding" : "Add "}
@@ -743,12 +617,10 @@ const AddSauce = () => {
             loading ? "" : "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           }
           width={"208px"}
-          padding='25px 0px'
-
+          padding="25px 0px"
           fontSize="18px"
           fontWeight="600"
           onClick={handleSubmit}
-        
         />
       </Box>
       <SnackAlert
@@ -759,7 +631,7 @@ const AddSauce = () => {
           setSnackAlertData((prev) => ({ ...prev, open: false }));
         }}
       />
-          <ConfirmDeleteModalRequestedSauce
+      <ConfirmDeleteModalRequestedSauce
         open={deleteModalOpen}
         handleClose={handleCloseDeleteModal}
         reviewId={state?._id} // Assuming you pass the ID of the review to delete

@@ -18,8 +18,8 @@ const NavigateBack = () => {
             outline: "none",
             backgroundColor: "#FFA100",
             marginTop: "5px",
-            height: "33px", 
-            width: "33px", 
+            height: "48px", 
+            width: "48px", 
             display: "flex", 
             justifyContent: "center", 
             alignItems: "center", 
@@ -32,7 +32,7 @@ const NavigateBack = () => {
             }
         }}
     >
-        <IoMdArrowRoundBack />
+        <IoMdArrowRoundBack style={{fontSize:"30px"}} />
         </Box>
   )
 }

@@ -21,6 +21,7 @@ const CustomInputShadow = forwardRef(({
   width = "100%",
   textAlign = "",
   inputStyle = {},
+  
 }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -69,6 +70,9 @@ const CustomInputShadow = forwardRef(({
             },
             '& .MuiInputBase-root': {
               color: "white",
+            },
+            '& .Mui-disabled':{
+              WebkitTextFillColor: 'rgba(255, 255,255, 1) !important'
             },
             borderRadius: "12px",
             mt: "7px",

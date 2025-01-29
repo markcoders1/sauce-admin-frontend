@@ -493,7 +493,9 @@ const UserManagement = () => {
                             alignItems:"center"
                           }}
                         >
-                          {/* <CustomButton
+                        
+                          
+                          <CustomButton
                             border="1px solid #FFA100"
                             ButtonText={
                               user.status === "active" ? "Block" : "Unblock"
@@ -502,26 +504,10 @@ const UserManagement = () => {
                             width={"98px"}
                             borderRadius="6px"
                             buttonStyle={{ height: "39px" }}
-                            
-                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
-                          /> */}
-                          <Tooltip title={user.status === "active" ? "Unblock User" : "Block User"}>
-
-                           <img
-                            className="edit-icon"
-                            src= {user.status === "active" ? lockIcon : unlockIcon}
-                            alt="Edit"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              cursor: "pointer",
-                              border: "0 px solid red",
-                              borderRadius: "10px",
-                              padding: "0px !important",
-                            }}
                             onClick={() => toggleBlock(user._id, user.status)}
+                            hoverBg="linear-gradient(90deg, #2E210A 0%, #2E210A 100%)"
                           />
-                          </Tooltip>
+                        
 
                           <img
                             className="edit-icon"

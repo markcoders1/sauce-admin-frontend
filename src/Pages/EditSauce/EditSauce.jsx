@@ -27,14 +27,15 @@ const EditSauce = () => {
     sauceName: "",
     websiteLink: "",
     productLink: "",
+    amazonLink:"",
     details: "",
     chilli: [""],
-    email: "",
-    type: "",
-    title: "",
+    
+    
+    
     ingredients: "",
-    isFeatured: null,
-    isTopRated: null,
+    isFeatured: false,
+    
   });
   const [sauceImage, setSauceImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
@@ -72,11 +73,9 @@ const EditSauce = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     const { name } = e.target;
-    if (name == "bannerImage") {
-      setBannerImage(file);
-    } else {
+    if (name == "sauceImage") {
       setSauceImage(file);
-    }
+    } 
     if (file && file.size > 4 * 1024 * 1024) {
       setSnackAlertData({
         open: true,
@@ -143,35 +142,35 @@ const EditSauce = () => {
       }
     }
 
+    if (formData.amazonLink) {
+      if (!isURL(formData.amazonLink)) {
+        setSnackAlertData({
+          open: true,
+          message: "Amazon link must be a valid URL",
+          severity: "error",
+        });
+        return; // Exit the function to prevent further execution
+      }
+    }
     const formDataToSend = new FormData();
     console.log(formData.isFeatured);
 
     // Append all the form fields
-    formDataToSend.append("name", formData.sauceName);
+    formDataToSend.append("name", formData.sauceName );
     formDataToSend.append("description", formData.details);
-    formDataToSend.append("chilli", JSON.stringify(formData.chilli)); // Convert array to string
+    formDataToSend.append("chilli", JSON.stringify(formData.chilli));
     formDataToSend.append("productLink", formData.productLink);
     formDataToSend.append("websiteLink", formData.websiteLink);
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("type", formData.type);
-    formDataToSend.append("title", formData.title);
     formDataToSend.append("sauceId", id);
     formDataToSend.append("ingredients", formData.ingredients);
     formDataToSend.append("isFeatured", formData.isFeatured);
-    formDataToSend.append("isTopRated", formData.isTopRated);
+    formDataToSend.append("amazonLink", formData.amazonLink);
+
 
     // Check and append the sauce image file if it exists
     if (sauceImage) {
       formDataToSend.append("image", sauceImage); // Adding sauce image as binary
     }
-
-    // Check and append the banner image file if it exists
-    if (bannerImage) {
-      formDataToSend.append("bannerImage", bannerImage); // Adding banner image as binary
-    }
-
-    console.log(bannerImage);
-
     try {
       setLoading(true);
       const response = await axios({
@@ -216,20 +215,19 @@ const EditSauce = () => {
       console.log("hello edit sauce");
       const sauceData = response?.data?.sauce;
       setFormData({
-        sauceName: sauceData.name,
-        websiteLink: sauceData.websiteLink,
-        productLink: sauceData.productLink,
-        details: sauceData.description,
-        chilli: sauceData.chilli,
-        email: sauceData.email,
-        type: sauceData.type,
-        title: sauceData.title,
-        ingredients: sauceData.ingredients,
-        isFeatured: sauceData.isFeatured,
-        isTopRated: sauceData.isTopRated,
+        sauceName: sauceData.name || "",
+        websiteLink: sauceData.websiteLink || "",
+        productLink: sauceData.productLink || "",
+        amazonLink: sauceData.amazonLink || "",
+        details: sauceData.description || "",
+        chilli: sauceData.chilli || [''],
+        ingredients: sauceData.ingredients || "",
+        isFeatured: sauceData.isFeatured || false,
+
+
       });
       setSauceImage(sauceData.image);
-      setBannerImage(sauceData.bannerImage);
+      
     } catch (error) {
       console.error("Error fetching sauce data:", error);
     }
@@ -285,7 +283,7 @@ const EditSauce = () => {
         <label
           htmlFor="uploadSauceImage"
           style={{
-            flexBasis: "50%",
+            flexBasis: "100%",
             height: "165px",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
@@ -298,6 +296,7 @@ const EditSauce = () => {
         >
           <input
             type="file"
+            name="sauceImage"
             id="uploadSauceImage"
             style={{ display: "none" }}
             onChange={handleImageChange}
@@ -315,40 +314,7 @@ const EditSauce = () => {
               : "Upload Sauce Image"}
           </Typography>
         </label>
-        <label
-          htmlFor="uploadBannerImage"
-          style={{
-            flexBasis: "50%",
-            height: "165px",
-            backgroundColor: "#2E210A",
-            border: "2px dashed #FFA100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "12px",
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="file"
-            name="bannerImage"
-            id="uploadBannerImage"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
-          <Typography
-            sx={{
-              color: "white",
-              textAlign: "center",
-              fontSize: "22px",
-              fontWeight: "600",
-            }}
-          >
-            {selectedBannerFileName
-              ? `Selected File: ${selectedBannerFileName}`
-              : "Upload Banner Image"}
-          </Typography>
-        </label>
+       
       </Box>
       <Box
         sx={{
@@ -360,7 +326,7 @@ const EditSauce = () => {
           gap: "1.5rem",
         }}
       >
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -383,7 +349,40 @@ const EditSauce = () => {
             error={errors.sauceName}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+              marginBottom: "0.4rem",
+            }}
+          >
+            Amazon Link
+          </Typography>
+          <CustomInputShadow
+            placeholder="Amazon Link"
+            name="amazonLink"
+            value={formData?.amazonLink}
+            onChange={handleChange}
+            error={errors.amazonLink}
+          />
+        </Box>
+       
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { md: "row", xs: "column" },
+          gap: "1.5rem",
+        }}
+      >
+ <Box sx={{ flexBasis: "50%" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -406,7 +405,7 @@ const EditSauce = () => {
             error={errors.websiteLink}
           />
         </Box>
-        <Box sx={{ flexBasis: "33%" }}>
+        <Box sx={{ flexBasis: "50%" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -430,60 +429,7 @@ const EditSauce = () => {
           />
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { md: "row", xs: "column" },
-          gap: "1.5rem",
-        }}
-      >
-        <Box sx={{ flexBasis: "50%" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-              marginBottom: "0.4rem",
-            }}
-          >
-            Type
-          </Typography>
-          <CustomInputShadow
-            placeholder="Type"
-            name="type"
-            value={formData?.type}
-            onChange={handleChange}
-            error={errors.type}
-          />
-        </Box>
-        <Box sx={{ flexBasis: "50%" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-              marginBottom: "0.4rem",
-            }}
-          >
-            Title
-          </Typography>
-          <CustomInputShadow
-            placeholder="Title"
-            name="title"
-            value={formData?.title}
-            onChange={handleChange}
-            error={errors.title}
-          />
-        </Box>
-      </Box>
+   
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column" }}>
         <Typography
           sx={{
@@ -497,7 +443,7 @@ const EditSauce = () => {
             marginBottom: "0.4rem",
           }}
         >
-          Details
+          Description
         </Typography>
         <CustomInputShadow
           name="details"
@@ -505,6 +451,7 @@ const EditSauce = () => {
           value={formData?.details}
           onChange={handleChange}
           error={errors.details}
+          placeholder={"Description"}
           height="100%"
           inputStyle={{
 
@@ -556,8 +503,8 @@ const EditSauce = () => {
         </Typography>
         <CustomSelectForType
           options={[
-            { label: "None", value: "false" },
-            { label: "Featured", value: "true" },
+            { label: "No", value: "false" },
+            { label: "Yes", value: "true" },
           ]}
           handleChange={(selectedValue) =>
             setFormData({ ...formData, isFeatured: selectedValue })
@@ -568,34 +515,7 @@ const EditSauce = () => {
         />
       </Box>
 
-      <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column" }}>
-        <Typography
-          sx={{
-            color: "#FFA100",
-            fontWeight: "500",
-            fontSize: {
-              sm: "16px",
-              xs: "16px",
-            },
-            fontFamily: "Montserrat !important",
-            marginBottom: "0.4rem",
-          }}
-        >
-         Make Top Rated
-        </Typography>
-        <CustomSelectForType
-          options={[
-            { label: "None", value: "false" },
-            { label: "Top Rated", value: "true" },
-          ]}
-          handleChange={(selectedValue) =>
-            setFormData({ ...formData, isTopRated: selectedValue })
-          }
-          value={formData.isTopRated}
-          labelField="label"
-          valueField="value"
-        />
-      </Box>
+    
 
       <Box
         sx={{
@@ -650,7 +570,8 @@ const EditSauce = () => {
         ))}
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Add Bullet"}
+          ButtonText={"Add Chilli"}
+          background="linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)"
           color="white"
           height="100px"
           width={"100%"}
