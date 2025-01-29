@@ -23,7 +23,7 @@ const AddBrand = () => {
   });
   const [formData, setFormData] = useState({
     name: "",
-    
+    chilli: [''],
     websiteLink: "",
     amazonLink: "",
     bannerImage: null,
@@ -208,6 +208,13 @@ const AddBrand = () => {
                 textAlign: "center",
                 fontSize: { sm: "22px", xs: "15px" },
                 fontWeight: "600",
+                background: '#ffa100',
+display: 'flex',
+justifyContent: 'center',
+alignItems: 'center',
+height: '170px',
+width: '170px',
+borderRadius: '10px'
               }}
             >
               Select Image
@@ -428,7 +435,7 @@ const AddBrand = () => {
           value={formData.about}
           onChange={handleChange}
           error={errors.about}
-          rows={6} // You can adjust the number of rows as needed
+          rows={3} // You can adjust the number of rows as needed
         />
       </Box>
 

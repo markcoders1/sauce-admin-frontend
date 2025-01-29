@@ -193,7 +193,9 @@ const AddSauce = () => {
     data.append("image", sauceImage);
     data.append("name", formData.sauceName);
     data.append("description", formData.details);
-    data.append("chilli", formData.chilli);
+    formData.chilli.forEach((chilliItem) => {
+      data.append("chilli[]", chilliItem);
+    });
     data.append("ingredients", formData.ingredients);
     data.append("userId", formData.userId);
 
@@ -335,6 +337,13 @@ const AddSauce = () => {
                         textAlign: "center",
                         fontSize: { sm: "22px", xs: "15px" },
                         fontWeight: "600",
+                        background: '#ffa100',
+display: 'flex',
+justifyContent: 'center',
+alignItems: 'center',
+height: '170px',
+width: '170px',
+borderRadius: '10px'
                       }}
                     >
                        Select Image
@@ -649,7 +658,7 @@ const AddSauce = () => {
         >
           Chili
         </Typography>
-        {formData.chilli.map((ingredient, index) => (
+        {formData?.chilli.map((ingredient, index) => (
           <Box
             key={index}
             sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
@@ -671,7 +680,7 @@ const AddSauce = () => {
                 error={errors.chilli}
               />
             </Box>
-            {formData.chilli.length > 1 && (
+            {formData?.chilli.length > 1 && (
               <CustomButton
                 border="1px solid #FFA100"
                 ButtonText={"Remove"}

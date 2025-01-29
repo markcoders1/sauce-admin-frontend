@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography , Tooltip} from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./AppSidebar.css";
 import hambergImg from "../../assets/hamberger.png";
@@ -32,26 +32,25 @@ import icon81 from "../../assets/icon71.png";
 import icon91 from "../../assets/requestedEvent.png";
 
 const vapid_key = import.meta.env.VAPID_KEY;
-import Zoom from '@mui/material/Zoom';
+import Zoom from "@mui/material/Zoom";
 import { logout } from "../../Redux/Slice/UserSlice/UserSlice";
 
-import { toggleSidebar, closeSidebar, openSidebar } from '../../Redux/Slice/sidebarSlice/sidebarSlice';
-import logoutpng from '../../assets/logout.png';
+import {
+  toggleSidebar,
+  closeSidebar,
+  openSidebar,
+} from "../../Redux/Slice/sidebarSlice/sidebarSlice";
+import logoutpng from "../../assets/logout.png";
 
-
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import LogoutConfirmationModal from "../../Components/LogoutConfirmationModal/LogoutConfirmationModal";
 
-
 const AppSidebar = ({ isOpen, toggleSidebar }) => {
- 
   const [hoveredIcon, setHoveredIcon] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   // const isOpen = useSelector((state) => state.sidebar.isOpen)
-
-
 
   const handleNavigate = (nav) => {
     navigate(nav);
@@ -70,7 +69,8 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   const handleLogout = () => {
-    dispatch(logout({
+    dispatch(
+      logout({
         accessToken: null,
         refreshToken: null,
         _id: null,
@@ -79,16 +79,17 @@ const AppSidebar = ({ isOpen, toggleSidebar }) => {
         createdAt: null,
         updatedAt: null,
         authenticated: false,
-        type: null
-    }));
+        type: null,
+      })
+    );
     navigate("/");
     localStorage.removeItem("accessToken");
-    dispatch(toggleSidebar())
-    dispatch(closeSidebar()); 
-};
+    dispatch(toggleSidebar());
+    dispatch(closeSidebar());
+  };
 
-const handleOpenModal = () => setModalOpen(true);
-const handleCloseModal = () => setModalOpen(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
 
   return (
     <Box
@@ -132,7 +133,7 @@ const handleCloseModal = () => setModalOpen(false);
                   color: "red !important",
                   position: "absolute",
                   top: "-10px",
-                  right: {xs:"-35px" , xl:"-0px"},
+                  right: { xs: "-35px", xl: "-0px" },
                   width: { xl: "30px", xs: "25px" },
                   height: { xl: "30px", xs: "25px" },
                   backgroundColor: "white",
@@ -140,8 +141,7 @@ const handleCloseModal = () => setModalOpen(false);
                   justifyContent: "center",
                   alignItems: "center",
                   borderRadius: "5px",
-                  cursor:"pointer"
-                  
+                  cursor: "pointer",
                 }}
                 onClick={toggleSidebar}
               >
@@ -379,7 +379,7 @@ const handleCloseModal = () => setModalOpen(false);
                       fontFamily: "Montserrat !important",
                     }}
                   >
-                   Requested Events 
+                    Requested Events
                   </Typography>
                 </Box>
               </NavLink>
@@ -513,7 +513,7 @@ const handleCloseModal = () => setModalOpen(false);
                   </Typography>
                 </Box>
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to="/admin/store-management"
                 className={({ isActive }) =>
                   isActive ? "active-nav-link" : "nav-link"
@@ -555,9 +555,9 @@ const handleCloseModal = () => setModalOpen(false);
                     Store Management
                   </Typography>
                 </Box>
-              </NavLink>
+              </NavLink> */}
 
-              <NavLink
+              {/* <NavLink
                 to="/admin/notification"
                 className={({ isActive }) =>
                   isActive ? "active-nav-link" : "nav-link"
@@ -588,7 +588,7 @@ const handleCloseModal = () => setModalOpen(false);
                       className="navlink-image3"
                       alt="Events Management"
                       style={{
-                        width:"50%",
+                        width: "50%",
                       }}
                     />
                   </Typography>
@@ -599,13 +599,12 @@ const handleCloseModal = () => setModalOpen(false);
                       fontFamily: "Montserrat !important",
                     }}
                   >
-                   Notifications
+                    Notifications
                   </Typography>
                 </Box>
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 onClick={handleOpenModal}
-                
                 className={({ isActive }) =>
                   isActive ? "nav-link" : " active-nav-link"
                 }
@@ -635,7 +634,7 @@ const handleCloseModal = () => setModalOpen(false);
                       className="navlink-image3"
                       alt="Events Management"
                       style={{
-                        width:"50%",
+                        width: "50%",
                       }}
                     />
                   </Typography>
@@ -646,7 +645,7 @@ const handleCloseModal = () => setModalOpen(false);
                       fontFamily: "Montserrat !important",
                     }}
                   >
-                   Logout
+                    Logout
                   </Typography>
                 </Box>
               </NavLink>
@@ -684,389 +683,463 @@ const handleCloseModal = () => setModalOpen(false);
               >
                 <img src={hambergImg} alt="Toggle Sidebar" />
               </Box>
-              <Tooltip title="User Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon1" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon1"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                  mt: "15px",
-                }}
-                onClick={() => handleNavigate("/admin/user-management")}
-                onMouseEnter={() => handleMouseEnter("icon1")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="User Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon1" ? icon11 : icon1}
-                  style={{ width: "55%", zIndex: "100" }}
-                  alt="User Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon1"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon1"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                    mt: "15px",
+                  }}
+                  onClick={() => handleNavigate("/admin/user-management")}
+                  onMouseEnter={() => handleMouseEnter("icon1")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon1" ? icon11 : icon1}
+                    style={{ width: "55%", zIndex: "100" }}
+                    alt="User Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Sauce Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon3" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon3"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/sauce-management")}
-                onMouseEnter={() => handleMouseEnter("icon3")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Sauce Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon3" ? icon21 : icon3}
-                  style={{ width: "45%", zIndex: "100" }}
-                  alt="Sauce Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon3"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon3"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/sauce-management")}
+                  onMouseEnter={() => handleMouseEnter("icon3")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon3" ? icon21 : icon3}
+                    style={{ width: "45%", zIndex: "100" }}
+                    alt="Sauce Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Brand Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon2" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width:{ xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon2"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/brand-management")}
-                onMouseEnter={() => handleMouseEnter("icon2")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Brand Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon2" ? icon31 : icon2}
-                  style={{ width: "55%", zIndex: "100" }}
-                  alt="Brand Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon2"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon2"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/brand-management")}
+                  onMouseEnter={() => handleMouseEnter("icon2")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon2" ? icon31 : icon2}
+                    style={{ width: "55%", zIndex: "100" }}
+                    alt="Brand Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Events Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon4" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height:{ xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon4"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/events-management")}
-                onMouseEnter={() => handleMouseEnter("icon4")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Events Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon4" ? icon41 : icon4}
-                  style={{ width: "50%", zIndex: "100" }}
-                  alt="Events Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon4"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon4"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/events-management")}
+                  onMouseEnter={() => handleMouseEnter("icon4")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon4" ? icon41 : icon4}
+                    style={{ width: "50%", zIndex: "100" }}
+                    alt="Events Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title=" Requested Events Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon9" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon9"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/requested-events")}
-                onMouseEnter={() => handleMouseEnter("icon9")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title=" Requested Events Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon91" ? icon91 : icon9}
-                  style={{ width: "80%", zIndex: "100" }}
-                  alt="Requested Events Mana"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon9"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon9"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/requested-events")}
+                  onMouseEnter={() => handleMouseEnter("icon9")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon91" ? icon91 : icon9}
+                    style={{ width: "80%", zIndex: "100" }}
+                    alt="Requested Events Mana"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Official Reviews Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon5" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width:{ xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon5"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/reviews-management")}
-                onMouseEnter={() => handleMouseEnter("icon5")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Official Reviews Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon5" ? icon51 : icon5}
-                  style={{ width: "80%", zIndex: "100" }}
-                  alt="Reviews Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon5"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon5"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/reviews-management")}
+                  onMouseEnter={() => handleMouseEnter("icon5")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon5" ? icon51 : icon5}
+                    style={{ width: "80%", zIndex: "100" }}
+                    alt="Reviews Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Requested Sauce Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon6" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon6"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/requested-sauce")}
-                onMouseEnter={() => handleMouseEnter("icon6")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Requested Sauce Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon6" ? icon61 : icon6}
-                  style={{ width: "80%", zIndex: "100" }}
-                  alt="Reviews Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon6"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon6"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/requested-sauce")}
+                  onMouseEnter={() => handleMouseEnter("icon6")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon6" ? icon61 : icon6}
+                    style={{ width: "80%", zIndex: "100" }}
+                    alt="Reviews Management"
+                  />
+                </Box>
               </Tooltip>
 
               {/* badge and store management
                */}
-              <Tooltip title="Badge Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon7" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon7"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/badge-management")}
-                onMouseEnter={() => handleMouseEnter("icon7")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Badge Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon7" ? icon7 : icon71}
-                  style={{ width: "80%", zIndex: "100" }}
-                  alt="Reviews Management"
-                />
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon7"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon7"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/badge-management")}
+                  onMouseEnter={() => handleMouseEnter("icon7")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon7" ? icon7 : icon71}
+                    style={{ width: "80%", zIndex: "100" }}
+                    alt="Reviews Management"
+                  />
+                </Box>
               </Tooltip>
-              <Tooltip title="Store Management"  placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} >
-
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "icon8" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width:{ xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "icon8"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/store-management")}
-                onMouseEnter={() => handleMouseEnter("icon8")}
-                onMouseLeave={handleMouseLeave}
+              {/* <Tooltip
+                title="Store Management"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                <img
-                  src={hoveredIcon === "icon8" ? icon8 : icon81}
-                  style={{ width: "80%", zIndex: "100" }}
-                  alt="Reviews Management"
-                />
-              </Box>
-              </Tooltip>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "icon8"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "icon8"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/store-management")}
+                  onMouseEnter={() => handleMouseEnter("icon8")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <img
+                    src={hoveredIcon === "icon8" ? icon8 : icon81}
+                    style={{ width: "80%", zIndex: "100" }}
+                    alt="Reviews Management"
+                  />
+                </Box>
+              </Tooltip> */}
 
               {/* new management pages */}
-              <Tooltip title="Notification" placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} > 
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "bellYellowSVG" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "bellYellowSVG"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={() => handleNavigate("/admin/notification")}
-                onMouseEnter={() => handleMouseEnter("bellYellowSVG")}
-                onMouseLeave={handleMouseLeave}
+              {/* <Tooltip
+                title="Notification"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                {hoveredIcon === "bellYellowSVG" ? (
-                  <Bell style={{ width: "50%", zIndex: "100" }} />
-                ) : (
-                  <img
-                    src={bellYellowSVG}
-                    style={{ width: "50%", zIndex: "100" }}
-                    alt="Bell Icon"
-                  />
-                )}
-              </Box>
-              </Tooltip>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "bellYellowSVG"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "bellYellowSVG"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={() => handleNavigate("/admin/notification")}
+                  onMouseEnter={() => handleMouseEnter("bellYellowSVG")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {hoveredIcon === "bellYellowSVG" ? (
+                    <Bell style={{ width: "50%", zIndex: "100" }} />
+                  ) : (
+                    <img
+                      src={bellYellowSVG}
+                      style={{ width: "50%", zIndex: "100" }}
+                      alt="Bell Icon"
+                    />
+                  )}
+                </Box>
+              </Tooltip> */}
 
-              <Tooltip title="Logout" placement="right" TransitionComponent={Zoom} TransitionProps={{timeout:200}} > 
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  backgroundColor:
-                    hoveredIcon === "logoutpng" ? "rgba(255, 0, 0, 0.6)" : "white",
-                  width: { xl: "45px", xs: "35px" },
-                  height: { xl: "45px", xs: "35px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  color: "black",
-                  fontWeight: "600",
-                  boxShadow:
-                    hoveredIcon === "logoutpng"
-                      ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                      : "none",
-                  transition:
-                    "background-color 0.3s ease, box-shadow 0.3s ease",
-                }}
-                onClick={handleOpenModal}
-                onMouseEnter={() => handleMouseEnter("logoutpng")}
-                onMouseLeave={handleMouseLeave}
+              <Tooltip
+                title="Logout"
+                placement="right"
+                TransitionComponent={Zoom}
+                TransitionProps={{ timeout: 200 }}
               >
-                {hoveredIcon === "logoutpng" ? (
-                  <img
-                  src={logoutpng}
-                  style={{ width: "50%", zIndex: "100" }}
-                  alt="Bell Icon"
-                />
-                ) : (
-                  <img
-                    src={logoutpng}
-                    style={{ width: "50%", zIndex: "100" }}
-                    alt="Bell Icon"
-                  />
-                )}
-              </Box>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    backgroundColor:
+                      hoveredIcon === "logoutpng"
+                        ? "rgba(255, 0, 0, 0.6)"
+                        : "white",
+                    width: { xl: "45px", xs: "35px" },
+                    height: { xl: "45px", xs: "35px" },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    color: "black",
+                    fontWeight: "600",
+                    boxShadow:
+                      hoveredIcon === "logoutpng"
+                        ? "0px 4px 10px rgba(0, 0, 0, 0.1)"
+                        : "none",
+                    transition:
+                      "background-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onClick={handleOpenModal}
+                  onMouseEnter={() => handleMouseEnter("logoutpng")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {hoveredIcon === "logoutpng" ? (
+                    <img
+                      src={logoutpng}
+                      style={{ width: "50%", zIndex: "100" }}
+                      alt="Bell Icon"
+                    />
+                  ) : (
+                    <img
+                      src={logoutpng}
+                      style={{ width: "50%", zIndex: "100" }}
+                      alt="Bell Icon"
+                    />
+                  )}
+                </Box>
               </Tooltip>
             </>
           )}
         </Box>
       </Box>
       <LogoutConfirmationModal
-                open={modalOpen} 
-                handleClose={handleCloseModal} 
-                onLogoutConfirm={handleLogout} 
-            />
+        open={modalOpen}
+        handleClose={handleCloseModal}
+        onLogoutConfirm={handleLogout}
+      />
     </Box>
   );
 };

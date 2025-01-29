@@ -715,7 +715,7 @@ const EditSauce = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap:"20px" }}>
       <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Deleting" : "Delete"}
+          ButtonText={"Delete"}
           color="white"
           width={"178px"}
           borderRadius="8px"

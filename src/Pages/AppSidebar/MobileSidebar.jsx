@@ -123,12 +123,12 @@ const MobileSidebar = () => {
             </Box>
           </Box>
           
-          <Box onClick={() => handleNavigate('/admin/store-management')} className="nav-link">
+          {/* <Box onClick={() => handleNavigate('/admin/store-management')} className="nav-link">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <img src={icon81} style={{ width: '33px' }} alt="Events Management" />
               <Typography>Store Management</Typography>
             </Box>
-          </Box>
+          </Box> */}
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute', bottom: '30px' }}>
