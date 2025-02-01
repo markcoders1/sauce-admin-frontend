@@ -734,7 +734,7 @@ const EditEvents = () => {
                 Website Link
               </Typography>
               <CustomInputShadow
-                placeholder="Website Link"
+                placeholder="https://example.com"
                 name="websiteLink"
                 value={formData.websiteLink}
                 onChange={handleChange}
@@ -765,7 +765,7 @@ const EditEvents = () => {
                 Facebook Link
               </Typography>
               <CustomInputShadow
-                placeholder="Facebook Link"
+                placeholder="https://example.com"
                 name="facebookLink"
                 value={formData.facebookLink}
                 onChange={handleChange}
