@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) => {
+const DeleteEventModal = ({ open, handleClose, id, onSuccess }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackAlertData, setSnackAlertData] = React.useState({
         message: "",
@@ -26,23 +26,24 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
             message: "",
             severity: "success",
         });
-
+      console.log(id)
         try {
             setLoading(true);
             const response = await axios({
-                url: `${appUrl}/admin/delete-specific-checkin/${reviewId}`,
-                method: "delete",  // Set method to DELETE
+                url: `${appUrl}/admin/delete-event/${id}`,
+                method: "delete", 
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,
                 },
             });
 
             setLoading(false);
+            console.log(response)
 
             if (response) {
                 setSnackAlertData({
                     open: true,
-                    message: response?.data?.message,
+                    message: "Event deleted successfully.",
                     severity: "success",
                 });
                 onSuccess();  // Refresh reviews list
@@ -53,9 +54,11 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
             setLoading(false);
             setSnackAlertData({
                 open: true,
-                message: error?.message,
+                message: "Failed to delete Event.",
                 severity: "error",
             });
+            console.log(error.response)
+
         }
     };
 
@@ -66,7 +69,7 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
         transform: 'translate(-50%, -50%)',
         width: {
             xs: "90%",
-            md: "410px"
+            md: "400px"
         },
         bgcolor: '#5A3D0A',
         boxShadow: 24,
@@ -94,10 +97,10 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            Delete Checkin
+                            Delete Event
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
-                            Are you sure you want to delete this check-in?
+                            Are you sure you want to delete this Event?
                         </Typography>
                         <Box sx={{ display: "flex", justifyContent: "center", mt: 4, gap: "1rem" }}>
                             <CustomButton
@@ -137,4 +140,4 @@ const ConfirmDeleteModalCheckin = ({ open, handleClose, reviewId, onSuccess }) =
     );
 };
 
-export default ConfirmDeleteModalCheckin;
+export default DeleteEventModal;

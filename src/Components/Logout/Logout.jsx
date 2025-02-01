@@ -74,7 +74,6 @@ const LogoutButton = ({ isSidebarOpen }) => {
                         outline: "none",
                         backgroundColor: "white",
                         marginTop: "5px",
-                        height: "35px", 
                         width: { xl: "45px", xs: "35px" },
                         height: { xl: "45px", xs: "35px" },
                         display: "flex", 

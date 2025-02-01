@@ -29,6 +29,7 @@ import queryString from "query-string"; // Import query-string library
 import { debounce } from "lodash";
 import DeleteIcon from "../../assets/deleteIcon.png";
 import eyeIcon from "../../assets/eyeopen.png";
+import loadingGIF from "../../assets/loading.gif";
 
 import DeleteRequestedEvent from "../../Components/DeleteRequestedEvent/DeleteRequestedEvent";
 
@@ -36,6 +37,7 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const RequestedEvents = () => {
   const navigate = useNavigate();
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [allEvents, setAllEvents] = useState([]);
   const [page, setPage] = useState(1); // Current page state
@@ -69,6 +71,7 @@ const RequestedEvents = () => {
       setAllEvents(response?.data?.events);
       setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
       setLoading(false);
+      setSearchBarLoading(false)
       console.log(response);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -93,6 +96,7 @@ const RequestedEvents = () => {
 
   // Handle search input change
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     const value = event.target.value;
     setInputValue(value); // Update input field immediately
     debouncedSearch(value); // Debounce the search term update
@@ -112,13 +116,13 @@ const RequestedEvents = () => {
     const date = new Date(isoString);
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
     let formattedDate = date.toLocaleDateString('en-US', options)
-                            .replace(/,/, '')
-                            .toLowerCase()
-                            .replace(/\s/g, '-');
-  
+      .replace(/,/, '')
+      .toLowerCase()
+      .replace(/\s/g, '-');
+
     // Capitalize the first letter of the month
     formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-    
+
     return formattedDate;
   }
 
@@ -148,7 +152,7 @@ const RequestedEvents = () => {
   };
 
 
-   const handleNavigateToAddEvent = (state) => {
+  const handleNavigateToAddEvent = (state) => {
     navigate("/admin/add-requested-event", { state: state });
   };
   return (
@@ -216,15 +220,30 @@ const RequestedEvents = () => {
               value={inputValue}
               onChange={handleSearchChange}
             />
-            <img
-              src={SearchIcon}
-              alt=""
-              style={{
-                position: "absolute",
-                top: "14px",
-                right: "20px",
-              }}
-            />
+            {
+              isSearchBarLoading ?
+                <img
+                  src={loadingGIF}
+                  alt="loading"
+                  style={{
+                    width: "30px",
+
+                    position: "absolute",
+                    top: "8px",
+                    right: "15px",
+                  }}
+                />
+                :
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  style={{
+                    position: "absolute",
+                    top: "14px",
+                    right: "20px",
+                  }}
+                />
+            }
           </Box>
         </Box>
         {loading ? (
@@ -240,9 +259,9 @@ const RequestedEvents = () => {
                   <TableRow
                     sx={{
                       backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                      "&:hover": {
-                        backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                      },
+                      // "&:hover": {
+                      //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                      // },
                       padding: "0px",
                     }}
                     className="header-row"
@@ -291,11 +310,11 @@ const RequestedEvents = () => {
                         },
                         textAlign: "start",
                         color: "white",
-                        pl:"5px"
+                        pl: "5px"
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Organized By
+                      Requested By
                     </TableCell>
                     <TableCell
                       sx={{
@@ -389,13 +408,13 @@ const RequestedEvents = () => {
                         sx={{ textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                        {event?.owner?.name}
+                        {event?.requestedBy?.name}
                       </TableCell>
                       <TableCell
                         sx={{ textAlign: "start !important" }}
                         className="MuiTableCell-root"
                       >
-                        {event.venueName}
+                        {event.venueAddress}
                       </TableCell>
                       <TableCell className="MuiTableCell-root">
                         {formatDate(event.eventDate)}
@@ -409,44 +428,44 @@ const RequestedEvents = () => {
                             display: "flex",
                             gap: "10px",
                             justifyContent: "center",
-                            alignItems:"center"
+                            alignItems: "center"
                           }}
                         >
-                        <Tooltip title="View Requested Events" >
+                          <Tooltip title="View Requested Events" >
                             <img
-                            className="delete-icon edit-icon" 
-                             
-                            src={eyeIcon}
-                            alt="Delete"
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              cursor: "pointer",
-                              border: "0 px solid red",
-                              borderRadius: "10px",
-                              padding: "8px",
-                              objectFit:"contain"
-                            }}
-                            onClick={() => handleNavigateToAddEvent(event)}
-                          />
-                          </Tooltip>
-                        <Tooltip title="Delete Requested Events" >
+                              className="delete-icon edit-icon"
 
-                          <img
-                            className="delete-icon edit-icon" 
-                             
-                            src={DeleteIcon}
-                            alt="Delete"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              cursor: "pointer",
-                              border: "0 px solid red",
-                              borderRadius: "10px",
-                              padding: "8px",
-                            }}
-                            onClick={() => handleOpenDeleteModal(event._id)}
-                          />
+                              src={EditIcon}
+                              alt="Delete"
+                              style={{
+                                width: "40px",
+                                height: "40px",
+                                cursor: "pointer",
+                                border: "0 px solid red",
+                                borderRadius: "10px",
+                                padding: "8px",
+                                objectFit: "contain"
+                              }}
+                              onClick={() => handleNavigateToAddEvent(event)}
+                            />
+                          </Tooltip>
+                          <Tooltip title="Delete Requested Events" >
+
+                            <img
+                              className="delete-icon edit-icon"
+
+                              src={DeleteIcon}
+                              alt="Delete"
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                cursor: "pointer",
+                                border: "0 px solid red",
+                                borderRadius: "10px",
+                                padding: "8px",
+                              }}
+                              onClick={() => handleOpenDeleteModal(event._id)}
+                            />
                           </Tooltip>
 
                         </Box>

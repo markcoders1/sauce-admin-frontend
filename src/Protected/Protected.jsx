@@ -5,6 +5,7 @@ import { handleSnackAlert } from '../Redux/Slice/SnackAlertSlice/SnackAlertSlice
 const Protected = ({ children }) => {
     const auth = useSelector(state => state?.auth);
     const dispatch = useDispatch();
+    
 
     if (auth?.type !== "admin") {
         dispatch(handleSnackAlert({ open: true, message: "You're not authorized. Please log in first.", severity: "error" }));

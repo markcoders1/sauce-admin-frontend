@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess }) => {
+const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess=()=>{} }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackAlertData, setSnackAlertData] = React.useState({
         message: "",
@@ -38,18 +38,15 @@ const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess }) => 
             });
 
             setLoading(false);
-            console.log(response)
-
-            if (response) {
+            if(response.status === 200){
                 setSnackAlertData({
                     open: true,
-                    message: "Review deleted successfully.",
+                    message: response.data.message,
                     severity: "success",
                 });
-                onSuccess();  // Refresh reviews list
                 handleClose();
+                onSuccess();  // Refresh reviews list
             }
-
         } catch (error) {
             setLoading(false);
             setSnackAlertData({
@@ -57,7 +54,6 @@ const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess }) => 
                 message: "Failed to delete review.",
                 severity: "error",
             });
-            console.log(error.response)
 
         }
     };
@@ -97,7 +93,7 @@ const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess }) => 
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            Delete sauce
+                            Delete Sauce
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
                             Are you sure you want to delete this  Sauce?

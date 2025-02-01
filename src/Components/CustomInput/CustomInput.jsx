@@ -50,6 +50,7 @@ const CustomInputShadow = forwardRef(({
         }}
       >
         <TextField
+          
           placeholder={placeholder}
           type={showPassword ? "text" : type}
           ref={ref}

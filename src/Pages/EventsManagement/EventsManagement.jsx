@@ -6,6 +6,8 @@ import "./EventsManagement.css"; // Import the CSS file for custom styles
 import CustomButton from '../../Components/CustomButton/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/EditIcon.png'; // Adjust path as needed
+import DeleteIcon from "../../assets/deleteIcon.png";
+
 import PageLoader from '../../Components/Loader/PageLoader';
 import axios from 'axios';
 import MenuBar from '../../Components/MenuBar/MenuBar';
@@ -15,6 +17,8 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import queryString from 'query-string'; // Import query-string library
 import { debounce } from 'lodash';
+import loadingGIF from "../../assets/loading.gif";
+import DeleteEventModal from '../../Components/DeleteEventModal/DeleteEventModal';
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -28,7 +32,9 @@ const EventsManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const auth = useSelector(state => state.auth);
     const [inputValue, setInputValue] = useState('');
-
+    const [isSearchBarLoading, setSearchBarLoading] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
 
     // State for lightbox
     const [isOpen, setIsOpen] = useState(false);
@@ -42,8 +48,8 @@ const EventsManagement = () => {
                 method: "get",
                 params: {
                     page: page, // Pass current page to backend
-                    limit: 8 ,// Number of items per page
-                    searchTerm : searchTerm,
+                    limit: 8,// Number of items per page
+                    searchTerm: searchTerm,
                 },
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`
@@ -52,6 +58,7 @@ const EventsManagement = () => {
             setAllEvents(response?.data?.events);
             setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
             setLoading(false);
+            setSearchBarLoading(false)
             console.log(response)
         } catch (error) {
             console.error('Error fetching events:', error);
@@ -70,11 +77,11 @@ const EventsManagement = () => {
         debounce((value) => {
             navigate(`${location.pathname}?page=1`);  // Reset to page 1 for new search
             setSearchTerm(value);
-              // const filteredEvents = allEvents.filter(event =>
-    //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
-        }, 2000), 
+            // const filteredEvents = allEvents.filter(event =>
+            //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            //     event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
+            // );
+        }, 2000),
         []
     );
 
@@ -82,13 +89,15 @@ const EventsManagement = () => {
 
     // Handle search input change
     const handleSearchChange = (event) => {
+        setSearchBarLoading(true)
         const value = event.target.value;
         setInputValue(value); // Update input field immediately
         debouncedSearch(value); // Debounce the search term update
         setPage(1); // Reset to first page on new search
+
     };
 
-  
+
     // Handle pagination change
     const handlePageChange = useCallback((event, value) => {
         setPage(value);
@@ -98,15 +107,15 @@ const EventsManagement = () => {
         const date = new Date(isoString);
         const options = { year: 'numeric', month: 'short', day: '2-digit' };
         let formattedDate = date.toLocaleDateString('en-US', options)
-                                .replace(/,/, '')
-                                .toLowerCase()
-                                .replace(/\s/g, '-');
-      
+            .replace(/,/, '')
+            .toLowerCase()
+            .replace(/\s/g, '-');
+
         // Capitalize the first letter of the month
         formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-        
+
         return formattedDate;
-      }
+    }
 
     // const filteredEvents = allEvents.filter(event =>
     //     event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -124,97 +133,112 @@ const EventsManagement = () => {
 
     return (
         <>
-            
-                    <Box>
-                        <Box sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            p: {
-                                sm: "0px 20px 0px 20px",
-                                xs: "0px 0px 0px 0px"
-                            },
-                            alignItems: {
-                                md: "center",
-                                xs: "start"
-                            },
-                            flexDirection: {
-                                md: "row",
-                                xs: "column"
-                            },
-                            position: "relative",
-                            gap: "20px"
-                        }}>
-                            <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
-                                <Typography sx={{
-                                    color: "white",
-                                    fontWeight: "600",
-                                    fontSize: {
-                                        lg: "45px",
-                                        sm:"40px",
-                                        xs: "30px"
-                                    },
-                                    fontFamily: "Fira Sans !important",
-                                }}>
-                                    Events Management
-                                </Typography>
-                                <Typography>
-                                    <MenuBar/>
-                                </Typography>
-                            </Box>
 
-                            <Box sx={{ display: "flex",flexDirection:{sm:"row" , xs:"column"}, justifyContent: {md:"center", sm:"end"}, alignItems: {sm:"center", xs:"end"}, gap: "1rem",width:{md:"700px", xs:"100%"} }}>
-                                <Box sx={{ position: "relative", maxWidth: {sm:"350px", xs:"100%"}, width:"100%" }}>
-                                    <input
-                                        type="search"
-                                        name="search"
-                                        id="search"
-                                        className="search-input"
-                                        placeholder="Search"
-                                        value={inputValue}
-                                        onChange={handleSearchChange}
+            <Box>
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    p: {
+                        sm: "0px 20px 0px 20px",
+                        xs: "0px 0px 0px 0px"
+                    },
+                    alignItems: {
+                        md: "center",
+                        xs: "start"
+                    },
+                    flexDirection: {
+                        md: "row",
+                        xs: "column"
+                    },
+                    position: "relative",
+                    gap: "20px"
+                }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }} >
+                        <Typography sx={{
+                            color: "white",
+                            fontWeight: "600",
+                            fontSize: {
+                                lg: "45px",
+                                sm: "40px",
+                                xs: "30px"
+                            },
+                            fontFamily: "Fira Sans !important",
+                        }}>
+                            Events Management
+                        </Typography>
+                        <Typography>
+                            <MenuBar />
+                        </Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", flexDirection: { sm: "row", xs: "column" }, justifyContent: { md: "center", sm: "end" }, alignItems: { sm: "center", xs: "end" }, gap: "1rem", width: { md: "700px", xs: "100%" } }}>
+                        <Box sx={{ position: "relative", maxWidth: { sm: "350px", xs: "100%" }, width: "100%" }}>
+                            <input
+                                type="search"
+                                name="search"
+                                id="search"
+                                className="search-input"
+                                placeholder="Search"
+                                value={inputValue}
+                                onChange={handleSearchChange}
+                            />
+                            {
+                                isSearchBarLoading ?
+                                    <img
+                                        src={loadingGIF}
+                                        alt="loading"
+                                        style={{
+                                            width: "30px",
+
+                                            position: "absolute",
+                                            top: "8px",
+                                            right: "15px",
+                                        }}
                                     />
+                                    :
                                     <img
                                         src={SearchIcon}
-                                        alt=""
+                                        alt="Search"
                                         style={{
                                             position: "absolute",
                                             top: "14px",
                                             right: "20px",
                                         }}
                                     />
-                                </Box>
-                                <Box
-                                sx={{width:{sm:"200px", xs:"100%"}}}
-                                >
-                                    <CustomButton
-                                        border='1px solid #FFA100'
-                                        ButtonText='Add Event+'
-                                        color='white'
-                                        width={"100%"}
-                                        borderRadius='8px'
-                                        background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
-                                        padding='7px 0px'
-                                        fontSize='18px'
-                                        fontWeight='600'
-                                        onClick={() => navigate("/admin/add-event")}
-                                    />
-                                </Box>
-                            </Box>
+                            }
                         </Box>
-                        {
-                loading ? (
-                    <PageLoader />
-                ) : (
-                        <Box sx={{ mt: "30px", padding: {md:"0px 20px" , xs:"0px"}}}>
+                        <Box
+                            sx={{ width: { sm: "200px", xs: "100%" } }}
+                        >
+                            <CustomButton
+                                border='1px solid #FFA100'
+                                ButtonText='Add Event+'
+                                color='white'
+                                width={"100%"}
+                                borderRadius='8px'
+                                background='linear-gradient(90deg, #FFA100 0%, #FF7B00 100%)'
+                                padding='7px 0px'
+                                fontSize='18px'
+                                fontWeight='600'
+                                onClick={() => navigate("/admin/add-event")}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
+                {
+                    loading ? (
+                        <PageLoader />
+                    ) : (
+                        <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
                             <TableContainer component={Paper} className="MuiTableContainer-root" >
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
                                         <TableRow
                                             sx={{
                                                 backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                                                '&:hover': { 
-                                                    backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                                                },
+                                                // '&:hover': { 
+                                                //     backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                                                // },
                                                 padding: "0px"
                                             }}
                                             className="header-row"
@@ -239,7 +263,7 @@ const EventsManagement = () => {
                                                 },
                                                 textAlign: "start",
                                                 color: "white",
-                                                pl:"10px"
+                                                pl: "10px"
                                             }} className="MuiTableCell-root-head">Events Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
@@ -250,7 +274,7 @@ const EventsManagement = () => {
                                                 },
                                                 textAlign: "start",
                                                 color: "white",
-                                                pl:"5px"
+                                                pl: "5px"
 
                                             }} className="MuiTableCell-root-head">Organized By</TableCell>
                                             <TableCell sx={{
@@ -262,8 +286,8 @@ const EventsManagement = () => {
                                                 },
                                                 textAlign: "start",
                                                 color: "white",
-                                                pl:"5px"
-                                            }} className="MuiTableCell-root-head">Destination</TableCell>
+                                                pl: "5px"
+                                            }} className="MuiTableCell-root-head">Address</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -293,17 +317,19 @@ const EventsManagement = () => {
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                               <TableCell sx={{ borderRadius: "8px 0px 0px 8px !important", color: "white" ,  textAlign:"start !important"}} className="MuiTableCell-root">
-                                                <img src={event.bannerImage ? event.bannerImage : logoAdmin} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor:"pointer" }}  onClick={() => openLightbox(event.bannerImage)}  />
-                                            </TableCell>
-                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.eventName}</TableCell>
-                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event?.owner?.name}</TableCell>
-                                                <TableCell sx={{textAlign:"start !important"}} className="MuiTableCell-root">{event.venueName}</TableCell>
+                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px !important", color: "white", textAlign: "start !important" }} className="MuiTableCell-root">
+                                                    <img src={event.bannerImage ? event.bannerImage : logoAdmin} alt="Sauce" style={{ width: '80px', height: '50px', borderRadius: '8px !important', objectFit: "contain", cursor: "pointer" }} onClick={() => openLightbox(event.bannerImage)} />
+                                                </TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{event.eventName}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{event?.owner?.name}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{event.venueAddress}</TableCell>
                                                 <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                    <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)}  />
+                                                        <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)} />
+                                                        <img className="edit-icon" src={DeleteIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => {setDeleteModalOpen(event._id); setEventToDelete(event._id)}} />
                                                     </Box>
+
                                                 </TableCell>
                                             </TableRow>
                                         ))}
@@ -311,43 +337,55 @@ const EventsManagement = () => {
                                 </Table>
                             </TableContainer>
                         </Box>
-                        )
-                    }
+                    )
+                }
 
-                        {/* Pagination */}
-                        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-                            <Pagination
-                                count={totalPages}
-                                page={page}
-                                onChange={handlePageChange}
-                                sx={{
-                                    '& .MuiPaginationItem-root': {
-                                        color: 'white', // Text color
-                                        backgroundColor: '#2E210A', // Background color for pagination buttons
-                                        border: '2px solid #FFA100', // Border color matching the theme
-                                    },
-                                    '& .Mui-selected': {
-                                        color: '#FFA100', // Text color for selected page
-                                        backgroundColor: '', // Background color for selected page
-                                        fontWeight: 'bold', // Bold text for selected page
-                                    },
-                                    '& .MuiPaginationItem-ellipsis': {
-                                        color: 'white', // Color for ellipsis (...)
-                                    },
-                                    '& .MuiPaginationItem-root:hover': {
-                                        backgroundColor: '#5A3D0A', // Background color on hover
-                                        borderColor: '#FF7B00', // Border color on hover
-                                    },
-                                }}
-                            />
-                        </Box>
-                         
-                    </Box>
-               
+                {/* Pagination */}
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={handlePageChange}
+                        sx={{
+                            '& .MuiPaginationItem-root': {
+                                color: 'white', // Text color
+                                backgroundColor: '#2E210A', // Background color for pagination buttons
+                                border: '2px solid #FFA100', // Border color matching the theme
+                            },
+                            '& .Mui-selected': {
+                                color: '#FFA100', // Text color for selected page
+                                backgroundColor: '', // Background color for selected page
+                                fontWeight: 'bold', // Bold text for selected page
+                            },
+                            '& .MuiPaginationItem-ellipsis': {
+                                color: 'white', // Color for ellipsis (...)
+                            },
+                            '& .MuiPaginationItem-root:hover': {
+                                backgroundColor: '#5A3D0A', // Background color on hover
+                                borderColor: '#FF7B00', // Border color on hover
+                            },
+                        }}
+                    />
+                </Box>
 
+            </Box>
+
+            {deleteModalOpen && (
+        <DeleteEventModal
+          open={deleteModalOpen}
+          handleClose={()=>{
+            setDeleteModalOpen(false)
+            setEventToDelete(null)
+          }}
+          id={eventToDelete} // Pass the review ID here
+          onSuccess={() => fetchEvents(page)} // Refresh reviews list after deletion
+        />
+      )}
             {/* Lightbox component */}
             {isOpen && (
                 <Lightbox
+                carousel={{ finite: true }}
+                controller={{ closeOnBackdropClick: true }}
                     open={isOpen}
                     close={() => setIsOpen(false)}
                     slides={[{ src: selectedImage }]}

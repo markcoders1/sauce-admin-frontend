@@ -94,7 +94,7 @@ const ConfirmDeleteModalForBadge = ({ open, handleClose, reviewId, onSuccess }) 
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ fontWeight: "600", color: "white", fontSize: "24px", textAlign: "center" }}>
-                            Delete Review
+                            Delete Badge
                         </Typography>
                         <Typography sx={{ mt: 2, color: "white", textAlign: "center" }}>
                             Are you sure you want to delete this Badge?

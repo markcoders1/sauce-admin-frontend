@@ -23,7 +23,7 @@ const AddSauce = () => {
     message: "",
     severity: "success",
   });
-  const { state } = useLocation();
+  const { state} = useLocation();
 
   const [formData, setFormData] = useState({
     sauceName: state?.name ? state?.name : "",
@@ -54,7 +54,7 @@ const AddSauce = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
-    console.log(state);
+    console.log("============================================================================>",state);
   }, []);
 
   const handleOpenDeleteModal = () => {
@@ -245,7 +245,7 @@ const AddSauce = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -395,9 +395,16 @@ borderRadius: '10px'
                 xs: "16px",
               },
               fontFamily: "Montserrat !important",
+              display: "flex",
+              alignItems: "center",
+              gap: ".5rem", 
             }}
           >
-            Sauce Owner
+            Sauce Owner 
+            
+            {state?.isFromRequestedPage &&<Typography>
+                Brand name suggested by user : {state?.description}
+            </Typography>}
           </Typography>
 
           <VirtualizedCustomSelect
@@ -719,7 +726,7 @@ borderRadius: '10px'
         {state ? (
           <CustomButton
             border="1px solid #FFA100"
-            ButtonText={loading ? "Delete" : "Delete Request"}
+            ButtonText={loading ? "Delete Sauce" : "Delete Request Sauce"}
             color="white"
             width={"208px"}
             padding="25px 0px"
@@ -738,7 +745,7 @@ borderRadius: '10px'
 
         <CustomButton
           border="1px solid #FFA100"
-          ButtonText={loading ? "Adding" : "Add "}
+          ButtonText={loading ? "Saving Sauce" : "Save Sauce"}
           color="white"
           borderRadius="8px"
           background={

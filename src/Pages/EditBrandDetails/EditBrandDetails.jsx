@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
-import { Box, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import axios from "axios";
 import SnackAlert from "../../Components/SnackAlert/SnackAlert";
@@ -11,6 +11,7 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 import CustomTextAreaShadow from "../../Components/CustomTextAreaShadow/CustomTextAreaShadow";
 import PageLoader from "../../Components/Loader/PageLoader";
+import ConfirmBrandDeleteModal from "../../Components/ConfirmBrandDeleteModal/ConfirmBrandDeleteModal";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -30,6 +31,8 @@ const EditBrandDetails = () => {
     about: "",
     isTopRated: false,
     email: "",
+    websiteLink: "",
+    amazonLink: "",
   });
   const [errors, setErrors] = useState({});
   const [selectedFileName, setSelectedFileName] = useState("");
@@ -37,6 +40,7 @@ const EditBrandDetails = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -102,6 +106,9 @@ const EditBrandDetails = () => {
       console.log(response.data);
       setFormData({
         name: userData?.name || "",
+        amazonLink: userData?.amazonLink || "",
+        websiteLink: userData?.websiteLink || "",
+
         image: userData?.image || "",
         type: userData?.type || "",
         status: userData?.status || "",
@@ -109,6 +116,7 @@ const EditBrandDetails = () => {
         about: userData?.about || "", // Fetch about if available, else set to one empty string
         isTopRated: userData?.isTopRated || false,
         email: userData?.email || "",
+        sauces: userData?.sauces 
       });
       setPreviewImage(userData?.image);
     } catch (error) {
@@ -117,6 +125,9 @@ const EditBrandDetails = () => {
     setLoading(false)
 
     }
+  };
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
   };
 
   useEffect(() => {
@@ -143,8 +154,9 @@ const EditBrandDetails = () => {
     formDataToSend.append("points", formData.points);
     formDataToSend.append("userId", id);
     formDataToSend.append("isTopRated", formData.isTopRated);
+    formDataToSend.append("websiteLink", formData.websiteLink);
+    formDataToSend.append("amazonLink", formData.amazonLink);
     formDataToSend.append("email", formData.email);
-
     // Handle about array
     formDataToSend.append("about", formData.about);
 
@@ -354,6 +366,56 @@ const EditBrandDetails = () => {
             error={errors.name}
           />
         </Box>
+        
+        <Box sx={{ flexBasis: "33%" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+              marginBottom: "0.4rem",
+            }}
+          >
+            Amazon Link
+          </Typography>
+          <CustomInputShadow
+            placeholder="Enter amazon link "
+            name="amazonLink"
+            value={formData.amazonLink}
+            onChange={handleChange}
+            error={errors.name}
+          />
+        </Box>
+
+
+        <Box sx={{ flexBasis: "33%" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+              marginBottom: "0.4rem",
+            }}
+          >
+            Website Link
+          </Typography>
+          <CustomInputShadow
+            placeholder="Enter Website Link"
+            name="websiteLink"
+            value={formData.websiteLink}
+            onChange={handleChange}
+            error={errors.name}
+          />
+        </Box>
+
 
         {/* <Box sx={{ flexBasis: "33%" }}>
           <Typography sx={{
@@ -475,7 +537,30 @@ const EditBrandDetails = () => {
         </>
       )}
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end",gap:"20px", mt: 0 }}>
+        {
+         
+        }
+     {(formData.type && formData.type =="brand" )&& 
+     <Tooltip title={formData.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this sauce"}>  
+     <span>
+       <CustomButton
+            border="1px solid #FFA100"
+            ButtonText={loading ? "Deleting" : "Delete this brand"}
+            color="white"
+            width={"208px"}
+            borderRadius="8px"
+          background={formData.sauces?"rgba(236, 236, 236, .5)":""}
+          hoverBg={formData.sauces?"rgba(236, 236, 236, .5)":""}
+  
+            padding="25px 0px"
+            fontSize="18px"
+            fontWeight="600"
+            onClick={ formData.sauces?null:()=>{setDeleteModalOpen(true)}}
+          />
+      </span>    
+     </Tooltip>
+     }
         <CustomButton
           border="1px solid #FFA100"
           ButtonText={loading ? "Saving" : "Save"}
@@ -491,7 +576,14 @@ const EditBrandDetails = () => {
           onClick={handleSubmit}
         />
       </Box>
-
+      {deleteModalOpen && (
+          <ConfirmBrandDeleteModal
+            open={deleteModalOpen}
+            handleClose={handleCloseDeleteModal}
+            brandId={id}
+            onSuccess={() => navigate(-1)}
+          />
+        )}
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}

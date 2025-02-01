@@ -118,7 +118,7 @@ const [allStores, setAllStores] = useState([]);
 
   const handleCopyUrl = (url) => {
     navigator.clipboard.writeText(url);
-    alert("URL copied to clipboard!");
+    // alert("URL copied to clipboard!");
   };
 
   const handleNavigate = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab, Pagination } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab, Pagination, Tooltip } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string'; // Import query-string library
@@ -14,6 +14,9 @@ import PageLoader from '../../Components/Loader/PageLoader';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css"; // Import the CSS for the lightbox
 import EditIcon from '../../assets/EditIcon.png'
+import loadingGIF from "../../assets/loading.gif";
+import ConfirmDeleteModalSauce from '../../Components/DeleteSaucModal/DeleteSauceModal';
+import DeleteIcon from "../../assets/deleteIcon.png";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -42,6 +45,7 @@ const TabooManagement = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = useParams();
+    const [isSearchBarLoading, setSearchBarLoading] = useState(false)
     const [loading, setLoading] = useState(false);
     const [brands, setBrands] = useState([]);
     const [brandName, setBrandName] = useState('');
@@ -50,9 +54,19 @@ const TabooManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
-
+    const [reviewToDelete, setReviewToDelete] = useState(null);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
+    const handleOpenDeleteModal = (id) => {
+        setReviewToDelete(id);
+        setDeleteModalOpen(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setReviewToDelete(null);
+        setDeleteModalOpen(false);
+    };
 
     const fetchBrands = async (currentPage) => {
         try {
@@ -74,6 +88,7 @@ const TabooManagement = () => {
             const firstBrand = response?.data?.sauces[0]?.owner.name;
             setBrandName(firstBrand);
             setLoading(false);
+            setSearchBarLoading(false)
         } catch (error) {
             console.error('Error fetching brands:', error);
             setLoading(false);
@@ -88,6 +103,7 @@ const TabooManagement = () => {
     }, [location.search]);
 
     const handleSearchChange = (event) => {
+        setSearchBarLoading(true)
         setSearchTerm(event.target.value);
     };
 
@@ -118,6 +134,9 @@ const TabooManagement = () => {
     const openLightbox = (imageSrc) => {
         setSelectedImage(imageSrc);
         setIsOpen(true);
+    };
+    const handleNavigateToEdit = (id) => {
+        navigate(`/admin/edit-sauce-details/${id}`);
     };
 
     return (
@@ -169,15 +188,30 @@ const TabooManagement = () => {
                                     value={searchTerm}
                                     onChange={handleSearchChange}
                                 />
-                                <img
-                                    src={SearchIcon}
-                                    alt=""
-                                    style={{
-                                        position: "absolute",
-                                        top: "14px",
-                                        right: "20px",
-                                    }}
-                                />
+                                {
+                                    isSearchBarLoading ?
+                                        <img
+                                            src={loadingGIF}
+                                            alt="loading"
+                                            style={{
+                                                width: "30px",
+
+                                                position: "absolute",
+                                                top: "8px",
+                                                right: "15px",
+                                            }}
+                                        />
+                                        :
+                                        <img
+                                            src={SearchIcon}
+                                            alt="Search"
+                                            style={{
+                                                position: "absolute",
+                                                top: "14px",
+                                                right: "20px",
+                                            }}
+                                        />
+                                }
                             </Box>
                             <Box>
                                 <CustomButton
@@ -197,7 +231,7 @@ const TabooManagement = () => {
                     </Box>
 
                     {filteredBrands.length === 0 ? (
-                        <Typography sx={{textAlign: "center", fontWeight:"600", mt: 4, fontSize:"1.5rem", color:"#FFA100" }}>
+                        <Typography sx={{ textAlign: "center", fontWeight: "600", mt: 4, fontSize: "1.5rem", color: "#FFA100" }}>
                             Sauce not found
                         </Typography>
                     ) : (
@@ -208,9 +242,9 @@ const TabooManagement = () => {
                                         <TableRow
                                             sx={{
                                                 backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                                                '&:hover': { 
-                                                    backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                                                },
+                                                // '&:hover': { 
+                                                //     backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                                                // },
                                                 padding: "0px",
                                             }}
                                             className="header-row"
@@ -235,8 +269,8 @@ const TabooManagement = () => {
                                                 },
                                                 textAlign: "start",
                                                 color: "white",
-                                                pl:"10px"
-                                            }} className="MuiTableCell-root-head">Brand Name</TableCell>
+                                                pl: "10px"
+                                            }} className="MuiTableCell-root-head">Sauce Name</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -244,10 +278,32 @@ const TabooManagement = () => {
                                                     sm: "21px",
                                                     xs: "16px"
                                                 },
-                                                textAlign: "start",
+                                                textAlign: "center",
                                                 color: "white",
                                                 pl:"10px"
-                                            }} className="MuiTableCell-root-head">Upload Date</TableCell>
+                                            }} className="MuiTableCell-root-head">Featured</TableCell>
+                                            <TableCell sx={{
+                                                     textAlign: "center !important",
+                                                fontWeight: "500",
+                                                padding: "12px 0px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
+                                                color: "white",
+                                                pl: "10px"
+                                            }} className="MuiTableCell-root-head">Check-ins</TableCell>
+                                            <TableCell sx={{
+                                                     textAlign: "center !important",
+                                                fontWeight: "500",
+                                                padding: "12px 0px",
+                                                fontSize: {
+                                                    sm: "21px",
+                                                    xs: "16px"
+                                                },
+                                                color: "white",
+                                                pl: "10px"
+                                            }} className="MuiTableCell-root-head">Reviewss</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -262,23 +318,77 @@ const TabooManagement = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody className="MuiTableBody-root">
-                                        {filteredBrands.map((brand, index) => (
+                                        {filteredBrands.map((sauce, index) => (
                                             <TableRow key={index} sx={{
                                                 border: "2px solid #FFA100"
                                             }} className="MuiTableRow-root">
-                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", ml:{md:"20px", xs:"10px"} }} className="MuiTableCell-root">
-                                                    <img 
-                                                        src={brand.image ? brand.image : logoAdmin } 
-                                                        style={{ width: '80px', height: '50px', borderRadius: '8px', cursor: 'pointer', objectFit:"contain" }} 
-                                                        onClick={() => openLightbox(brand.image)} 
+                                                <TableCell sx={{ borderRadius: "8px 0px 0px 8px", color: "white", ml: { md: "20px", xs: "10px" } }} className="MuiTableCell-root">
+                                                    <img
+                                                        src={sauce.image ? sauce.image : logoAdmin}
+                                                        style={{ width: '80px', height: '50px', borderRadius: '8px', cursor: 'pointer', objectFit: "contain" }}
+                                                        onClick={() => openLightbox(sauce.image)}
                                                     />
                                                 </TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{brand.name}</TableCell>
-                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{formatDate(brand.createdAt)}</TableCell>
+                                                <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
+                                                <TableCell sx={{ textAlign: "center !important" }} className="MuiTableCell-root">{sauce.isFeatured?"YES" :"NO"}</TableCell>
+                                                <Tooltip title="View All This Sauce Check-ins ">
+
+                                                    <TableCell
+                                                        onClick={() => navigate(`/admin/sauce-checkin/${sauce._id}`)}
+                                                        sx={{
+                                                            textAlign: "center !important",
+
+                                                            textDecoration: "underline !important",
+                                                            color: "#FFA100 !important",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        className="MuiTableCell-root"
+                                                    >
+                                                        {sauce.checkIn}
+                                                    </TableCell>
+                                                </Tooltip>
+
+                                                <Tooltip title="View All This Sauce  Reviews">
+
+                                                    <TableCell
+                                                        onClick={() => navigate(`/admin/sauce-reviews/${sauce._id}`)}
+
+                                                        sx={{
+                                                            textAlign: "center !important",
+                                                            textDecoration: "underline !important",
+                                                            color: "#FFA100 !important",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        className="MuiTableCell-root"
+                                                    >
+                                                        {sauce.reviewCount}
+                                                    </TableCell>
+                                                </Tooltip>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-                                                        <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEditSauce(brand._id)} />
+                                                        <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEditSauce(sauce._id)} />
                                                     </Box>
+                                                    <Tooltip title="Delete Sauce">
+                                                        <img
+                                                            className="edit-icon"
+
+                                                            src={DeleteIcon}
+                                                            style={{
+                                                                width: "40px",
+                                                                height: "40px",
+                                                                cursor: "pointer",
+                                                                objectFit: "contain",
+                                                                borderRadius: "10px",
+
+
+                                                            }}
+                                                            onClick={() => {
+                                                                handleOpenDeleteModal(sauce._id);
+
+                                                            }}
+                                                            alt="Delete"
+                                                        />
+                                                    </Tooltip>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
@@ -316,6 +426,16 @@ const TabooManagement = () => {
                         />
                     </Box>
                 </Box>
+            )}
+            {/* )
+            } */}
+            {deleteModalOpen && (
+                <ConfirmDeleteModalSauce
+                    open={deleteModalOpen}
+                    handleClose={handleCloseDeleteModal}
+                    reviewId={reviewToDelete} // Pass the review ID here
+                    onSuccess={() => {fetchBrands(page, searchTerm)}} // Refresh reviews list after deletion
+                />
             )}
 
             {isOpen && (

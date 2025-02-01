@@ -29,12 +29,15 @@ const AddBadge = () => {
     description: "",
   });
   const [errors, setErrors] = useState({});
+    const [previewImage, setPreviewImage] = useState(null); // For image preview
+  
   const [selectedFileName, setSelectedFileName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
+      setPreviewImage(URL.createObjectURL(files[0]))
       setFormData({
         ...formData,
         [name]: files[0],
@@ -101,11 +104,11 @@ const AddBadge = () => {
     icon: null,
     description: "",
       });
-      // navigate(-1)
+      navigate(-1)
 
       setSelectedFileName(""); // Reset file name
       setLoading(false);
-
+      setPreviewImage(null)
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
@@ -163,14 +166,54 @@ const AddBadge = () => {
           display: "flex",
           flexDirection: { lg: "row", xs: "column" },
           gap: "1.5rem",
-          height: { lg: "100%", xs: "370px" },
+          height: {  xs: "200px" },
+          // alignItems:"stretch"
+          alignItems: {
+            xs: "center",
+          },
         }}
       >
+           {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Selected Badge"
+                      style={{
+                        width: "auto",
+                        height: "190px",
+                        borderRadius: "12px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  ) : (
+                    <Box sx={{
+                      height:"100%",
+                      border: "2px dashed #FFA100",
+                      backgroundColor: "#2E210A",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "12px",
+                    }}>
+
+                    <Typography
+                      sx={{
+                        color: "#FFA100",
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        textAlign:"center"
+                        
+                      }}
+                    >
+                      Please Select Image
+                    </Typography>
+                    </Box>
+
+                  )}
         <label
           htmlFor="uploadBannerImage"
           style={{
             flexBasis: "100%",
-            height: "165px",
+            height: "100%",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
             display: "flex",

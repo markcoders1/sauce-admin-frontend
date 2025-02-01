@@ -24,10 +24,14 @@ import SearchIcon from "../../assets/SearchIcon.png";
 import { debounce } from "lodash"; // Import lodash debounce
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import eyeIcon from "../../assets/eyeopen.png";
+import loadingGIF from "../../assets/loading.gif";
+import EditIcon from "../../assets/EditIcon.png";
+import DeleteIcon from "../../assets/deleteIcon.png";
 
 import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the design consistent
 // delete requested sauce modal
 import ConfirmDeleteModalRequestedSauce from "../../Components/DeleteRequestedSauce/DeleteRequestedSauce";
+import ConfirmDeleteModalSauce from "../../Components/DeleteSaucModal/DeleteSauceModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const RequestedSauce = () => {
@@ -37,9 +41,10 @@ const RequestedSauce = () => {
   const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Added state for search term
-
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -61,6 +66,7 @@ const RequestedSauce = () => {
       setSauces(response?.data?.sauces || []);
       setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
+      setSearchBarLoading(false)
       console.log(response);
     } catch (error) {
       console.error("Error fetching sauces:", error);
@@ -92,14 +98,22 @@ const RequestedSauce = () => {
   };
 
   const handleNavigate = (sauceData) => {
-    navigate("/admin/add-sauce", { state: sauceData });
+    navigate("/admin/add-sauce", { state: {...sauceData, isFromRequestedPage:true} });
   };
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     setPage(1); // Reset to page 1 on search
     debouncedSearch(event.target.value);
   };
-
+  const handleOpenDeleteModal = (id) => {
+    setReviewToDelete(id);
+    setDeleteModalOpen(true);
+  };
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setReviewToDelete(null);
+  };
   return (
     <>
       <Box>
@@ -157,6 +171,20 @@ const RequestedSauce = () => {
                 onChange={handleSearchChange}
                 style={{ color: "white" }}
               />
+             {
+                isSearchBarLoading?
+                <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
               <img
                 src={SearchIcon}
                 alt="Search"
@@ -166,6 +194,7 @@ const RequestedSauce = () => {
                   right: "20px",
                 }}
               />
+              }
             </Box>
           </Box>
         </Box>
@@ -198,10 +227,10 @@ const RequestedSauce = () => {
                         sx={{
                           backgroundImage:
                             "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
-                          "&:hover": {
-                            backgroundImage:
-                              "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
-                          },
+                          // "&:hover": {
+                          //   backgroundImage:
+                          //     "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
+                          // },
                           padding: "0px",
                         }}
                         className="header-row"
@@ -231,7 +260,7 @@ const RequestedSauce = () => {
                             pl: "10px",
                           }}
                         >
-                          Brand Name
+                          User Name
                         </TableCell>
                         <TableCell
                           className="MuiTableCell-root-head"
@@ -244,7 +273,7 @@ const RequestedSauce = () => {
                             pl: "10px",
                           }}
                         >
-                          Brand Email
+                          Website Link
                         </TableCell>
                         <TableCell
                           className="MuiTableCell-root-head"
@@ -282,13 +311,13 @@ const RequestedSauce = () => {
                             sx={{ textAlign: "start !important" }}
                             className="MuiTableCell-root"
                           >
-                            {sauce?.owner?.name || "No Brand Name"}
+                            {sauce?.owner?.name || "No User Name"}
                           </TableCell>
                           <TableCell
                             sx={{ textAlign: "start !important" }}
                             className="MuiTableCell-root"
                           >
-                            {sauce?.owner?.email || "No Email Available"}
+                            {sauce?.websiteLink || "No Email Available"}
                           </TableCell>
                           <TableCell
                             sx={{
@@ -317,8 +346,8 @@ const RequestedSauce = () => {
                             <Tooltip title="View Requested Sauce">
                               <img
                                 className="delete-icon edit-icon"
-                                src={eyeIcon}
-                                alt="Delete"
+                                src={EditIcon}
+                                alt="Edit Requested Sauce"
                                 style={{
                                   width: "40px",
                                   height: "40px",
@@ -329,6 +358,24 @@ const RequestedSauce = () => {
                                   objectFit: "contain",
                                 }}
                                 onClick={() => handleNavigate(sauce)}
+                              />
+                            </Tooltip>
+                            
+                            <Tooltip title="View Requested Sauce">
+                              <img
+                                className="delete-icon edit-icon"
+                                src={DeleteIcon}
+                                alt="Delete Requested Sauce"
+                                style={{
+                                  width: "40px",
+                                  height: "40px",
+                                  cursor: "pointer",
+                                  border: "0 px solid red",
+                                  borderRadius: "10px",
+                                  padding: "2px",
+                                  objectFit: "contain",
+                                }}
+                                onClick={() =>  handleOpenDeleteModal(sauce._id)}
                               />
                             </Tooltip>
                             </Box>
@@ -371,6 +418,14 @@ const RequestedSauce = () => {
             )}
           </>
         )}
+             {deleteModalOpen && (
+        <ConfirmDeleteModalSauce
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          reviewId={reviewToDelete} // Pass the review ID here
+          onSuccess={() => fetchSauces(page)} // Refresh reviews list after deletion
+        />
+      )}
 
         {isOpen && (
           <Lightbox

@@ -108,7 +108,7 @@ const EditSauce = () => {
         return; // Exit the function to prevent further execution
       }
     }
-  
+
     // Validate websiteLink
     if (formData.websiteLink) {
       if (!isURL(formData.websiteLink)) {
@@ -120,7 +120,7 @@ const EditSauce = () => {
         return; // Exit the function to prevent further execution
       }
     }
-  
+
     const data = {
       image: sauceImage,
       bannerImage: bannerImage,
@@ -134,7 +134,7 @@ const EditSauce = () => {
       title: formData.title,
       sauceId: id
     };
-  
+
     try {
       const response = await axios({
         url: `${appUrl}/admin/edit-sauce`,
@@ -161,7 +161,7 @@ const EditSauce = () => {
       });
     }
   };
-  
+
   const fetchSauce = async () => {
     try {
       const response = await axios({
@@ -202,38 +202,38 @@ const EditSauce = () => {
         flexDirection: "column",
         gap: "1.5rem",
         padding: {
-          sm:"0px 21px",
-          xs:"0px 15px"
+          sm: "0px 21px",
+          xs: "0px 15px"
         }
       }}
     >
-      <Box sx={{display:"flex", justifyContent:"space-between", width:"100%"}} >
+      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }} >
 
-<Typography sx={{
-color: "white",
-fontWeight: "600",
-fontSize: {
-lg: "45px",
-sm:"40px",
-xs: "30px"
-},
-fontFamily: "Fira Sans !important",
-}}>
-Edit Sauce
-</Typography>
-<Typography>
-<MenuBar/>
-</Typography>
-</Box>
+        <Typography sx={{
+          color: "white",
+          fontWeight: "600",
+          fontSize: {
+            lg: "45px",
+            sm: "40px",
+            xs: "30px"
+          },
+          fontFamily: "Fira Sans !important",
+        }}>
+          Edit Sauce
+        </Typography>
+        <Typography>
+          <MenuBar />
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem", height: { md: "100%", xs: "370px" } }}>
         <label htmlFor="uploadSauceImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp"  />
+          <input type="file" id="uploadSauceImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp" />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedSauceFileName ? `Selected File: ${selectedSauceFileName}` : "Upload Sauce Image"}
           </Typography>
         </label>
         <label htmlFor="uploadBannerImage" style={{ flexBasis: "50%", height: "165px", backgroundColor: "#2E210A", border: "2px dashed #FFA100", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "12px", cursor: "pointer" }}>
-          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp"  />
+          <input type="file" id="uploadBannerImage" style={{ display: 'none' }} onChange={handleImageChange} accept="image/png, image/jpg, image/jpeg, image/webp" />
           <Typography sx={{ color: "white", textAlign: "center", fontSize: "22px", fontWeight: "600" }}>
             {selectedBannerFileName ? `Selected File: ${selectedBannerFileName}` : "Upload Banner Image"}
           </Typography>
@@ -252,8 +252,8 @@ Edit Sauce
             color: "#FFA100",
             fontWeight: "500",
             fontSize: {
-                sm: "16px",
-                xs: "16px"
+              sm: "16px",
+              xs: "16px"
             },
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
@@ -273,8 +273,8 @@ Edit Sauce
             color: "#FFA100",
             fontWeight: "500",
             fontSize: {
-                sm: "16px",
-                xs: "16px"
+              sm: "16px",
+              xs: "16px"
             },
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
@@ -294,8 +294,8 @@ Edit Sauce
             color: "#FFA100",
             fontWeight: "500",
             fontSize: {
-                sm: "16px",
-                xs: "16px"
+              sm: "16px",
+              xs: "16px"
             },
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
@@ -311,15 +311,15 @@ Edit Sauce
           />
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: {md:"row", xs:"column"}, gap: "1.5rem" }}>
-       
+      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, gap: "1.5rem" }}>
+
         <Box sx={{ flexBasis: "50%" }}>
           <Typography sx={{
             color: "#FFA100",
             fontWeight: "500",
             fontSize: {
-                sm: "16px",
-                xs: "16px"
+              sm: "16px",
+              xs: "16px"
             },
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
@@ -339,8 +339,8 @@ Edit Sauce
             color: "#FFA100",
             fontWeight: "500",
             fontSize: {
-                sm: "16px",
-                xs: "16px"
+              sm: "16px",
+              xs: "16px"
             },
             fontFamily: "Montserrat !important",
             marginBottom: "0.4rem"
@@ -355,16 +355,16 @@ Edit Sauce
             error={errors.title}
           />
         </Box>
-       
+
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-      
+
         <Typography sx={{
           color: "#FFA100",
           fontWeight: "500",
           fontSize: {
-              sm: "16px",
-              xs: "16px"
+            sm: "16px",
+            xs: "16px"
           },
           fontFamily: "Montserrat !important",
           marginBottom: "0.4rem"
@@ -381,7 +381,7 @@ Edit Sauce
         />
       </Box>
       <Box sx={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
-       
+
         {formData.ingredients.map((ingredient, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Box sx={{ width: "100%" }}>
@@ -389,8 +389,8 @@ Edit Sauce
                 color: "#FFA100",
                 fontWeight: "500",
                 fontSize: {
-                    sm: "16px",
-                    xs: "16px"
+                  sm: "16px",
+                  xs: "16px"
                 },
                 fontFamily: "Montserrat !important",
                 marginBottom: "0.4rem"
@@ -399,7 +399,7 @@ Edit Sauce
               </Typography>
               <CustomInputShadow
                 name={`ingredients-${index}`}
-                
+
                 value={ingredient}
                 onChange={(e) => handleDetailChange('ingredients', index, e.target.value)}
                 error={errors.ingredients}
@@ -413,7 +413,7 @@ Edit Sauce
                 height="100px"
                 width={"98px"}
                 borderRadius='8px'
-                buttonStyle={{ height: {sm:"75px", xs:"68px"},mt:"13px" }}
+                buttonStyle={{ height: { sm: "75px", xs: "68px" }, mt: "13px" }}
                 onClick={() => removeBullet('ingredients', index)}
               />
             )}

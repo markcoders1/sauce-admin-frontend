@@ -46,6 +46,8 @@ import ProtectedRoute from './Protected/Protected';
 import StoreDetails from "./Pages/StoreDetails/StoreDetails";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import SauceCheckins from "./Pages/SauceCheckins/SauceCheckins";
+import SauceReviews from "./Pages/SauceReviews/SauceReviews";
 // const vapid_key = import.meta.env.VAPID_KEY;
 
 
@@ -252,6 +254,8 @@ function App() {
           <Route path="store-management/view-store/:id" element={<StoreDetails />} />
           <Route path="user-reviews/:id" element={<TextReviewManagement />} />
           <Route path="user-checkin/:id" element={<UserCheckin />} />
+          <Route path="sauce-reviews/:id" element={<SauceReviews />} />
+          <Route path="sauce-checkin/:id" element={<SauceCheckins />} />
           <Route path="notification" element={<Notification />} />
           <Route path="view-requested-event/:id" element={<ViewRequestedEvent />} />
           <Route path="view-requested-sauce/:id" element={<AddRequestedSauce />} />

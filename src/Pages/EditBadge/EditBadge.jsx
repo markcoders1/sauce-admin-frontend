@@ -14,16 +14,13 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const EditBadge = () => {
   const auth = useSelector((state) => state.auth);
-  const { state } = useLocation(); // To access the existing badge details for editing
-  const navigate = useNavigate();
-  console.log(state)
-
+  let { state } = useLocation(); // To access the existing badge details for editing
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-
+  const navigate = useNavigate()
   // Pre-fill the formData if editing an existing badge, otherwise use empty values
   const [formData, setFormData] = useState({
     name: state?.name || "",
@@ -31,7 +28,9 @@ const EditBadge = () => {
     pointsRequired: state?.pointsRequired || "",
     websiteLink: state?.websiteLink || "",
     icon: state?.icon || null,
+    url:state?.icon||null,
     description: state?.description || "",
+
   });
 
   const [errors, setErrors] = useState({});
@@ -58,6 +57,8 @@ const EditBadge = () => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
+      state["icon"] = URL.createObjectURL(files[0])
+      console.log(state)
       setFormData({
         ...formData,
         [name]: files[0],
@@ -114,25 +115,25 @@ const EditBadge = () => {
         data: data,
       });
 
-      setFormData({
-        name: "",
-        condition: "",
-        pointsRequired: "",
-        websiteLink: "",
-        icon: null,
-        description: "",
-      });
+      // setFormData({
+      //   name: "",
+      //   condition: "",
+      //   pointsRequired: "",
+      //   websiteLink: "",
+      //   icon: null,
+      //   description: "",
+      // });
 
-      setSelectedFileName(""); // Reset file name
+      // setSelectedFileName(""); // Reset file name
       setLoading(false);
-
+      
       setSnackAlertData({
         open: true,
         message: response?.data?.message,
         severity: "success",
       });
 
-    //   navigate(-1); // Navigate back after successful submission
+      navigate(-1); // Navigate back after successful submission
     } catch (error) {
       console.error("Error submitting badge:", error);
       setSnackAlertData({
@@ -198,7 +199,7 @@ const EditBadge = () => {
         >
           {previewImage ? (
             <img
-              src={state?.icon}
+              src={state.icon}
               alt="Selected Badge"
               style={{
                 width: "auto",

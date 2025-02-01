@@ -368,7 +368,7 @@ borderRadius: '10px'
               fontFamily: "Montserrat !important",
             }}
           >
-            Top Rated
+           Make Top Rated
           </Typography>
           <CustomSelectForType
             label={"Brand Type"}

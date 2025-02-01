@@ -245,7 +245,7 @@ const AddRequestedSauce = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users?type=brand`,
+        url: `${appUrl}/admin/get-all-active-users?type=brand`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,

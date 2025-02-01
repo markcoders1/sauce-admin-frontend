@@ -28,11 +28,13 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "../../assets/SearchIcon.png";
 import { debounce } from "lodash"; // Import lodash debounce
+import loadingGIF from "../../assets/loading.gif";
 
 import ConfirmDeleteModalForBadge from "../../Components/DeleteBadge/DeleteBadgeModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const BadgeManagement = () => {
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [allBadges, setAllBadges] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -68,6 +70,7 @@ const BadgeManagement = () => {
       setAllBadges(response?.data?.badges || []); // Set the badges data
       setTotalPages(response?.data?.pagination?.totalPages || 1); // Update total pages based on response
       setLoading(false);
+      setSearchBarLoading(false)
     } catch (error) {
       console.error("Error fetching reviews:", error);
       setLoading(false);
@@ -103,6 +106,7 @@ const BadgeManagement = () => {
   }, [page, searchTerm]);
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     setPage(1); // Reset to page 1 on search
     debouncedSearch(event.target.value); // Trigger debounced search
   };
@@ -127,7 +131,7 @@ const BadgeManagement = () => {
 
   const handleCopyUrl = (url) => {
     navigator.clipboard.writeText(url);
-    alert("URL copied to clipboard!");
+    // alert("URL copied to clipboard!");
   };
 
   const handleNavigate = () => {
@@ -219,15 +223,30 @@ const BadgeManagement = () => {
                   onChange={handleSearchChange}
                   style={{ color: "white" }}
                 />
+               {
+                isSearchBarLoading?
                 <img
-                  src={SearchIcon}
-                  alt="Search"
-                  style={{
-                    position: "absolute",
-                    top: "14px",
-                    right: "20px",
-                  }}
-                />
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
+              <img
+                src={SearchIcon}
+                alt="Search"
+                style={{
+                  position: "absolute",
+                  top: "14px",
+                  right: "20px",
+                }}
+              />
+              }
               </Box>
             </Box>
             <Box sx={{ width: { sm: "200px", xs: "100%" } }}>
@@ -277,10 +296,10 @@ const BadgeManagement = () => {
                         sx={{
                           backgroundImage:
                             "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
-                          "&:hover": {
-                            backgroundImage:
-                              "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
-                          },
+                          // "&:hover": {
+                          //   backgroundImage:
+                          //     "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
+                          // },
                           padding: "0px",
                         }}
                         className="header-row"

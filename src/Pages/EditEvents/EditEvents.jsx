@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
-import { Box, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import axios from "axios";
 import Heading from "../../Components/Heading/Heading";
@@ -12,6 +12,8 @@ import NavigateBack from "../../Components/NavigateBackButton/NavigateBack";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { Loader } from "@googlemaps/js-api-loader";
 import CustomSelect from "../../Components/CustomSelect/CustomSelect";
+import DeleteEventModal from "../../Components/DeleteEventModal/DeleteEventModal";
+
 import debounce from "lodash";
 import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
 
@@ -22,6 +24,7 @@ const EditEvents = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [allBrands, setAllBrands] = useState([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("")
   const [searchQuery, setSearchQuery] = useState("");
@@ -237,12 +240,12 @@ const EditEvents = () => {
 
 
 
-    formDataToSend.append("venueDescription", formData.description);
-    formDataToSend.append("venueName", formData.destination);
+    // formDataToSend.append("venueDescription", formData.description);
+    // formDataToSend.append("venueName", formData.destination);
     formDataToSend.append("bannerImage", formData.bannerImage);
     formDataToSend.append("venueLocation.latitude", formData.coordinates.lat);
     formDataToSend.append("venueLocation.longitude", formData.coordinates.lng);
-    formDataToSend.append("details", formData.details);
+    formDataToSend.append("eventDetails", formData.details);
 
 
 
@@ -312,9 +315,11 @@ const EditEvents = () => {
         time: new Date(eventData?.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), 
         endDate: new Date(eventData?.eventEndDate).toLocaleDateString("en-CA"), // Local date format (YYYY-MM-DD)
         endTime: new Date(eventData?.eventEndDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), 
-        description: eventData?.venueDescription,
+        // description: eventData?.venueDescription,
         details: eventData?.eventDetails || "", 
-        destination: eventData?.venueName,
+        // destination: eventData?.venueName,
+        details: eventData?.eventDetails,
+
         bannerImage: eventData.bannerImage,
         coordinates: {
           lat: parseFloat(eventData?.venueLocation?.latitude),
@@ -344,7 +349,7 @@ const EditEvents = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -777,7 +782,7 @@ const EditEvents = () => {
               flexDirection: { md: "row", xs: "column" },
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 flexBasis: "50%",
                 display: "flex",
@@ -805,7 +810,7 @@ const EditEvents = () => {
               onChange={handleChange}
               error={errors.destination}
             />
-            </Box>
+            </Box> */}
 
             <Box
               sx={{
@@ -837,8 +842,41 @@ const EditEvents = () => {
                 
               />
             </Box>
+
+
+            
+            <Box
+              sx={{
+                flexBasis: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FFA100",
+                  fontWeight: "500",
+                  fontSize: {
+                    sm: "16px",
+                    xs: "16px",
+                  },
+                  fontFamily: "Montserrat !important",
+                }}
+              >
+                Details
+              </Typography>
+              <CustomInputShadow
+                placeholder="Event Details"
+                name="details"
+                value={formData.details}
+                onChange={handleChange}
+                error={errors.details}
+                
+              />
+            </Box>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               flexBasis: "50%",
               display: "flex",
@@ -867,7 +905,7 @@ const EditEvents = () => {
               error={errors.description}
               type={"text"}
             />
-          </Box>
+          </Box> */}
         
         </Box>
       </Box>
@@ -920,7 +958,22 @@ const EditEvents = () => {
           id="map"
         ></div>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end",gap:"10px", mt: 0 }}>
+     <Tooltip title={"Delete this event"}>  
+     <span>
+       <CustomButton
+            border="1px solid #FFA100"
+            ButtonText={loading ? "Deleting" : "Delete this Event"}
+            color="white"
+            width={"208px"}
+            borderRadius="8px"
+     padding="10px 0px"
+            fontSize="18px"
+            fontWeight="600"
+            onClick={ ()=>{setDeleteModalOpen(true)}}
+          />
+      </span>    
+     </Tooltip>
         <CustomButton
           border="1px solid #FFA100"
           ButtonText={loading ? "Updating" : "Update"}
@@ -944,6 +997,16 @@ const EditEvents = () => {
           setSnackAlertData((prev) => ({ ...prev, open: false }));
         }}
       />
+        {deleteModalOpen && (
+        <DeleteEventModal
+          open={deleteModalOpen}
+          handleClose={()=>{
+            setDeleteModalOpen(false)
+          }}
+          id={id} // Pass the review ID here
+          onSuccess={() => navigate(-1)} // Refresh reviews list after deletion
+        />
+      )}
     </Box>
   );
 };

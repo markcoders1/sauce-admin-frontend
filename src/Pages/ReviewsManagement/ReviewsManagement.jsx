@@ -27,10 +27,13 @@ import AddReviewModal from "../../Components/AddReviewModal/AddReviewModal";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { debounce } from "lodash";
 import SearchIcon from "../../assets/SearchIcon.png";
+import loadingGIF from "../../assets/loading.gif";
+
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const ReviewsManagement = () => {
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [officialReviews, setOfficialReviews] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -62,6 +65,8 @@ const ReviewsManagement = () => {
       setOfficialReviews(response?.data?.officialReviews || []);
       setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
+      setSearchBarLoading(false)
+
     } catch (error) {
       console.error("Error fetching reviews:", error);
       setLoading(false);
@@ -85,6 +90,7 @@ const ReviewsManagement = () => {
   };
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true);
     setPage(1); // Reset to page 1 on search
     debouncedSearch(event.target.value); // Trigger debounced search
   };
@@ -96,7 +102,7 @@ const ReviewsManagement = () => {
 
   const handleCopyUrl = (url) => {
     navigator.clipboard.writeText(url);
-    alert("URL copied to clipboard!");
+    // alert("URL copied to clipboard!");
   };
 
   const handleAddReview = () => {
@@ -174,6 +180,20 @@ const ReviewsManagement = () => {
                 onChange={handleSearchChange}
                 style={{ color: "white" }}
               />
+              {
+                isSearchBarLoading?
+                <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
               <img
                 src={SearchIcon}
                 alt="Search"
@@ -183,6 +203,7 @@ const ReviewsManagement = () => {
                   right: "20px",
                 }}
               />
+              }
             </Box>
           </Box>
           <Box sx={{ width: { md: "300px", xs: "100%" } }}>
@@ -215,10 +236,10 @@ const ReviewsManagement = () => {
                     sx={{
                       backgroundImage:
                         "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
-                      "&:hover": {
-                        backgroundImage:
-                          "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
-                      },
+                      // "&:hover": {
+                      //   backgroundImage:
+                      //     "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
+                      // },
                       padding: "0px !important",
                     }}
                     className="header-row"
@@ -370,7 +391,7 @@ const ReviewsManagement = () => {
                               alt="Copy"
                             />
                           </Tooltip>
-                          <Tooltip title="Delete Review">
+                          <Tooltip title="Delete this Review">
                             <img
                               src={DeleteIcon}
                               className="edit-icon"

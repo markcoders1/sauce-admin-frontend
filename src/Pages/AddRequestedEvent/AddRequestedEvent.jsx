@@ -29,6 +29,7 @@ const AddRequestedEvent = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
   const navigate = useNavigate();
 
@@ -196,6 +197,8 @@ const AddRequestedEvent = () => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       const file = files[0];
+      setPreviewImage(URL.createObjectURL(files[0]))
+
       setFormData({
         ...formData,
         [name]: file,
@@ -333,7 +336,7 @@ const AddRequestedEvent = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -393,13 +396,41 @@ const AddRequestedEvent = () => {
         </Typography>
       </Box>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: { lg: "row", xs: "column" },
-          gap: "1.5rem",
-          height: { lg: "100%", xs: "170px" },
-        }}
+       sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}
       >
+          <Box
+                  sx={{
+                    width: "100%",
+                    height: "165px",
+                    flexBasis: "50%",
+                    display: "flex",
+                    justifyContent: "center  ",
+                  }}
+                >
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Event Banner"
+                      style={{
+                        width: "200px",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "12px",
+                      }}
+                    />
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "white",
+                        textAlign: "center",
+                        fontSize: { sm: "22px", xs: "15px" },
+                        fontWeight: "600",
+                      }}
+                    >
+                      No Image
+                    </Typography>
+                  )}
+                </Box>
         <label
           htmlFor="uploadBannerImage"
           style={{
@@ -475,7 +506,7 @@ const AddRequestedEvent = () => {
             error={errors.eventName}
           />
         </Box>
-        <Box
+        {/* <Box
           sx={{
             flexBasis: "50%",
             display: "flex",
@@ -503,6 +534,33 @@ const AddRequestedEvent = () => {
             onChange={handleChange}
             error={errors.organizedBy}
           />
+        </Box> */}
+
+
+        
+<Box sx={{ display: "flex", flexBasis:"50%", flexDirection: "column", gap: "0.3rem" }}>
+          <Typography
+            sx={{
+              color: "#FFA100",
+              fontWeight: "500",
+              fontSize: {
+                sm: "16px",
+                xs: "16px",
+              },
+              fontFamily: "Montserrat !important",
+            }}
+          >
+          Event Owner
+          </Typography>
+
+          <VirtualizedCustomSelect 
+            data={allBrands} 
+            handleChange={handleBrandChange} 
+            label="Select Brand"
+            isMultiSelect={false} // Set to true if you need multi-select
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+        />
         </Box>
       </Box>
 
@@ -773,7 +831,7 @@ const AddRequestedEvent = () => {
                 
               />
             </Box>
-            <Box sx={{ flexBasis: "50%",
+            {/* <Box sx={{ flexBasis: "50%",
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.3rem", }}>
@@ -797,71 +855,12 @@ const AddRequestedEvent = () => {
               onChange={handleChange}
               error={errors.destination}
             />
-          </Box>
-          </Box>
-          <Box
-            sx={{
-              flexBasis: "50%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.3rem",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#FFA100",
-                fontWeight: "500",
-                fontSize: {
-                  sm: "16px",
-                  xs: "16px",
-                },
-                fontFamily: "Montserrat !important",
-              }}
-            >
-              Description
-            </Typography>
-            <CustomInputShadow
-              placeholder="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              error={errors.description}
-            />
-          </Box>
-         
-        </Box>
-      </Box>
+          </Box> */}
 
-    
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-          <Typography
-            sx={{
-              color: "#FFA100",
-              fontWeight: "500",
-              fontSize: {
-                sm: "16px",
-                xs: "16px",
-              },
-              fontFamily: "Montserrat !important",
-            }}
-          >
-          Event Owner
-          </Typography>
 
-          <VirtualizedCustomSelect 
-            data={allBrands} 
-            handleChange={handleBrandChange} 
-            label="Select Brand"
-            isMultiSelect={false} // Set to true if you need multi-select
-            setSearchQuery={setSearchQuery}
-            searchQuery={searchQuery}
-        />
-        </Box>
-    
-
-      <Box
+<Box
         sx={{
-          flexBasis: "100%",
+          flexBasis: "50%",
           display: "flex",
           flexDirection: "column",
           gap: "0.3rem",
@@ -932,9 +931,45 @@ const AddRequestedEvent = () => {
           fontSize="20px"
         /> */}
 
-        <Box
+       
+      </Box>
+          </Box>
+          {/* <Box
+            sx={{
+              flexBasis: "50%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.3rem",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#FFA100",
+                fontWeight: "500",
+                fontSize: {
+                  sm: "16px",
+                  xs: "16px",
+                },
+                fontFamily: "Montserrat !important",
+              }}
+            >
+              Description
+            </Typography>
+            <CustomInputShadow
+              placeholder="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              error={errors.description}
+            />
+          </Box> */}
+         
+        </Box>
+      </Box>
+
+      <Box
           sx={{
-            flexBasis: "33%",
+            flexBasis: "100%",
             display: "flex",
             flexDirection: "column",
             gap: "0.3rem",
@@ -973,7 +1008,9 @@ const AddRequestedEvent = () => {
             className="inputCustom"
           />
         </Box>
-      </Box>
+    
+
+     
 
       {/* Map for selecting location */}
       {/* <CustomButton

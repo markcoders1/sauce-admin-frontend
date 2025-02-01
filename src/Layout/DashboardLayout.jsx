@@ -1,6 +1,7 @@
+import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import React, { useState , useEffect} from 'react';
-import { Outlet, useLocation, useSubmit } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useSubmit } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import backgroundImg1 from '../assets/backgroundImg1-min.webp';
 import AppSidebar from '../Pages/AppSidebar/AppSidebar';
@@ -12,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { addNotification } from '../Redux/Slice/NotificationSlice/NotificationSlice';
 
 const DashboardLayout = () => {
+  const auth = useSelector((state) => state.auth);
   const location = useLocation();
   const dispatch = useDispatch();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -50,6 +52,10 @@ const DashboardLayout = () => {
   }
 
   const headerTitle = getHeaderTitle(location.pathname);
+
+  if(auth.type!=="admin"){
+    return<Navigate to="/" replace={true} />
+  }
 
   return (
     <Box

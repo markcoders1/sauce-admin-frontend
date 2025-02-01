@@ -30,7 +30,6 @@ const AddSEvent = () => {
 
   const navigate = useNavigate();
 
-  console.log("=================", state);
 
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
@@ -57,13 +56,13 @@ const AddSEvent = () => {
           hour12: false,
         }) // Local time format (HH:MM) for 24-hour input
       : "",
-    description: state?.venueDescription || "",
+    // description: state?.venueDescription || "",
     details: state?.eventDetails || "",
     destination: "",
     bannerImage: null,
     latitude: state?.venueLocation?.latitude || "",
     longitude: state?.venueLocation?.longitude || "",
-    venueAddress: state?.venueAddress || "",
+    // venueAddress: state?.venueAddress || "",
     websiteLink: state?.websiteLink || "",
     facebookLink: state?.facebookLink || "",
   });
@@ -73,7 +72,7 @@ const AddSEvent = () => {
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const mapRef = useRef(null); // To store the map instance
   const autocompleteRef = useRef(null);
-
+  const [previewImage, setPreviewImage] = useState(null)
   const [mapLoaded, setMapLoaded] = useState(false);
   let [marker, setMarker] = useState(null); // State to store marker instance
 
@@ -193,6 +192,7 @@ const AddSEvent = () => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       const file = files[0];
+      setPreviewImage(URL.createObjectURL(files[0]))
       setFormData({
         ...formData,
         [name]: file,
@@ -271,8 +271,8 @@ const AddSEvent = () => {
       data.append("eventDate", eventDateTime);
       data.append("eventEndDate", eventDateEndTime);
 
-      data.append("venueDescription", formData?.description);
-      data.append("venueName", formData?.destination);
+      // data.append("venueDescription", formData?.description);
+      // data.append("venueName", formData?.destination);
       data.append("owner", formData?.ownerId);
       data.append("bannerImage", formData?.bannerImage);
       data.append("eventDetails", formData?.details);
@@ -298,13 +298,13 @@ const AddSEvent = () => {
         ownerId: "",
         date: "",
         time: "",
-        description: "",
+        // description: "",
         details: "", // Initialize with one bullet point
         destination: "",
         bannerImage: null,
         latitude: "",
         longitude: "",
-        venueAddress: "",
+        // venueAddress: "",
         facebookLink: "",
         websiteLink: "",
       });
@@ -330,7 +330,7 @@ const AddSEvent = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -390,16 +390,57 @@ const AddSEvent = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { lg: "row", xs: "column" },
+          flexDirection: { lg: "row",
+            xs:"column"
+          },
           gap: "1.5rem",
-          height: { lg: "100%", xs: "170px" },
+          // height: {  xs: "170px",  },
         }}
       >
+        {previewImage ? (
+                            <img
+                              src={previewImage}
+                              alt="Selected Badge"
+                              style={{
+                                width: "auto",
+                                height: "190px",
+                                borderRadius: "12px",
+                                objectFit: "contain",
+                              }}
+                            />
+                          ) : (
+                            <Box sx={{
+                              height:"100%",
+                              border: "2px dashed #FFA100",
+                              backgroundColor: "#2E210A",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderRadius: "12px",
+                              padding:{
+                                xs:"20px",
+                                md:"70px"
+                              }
+                            }}>
+        
+                            <Typography
+                              sx={{
+                                color: "#FFA100",
+                                fontSize: "18px",
+                                fontWeight: "600",
+                                textAlign:"center"
+                                
+                              }}
+                            >
+                              Image Preview
+                            </Typography>
+                            </Box>
+        
+                          )}
         <label
           htmlFor="uploadBannerImage"
           style={{
             flexBasis: "100%",
-            height: "165px",
             backgroundColor: "#2E210A",
             border: "2px dashed #FFA100",
             display: "flex",
@@ -423,6 +464,11 @@ const AddSEvent = () => {
               textAlign: "center",
               fontSize: "22px",
               fontWeight: "600",
+              padding:{
+                xs:"20px",
+                md:"70px"
+              }
+
             }}
           >
             {selectedBannerFileName
@@ -460,7 +506,7 @@ const AddSEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Event Name
+            Event Name*
           </Typography>
           <CustomInputShadow
             placeholder="Event Name"
@@ -547,7 +593,7 @@ const AddSEvent = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                Start Date
+                Start Date*
               </Typography>
               <CustomInputShadow
                 placeholder="Event start date"
@@ -617,7 +663,7 @@ const AddSEvent = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                End Date
+                End Date*
               </Typography>
               <CustomInputShadow
                 placeholder="Event end date"
@@ -690,7 +736,7 @@ const AddSEvent = () => {
                 Website Link
               </Typography>
               <CustomInputShadow
-                placeholder="Website Link"
+                placeholder="https://example.com"
                 name="websiteLink"
                 value={formData.websiteLink}
                 onChange={handleChange}
@@ -720,7 +766,7 @@ const AddSEvent = () => {
                 Facebook Link
               </Typography>
               <CustomInputShadow
-                placeholder="Facebook Link"
+                placeholder="https://example.com"
                 name="facebookLink"
                 value={formData.facebookLink}
                 onChange={handleChange}
@@ -755,7 +801,7 @@ const AddSEvent = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                venue Address
+                Venue Address*
               </Typography>
               <CustomInputShadow
                 placeholder="Venue Address"
@@ -766,7 +812,7 @@ const AddSEvent = () => {
               />
             </Box>
 
-            <Box
+            {/* <Box
               sx={{
                 flexBasis: "50%",
                 display: "flex",
@@ -794,10 +840,38 @@ const AddSEvent = () => {
                 onChange={handleChange}
                 error={errors.destination}
               />
-            </Box>
+            </Box> */}
+          <Box 
+          sx={{
+            flexBasis:"50%"
+          }}
+          >
+          <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+          }}
+        >
+          Details*
+        </Typography>
+
+        <CustomInputShadow
+          placeholder="Event Details"
+          name="details"
+          value={formData.details}
+          onChange={handleChange}
+          error={errors.details}
+        />
+          </Box>
           </Box>
 
-          <Box
+
+          {/* <Box
             sx={{
               flexBasis: "50%",
               display: "flex",
@@ -825,20 +899,20 @@ const AddSEvent = () => {
               onChange={handleChange}
               error={errors.description}
             />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
 
   
       <Box
         sx={{
-          flexBasis: "100%",
+          flexBasis: "50%",
           display: "flex",
           flexDirection: "column",
           gap: "0.3rem",
         }}
       >
-        <Typography
+        {/* <Typography
           sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -858,7 +932,7 @@ const AddSEvent = () => {
           value={formData.details}
           onChange={handleChange}
           error={errors.details}
-        />
+        /> */}
 
         {/* {formData.details.map((detail, index) => (
           <Box
@@ -922,7 +996,7 @@ const AddSEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Search Location
+            Search Location*
           </Typography>
           <input
             id="autocomplete"

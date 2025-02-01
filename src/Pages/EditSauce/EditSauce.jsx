@@ -275,7 +275,7 @@ const EditSauce = () => {
   const fetchBrands = async () => {
     try {
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -723,7 +723,7 @@ background: '#ffa100',
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap:"20px" }}>
       <CustomButton
           border="1px solid #FFA100"
-          ButtonText={"Delete"}
+          ButtonText={"Delete this sauce"}
           color="white"
           width={"178px"}
           borderRadius="8px"

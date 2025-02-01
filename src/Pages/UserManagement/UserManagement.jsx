@@ -30,6 +30,7 @@ import MenuBar from "../../Components/MenuBar/MenuBar";
 import queryString from "query-string";
 import IconButton from "@mui/material/IconButton";
 import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
+import loadingGIF from "../../assets/loading.gif";
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -42,6 +43,7 @@ const UserManagement = () => {
     message: "",
     severity: "success",
   });
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [allUsers, setAllUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,7 +58,7 @@ const UserManagement = () => {
     try {
       setLoading(true);
       const response = await axios({
-        url: `${appUrl}/admin/get-all-users`,
+        url: `${appUrl}/admin/get-all-active-users`,
         method: "get",
         params: {
           type: "user",
@@ -71,6 +73,7 @@ const UserManagement = () => {
       setAllUsers(response?.data?.entities || response?.data?.users);
       setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
+      setSearchBarLoading(false)
       console.log(response)
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -138,6 +141,7 @@ const UserManagement = () => {
   
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     setPage(1)
     debouncedSearch(event.target.value);
   };
@@ -239,15 +243,30 @@ const UserManagement = () => {
                   onChange={handleSearchChange}
                   style={{ color: "white" }}
                 />
+              {
+                isSearchBarLoading?
                 <img
-                  src={SearchIcon}
-                  alt=""
-                  style={{
-                    position: "absolute",
-                    top: "14px",
-                    right: "20px",
-                  }}
-                />
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
+              <img
+                src={SearchIcon}
+                alt="Search"
+                style={{
+                  position: "absolute",
+                  top: "14px",
+                  right: "20px",
+                }}
+              />
+              }
               </Box>
             </Box>
           </Box>
@@ -270,9 +289,9 @@ const UserManagement = () => {
                   <TableRow
                     sx={{
                       backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                      "&:hover": {
-                        backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                      },
+                      // "&:hover": {
+                      //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                      // },
                       padding: "0px",
                     }}
                     className="header-row"
@@ -472,7 +491,7 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip>
                     
-                        <Tooltip title="See All Check-in">
+                        <Tooltip title="View All This User Check-in">
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> navigate(`/admin/user-checkin/${user._id}`)}
                        sx={{
@@ -484,7 +503,7 @@ const UserManagement = () => {
                         {user?.checkins}
                       </TableCell>
                       </Tooltip>
-                      <Tooltip title="See All Reviews"> 
+                      <Tooltip title="View All This User Reviews"> 
 
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> handleNavigateToReview(user._id)}

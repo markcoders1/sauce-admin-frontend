@@ -27,11 +27,16 @@ import "yet-another-react-lightbox/styles.css";
 import queryString from "query-string"; // Import query-string library
 import { debounce } from "lodash";
 import eyeIcon from "../../assets/eyeopen.png";
+import loadingGIF from "../../assets/loading.gif";
+import DeleteIcon from "../../assets/deleteIcon.png";
+import ConfirmDeleteModal from "../../Components/ConfirmReviewDeleteModal/ConfirmReviewDeleteModal";
+import ConfirmBrandDeleteModal from "../../Components/ConfirmBrandDeleteModal/ConfirmBrandDeleteModal";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const BrandManagement = () => {
   const navigate = useNavigate();
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,6 +44,8 @@ const BrandManagement = () => {
   const [page, setPage] = useState(1); // Current page state
   const [totalPages, setTotalPages] = useState(1); // Total pages state
   const auth = useSelector((state) => state.auth);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [brandToDelete, setBrandToDelete] = useState(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
@@ -49,7 +56,7 @@ const BrandManagement = () => {
       try {
         setLoading(true);
         const response = await axios({
-          url: `${appUrl}/admin/get-all-users`,
+          url: `${appUrl}/admin/get-all-active-users`,
           method: "get",
           params: {
             type: "brand",
@@ -64,6 +71,7 @@ const BrandManagement = () => {
         setAllBrands(response?.data?.entities || response?.data?.users);
         setTotalPages(response?.data?.pagination?.totalPages || 1);
         setLoading(false);
+        setSearchBarLoading(false)
       } catch (error) {
         console.error("Error fetching brands:", error);
         setLoading(false);
@@ -89,6 +97,7 @@ const BrandManagement = () => {
 
   // Handle search input change
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     const value = event.target.value;
     setInputValue(value); // Update input field immediately
     debouncedSearch(value); // Debounce the search term update
@@ -127,6 +136,17 @@ const BrandManagement = () => {
 
   const navigateToEdit = (id) => {
     navigate(`/admin/edit-brand-user-details/${id}`);
+  };
+
+
+  const handleOpenDeleteModal = (id) => {
+    setBrandToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setBrandToDelete(null);
   };
 
   // Open lightbox
@@ -201,15 +221,30 @@ const BrandManagement = () => {
                 value={inputValue}
                 onChange={handleSearchChange}
               />
+            {
+                isSearchBarLoading?
+                <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
               <img
                 src={SearchIcon}
-                alt=""
+                alt="Search"
                 style={{
                   position: "absolute",
                   top: "14px",
                   right: "20px",
                 }}
               />
+              }
             </Box>
             <Box sx={{ width: { sm: "200px", xs: "100%" } }}>
               <CustomButton
@@ -242,9 +277,9 @@ const BrandManagement = () => {
                     <TableRow
                       sx={{
                         backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                        "&:hover": {
-                          backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                        },
+                        // "&:hover": {
+                        //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                        // },
                         padding: "0px",
                         border: "none",
                       }}
@@ -282,15 +317,15 @@ const BrandManagement = () => {
                           fontWeight: "500",
                           padding: "12px 0px",
                           fontSize: "21px",
-                          textAlign: "start",
+                          textAlign: "center",
                           color: "white",
                           paddingLeft: "10px",
                         }}
                         className="MuiTableCell-root-head"
                       >
-                        Upload Date
+                        Total Sauces
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
                         sx={{
                           fontWeight: "500",
                           padding: "12px 0px",
@@ -303,7 +338,7 @@ const BrandManagement = () => {
                         className="MuiTableCell-root-head"
                       >
                         View Sauces
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
                         sx={{
                           fontWeight: "500",
@@ -326,6 +361,7 @@ const BrandManagement = () => {
                         key={index}
                         sx={{
                           border: "2px solid #FFA100",
+                          display:brand?.isDeleted?"none":"table-row"
                         }}
                         className="MuiTableRow-root"
                       >
@@ -357,13 +393,29 @@ const BrandManagement = () => {
                         >
                           {brand.name}
                         </TableCell>
+
                         <TableCell
-                          sx={{ textAlign: "start !important" }}
+                          sx={{ 
+                            textAlign: "center !important" }}
                           className="MuiTableCell-root"
                         >
-                          {formatDate(brand.date)}
+                            <Tooltip 
+                            
+                            title={brand.sauces?"View this Brand Sauces":"This brand has no sauces"}>
+                          <Typography
+                         onClick={() =>brand.sauces? handleNavigate(brand._id):null}
+                          
+                          sx={{
+                             textDecoration:"underline !important",
+                             color:"#FFA100 !important",
+                             cursor: "pointer",
+                          }}>
+
+                          {brand.sauces}
+                          </Typography>
+                        </Tooltip>
                         </TableCell>
-                        <TableCell
+                        {/* <TableCell
                           sx={{
                             
                             textAlign: "start !important",
@@ -378,7 +430,7 @@ const BrandManagement = () => {
                               alignItems: "center",
                             }}
                           >
-                            <Tooltip title="View Requested Sauces of Brand">
+                            <Tooltip title="View this Brand Sauces">
                               <img
                                 className="delete-icon edit-icon"
                                 src={eyeIcon}
@@ -397,7 +449,7 @@ const BrandManagement = () => {
                             </Tooltip>
                           
                           </Box>
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell
                           sx={{
                             borderRadius: "0px 8px 8px 0px",
@@ -430,6 +482,25 @@ const BrandManagement = () => {
                               onClick={() => navigateToEdit(brand._id)}
                             />
                             </Tooltip>
+                             <Tooltip title={brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}>
+                                                        <img
+                                                          
+                                                          src={DeleteIcon}
+                                                          className="edit-icon"
+                                                          style={{
+                                                            width: "35px",
+                                                            height: "35px",
+                                                            cursor: "pointer",
+                                                            objectFit: "contain",
+                                                            borderRadius:"8px",
+                                                            background:brand.sauces?"rgba(236, 236, 236, .4)":"unset"
+
+                                                            
+                                                          }}
+                                                          onClick={() =>(brand.isDeleted|| brand.sauces)?()=>{} : handleOpenDeleteModal(brand._id)}
+                                                          alt="Delete"
+                                                        />
+                                                      </Tooltip>
 
                           </Box>
                         </TableCell>
@@ -470,7 +541,14 @@ const BrandManagement = () => {
           </>
         )}
       </Box>
-
+      {deleteModalOpen && (
+          <ConfirmBrandDeleteModal
+            open={deleteModalOpen}
+            handleClose={handleCloseDeleteModal}
+            brandId={brandToDelete}
+            onSuccess={() => fetchBrands(page, searchTerm)}
+          />
+        )}
       {isOpen && (
         <Lightbox
           open={isOpen}

@@ -25,6 +25,7 @@ import logoAdmin from "../../assets/logoAdmin.png";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import queryString from "query-string"; // Import query-string library
+import loadingGIF from "../../assets/loading.gif";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -34,6 +35,7 @@ const UserInterestedEvents = () => {
   const [allEvents, setAllEvents] = useState([]);
   // const [page, setPage] = useState(1); // Current page state
   // const [totalPages, setTotalPages] = useState(1); // Total pages state
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
@@ -52,9 +54,9 @@ const UserInterestedEvents = () => {
         //     page: page, // Pass current page to backend
         //     limit: 8 // Number of items per page
         // },
-        // params: {
-        //   userId: id,
-        // },
+        params: {
+          searchTerm,
+        },
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
@@ -62,6 +64,7 @@ const UserInterestedEvents = () => {
       setAllEvents(response?.data?.interestedEvents || []);
       // setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
       setLoading(false);
+      setSearchBarLoading(false)
       console.log(response);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -81,7 +84,9 @@ const UserInterestedEvents = () => {
   // }, [window.location.search]);
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     setSearchTerm(event.target.value);
+    fetchEvents(1)
   };
 
   // const handlePageChange = (event, value) => {
@@ -102,11 +107,11 @@ const UserInterestedEvents = () => {
 
     return formattedDate;
   }
-  const filteredEvents = allEvents.filter(
-    (event) =>
-      event?.eventName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event?.owner.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredEvents = allEvents?.filter(
+  //   (event) =>
+  //     event?.eventName?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+  //     event?.owner?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  // );
 
 
 
@@ -193,22 +198,37 @@ const UserInterestedEvents = () => {
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
+            {
+                isSearchBarLoading?
+                <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
               <img
                 src={SearchIcon}
-                alt=""
+                alt="Search"
                 style={{
                   position: "absolute",
                   top: "14px",
                   right: "20px",
                 }}
               />
+              }
             </Box>
           </Box>
         </Box>
 
         {loading ? (
           <PageLoader />
-        ) : allEvents.length === 0 ? (
+        ) : allEvents?.length === 0 ? (
           <Typography
             sx={{
               textAlign: "center",
@@ -231,9 +251,9 @@ const UserInterestedEvents = () => {
                   <TableRow
                     sx={{
                       backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                      "&:hover": {
-                        backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                      },
+                      // "&:hover": {
+                      //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                      // },
                       padding: "0px",
                     }}
                     className="header-row"
@@ -336,7 +356,9 @@ const UserInterestedEvents = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
-                  {filteredEvents.map((event, index) => (
+                  {/* {filteredEvents?.map((event, index) => ( */}
+                  {allEvents?.map((event, index) => (
+
                     <TableRow
                       key={index}
                       sx={{

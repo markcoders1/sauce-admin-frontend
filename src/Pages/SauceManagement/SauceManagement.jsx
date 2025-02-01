@@ -30,10 +30,12 @@ import DeleteIcon from "../../assets/deleteIcon.png";
 import { useDispatch } from "react-redux";
 import queryString from "query-string"; // Import query-string library
 import { debounce } from "lodash";
+import loadingGIF from "../../assets/loading.gif";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const SauceManagement = () => {
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [allSauce, setAllSauce] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -80,6 +82,7 @@ const SauceManagement = () => {
       setAllSauce(response?.data?.sauces || []);
       setTotalPages(response?.data?.pagination?.totalPages || 1);
       setLoading(false);
+      setSearchBarLoading(false)
       console.log(response);
     } catch (error) {
       console.error("Error fetching sauces:", error);
@@ -116,6 +119,7 @@ const SauceManagement = () => {
   );
 
   const handleSearchChange = (event) => {
+    setSearchBarLoading(true)
     const value = event.target.value;
     setInputValue(value); // Update input field immediately
     debouncedSearch(value); // Debounce the search term update
@@ -239,15 +243,30 @@ const SauceManagement = () => {
                 placeholder="Search"
                 onChange={handleSearchChange}
               />
+             {
+                isSearchBarLoading?
+                <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width:"30px",
+                  
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+                :
               <img
                 src={SearchIcon}
-                alt=""
+                alt="Search"
                 style={{
                   position: "absolute",
                   top: "14px",
                   right: "20px",
                 }}
               />
+              }
             </Box>
             <Box
               sx={{
@@ -282,9 +301,9 @@ const SauceManagement = () => {
                   <TableRow
                     sx={{
                       backgroundImage: `linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important`,
-                      "&:hover": {
-                        backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
-                      },
+                      // "&:hover": {
+                      //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
+                      // },
                       padding: "0px",
                     }}
                     className="header-row"
@@ -441,29 +460,36 @@ const SauceManagement = () => {
                       >
                         {sauce?.owner?.name}
                       </TableCell>
-                   
+                   <Tooltip title="View All This Sauce Check-ins ">
+
                       <TableCell
+                        onClick={() =>navigate(`/admin/sauce-checkin/${sauce._id}`)}
                         sx={{
-                            // textDecoration:"underline !important",
-                            //    color:"#FFA100 !important",
-                            //   cursor: "pointer",
+                            textDecoration:"underline !important",
+                               color:"#FFA100 !important",
+                              cursor: "pointer",
                             }}
                         className="MuiTableCell-root"
                       >
                        {sauce.checkIn}
                       </TableCell>
+                      </Tooltip>
                 
+                   <Tooltip title="View All This Sauce  Reviews">
                       
                       <TableCell
+                        onClick={() => navigate(`/admin/sauce-reviews/${sauce._id}`)}
+
                         sx={{
-                            // textDecoration:"underline !important",
-                            //    color:"#FFA100 !important",
-                            //   cursor: "pointer",
+                            textDecoration:"underline !important",
+                               color:"#FFA100 !important",
+                              cursor: "pointer",
                             }}
                         className="MuiTableCell-root"
                       >
                        {sauce.reviewCount}
                       </TableCell>
+                      </Tooltip>
                       
                       <TableCell
                         sx={{

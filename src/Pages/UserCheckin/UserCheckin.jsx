@@ -24,11 +24,14 @@ import DeleteIcon from "../../assets/deleteIcon.png";
 import ConfirmDeleteModalCheckin from "../../Components/DeleteUserCheckinModal/DeleteUserCheckinModal";
 import Lightbox from "yet-another-react-lightbox";
 import logoAdmin from "../../assets/logoAdmin.png";
+import loadingGIF from "../../assets/loading.gif";
+import SearchIcon from "../../assets/SearchIcon.png";
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const TextReviewManagement = () => {
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
   const [allReviews, setAllReviews] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -105,7 +108,7 @@ const TextReviewManagement = () => {
     },
   ];
 
-  const fetchReviews = async (currentPage) => {
+  const fetchReviews = async (currentPage, search) => {
     try {
       setLoading(true);
       const response = await axios({
@@ -118,7 +121,7 @@ const TextReviewManagement = () => {
         params: {
           page: currentPage, // Pass current page to the backend
           limit: 8, // Set the limit per page
-          searchTerm: searchTerm,
+          searchTerm: search,
         },
       });
 
@@ -126,7 +129,7 @@ const TextReviewManagement = () => {
       
         setAllReviews(response.data.checkins || []); // Set the reviews data
         setTotalPages(response.data.pagination.totalPages || 1); // Update total pages
-     
+        setSearchBarLoading(false)
 
 
       setLoading(false);
@@ -140,23 +143,25 @@ const TextReviewManagement = () => {
 
   // Debounce the search input
   const debouncedSearch = useCallback(
-    debounce((value) => {
-      setSearchTerm(value);
+    debounce((value, search) => {
+    fetchReviews(value, search)
     }, 2000),
     []
   );
 
   useEffect(() => {
     fetchReviews(page);
-  }, [page, searchTerm]);
+  }, [page]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
   const handleSearchChange = (event) => {
+    setSearchTerm(event?.target?.value);
+    setSearchBarLoading(true)
     setPage(1); // Reset to page 1 on search
-    debouncedSearch(event.target.value); // Trigger debounced search
+    debouncedSearch(1, event?.target?.value); // Trigger debounced search
   };
 
   const handleViewReview = (id) => {
@@ -226,6 +231,58 @@ const TextReviewManagement = () => {
             </Typography>
             <MenuBar />
           </Box>
+          <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { sm: "row", xs: "column" },
+                        justifyContent: { md: "end", sm: "end" },
+                        alignItems: { sm: "center", xs: "end" },
+                        gap: "1rem",
+                        width: { md: "700px", xs: "100%" },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "relative",
+                          maxWidth: { sm: "350px", xs: "100%" },
+                          width: "100%",
+                        }}
+                      >
+                        <input
+                          type="search"
+                          name="search"
+                          id="search"
+                          className="search-input"
+                          placeholder="Search Event..."
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                        />
+                      {
+                          isSearchBarLoading?
+                          <img
+                          src={loadingGIF}
+                          alt="loading"
+                          style={{
+                            width:"30px",
+                            
+                            position: "absolute",
+                            top: "8px",
+                            right: "15px",
+                          }}
+                        />
+                          :
+                        <img
+                          src={SearchIcon}
+                          alt="Search"
+                          style={{
+                            position: "absolute",
+                            top: "14px",
+                            right: "20px",
+                          }}
+                        />
+                        }
+                      </Box>
+                    </Box>
         </Box>
 
         {loading ? (
@@ -254,10 +311,7 @@ const TextReviewManagement = () => {
                     sx={{
                       backgroundImage:
                         "linear-gradient(90deg, #FFA100 0%, #FF7B00 100%) !important",
-                      "&:hover": {
-                        backgroundImage:
-                          "linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important",
-                      },
+                    
                       padding: "0px",
                     }}
                     className="header-row"
@@ -341,7 +395,7 @@ const TextReviewManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="MuiTableBody-root">
-                  {allReviews.map((review, index) => (
+                  {allReviews?.map((review, index) => (
                     <TableRow
                       key={index}
                       sx={{ border: "2px solid #FFA100" }}
