@@ -38,8 +38,6 @@ const DeleteRequestedEvent = ({ open, handleClose, reviewId, onSuccess }) => {
             });
 
             setLoading(false);
-            console.log(response)
-
           
                 setSnackAlertData({
                     open: true,
@@ -54,7 +52,7 @@ const DeleteRequestedEvent = ({ open, handleClose, reviewId, onSuccess }) => {
             setLoading(false);
             setSnackAlertData({
                 open: true,
-                message: "Failed to delete review.",
+                message: error.message,
                 severity: "error",
             });
         }

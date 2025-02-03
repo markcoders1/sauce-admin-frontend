@@ -401,7 +401,7 @@ const BrandManagement = () => {
                         >
                             <Tooltip 
                             
-                            title={brand.sauces?"View this Brand Sauces":"This brand has no sauces"}>
+                            title={brand.sauces?"View Brand Sauces":"This brand has no sauces"}>
                           <Typography
                          onClick={() =>brand.sauces? handleNavigate(brand._id):null}
                           
@@ -482,7 +482,17 @@ const BrandManagement = () => {
                               onClick={() => navigateToEdit(brand._id)}
                             />
                             </Tooltip>
-                             <Tooltip title={brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}>
+                             <Tooltip
+                             
+                             title={
+                              <span style={{ display: "block", textAlign: "center" }}>
+                              {brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}
+                              </span>
+                            }
+                            //  title={brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}
+                             
+                             
+                             >
                                                         <img
                                                           
                                                           src={DeleteIcon}
@@ -490,10 +500,11 @@ const BrandManagement = () => {
                                                           style={{
                                                             width: "35px",
                                                             height: "35px",
-                                                            cursor: "pointer",
                                                             objectFit: "contain",
                                                             borderRadius:"8px",
-                                                            background:brand.sauces?"rgba(236, 236, 236, .4)":"unset"
+                                                            background:brand.sauces?"rgba(236, 236, 236, .05)":"",
+                                                            cursor:brand.sauces?"no-drop":"pointer"
+
 
                                                             
                                                           }}

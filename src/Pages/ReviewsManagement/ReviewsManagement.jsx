@@ -31,7 +31,38 @@ import loadingGIF from "../../assets/loading.gif";
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+const CopyToClip = ({handleCopyUrl=()=>{}})=>{
+  const [isCopied, setIsCopied] = useState(false);
 
+  const handleClick = ()=>{
+    setIsCopied(true);
+    handleCopyUrl()
+    setTimeout(() => setIsCopied(false), 1000);
+  }
+  return  <>
+ {/* { isCopied?
+  "URL COPIED"
+  : */}
+  <Tooltip title={isCopied?"Copied":"Copy Video URL"}>
+  <img
+    src={copyIcon}
+    className="edit-icon"
+
+    style={{
+      width: "40px",
+      height: "40px",
+      cursor: "pointer",
+      borderRadius:"8px",
+      transform: isCopied ? "scaleX(-1)" : "scaleX(1)",
+      transition:"all 0.2s ease-in-out"
+    }}
+    onClick={handleClick}
+    alt="Copy"
+  />
+</Tooltip>
+{/* } */}
+  </>
+}
 const ReviewsManagement = () => {
   const [isSearchBarLoading, setSearchBarLoading] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -102,6 +133,7 @@ const ReviewsManagement = () => {
 
   const handleCopyUrl = (url) => {
     navigator.clipboard.writeText(url);
+    
     // alert("URL copied to clipboard!");
   };
 
@@ -376,7 +408,10 @@ const ReviewsManagement = () => {
                             gap: ".3rem",
                           }}
                         >
-                          <Tooltip title="Copy Video URL">
+                          <CopyToClip
+                          handleCopyUrl={()=>{handleCopyUrl(review.url)}}
+                          />
+                          {/* <Tooltip title="Copy Video URL">
                             <img
                               src={copyIcon}
                               className="edit-icon"
@@ -390,7 +425,7 @@ const ReviewsManagement = () => {
                               onClick={() => handleCopyUrl(review.url)}
                               alt="Copy"
                             />
-                          </Tooltip>
+                          </Tooltip> */}
                           <Tooltip title="Delete this Review">
                             <img
                               src={DeleteIcon}

@@ -100,7 +100,7 @@ const TabooManagement = () => {
         const currentPage = parsed.page ? parseInt(parsed.page, 10) : 1;
         setPage(currentPage);
         fetchBrands(currentPage);
-    }, [location.search]);
+    }, [location.search, searchTerm]);
 
     const handleSearchChange = (event) => {
         setSearchBarLoading(true)
@@ -141,9 +141,9 @@ const TabooManagement = () => {
 
     return (
         <>
-            {loading ? (
+            {/* {loading ? (
                 <PageLoader />
-            ) : (
+            ) : ( */}
                 <Box>
                     <Box sx={{
                         display: "flex",
@@ -236,6 +236,9 @@ const TabooManagement = () => {
                         </Typography>
                     ) : (
                         <Box sx={{ mt: "30px", padding: { md: "0px 20px", xs: "0px" } }}>
+                            {
+                                  loading?<PageLoader />:
+
                             <TableContainer component={Paper} className="MuiTableContainer-root">
                                 <Table className="data-table">
                                     <TableHead className="MuiTableHead-root">
@@ -303,7 +306,7 @@ const TabooManagement = () => {
                                                 },
                                                 color: "white",
                                                 pl: "10px"
-                                            }} className="MuiTableCell-root-head">Reviewss</TableCell>
+                                            }} className="MuiTableCell-root-head">Reviews</TableCell>
                                             <TableCell sx={{
                                                 fontWeight: "500",
                                                 padding: "12px 0px",
@@ -331,7 +334,7 @@ const TabooManagement = () => {
                                                 </TableCell>
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{sauce.name}</TableCell>
                                                 <TableCell sx={{ textAlign: "center !important" }} className="MuiTableCell-root">{sauce.isFeatured?"YES" :"NO"}</TableCell>
-                                                <Tooltip title="View All This Sauce Check-ins ">
+                                                <Tooltip title="View All Check-ins ">
 
                                                     <TableCell
                                                         onClick={() => navigate(`/admin/sauce-checkin/${sauce._id}`)}
@@ -348,7 +351,7 @@ const TabooManagement = () => {
                                                     </TableCell>
                                                 </Tooltip>
 
-                                                <Tooltip title="View All This Sauce  Reviews">
+                                                <Tooltip title="View All  Reviews">
 
                                                     <TableCell
                                                         onClick={() => navigate(`/admin/sauce-reviews/${sauce._id}`)}
@@ -367,7 +370,6 @@ const TabooManagement = () => {
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
                                                     <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                                                         <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEditSauce(sauce._id)} />
-                                                    </Box>
                                                     <Tooltip title="Delete Sauce">
                                                         <img
                                                             className="edit-icon"
@@ -389,12 +391,14 @@ const TabooManagement = () => {
                                                             alt="Delete"
                                                         />
                                                     </Tooltip>
+                                                    </Box>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                            }
                         </Box>
                     )}
 
@@ -426,7 +430,7 @@ const TabooManagement = () => {
                         />
                     </Box>
                 </Box>
-            )}
+            {/* )} */}
             {/* )
             } */}
             {deleteModalOpen && (

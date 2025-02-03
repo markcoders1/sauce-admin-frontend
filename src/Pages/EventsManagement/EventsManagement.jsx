@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination, Tooltip } from '@mui/material';
 import { styled } from '@mui/system';
 import SearchIcon from '../../assets/SearchIcon.png';
 import "./EventsManagement.css"; // Import the CSS file for custom styles
@@ -325,9 +325,21 @@ const EventsManagement = () => {
                                                 <TableCell sx={{ textAlign: "start !important" }} className="MuiTableCell-root">{event.venueAddress}</TableCell>
                                                 <TableCell className="MuiTableCell-root">{formatDate(event.eventDate)}</TableCell>
                                                 <TableCell sx={{ borderRadius: "0px 8px 8px 0px", }} className="MuiTableCell-root">
-                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+
+                                                    <Box sx={{ display: "flex", gap: "10px", justifyContent: "center", alignItems:"center" }}>
+
+                                                            <Tooltip title="Edit Event">
+
                                                         <img className="edit-icon" src={EditIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => handleNavigateToEdit(event._id)} />
-                                                        <img className="edit-icon" src={DeleteIcon} alt="Edit" style={{ width: '40px', height: '40px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => {setDeleteModalOpen(event._id); setEventToDelete(event._id)}} />
+                                                            </Tooltip>
+
+                                                                <Tooltip title="Delete Event">
+
+
+                                                        <img className="edit-icon" src={DeleteIcon} alt="Edit" style={{ width: '50px', height: '50px', cursor: 'pointer', border: "0 px solid red", borderRadius: "10px", padding: "8px" }} onClick={() => {setDeleteModalOpen(event._id); setEventToDelete(event._id)}} />
+                                                                </Tooltip>
+
+
                                                     </Box>
 
                                                 </TableCell>

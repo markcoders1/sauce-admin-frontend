@@ -318,7 +318,7 @@ const EditEvents = () => {
         // description: eventData?.venueDescription,
         details: eventData?.eventDetails || "", 
         // destination: eventData?.venueName,
-        details: eventData?.eventDetails,
+        // details: eventData?.eventDetails,
 
         bannerImage: eventData.bannerImage,
         coordinates: {
@@ -542,7 +542,8 @@ const EditEvents = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Event Owner
+         Select Organizer
+
           </Typography>
 
           <VirtualizedCustomSelect 

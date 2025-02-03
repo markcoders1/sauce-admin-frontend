@@ -294,7 +294,7 @@ const TextReviewManagement = () => {
                         fontSize: { sm: "21px", xs: "16px" },
                         textAlign: "start",
                         color: "white",
-                        pl: "10px",
+                        // pl: "10px",
                         borderRadius: "8px 0px 0px 8px",
                         pl: "40px",
                       }}
@@ -384,7 +384,12 @@ const TextReviewManagement = () => {
                       <Tooltip title="Edit Sauce">
 
                       <TableCell
-                        sx={{ color: "white", textAlign: "center !important", cursor:"pointer", textDecoration:"underline", color:" #FFA100 !important" }}
+                        sx={{ 
+                          
+                          // color: "white",
+                          
+                          textAlign: "center !important", cursor:"pointer", textDecoration:"underline", color:" #FFA100 !important" }}
+
                         className="MuiTableCell-root"
                         onClick={() => navigate(`/admin/edit-sauce-details/${review.sauceId._id}`)}
                       >

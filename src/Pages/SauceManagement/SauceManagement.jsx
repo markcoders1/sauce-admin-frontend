@@ -361,7 +361,6 @@ const SauceManagement = () => {
                     >
                       Brand Name
                     </TableCell>
-                                          <Tooltip title="See All Check-Ins">
                     <TableCell
                       sx={{
                         fontWeight: "500",
@@ -377,7 +376,6 @@ const SauceManagement = () => {
                     >
                      Check-Ins
                     </TableCell>
-                    </Tooltip>
                     
 
                     <TableCell
@@ -460,7 +458,7 @@ const SauceManagement = () => {
                       >
                         {sauce?.owner?.name}
                       </TableCell>
-                   <Tooltip title="View All This Sauce Check-ins ">
+                   <Tooltip title="View All Check-ins ">
 
                       <TableCell
                         onClick={() =>navigate(`/admin/sauce-checkin/${sauce._id}`)}
@@ -475,7 +473,7 @@ const SauceManagement = () => {
                       </TableCell>
                       </Tooltip>
                 
-                   <Tooltip title="View All This Sauce  Reviews">
+                   <Tooltip title="View All  Reviews">
                       
                       <TableCell
                         onClick={() => navigate(`/admin/sauce-reviews/${sauce._id}`)}

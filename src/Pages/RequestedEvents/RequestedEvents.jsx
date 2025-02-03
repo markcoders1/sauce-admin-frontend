@@ -266,7 +266,7 @@ const RequestedEvents = () => {
                     }}
                     className="header-row"
                   >
-                    <TableCell
+                    {/* <TableCell
                       className="MuiTableCell-root-head"
                       sx={{
                         fontWeight: "500",
@@ -283,7 +283,7 @@ const RequestedEvents = () => {
                       }}
                     >
                       Image
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       sx={{
                         fontWeight: "500",
@@ -346,7 +346,7 @@ const RequestedEvents = () => {
                       }}
                       className="MuiTableCell-root-head"
                     >
-                      Request Date
+                      Event Date
                     </TableCell>
                     <TableCell
                       sx={{
@@ -375,7 +375,7 @@ const RequestedEvents = () => {
                       }}
                       className="MuiTableRow-root"
                     >
-                      <TableCell
+                      {/* <TableCell
                         sx={{
                           borderRadius: "8px 0px 0px 8px !important",
                           color: "white",
@@ -397,7 +397,7 @@ const RequestedEvents = () => {
                           }}
                           onClick={() => openLightbox(event.bannerImage)}
                         />
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
                         sx={{ textAlign: "start !important" }}
                         className="MuiTableCell-root"

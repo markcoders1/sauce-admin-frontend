@@ -13,12 +13,15 @@ import { useNavigate } from "react-router-dom";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useLocation } from "react-router-dom";
 import VirtualizedCustomSelect from "../../Components/VirtualzedCustomSelect/VirtualizedCustomSelect";
+import DeleteRequestedEvent from "../../Components/DeleteRequestedEvent/DeleteRequestedEvent";
 
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AddRequestedEvent = () => {
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
     message: "",
@@ -33,7 +36,6 @@ const AddRequestedEvent = () => {
 
   const navigate = useNavigate();
 
-  console.log("=================", state);
 
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
@@ -362,7 +364,9 @@ const AddRequestedEvent = () => {
 
     console.log(ownerId)
   };
-
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+  };
   return (
     <Box
       className="hide-scrollbar"
@@ -550,7 +554,8 @@ const AddRequestedEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-          Event Owner
+         Select Organizer
+
           </Typography>
 
           <VirtualizedCustomSelect 
@@ -1032,7 +1037,18 @@ const AddRequestedEvent = () => {
         ></div>
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0 , gap:"20px"}}>
+      <CustomButton
+            border="1px solid #FFA100"
+            ButtonText={loading ? "Delete Event" : "Delete Request Event"}
+            color="white"
+            width={"208px"}
+            padding="25px 0px"
+            borderRadius="8px"
+            fontSize="18px"
+            fontWeight="600"
+            onClick={()=>{setDeleteModalOpen(true)}}
+          />
         <CustomButton
           border="1px solid #FFA100"
           ButtonText={loading ? "Adding" : "Add"}
@@ -1048,7 +1064,16 @@ const AddRequestedEvent = () => {
           fontWeight="600"
           onClick={handleSubmit}
         />
+       
       </Box>
+      {deleteModalOpen && (
+        <DeleteRequestedEvent
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          reviewId={state?._id} // Pass the review ID here
+          onSuccess={() => navigate(-1)} // Refresh reviews list after deletion
+        />
+      )}
       <SnackAlert
         severity={snackAlertData.severity}
         message={snackAlertData.message}

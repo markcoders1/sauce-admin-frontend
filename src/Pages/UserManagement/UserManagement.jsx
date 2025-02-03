@@ -474,7 +474,7 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip> */}
 
-                      <Tooltip title="See All Events">
+                      <Tooltip title="View All Events">
                       <TableCell
                       onClick={()=> handleNavigate(user._id)}
                         sx={{
@@ -491,7 +491,7 @@ const UserManagement = () => {
                       </TableCell>
                         </Tooltip>
                     
-                        <Tooltip title="View All This User Check-in">
+                        <Tooltip title="View All Check-in">
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> navigate(`/admin/user-checkin/${user._id}`)}
                        sx={{
@@ -503,7 +503,7 @@ const UserManagement = () => {
                         {user?.checkins}
                       </TableCell>
                       </Tooltip>
-                      <Tooltip title="View All This User Reviews"> 
+                      <Tooltip title="View All Reviews"> 
 
                       <TableCell className="MuiTableCell-root"
                        onClick={()=> handleNavigateToReview(user._id)}

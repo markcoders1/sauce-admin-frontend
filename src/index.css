@@ -132,3 +132,9 @@ input[type="date"] {
   color: black !important;
   font-weight: normal !important; /* Optional: Remove bold styling */
 }
+
+
+/*  */
+.yarl__button.yarl__navigation_prev,.yarl__button.yarl__navigation_next{
+  display: none;
+}

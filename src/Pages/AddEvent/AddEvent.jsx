@@ -534,7 +534,8 @@ const AddSEvent = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Event Owner
+           Select Organizer
+
           </Typography>
 
           <VirtualizedCustomSelect
