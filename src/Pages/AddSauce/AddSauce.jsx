@@ -213,6 +213,21 @@ const AddSauce = () => {
         },
         data: data,
       });
+      if(state?.isFromRequestedPage){
+        const res = await axios({
+          url: `${appUrl}/admin/send-notification-to-requested-sauce-user`,
+          method: "post",
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+            "Content-Type": "application/json",
+          },
+          "data": {
+            "token": state.owner.notificationToken,
+            "title": "Your Requested Hot Sauce is Here!",
+            "body": `Good news! The hot sauce you requested, ${state.name}, is now available in our app. Check it out now!`
+          }
+        });
+      }
       console.log(response.data);
       setSnackAlertData({
         open: true,
