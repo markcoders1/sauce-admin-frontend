@@ -224,7 +224,10 @@ const AddSauce = () => {
           "data": {
             "token": state.owner.notificationToken,
             "title": "Your Requested Hot Sauce is Here!",
-            "body": `Good news! The hot sauce you requested, ${state.name}, is now available in our app. Check it out now!`
+            "body": `Good news! The hot sauce you requested, ${state.name}, is now available in our app. Check it out now!`,
+            "data":{   "isNavigate":"true",
+              "_id":response.data.sauce._id,
+              "route":"ProductScreen",}
           }
         });
       }

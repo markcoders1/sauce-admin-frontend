@@ -115,7 +115,10 @@ const AddBrand = () => {
         data: {
           title: "New Hot Sauce Brand Alert!",
           body: `We've just added a new hot sauce brand: ${formData.name}. Check it out now!`,
-          image: response.data.user.image
+          image: response.data.user.image,
+            "data":{   "isNavigate":"true",
+              "_id":response.data.user._id,
+              "route":"BrandScreen",}
         }
       });
 
@@ -128,7 +131,7 @@ const AddBrand = () => {
         about: "", // Reset about
         isTopRated: false,
       });
-      // navigate(-1)
+      navigate(-1)
 
       setSelectedFileName(""); // Reset file name
       setImagePreview(null); // Reset image preview
