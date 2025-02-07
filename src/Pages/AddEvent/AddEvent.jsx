@@ -27,7 +27,6 @@ const AddSEvent = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
   const navigate = useNavigate();
 
 
@@ -146,7 +145,7 @@ const AddSEvent = () => {
               }));
 
               // Set marker
-              setMapMarker(map, lat, lng);
+              // setMapMarker(map, lat, lng);
             }
           });
           // Set latitude and longitude on map click
@@ -234,20 +233,31 @@ const AddSEvent = () => {
   // };
 
   const handleSubmit = async () => {
+    const requiredFields = {
+      eventName: "Event name is required",
+      venueAddress: "Event address is required",
+      date: "Event start date is required",
+      endDate: "Event end date is required",
+      details: "Event details are required",
+      bannerImage:"Image is required"
+    };
     let validationErrors = {};
 
     // Check file size
     if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
       validationErrors.bannerImage = "Banner image size exceeds 4MB.";
     }
-
+ 
+    Object.entries(requiredFields).forEach(([field, message]) => {
+      if (!formData[field]) {
+        validationErrors[field] = message;
+      }
+    });
+    if (!formData.latitude || !formData.longitude) {
+      validationErrors.location = "Event location is required";
+    }    
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setSnackAlertData({
-        open: true,
-        message: `${Object.values(validationErrors).join(" ")}`,
-        severity: "error",
-      });
       return;
     }
 
@@ -255,11 +265,11 @@ const AddSEvent = () => {
     const formattedDate = new Date(formData.date).toISOString();
 
     const eventDateTime = new Date(
-      `${formData.date}T${formData.time}`
+      `${formData.date}T${formData.time || "00:00"}`
     ).toISOString();
-
+    
     const eventDateEndTime = new Date(
-      `${formData.endDate}T${formData.endTime}`
+      `${formData.endDate}T${formData.endTime || "00:00"}`
     ).toISOString();
 
     try {
@@ -281,6 +291,8 @@ const AddSEvent = () => {
       data.append("venueAddress", formData?.venueAddress);
       data.append("venueLocation.longitude", formData?.longitude);
       data.append("venueLocation.latitude", formData?.latitude);
+      setErrors({})
+    
 
       const response = await axios({
         url: `${appUrl}/admin/add-event`,
@@ -291,7 +303,7 @@ const AddSEvent = () => {
         },
         data: data,
       });
-
+      setPreviewImage(null)
       setFormData({
         eventName: "",
         organizedBy: "",
@@ -309,7 +321,6 @@ const AddSEvent = () => {
         websiteLink: "",
       });
       setLoading(false);
-
       setSelectedBannerFileName(""); // Reset file name
       setSnackAlertData({
         open: true,
@@ -476,6 +487,20 @@ const AddSEvent = () => {
               : "Upload Banner Image"}
           </Typography>
         </label>
+      </Box>
+      <Box>
+     { errors.bannerImage  && (
+                  <Typography sx={{
+                    background: "#2e210a",
+                    p: "10px",
+                    color: "red",
+                    mt: "8px",
+                    wordBreak: "break-word",
+                    borderRadius: "5px"
+                  }}>
+                    {errors.bannerImage}
+                  </Typography>
+                )}
       </Box>
       <Box
         sx={{
@@ -1017,6 +1042,18 @@ const AddSEvent = () => {
             }}
             className="inputCustom"
           />
+             {errors.location  && (
+                  <Typography sx={{
+                    background: "#2e210a",
+                    p: "10px",
+                    color: "red",
+                    mt: "8px",
+                    wordBreak: "break-word",
+                    borderRadius: "5px"
+                  }}>
+                    {errors.location}
+                  </Typography>
+                )}
         </Box>
       </Box>
 

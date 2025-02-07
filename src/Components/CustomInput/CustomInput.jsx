@@ -57,6 +57,10 @@ const CustomInputShadow = forwardRef(({
           disabled={disabled}
           
           sx={{
+            '& input[type="time"]::-webkit-calendar-picker-indicator, \
+               input[type="date"]::-webkit-calendar-picker-indicator': {
+              filter: "invert(1)", // Makes native icons white
+            },
             '&::placeholder': {
               fontSize: "22px",
               fontWeight: "600",
