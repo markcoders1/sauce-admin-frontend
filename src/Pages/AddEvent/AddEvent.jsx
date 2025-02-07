@@ -237,7 +237,7 @@ const AddSEvent = () => {
       eventName: "Event name is required",
       venueAddress: "Event address is required",
       date: "Event start date is required",
-      endDate: "Event end date is required",
+      // endDate: "Event end date is required",
       details: "Event details are required",
       bannerImage:"Image is required"
     };
@@ -268,10 +268,9 @@ const AddSEvent = () => {
       `${formData.date}T${formData.time || "00:00"}`
     ).toISOString();
     
-    const eventDateEndTime = new Date(
-      `${formData.endDate}T${formData.endTime || "00:00"}`
-    ).toISOString();
-
+    const eventDateEndTime = formData.endDate
+    ? new Date(`${formData.endDate}T${formData.endTime || "00:00"}`).toISOString()
+    : null;
     try {
       setLoading(true);
       const data = new FormData();
@@ -279,7 +278,7 @@ const AddSEvent = () => {
       
 
       data.append("eventDate", eventDateTime);
-      data.append("eventEndDate", eventDateEndTime);
+      eventDateEndTime&&   data.append("eventEndDate", eventDateEndTime);
 
       // data.append("venueDescription", formData?.description);
       // data.append("venueName", formData?.destination);
