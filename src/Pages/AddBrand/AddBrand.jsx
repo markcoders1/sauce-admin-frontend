@@ -105,24 +105,24 @@ const AddBrand = () => {
         },
         data: data,
       });
-      // const res = await axios({
-      //   url: `${appUrl}/send-notification-to-active-users-in-batches`,
-      //   method: "post",
-      //   headers: {
-      //     Authorization: `Bearer ${auth.accessToken}`,
-      //     // "Content-Type": "multipart/form-data",
-      //   },
-      //   data: {
-      //     title: "New Hot Sauce Brand Alert!",
-      //     body: `We've just added a new hot sauce brand: ${formData.name}. Check it out now!`,
-      //     image: response.data.user.image,
-      //     "data": {
-      //       "isNavigate": "true",
-      //       "_id": response.data.user._id,
-      //       "route": "BrandScreen",
-      //     }
-      //   }
-      // });
+      const res = await axios({
+        url: `${appUrl}/send-notification-to-active-users-in-batches`,
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+          // "Content-Type": "multipart/form-data",
+        },
+        data: {
+          title: "New Hot Sauce Brand Alert!",
+          body: `We've just added a new hot sauce brand: ${formData.name}. Check it out now!`,
+          image: response.data.user.image,
+          "data": {
+            "isNavigate": "true",
+            "_id": response.data.user._id,
+            "route": "BrandScreen",
+          }
+        }
+      });
 
       setFormData({
         name: "",
