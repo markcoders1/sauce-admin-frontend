@@ -26,7 +26,6 @@ const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess=()=>{}
             message: "",
             severity: "success",
         });
-      console.log(reviewId)
         try {
             setLoading(true);
             const response = await axios({
@@ -51,7 +50,7 @@ const ConfirmDeleteModalSauce = ({ open, handleClose, reviewId, onSuccess=()=>{}
             setLoading(false);
             setSnackAlertData({
                 open: true,
-                message: "Failed to delete review.",
+                message:error.message,
                 severity: "error",
             });
 
