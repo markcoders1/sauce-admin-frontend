@@ -89,7 +89,7 @@ const AddBrand = () => {
     data.append("websiteLink", formData?.websiteLink);
     data.append("amazonLink", formData?.amazonLink);
 
-    
+
     data.append("image", formData?.bannerImage); // Append the file
     data.append("about", formData?.about); // Serialize the array to JSON
 
@@ -105,27 +105,29 @@ const AddBrand = () => {
         },
         data: data,
       });
-      const res = await axios({
-        url: `${appUrl}/send-notification-to-active-users-in-batches`,
-        method: "post",
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-          // "Content-Type": "multipart/form-data",
-        },
-        data: {
-          title: "New Hot Sauce Brand Alert!",
-          body: `We've just added a new hot sauce brand: ${formData.name}. Check it out now!`,
-          image: response.data.user.image,
-            "data":{   "isNavigate":"true",
-              "_id":response.data.user._id,
-              "route":"BrandScreen",}
-        }
-      });
+      // const res = await axios({
+      //   url: `${appUrl}/send-notification-to-active-users-in-batches`,
+      //   method: "post",
+      //   headers: {
+      //     Authorization: `Bearer ${auth.accessToken}`,
+      //     // "Content-Type": "multipart/form-data",
+      //   },
+      //   data: {
+      //     title: "New Hot Sauce Brand Alert!",
+      //     body: `We've just added a new hot sauce brand: ${formData.name}. Check it out now!`,
+      //     image: response.data.user.image,
+      //     "data": {
+      //       "isNavigate": "true",
+      //       "_id": response.data.user._id,
+      //       "route": "BrandScreen",
+      //     }
+      //   }
+      // });
 
       setFormData({
         name: "",
         amazonLink: "",
-        
+
         websiteLink: "",
         bannerImage: null,
         about: "", // Reset about
@@ -189,7 +191,7 @@ const AddBrand = () => {
           <MenuBar /> <NavigateBack />
         </Typography>
       </Box>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: { lg: "row", xs: "column" },
@@ -225,12 +227,12 @@ const AddBrand = () => {
                 fontSize: { sm: "22px", xs: "15px" },
                 fontWeight: "600",
                 background: '#ffa100',
-display: 'flex',
-justifyContent: 'center',
-alignItems: 'center',
-height: '170px',
-width: '170px',
-borderRadius: '10px'
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '170px',
+                width: '170px',
+                borderRadius: '10px'
               }}
             >
               Select Image
@@ -272,7 +274,111 @@ borderRadius: '10px'
               : "Upload Banner Image"}
           </Typography>
         </label>
-      </Box>
+      </Box> */}
+<Box
+              sx={{
+                display: "flex",
+                flexDirection: { lg: "row",
+                  xs:"column"
+                },
+                gap: "1.5rem",
+                // height: {  xs: "170px",  },
+              }}
+            >
+              {imagePreview ? (
+                                  <img
+                                    src={imagePreview}
+                                    alt="Selected Badge"
+                                    style={{
+                                      width: "auto",
+                                      height: "190px",
+                                      borderRadius: "12px",
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                ) : (
+                                  <Box sx={{
+                                    height:"100%",
+                                    border: "2px dashed #FFA100",
+                                    backgroundColor: "#2E210A",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "12px",
+                                    padding:{
+                                      xs:"20px",
+                                      md:"70px"
+                                    }
+                                  }}>
+              
+                                  <Typography
+                                    sx={{
+                                      color: "#FFA100",
+                                      fontSize: "18px",
+                                      fontWeight: "600",
+                                      textAlign:"center"
+                                      
+                                    }}
+                                  >
+                                    Image Preview
+                                  </Typography>
+                                  </Box>
+              
+                                )}
+              <label
+                htmlFor="uploadBannerImage"
+                style={{
+                  flexBasis: "100%",
+                  backgroundColor: "#2E210A",
+                  border: "2px dashed #FFA100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="file"
+                  id="uploadBannerImage"
+                  name="bannerImage"
+                  style={{ display: "none" }}
+                 onChange={handleChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp"
+                />
+                <Typography
+                  sx={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: "22px",
+                    fontWeight: "600",
+                    padding:{
+                      xs:"20px",
+                      md:"70px"
+                    }
+      
+                  }}
+                >
+                {selectedFileName
+              ? `Selected File  ${selectedFileName}`
+              : "Upload Banner Image"}
+                </Typography>
+              </label>
+            </Box>
+            <Box>
+           { errors.bannerImage  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.bannerImage}
+                        </Typography>
+                      )}
+            </Box>
 
       <Box
         sx={{
@@ -384,7 +490,7 @@ borderRadius: '10px'
               fontFamily: "Montserrat !important",
             }}
           >
-           Make Top Rated
+            Make Top Rated
           </Typography>
           <CustomSelectForType
             label={"Brand Type"}
@@ -401,7 +507,7 @@ borderRadius: '10px'
           />
           {console.log(formData.isTopRated)}
         </Box>
-        
+
       </Box>
 
       {/* <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>

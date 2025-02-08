@@ -235,8 +235,8 @@ const EditBrandDetails = () => {
       </Box>
 
       {/* Image Preview and Upload Section */}
-      <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-        {/* Image Preview */}
+      {/* <Box sx={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+        
           <Box
             sx={{
               width: "100%",
@@ -271,7 +271,7 @@ const EditBrandDetails = () => {
             )}
           </Box>
 
-        {/* File Input */}
+     
         <label
           htmlFor="uploadimage"
           style={{
@@ -302,7 +302,109 @@ const EditBrandDetails = () => {
             {selectedFileName ? `${selectedFileName}` : "Upload Image"}
           </Typography>
         </label>
-      </Box>
+      </Box> */}
+<Box
+              sx={{
+                display: "flex",
+                flexDirection: { lg: "row",
+                  xs:"column"
+                },
+                gap: "1.5rem",
+                // height: {  xs: "170px",  },
+              }}
+            >
+              {previewImage ? (
+                                  <img
+                                    src={previewImage}
+                                    alt="Selected Badge"
+                                    style={{
+                                      width: "auto",
+                                      height: "190px",
+                                      borderRadius: "12px",
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                ) : (
+                                  <Box sx={{
+                                    height:"100%",
+                                    border: "2px dashed #FFA100",
+                                    backgroundColor: "#2E210A",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "12px",
+                                    padding:{
+                                      xs:"20px",
+                                      md:"70px"
+                                    }
+                                  }}>
+              
+                                  <Typography
+                                    sx={{
+                                      color: "#FFA100",
+                                      fontSize: "18px",
+                                      fontWeight: "600",
+                                      textAlign:"center"
+                                      
+                                    }}
+                                  >
+                                    Image Preview
+                                  </Typography>
+                                  </Box>
+              
+                                )}
+              <label
+                htmlFor="uploadimage"
+                style={{
+                  flexBasis: "100%",
+                  backgroundColor: "#2E210A",
+                  border: "2px dashed #FFA100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="file"
+                  id="uploadimage"
+                  name="image"
+                  style={{ display: "none" }}
+                 onChange={handleChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp"
+                />
+                <Typography
+                  sx={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: "22px",
+                    fontWeight: "600",
+                    padding:{
+                      xs:"20px",
+                      md:"70px"
+                    }
+      
+                  }}
+                >
+              {selectedFileName ? `${selectedFileName}` : "Upload Image"}
+                </Typography>
+              </label>
+            </Box>
+            <Box>
+           { errors.bannerImage  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.bannerImage}
+                        </Typography>
+                      )}
+            </Box>
 
       <Box
         sx={{
