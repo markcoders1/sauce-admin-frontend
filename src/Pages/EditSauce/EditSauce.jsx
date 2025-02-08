@@ -21,8 +21,8 @@ const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 const EditSauce = () => {
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
-    const [reviewToDelete, setReviewToDelete] = useState(null);
-  
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [snackAlertData, setSnackAlertData] = useState({
     open: false,
@@ -50,8 +50,8 @@ const EditSauce = () => {
   const [selectedBannerFileName, setSelectedBannerFileName] = useState("");
   const [allBrands, setAllBrands] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -112,13 +112,13 @@ const EditSauce = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     const { name } = e.target;
-    
+
     if (name === "sauceImage") {
       setSauceImage(file);
     }
-  
+
     if (file.size > 4 * 1024 * 1024) {
       setSnackAlertData({
         open: true,
@@ -127,7 +127,7 @@ const EditSauce = () => {
       });
       return;
     }
-  
+
     // Create a preview URL for the image
     const previewURL = URL.createObjectURL(file);
     setPreviewImage(previewURL);
@@ -259,7 +259,7 @@ const EditSauce = () => {
         ingredients: sauceData.ingredients || "",
         isFeatured: sauceData.isFeatured || false,
         userId: sauceData.owner._id,
-        ownerName: sauceData.owner.name ||sauceData.name,
+        ownerName: sauceData.owner.name || sauceData.name,
       });
       setPreviewImage(sauceData?.image);
       setSauceImage(sauceData.image);
@@ -340,7 +340,7 @@ const EditSauce = () => {
           <MenuBar /> <NavigateBack />
         </Typography>
       </Box>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
         }}
@@ -373,12 +373,12 @@ const EditSauce = () => {
                 fontSize: { sm: "22px", xs: "15px" },
                 fontWeight: "600",
                 display: 'flex',
-justifyContent: 'center',
-alignItems: 'center',
-height: '170px',
-width: '190px',
-borderRadius: '10px',
-background: '#ffa100',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '170px',
+                width: '190px',
+                borderRadius: '10px',
+                background: '#ffa100',
 
               }}
             >
@@ -431,7 +431,116 @@ background: '#ffa100',
             </Typography>
           </label>
         </Box>
-      </Box>
+      </Box> */}
+
+
+
+
+      
+<Box
+              sx={{
+                display: "flex",
+                flexDirection: { lg: "row",
+                  xs:"column"
+                },
+                gap: "1.5rem",
+                // height: {  xs: "170px",  },
+              }}
+            >
+              {previewImage ? (
+                                  <img
+                                    src={previewImage}
+                                    alt="Selected Badge"
+                                    style={{
+                                      width: "auto",
+                                      height: "190px",
+                                      borderRadius: "12px",
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                ) : (
+                                  <Box sx={{
+                                    height:"100%",
+                                    border: "2px dashed #FFA100",
+                                    backgroundColor: "#2E210A",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "12px",
+                                    padding:{
+                                      xs:"20px",
+                                      md:"70px"
+                                    }
+                                  }}>
+              
+                                  <Typography
+                                    sx={{
+                                      color: "#FFA100",
+                                      fontSize: "18px",
+                                      fontWeight: "600",
+                                      textAlign:"center"
+                                      
+                                    }}
+                                  >
+                                    Image Preview
+                                  </Typography>
+                                  </Box>
+              
+                                )}
+              <label
+                htmlFor="uploadSauceImage"
+                style={{
+                  flexBasis: "100%",
+                  backgroundColor: "#2E210A",
+                  border: "2px dashed #FFA100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="file"
+                  id="uploadSauceImage"
+                  name="sauceImage"
+                  style={{ display: "none" }}
+                 onChange={handleImageChange}
+            accept="image/png, image/jpg, image/jpeg, image/webp"
+                />
+                <Typography
+                  sx={{
+                    color: "white",
+                    textAlign: "center",
+                    fontSize: "22px",
+                    fontWeight: "600",
+                    padding:{
+                      xs:"20px",
+                      md:"70px"
+                    }
+      
+                  }}
+                >
+                  {selectedSauceFileName
+              ? `Selected File: ${selectedSauceFileName}`
+              : "Upload Sauce Image"}
+                </Typography>
+              </label>
+            </Box>
+            <Box>
+           { errors.bannerImage  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.bannerImage}
+                        </Typography>
+                      )}
+            </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
         <Typography
@@ -447,9 +556,9 @@ background: '#ffa100',
         >
           Sauce Owner
         </Typography>
-{
-  console.log(formData.ownerName)
-}
+        {
+          console.log(formData.ownerName)
+        }
         <VirtualizedCustomSelect
           data={allBrands}
           handleChange={handleBrandChange}
@@ -663,27 +772,27 @@ background: '#ffa100',
           gap: "0.3rem",
         }}
       >
-         <Typography
-                sx={{
-                  color: "#FFA100",
-                  fontWeight: "500",
-                  fontSize: {
-                    sm: "16px",
-                    xs: "16px",
-                  },
-                  fontFamily: "Montserrat !important",
-                  marginBottom: "0.4rem",
-                }}
-              >
-                Chili
-              </Typography>
+        <Typography
+          sx={{
+            color: "#FFA100",
+            fontWeight: "500",
+            fontSize: {
+              sm: "16px",
+              xs: "16px",
+            },
+            fontFamily: "Montserrat !important",
+            marginBottom: "0.4rem",
+          }}
+        >
+          Chili
+        </Typography>
         {formData.chilli.map((ingredient, index) => (
           <Box
             key={index}
             sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
           >
             <Box sx={{ width: "100%" }}>
-       
+
               <CustomInputShadow
                 name={`chilli-${index}`}
                 value={ingredient}
@@ -720,20 +829,20 @@ background: '#ffa100',
           fontSize="20px"
         />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap:"20px" }}>
-      <CustomButton
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 0, gap: "20px" }}>
+        <CustomButton
           border="1px solid #FFA100"
           ButtonText={"Delete this sauce"}
           color="white"
           width={"178px"}
           borderRadius="8px"
-        
+
           padding="10px 0px"
           fontSize="18px"
           fontWeight="600"
           onClick={() => {
             handleOpenDeleteModal(id);
-           
+
           }}
         />
         <CustomButton
@@ -759,11 +868,11 @@ background: '#ffa100',
           setSnackAlertData((prev) => ({ ...prev, open: false }));
         }}
       />
-         {deleteModalOpen && (
+      {deleteModalOpen && (
         <ConfirmDeleteModalSauce
           open={deleteModalOpen}
           handleClose={handleCloseDeleteModal}
-          reviewId={reviewToDelete} 
+          reviewId={reviewToDelete}
           onSuccess={() => navigate(-1)}
         />
       )}
