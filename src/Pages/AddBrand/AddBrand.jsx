@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -60,7 +60,10 @@ const AddBrand = () => {
     newAbout[index] = value;
     setFormData({ ...formData, about: newAbout });
   };
-
+  const requiredFields = {
+    name: "Brand name is required",
+    websiteLink:"Website link is required"
+  };
   const handleSubmit = async () => {
     console.log("Form data submitted:", formData);
 
@@ -71,15 +74,31 @@ const AddBrand = () => {
       validationErrors.bannerImage = "Banner image size exceeds 4MB.";
     }
 
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   setSnackAlertData({
+    //     open: true,
+    //     message: `${Object.values(validationErrors).join(" ")}`,
+    //     severity: "error",
+    //   });
+    //   return;
+    // }
+
+
+    if (!formData.bannerImage) {
+      validationErrors.bannerImage = "Brand image is required.";
+    }
+
+    Object.entries(requiredFields).forEach(([field, message]) => {
+      if (!formData[field]) {
+        validationErrors[field] = message;
+      }
+    });
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setSnackAlertData({
-        open: true,
-        message: `${Object.values(validationErrors).join(" ")}`,
-        severity: "error",
-      });
       return;
     }
+
 
     const data = new FormData();
     data.append("isTopRated", formData.isTopRated);
@@ -158,7 +177,22 @@ const AddBrand = () => {
       setLoading(false);
     }
   };
-
+useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const errorIds = [
+        'name',
+        'websiteLink',
+        'bannerImage'
+      ];
+      const firstErrorField = errorIds.find(field => errors[field]);
+      if (firstErrorField) {
+        let element = document.getElementById(firstErrorField);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  }, [errors]);
   return (
     <Box
       sx={{
@@ -276,7 +310,9 @@ const AddBrand = () => {
         </label>
       </Box> */}
 <Box
-              sx={{
+          
+          id="bannerImage"
+          sx={{
                 display: "flex",
                 flexDirection: { lg: "row",
                   xs:"column"
@@ -399,6 +435,7 @@ const AddBrand = () => {
           }}
         >
           <Typography
+          id="name"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -409,7 +446,7 @@ const AddBrand = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Brand Name
+            Brand Name *
           </Typography>
           <CustomInputShadow
             placeholder="Brand Name"
@@ -429,6 +466,7 @@ const AddBrand = () => {
           }}
         >
           <Typography
+          id="websiteLink"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -439,7 +477,7 @@ const AddBrand = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Brand Website
+            Brand Website *
           </Typography>
           <CustomInputShadow
             placeholder="https://example.com"

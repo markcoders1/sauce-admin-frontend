@@ -28,7 +28,13 @@ const AddSEvent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
+  const requiredFields = {
+    eventName: "Event name is required",
+    venueAddress: "Event address is required",
+    date: "Event start date is required",
+    details: "Event details are required",
+    bannerImage:"Image is required"
+  };
 
   const [formData, setFormData] = useState({
     eventName: state?.eventName || "",
@@ -233,14 +239,7 @@ const AddSEvent = () => {
   // };
 
   const handleSubmit = async () => {
-    const requiredFields = {
-      eventName: "Event name is required",
-      venueAddress: "Event address is required",
-      date: "Event start date is required",
-      // endDate: "Event end date is required",
-      details: "Event details are required",
-      bannerImage:"Image is required"
-    };
+ 
     let validationErrors = {};
 
     // Check file size
@@ -364,6 +363,26 @@ const AddSEvent = () => {
   const handleBrandChange = (ownerId) => {
     setFormData((prev) => ({ ...prev, ownerId }));
   };
+    useEffect(() => {
+      if (Object.keys(errors).length > 0) {
+        const errorIds = [
+          'uploadBannerImage',
+          'eventName',
+          'start_date',
+          'details',
+          'address',
+          'location',
+        ];
+        const firstErrorField = errorIds.find(field => errors[field]);
+        if (firstErrorField) {
+          let element = document.getElementById(firstErrorField);
+          console.log(element)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      }
+    }, [errors]);
 
   return (
     <Box
@@ -398,6 +417,7 @@ const AddSEvent = () => {
         </Typography>
       </Box>
       <Box
+
         sx={{
           display: "flex",
           flexDirection: { lg: "row",
@@ -520,6 +540,7 @@ const AddSEvent = () => {
           }}
         >
           <Typography
+          id="eventName"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -533,6 +554,7 @@ const AddSEvent = () => {
             Event Name*
           </Typography>
           <CustomInputShadow
+          ref={{}}
             placeholder="Event Name"
             name="eventName"
             value={formData.eventName}
@@ -608,6 +630,7 @@ const AddSEvent = () => {
               }}
             >
               <Typography
+              id="start_date"
                 sx={{
                   color: "#FFA100",
                   fontWeight: "500",
@@ -688,7 +711,7 @@ const AddSEvent = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                End Date*
+                End Date
               </Typography>
               <CustomInputShadow
                 placeholder="Event end date"
@@ -816,6 +839,7 @@ const AddSEvent = () => {
               }}
             >
               <Typography
+              id="address"
                 sx={{
                   color: "#FFA100",
                   fontWeight: "500",
@@ -826,7 +850,7 @@ const AddSEvent = () => {
                   fontFamily: "Montserrat !important",
                 }}
               >
-                Venue Address*
+                Venue Address *
               </Typography>
               <CustomInputShadow
                 placeholder="Venue Address"
@@ -867,6 +891,7 @@ const AddSEvent = () => {
               />
             </Box> */}
           <Box 
+          id="details"
           sx={{
             flexBasis:"50%"
           }}
@@ -1011,6 +1036,7 @@ const AddSEvent = () => {
           }}
         >
           <Typography
+          id="location"
             sx={{
               color: "#FFA100",
               fontWeight: "500",

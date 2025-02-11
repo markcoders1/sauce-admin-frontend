@@ -133,24 +133,47 @@ const AddSauce = () => {
       });
     }
   };
-
+  const requiredFields = {
+    sauceName: "Sauce name is required",
+    userId:"Sauce Owner is required",
+    ingredients:"Ingredients are required",
+    chilli:"Chili is required",
+    websiteLink:"Website link is required"
+  };
   const handleSubmit = async () => {
+    console.log()
     let validationErrors = {};
 
     // Check file sizes
     if (sauceImage && sauceImage.size > 4 * 1024 * 1024) {
       validationErrors.sauceImage = "Sauce image size exceeds 4MB.";
     }
+    if (!sauceImage) {
+      validationErrors.sauceImage = "Sauce image is required.";
+    }
+    if (!formData?.chilli?.filter(a=>a!="")?.length) {
+      validationErrors.chilli = "chili is required.";
+    }
 
+    Object.entries(requiredFields).forEach(([field, message]) => {
+      if (!formData[field]) {
+        validationErrors[field] = message;
+      }
+    });
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setSnackAlertData({
-        open: true,
-        message: `${Object.values(validationErrors).join(" ")}`,
-        severity: "error",
-      });
       return;
     }
+
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   setSnackAlertData({
+    //     open: true,
+    //     message: `${Object.values(validationErrors).join(" ")}`,
+    //     severity: "error",
+    //   });
+    //   return;
+    // }
 
     const data = new FormData();
     if (formData.productLink) {
@@ -285,6 +308,27 @@ const AddSauce = () => {
     fetchBrands();
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const errorIds = [
+        'sauceImage',
+        'sauceName',
+        'userId',
+        'ingredients',
+        'chilli',
+        'websiteLink',
+      ];
+      const firstErrorField = errorIds.find(field => errors[field]);
+      if (firstErrorField) {
+        let element = document.getElementById(firstErrorField);
+        console.log(element)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  }, [errors]);
+
   const handleBrandChange = (userId) => {
     setFormData((prev) => ({ ...prev, userId }));
   };
@@ -406,6 +450,7 @@ borderRadius: '10px'
 
 
          <Box
+         id="sauceImage"
               sx={{
                 display: "flex",
                 flexDirection: { lg: "row",
@@ -496,7 +541,7 @@ borderRadius: '10px'
               </label>
             </Box>
             <Box>
-           { errors.bannerImage  && (
+           { errors.sauceImage  && (
                         <Typography sx={{
                           background: "#2e210a",
                           p: "10px",
@@ -505,12 +550,13 @@ borderRadius: '10px'
                           wordBreak: "break-word",
                           borderRadius: "5px"
                         }}>
-                          {errors.bannerImage}
+                          {errors.sauceImage}
                         </Typography>
                       )}
             </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
+          id="userId"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -524,7 +570,7 @@ borderRadius: '10px'
               gap: ".5rem", 
             }}
           >
-            Sauce Owner 
+            Sauce Owner *
             
             {state?.isFromRequestedPage &&<Typography>
                 Brand name suggested by user : {state?.description}
@@ -539,6 +585,18 @@ borderRadius: '10px'
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
           />
+           { errors.userId  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.userId}
+                        </Typography>
+                      )}
         </Box>
       <Box
         sx={{
@@ -560,6 +618,7 @@ borderRadius: '10px'
           }}
         >
           <Typography
+          id="sauceName"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -570,7 +629,7 @@ borderRadius: '10px'
               fontFamily: "Montserrat !important",
             }}
           >
-            Sauce Name
+            Sauce Name *
           </Typography>
           <CustomInputShadow
             placeholder="Sauce Name"
@@ -656,6 +715,7 @@ borderRadius: '10px'
           }}
         >
           <Typography
+          id="websiteLink"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -666,7 +726,7 @@ borderRadius: '10px'
               fontFamily: "Montserrat !important",
             }}
           >
-            Website Link
+            Website Link *
           </Typography>
           <CustomInputShadow
             placeholder="https://example.com"
@@ -717,6 +777,7 @@ borderRadius: '10px'
         }}
       >
         <Typography
+        id="ingredients"
           sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -727,7 +788,7 @@ borderRadius: '10px'
             fontFamily: "Montserrat !important",
           }}
         >
-          Ingredients
+          Ingredients *
         </Typography>
         <CustomInputShadow
           name="ingredients"
@@ -777,6 +838,7 @@ borderRadius: '10px'
         }}
       >
         <Typography
+        id="chilli"
           sx={{
             color: "#FFA100",
             fontWeight: "500",
@@ -787,7 +849,7 @@ borderRadius: '10px'
             fontFamily: "Montserrat !important",
           }}
         >
-          Chili
+          Chili *
         </Typography>
         {formData?.chilli.map((ingredient, index) => (
           <Box

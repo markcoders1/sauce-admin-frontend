@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInputShadow from "../../Components/CustomInput/CustomInput";
 import { Box, Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -24,7 +24,6 @@ const AddBadge = () => {
     name: "",
     condition: "",
     pointsRequired: "",
-    websiteLink: "",
     icon: null,
     description: "",
   });
@@ -51,27 +50,46 @@ const AddBadge = () => {
     }
   };
 
+  const requiredFields = {
+    name: "Badge name is required",
+    description:"Description is required",
+    icon:"Badge image is required",
 
+  };
 
   const handleSubmit = async () => {
     console.log("Form data submitted:", formData);
 
     let validationErrors = {};
 
-    // Check file size for bannerImage
-    if (formData.bannerImage && formData.bannerImage.size > 4 * 1024 * 1024) {
-      validationErrors.bannerImage = "Banner image size exceeds 4MB.";
+    // Check file size for icon
+    if (formData.icon && formData.icon.size > 4 * 1024 * 1024) {
+      validationErrors.icon = "Badge image size exceeds 4MB.";
     }
+    if (!formData.icon) {
+      validationErrors.icon = "Badge image is required.";
+    }
+  
 
+    Object.entries(requiredFields).forEach(([field, message]) => {
+      if (!formData[field]) {
+        validationErrors[field] = message;
+      }
+    });
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setSnackAlertData({
-        open: true,
-        message: `${Object.values(validationErrors).join(" ")}`,
-        severity: "error",
-      });
       return;
     }
+
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    //   setSnackAlertData({
+    //     open: true,
+    //     message: `${Object.values(validationErrors).join(" ")}`,
+    //     severity: "error",
+    //   });
+    //   return;
+    // }
 
     const data = new FormData();
     data.append("name", formData.name);
@@ -100,7 +118,6 @@ const AddBadge = () => {
         name: "",
     condition: "",
     pointsRequired: "",
-    websiteLink: "",
     icon: null,
     description: "",
       });
@@ -128,6 +145,27 @@ const AddBadge = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const errorIds = [
+        'name',
+        'condition',
+        'description',
+      'pointsRequired',
+      'condition',
+        'icon'
+      ];
+      const firstErrorField = errorIds.find(field => errors[field]);
+      if (firstErrorField) {
+        let element = document.getElementById(firstErrorField);
+        console.log(element)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+  }, [errors]);
 
   return (
     <Box
@@ -162,6 +200,7 @@ const AddBadge = () => {
         </Typography>
       </Box>
       <Box
+      id="icon"
         sx={{
           display: "flex",
           flexDirection: { lg: "row", xs: "column" },
@@ -246,7 +285,18 @@ const AddBadge = () => {
           </Typography>
         </label>
       </Box>
-
+  { errors.icon  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.icon}
+                        </Typography>
+                      )}
       <Box
         sx={{
           display: "flex",
@@ -266,6 +316,7 @@ const AddBadge = () => {
           }}
         >
           <Typography
+          id="name"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -276,7 +327,7 @@ const AddBadge = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Badge Name
+            Badge Name *
           </Typography>
           <CustomInputShadow
             placeholder="Badge Name"
@@ -288,7 +339,9 @@ const AddBadge = () => {
         </Box>
      
       
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <Box
+        id="condition"
+        sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
           <Typography
             sx={{
               color: "#FFA100",
@@ -300,7 +353,7 @@ const AddBadge = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Conditions
+            Conditions *
           </Typography>
           <CustomSelectForType
             label={"Condition"}
@@ -314,6 +367,18 @@ const AddBadge = () => {
             labelField="label"
             valueField="value"
           />
+            { errors.condition  && (
+                        <Typography sx={{
+                          background: "#2e210a",
+                          p: "10px",
+                          color: "red",
+                          mt: "8px",
+                          wordBreak: "break-word",
+                          borderRadius: "5px"
+                        }}>
+                          {errors.condition}
+                        </Typography>
+                      )}
         </Box>
         {
             formData.condition === "points" && (
@@ -326,6 +391,7 @@ const AddBadge = () => {
                 }}
               >
                 <Typography
+                id="pointsRequired"
                   sx={{
                     color: "#FFA100",
                     fontWeight: "500",
@@ -336,7 +402,7 @@ const AddBadge = () => {
                     fontFamily: "Montserrat !important",
                   }}
                 >
-                 Points Required
+                 Points Required *
                 </Typography>
                 <CustomInputShadow
                   placeholder="Points Required"
@@ -359,6 +425,7 @@ const AddBadge = () => {
           }}
         >
           <Typography
+          id="description"
             sx={{
               color: "#FFA100",
               fontWeight: "500",
@@ -369,7 +436,7 @@ const AddBadge = () => {
               fontFamily: "Montserrat !important",
             }}
           >
-            Descriptions
+            Descriptions *
           </Typography>
           <CustomInputShadow
             placeholder="Descriptions"
@@ -382,6 +449,7 @@ const AddBadge = () => {
             multiline={true}
             
           />
+
         </Box>
       
       </Box>
