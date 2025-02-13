@@ -136,8 +136,10 @@ const AddSauce = () => {
   const requiredFields = {
     sauceName: "Sauce name is required",
     userId:"Sauce Owner is required",
-    ingredients:"Ingredients are required",
-    chilli:"Chili is required",
+    // ingredients:"Ingredients are required",
+    // chilli:"Chili is required",
+    // sauceImage:'Sauce Image is required',
+    productLink:"Product link is required",
     websiteLink:"Website link is required"
   };
   const handleSubmit = async () => {
@@ -151,9 +153,9 @@ const AddSauce = () => {
     if (!sauceImage) {
       validationErrors.sauceImage = "Sauce image is required.";
     }
-    if (!formData?.chilli?.filter(a=>a!="")?.length) {
-      validationErrors.chilli = "chili is required.";
-    }
+    // if (!formData?.chilli?.filter(a=>a!="")?.length) {
+    //   validationErrors.chilli = "chili is required.";
+    // }
 
     Object.entries(requiredFields).forEach(([field, message]) => {
       if (!formData[field]) {
@@ -314,8 +316,9 @@ const AddSauce = () => {
         'sauceImage',
         'sauceName',
         'userId',
-        'ingredients',
-        'chilli',
+        'productLink',
+        // 'ingredients',
+        // 'chilli',
         'websiteLink',
       ];
       const firstErrorField = errorIds.find(field => errors[field]);
@@ -686,6 +689,8 @@ borderRadius: '10px'
           }}
         >
           <Typography
+          id="productLink"
+
             sx={{
               color: "#FFA100",
               fontWeight: "500",
