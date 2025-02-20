@@ -76,6 +76,21 @@ const RequestedEvents = () => {
     } catch (error) {
       console.error("Error fetching events:", error);
       setLoading(false);
+        if (error.response.status == 480 ||
+              error.response.data.message == "Invalid Token" ) {
+              dispatch(
+                handleAuth({
+                  accessToken: "",
+                  refreshToken: "",
+                  _id: "",
+                  username: "",
+                  email: "",
+                  authenticated: "",
+                  type: "",
+                })
+              );
+              navigate("/");
+            }
     }
   };
 
@@ -263,6 +278,7 @@ const RequestedEvents = () => {
                       //   backgroundImage: `linear-gradient(90deg, #5A3D0A 0%, #5A3D0A 100%) !important`,
                       // },
                       padding: "0px",
+
                     }}
                     className="header-row"
                   >
@@ -295,6 +311,8 @@ const RequestedEvents = () => {
                         textAlign: "start",
                         color: "white",
                         pl: "10px",
+                      borderRadius: "8px 0px 0px 8px",
+
                       }}
                       className="MuiTableCell-root-head"
                     >
@@ -399,7 +417,11 @@ const RequestedEvents = () => {
                         />
                       </TableCell> */}
                       <TableCell
-                        sx={{ textAlign: "start !important" }}
+                        sx={{ textAlign: "start !important", 
+
+                      borderRadius: "8px 0px 0px 8px",
+
+                         }}
                         className="MuiTableCell-root"
                       >
                         {event.eventName}

@@ -63,6 +63,21 @@ const EventsManagement = () => {
         } catch (error) {
             console.error('Error fetching events:', error);
             setLoading(false);
+              if (error.response.status == 480 ||
+                    error.response.data.message == "Invalid Token" ) {
+                    dispatch(
+                      handleAuth({
+                        accessToken: "",
+                        refreshToken: "",
+                        _id: "",
+                        username: "",
+                        email: "",
+                        authenticated: "",
+                        type: "",
+                      })
+                    );
+                    navigate("/");
+                  }
         }
     };
 
