@@ -28,11 +28,14 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import { debounce } from "lodash";
 import SearchIcon from "../../assets/SearchIcon.png";
 import loadingGIF from "../../assets/loading.gif";
+import { useDispatch } from "react-redux";
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 const CopyToClip = ({handleCopyUrl=()=>{}})=>{
   const [isCopied, setIsCopied] = useState(false);
+
 
   const handleClick = ()=>{
     setIsCopied(true);
@@ -76,6 +79,8 @@ const ReviewsManagement = () => {
   const [addReviewModalOpen, setAddReviewModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Added search term state
   const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+  
 
   const fetchReviews = async (currentPage) => {
     try {
@@ -101,6 +106,23 @@ const ReviewsManagement = () => {
     } catch (error) {
       console.error("Error fetching reviews:", error);
       setLoading(false);
+       if (
+              error.response.status == 480 ||
+              error.response.data.message == "Invalid Token"
+            ) {
+              dispatch(
+                handleAuth({
+                  accessToken: "",
+                  refreshToken: "",
+                  _id: "",
+                  username: "",
+                  email: "",
+                  authenticated: "",
+                  type: "",
+                })
+              );
+              navigate("/");
+            }
     }
   };
 

@@ -30,6 +30,7 @@ import SearchIcon from "../../assets/SearchIcon.png";
 import { debounce } from "lodash"; // Import lodash debounce
 import loadingGIF from "../../assets/loading.gif";
 
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 import ConfirmDeleteModalForBadge from "../../Components/DeleteBadge/DeleteBadgeModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -46,9 +47,11 @@ const BadgeManagement = () => {
   const [addReviewModalOpen, setAddReviewModalOpen] = useState(false);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+      const dispatch = useDispatch();
+  
 
   const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  
 
   const fetchReviews = async (currentPage) => {
     try {
@@ -74,6 +77,23 @@ const BadgeManagement = () => {
     } catch (error) {
       console.error("Error fetching reviews:", error);
       setLoading(false);
+       if (
+                    error.response.status == 480 ||
+                    error.response.data.message == "Invalid Token"
+                  ) {
+                    dispatch(
+                      handleAuth({
+                        accessToken: "",
+                        refreshToken: "",
+                        _id: "",
+                        username: "",
+                        email: "",
+                        authenticated: "",
+                        type: "",
+                      })
+                    );
+                    navigate("/");
+                  }
     }
   };
 

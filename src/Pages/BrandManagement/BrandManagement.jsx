@@ -31,12 +31,14 @@ import loadingGIF from "../../assets/loading.gif";
 import DeleteIcon from "../../assets/deleteIcon.png";
 import ConfirmDeleteModal from "../../Components/ConfirmReviewDeleteModal/ConfirmReviewDeleteModal";
 import ConfirmBrandDeleteModal from "../../Components/ConfirmBrandDeleteModal/ConfirmBrandDeleteModal";
+import { useDispatch } from "react-redux";
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const BrandManagement = () => {
   const navigate = useNavigate();
-  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,6 +51,7 @@ const BrandManagement = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const dispatch = useDispatch();
 
   // Function to fetch brands from the server
   const fetchBrands = useCallback(
@@ -71,10 +74,27 @@ const BrandManagement = () => {
         setAllBrands(response?.data?.entities || response?.data?.users);
         setTotalPages(response?.data?.pagination?.totalPages || 1);
         setLoading(false);
-        setSearchBarLoading(false)
+        setSearchBarLoading(false);
       } catch (error) {
         console.error("Error fetching brands:", error);
         setLoading(false);
+        if (
+          error.response.status == 480 ||
+          error.response.data.message == "Invalid Token"
+        ) {
+          dispatch(
+            handleAuth({
+              accessToken: "",
+              refreshToken: "",
+              _id: "",
+              username: "",
+              email: "",
+              authenticated: "",
+              type: "",
+            })
+          );
+          navigate("/");
+        }
       }
     },
     [auth.accessToken]
@@ -97,7 +117,7 @@ const BrandManagement = () => {
 
   // Handle search input change
   const handleSearchChange = (event) => {
-    setSearchBarLoading(true)
+    setSearchBarLoading(true);
     const value = event.target.value;
     setInputValue(value); // Update input field immediately
     debouncedSearch(value); // Debounce the search term update
@@ -137,7 +157,6 @@ const BrandManagement = () => {
   const navigateToEdit = (id) => {
     navigate(`/admin/edit-brand-user-details/${id}`);
   };
-
 
   const handleOpenDeleteModal = (id) => {
     setBrandToDelete(id);
@@ -221,30 +240,29 @@ const BrandManagement = () => {
                 value={inputValue}
                 onChange={handleSearchChange}
               />
-            {
-                isSearchBarLoading?
+              {isSearchBarLoading ? (
                 <img
-                src={loadingGIF}
-                alt="loading"
-                style={{
-                  width:"30px",
-                  
-                  position: "absolute",
-                  top: "8px",
-                  right: "15px",
-                }}
-              />
-                :
-              <img
-                src={SearchIcon}
-                alt="Search"
-                style={{
-                  position: "absolute",
-                  top: "14px",
-                  right: "20px",
-                }}
-              />
-              }
+                  src={loadingGIF}
+                  alt="loading"
+                  style={{
+                    width: "30px",
+
+                    position: "absolute",
+                    top: "8px",
+                    right: "15px",
+                  }}
+                />
+              ) : (
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  style={{
+                    position: "absolute",
+                    top: "14px",
+                    right: "20px",
+                  }}
+                />
+              )}
             </Box>
             <Box sx={{ width: { sm: "200px", xs: "100%" } }}>
               <CustomButton
@@ -361,7 +379,7 @@ const BrandManagement = () => {
                         key={index}
                         sx={{
                           border: "2px solid #FFA100",
-                          display:brand?.isDeleted?"none":"table-row"
+                          display: brand?.isDeleted ? "none" : "table-row",
                         }}
                         className="MuiTableRow-root"
                       >
@@ -395,25 +413,31 @@ const BrandManagement = () => {
                         </TableCell>
 
                         <TableCell
-                          sx={{ 
-                            textAlign: "center !important" }}
+                          sx={{
+                            textAlign: "center !important",
+                          }}
                           className="MuiTableCell-root"
                         >
-                            <Tooltip 
-                            
-                            title={brand.sauces?"View Brand Sauces":"This brand has no sauces"}>
-                          <Typography
-                         onClick={() =>brand.sauces? handleNavigate(brand._id):null}
-                          
-                          sx={{
-                             textDecoration:"underline !important",
-                             color:"#FFA100 !important",
-                             cursor: "pointer",
-                          }}>
-
-                          {brand.sauces}
-                          </Typography>
-                        </Tooltip>
+                          <Tooltip
+                            title={
+                              brand.sauces
+                                ? "View Brand Sauces"
+                                : "This brand has no sauces"
+                            }
+                          >
+                            <Typography
+                              onClick={() =>
+                                brand.sauces ? handleNavigate(brand._id) : null
+                              }
+                              sx={{
+                                textDecoration: "underline !important",
+                                color: "#FFA100 !important",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {brand.sauces}
+                            </Typography>
+                          </Tooltip>
                         </TableCell>
                         {/* <TableCell
                           sx={{
@@ -465,54 +489,58 @@ const BrandManagement = () => {
                               alignItems: "center",
                             }}
                           >
-                           
                             <Tooltip title="Edit Brand">
-                            <img
-                              className="edit-icon"
-                              src={EditIcon}
-                              alt="Edit"
-                              style={{
-                                width: "40px",
-                                height: "40px",
-                                cursor: "pointer",
-                                border: "0 px solid red",
-                                borderRadius: "10px",
-                                padding: "8px",
-                              }}
-                              onClick={() => navigateToEdit(brand._id)}
-                            />
+                              <img
+                                className="edit-icon"
+                                src={EditIcon}
+                                alt="Edit"
+                                style={{
+                                  width: "40px",
+                                  height: "40px",
+                                  cursor: "pointer",
+                                  border: "0 px solid red",
+                                  borderRadius: "10px",
+                                  padding: "8px",
+                                }}
+                                onClick={() => navigateToEdit(brand._id)}
+                              />
                             </Tooltip>
-                             <Tooltip
-                             
-                             title={
-                              <span style={{ display: "block", textAlign: "center" }}>
-                              {brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}
-                              </span>
-                            }
-                            //  title={brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}
-                             
-                             
-                             >
-                                                        <img
-                                                          
-                                                          src={DeleteIcon}
-                                                          className="edit-icon"
-                                                          style={{
-                                                            width: "35px",
-                                                            height: "35px",
-                                                            objectFit: "contain",
-                                                            borderRadius:"8px",
-                                                            background:brand.sauces?"rgba(236, 236, 236, .05)":"",
-                                                            cursor:brand.sauces?"no-drop":"pointer"
-
-
-                                                            
-                                                          }}
-                                                          onClick={() =>(brand.isDeleted|| brand.sauces)?()=>{} : handleOpenDeleteModal(brand._id)}
-                                                          alt="Delete"
-                                                        />
-                                                      </Tooltip>
-
+                            <Tooltip
+                              title={
+                                <span
+                                  style={{
+                                    display: "block",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {brand.sauces
+                                    ? "To delete this brand, first delete all the sauces under this brand."
+                                    : "Delete this Brand"}
+                                </span>
+                              }
+                              //  title={brand.sauces?"To delete this brand, first delete all the sauces under this brand.":"Delete this Brand"}
+                            >
+                              <img
+                                src={DeleteIcon}
+                                className="edit-icon"
+                                style={{
+                                  width: "35px",
+                                  height: "35px",
+                                  objectFit: "contain",
+                                  borderRadius: "8px",
+                                  background: brand.sauces
+                                    ? "rgba(236, 236, 236, .05)"
+                                    : "",
+                                  cursor: brand.sauces ? "no-drop" : "pointer",
+                                }}
+                                onClick={() =>
+                                  brand.isDeleted || brand.sauces
+                                    ? () => {}
+                                    : handleOpenDeleteModal(brand._id)
+                                }
+                                alt="Delete"
+                              />
+                            </Tooltip>
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -553,13 +581,13 @@ const BrandManagement = () => {
         )}
       </Box>
       {deleteModalOpen && (
-          <ConfirmBrandDeleteModal
-            open={deleteModalOpen}
-            handleClose={handleCloseDeleteModal}
-            brandId={brandToDelete}
-            onSuccess={() => fetchBrands(page, searchTerm)}
-          />
-        )}
+        <ConfirmBrandDeleteModal
+          open={deleteModalOpen}
+          handleClose={handleCloseDeleteModal}
+          brandId={brandToDelete}
+          onSuccess={() => fetchBrands(page, searchTerm)}
+        />
+      )}
       {isOpen && (
         <Lightbox
           open={isOpen}

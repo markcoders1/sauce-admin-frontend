@@ -32,12 +32,13 @@ import eyeIcon from "../../assets/eyeopen.png";
 import loadingGIF from "../../assets/loading.gif";
 
 import DeleteRequestedEvent from "../../Components/DeleteRequestedEvent/DeleteRequestedEvent";
-
+import { useDispatch } from "react-redux";
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const RequestedEvents = () => {
   const navigate = useNavigate();
-  const [isSearchBarLoading, setSearchBarLoading] = useState(false)
+  const [isSearchBarLoading, setSearchBarLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allEvents, setAllEvents] = useState([]);
   const [page, setPage] = useState(1); // Current page state
@@ -47,6 +48,7 @@ const RequestedEvents = () => {
   const [inputValue, setInputValue] = useState("");
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   // State for lightbox
   const [isOpen, setIsOpen] = useState(false);
@@ -71,11 +73,28 @@ const RequestedEvents = () => {
       setAllEvents(response?.data?.events);
       setTotalPages(response?.data?.pagination?.totalPages || 1); // Set total pages
       setLoading(false);
-      setSearchBarLoading(false)
+      setSearchBarLoading(false);
       console.log(response);
     } catch (error) {
       console.error("Error fetching events:", error);
       setLoading(false);
+      if (
+        error.response.status == 480 ||
+        error.response.data.message == "Invalid Token"
+      ) {
+        dispatch(
+          handleAuth({
+            accessToken: "",
+            refreshToken: "",
+            _id: "",
+            username: "",
+            email: "",
+            authenticated: "",
+            type: "",
+          })
+        );
+        navigate("/");
+      }
     }
   };
 
@@ -96,7 +115,7 @@ const RequestedEvents = () => {
 
   // Handle search input change
   const handleSearchChange = (event) => {
-    setSearchBarLoading(true)
+    setSearchBarLoading(true);
     const value = event.target.value;
     setInputValue(value); // Update input field immediately
     debouncedSearch(value); // Debounce the search term update
@@ -114,14 +133,16 @@ const RequestedEvents = () => {
 
   function formatDate(isoString) {
     const date = new Date(isoString);
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    let formattedDate = date.toLocaleDateString('en-US', options)
-      .replace(/,/, '')
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    let formattedDate = date
+      .toLocaleDateString("en-US", options)
+      .replace(/,/, "")
       .toLowerCase()
-      .replace(/\s/g, '-');
+      .replace(/\s/g, "-");
 
     // Capitalize the first letter of the month
-    formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+    formattedDate =
+      formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
     return formattedDate;
   }
@@ -150,7 +171,6 @@ const RequestedEvents = () => {
     setDeleteModalOpen(false);
     setReviewToDelete(null);
   };
-
 
   const handleNavigateToAddEvent = (state) => {
     navigate("/admin/add-requested-event", { state: state });
@@ -220,30 +240,29 @@ const RequestedEvents = () => {
               value={inputValue}
               onChange={handleSearchChange}
             />
-            {
-              isSearchBarLoading ?
-                <img
-                  src={loadingGIF}
-                  alt="loading"
-                  style={{
-                    width: "30px",
+            {isSearchBarLoading ? (
+              <img
+                src={loadingGIF}
+                alt="loading"
+                style={{
+                  width: "30px",
 
-                    position: "absolute",
-                    top: "8px",
-                    right: "15px",
-                  }}
-                />
-                :
-                <img
-                  src={SearchIcon}
-                  alt="Search"
-                  style={{
-                    position: "absolute",
-                    top: "14px",
-                    right: "20px",
-                  }}
-                />
-            }
+                  position: "absolute",
+                  top: "8px",
+                  right: "15px",
+                }}
+              />
+            ) : (
+              <img
+                src={SearchIcon}
+                alt="Search"
+                style={{
+                  position: "absolute",
+                  top: "14px",
+                  right: "20px",
+                }}
+              />
+            )}
           </Box>
         </Box>
         {loading ? (
@@ -295,6 +314,7 @@ const RequestedEvents = () => {
                         textAlign: "start",
                         color: "white",
                         pl: "10px",
+                        borderRadius: "8px 0px 0px 8px",
                       }}
                       className="MuiTableCell-root-head"
                     >
@@ -310,7 +330,7 @@ const RequestedEvents = () => {
                         },
                         textAlign: "start",
                         color: "white",
-                        pl: "5px"
+                        pl: "5px",
                       }}
                       className="MuiTableCell-root-head"
                     >
@@ -399,7 +419,11 @@ const RequestedEvents = () => {
                         />
                       </TableCell> */}
                       <TableCell
-                        sx={{ textAlign: "start !important" }}
+                        sx={{
+                          textAlign: "start !important",
+
+                          borderRadius: "8px 0px 0px 8px",
+                        }}
                         className="MuiTableCell-root"
                       >
                         {event.eventName}
@@ -428,13 +452,12 @@ const RequestedEvents = () => {
                             display: "flex",
                             gap: "10px",
                             justifyContent: "center",
-                            alignItems: "center"
+                            alignItems: "center",
                           }}
                         >
-                          <Tooltip title="View Requested Events" >
+                          <Tooltip title="View Requested Events">
                             <img
                               className="delete-icon edit-icon"
-
                               src={EditIcon}
                               alt="Delete"
                               style={{
@@ -444,16 +467,14 @@ const RequestedEvents = () => {
                                 border: "0 px solid red",
                                 borderRadius: "10px",
                                 padding: "8px",
-                                objectFit: "contain"
+                                objectFit: "contain",
                               }}
                               onClick={() => handleNavigateToAddEvent(event)}
                             />
                           </Tooltip>
-                          <Tooltip title="Delete Requested Events" >
-
+                          <Tooltip title="Delete Requested Events">
                             <img
                               className="delete-icon edit-icon"
-
                               src={DeleteIcon}
                               alt="Delete"
                               style={{
@@ -467,7 +488,6 @@ const RequestedEvents = () => {
                               onClick={() => handleOpenDeleteModal(event._id)}
                             />
                           </Tooltip>
-
                         </Box>
                       </TableCell>
                     </TableRow>

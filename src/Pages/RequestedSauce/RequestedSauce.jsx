@@ -33,6 +33,8 @@ import "../TabooManagement/TabooManagement.css"; // Use the same CSS to keep the
 import ConfirmDeleteModalRequestedSauce from "../../Components/DeleteRequestedSauce/DeleteRequestedSauce";
 import ConfirmDeleteModalSauce from "../../Components/DeleteSaucModal/DeleteSauceModal";
 const appUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { useDispatch } from "react-redux";
+import { handleAuth } from "../../Redux/Slice/UserSlice/UserSlice";
 
 const RequestedSauce = () => {
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,8 @@ const RequestedSauce = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
+    const dispatch = useDispatch();
+  
 
   const fetchSauces = async (currentPage, search) => {
     try {
@@ -71,6 +75,23 @@ const RequestedSauce = () => {
     } catch (error) {
       console.error("Error fetching sauces:", error);
       setLoading(false);
+       if (
+              error.response.status == 480 ||
+              error.response.data.message == "Invalid Token"
+            ) {
+              dispatch(
+                handleAuth({
+                  accessToken: "",
+                  refreshToken: "",
+                  _id: "",
+                  username: "",
+                  email: "",
+                  authenticated: "",
+                  type: "",
+                })
+              );
+              navigate("/");
+            }
     }
   };
 
@@ -317,7 +338,7 @@ const RequestedSauce = () => {
                             sx={{ textAlign: "start !important" }}
                             className="MuiTableCell-root"
                           >
-                            {sauce?.websiteLink || "No Email Available"}
+                            {sauce?.websiteLink || "No Website Link Available"}
                           </TableCell>
                           <TableCell
                             sx={{
